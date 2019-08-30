@@ -6,8 +6,8 @@ msgstr ""
 "WooCommerce - Development (trunk)\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/multibanco-ifthen-"
 "software-gateway-for-woocommerce\n"
-"POT-Creation-Date: 2019-08-29 17:32+0100\n"
-"PO-Revision-Date: 2019-08-29 22:11+0100\n"
+"POT-Creation-Date: 2019-08-30 18:03+0100\n"
+"PO-Revision-Date: 2019-08-30 18:04+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt\n"
@@ -33,7 +33,7 @@ msgstr "Configurações Payshop"
 msgid "Multibanco, MB WAY or Payshop payment details"
 msgstr "Dados de pagamento por Multibanco, MB WAY ou Payshop"
 
-#: class-wc-ifthen-webdados.php:368 class-wc-ifthen-webdados.php:837
+#: class-wc-ifthen-webdados.php:368 class-wc-ifthen-webdados.php:838
 #: class-wc-multibanco-ifthen-webdados.php:216
 #: class-wc-multibanco-ifthen-webdados.php:445
 #: class-wc-multibanco-ifthen-webdados.php:664
@@ -50,7 +50,7 @@ msgid "Reference"
 msgstr "Referência"
 
 #: class-wc-ifthen-webdados.php:370 class-wc-ifthen-webdados.php:541
-#: class-wc-ifthen-webdados.php:1381 class-wc-ifthen-webdados.php:1427
+#: class-wc-ifthen-webdados.php:1383 class-wc-ifthen-webdados.php:1429
 #: class-wc-mbway-ifthen-webdados.php:607
 #: class-wc-mbway-ifthen-webdados.php:758
 #: class-wc-multibanco-ifthen-webdados.php:672
@@ -79,7 +79,7 @@ msgstr "Parcialmente paga."
 msgid "Awaiting second Multibanco payment."
 msgstr "A aguardar segundo pagamento por Multibanco."
 
-#: class-wc-ifthen-webdados.php:384 class-wc-ifthen-webdados.php:1504
+#: class-wc-ifthen-webdados.php:384 class-wc-ifthen-webdados.php:1506
 #: class-wc-multibanco-ifthen-webdados.php:869
 msgid "Awaiting Multibanco payment."
 msgstr "A aguardar pagamento por Multibanco."
@@ -191,22 +191,22 @@ msgstr ""
 msgid "(expired)"
 msgstr "(expirou)"
 
-#: class-wc-ifthen-webdados.php:774 class-wc-ifthen-webdados.php:988
+#: class-wc-ifthen-webdados.php:775 class-wc-ifthen-webdados.php:990
 #, php-format
 msgid "It’s not possible to use %1$s to pay values under %2$s."
 msgstr "Não é possível utilizar %1$s para pagar valores abaixo de %2$s."
 
-#: class-wc-ifthen-webdados.php:782 class-wc-ifthen-webdados.php:996
+#: class-wc-ifthen-webdados.php:783 class-wc-ifthen-webdados.php:998
 #, php-format
 msgid "It’s not possible to use %1$s to pay values above %2$s."
 msgstr "Não é possível utilizar %1$s para pagar valores acima de %2$s."
 
-#: class-wc-ifthen-webdados.php:840 class-wc-multibanco-ifthen-webdados.php:228
+#: class-wc-ifthen-webdados.php:841 class-wc-multibanco-ifthen-webdados.php:228
 #: class-wc-multibanco-ifthen-webdados.php:445
 msgid "Subentity"
 msgstr "Subentidade"
 
-#: class-wc-ifthen-webdados.php:843 class-wc-mbway-ifthen-webdados.php:193
+#: class-wc-ifthen-webdados.php:844 class-wc-mbway-ifthen-webdados.php:193
 #: class-wc-mbway-ifthen-webdados.php:380
 #: class-wc-multibanco-ifthen-webdados.php:253
 #: class-wc-multibanco-ifthen-webdados.php:451
@@ -215,7 +215,7 @@ msgstr "Subentidade"
 msgid "Anti-phishing key"
 msgstr "Chave <em>Anti-phishing</em>"
 
-#: class-wc-ifthen-webdados.php:847
+#: class-wc-ifthen-webdados.php:848
 msgid ""
 "Configuration error. This payment method is disabled because required "
 "information was not set."
@@ -223,45 +223,49 @@ msgstr ""
 "Erro de configuração. Este método de pagamento está inactivo porque "
 "configurações obrigatórias não foram efectuadas."
 
-#: class-wc-ifthen-webdados.php:853 class-wc-ifthen-webdados.php:1005
-#: class-wc-ifthen-webdados.php:1011
-msgid "Configuration error. This store currency is not Euros (&euro;)."
-msgstr "Erro de configuração. A moeda desta loja não é Euros (&euro;)."
+#: class-wc-ifthen-webdados.php:854 class-wc-ifthen-webdados.php:1013
+msgid "Configuration error. This order currency is not Euros (&euro;)."
+msgstr "Erro de configuração. A moeda desta encomenda não é Euros (&euro;)."
 
-#: class-wc-ifthen-webdados.php:1065 class-wc-ifthen-webdados.php:1095
-#: class-wc-ifthen-webdados.php:1113 class-wc-ifthen-webdados.php:1147
-#: class-wc-ifthen-webdados.php:1173 class-wc-ifthen-webdados.php:1189
+#: class-wc-ifthen-webdados.php:1007 class-wc-payshop-ifthen-webdados.php:913
+msgid "Error contacting IfthenPay servers to create Payshop Payment"
+msgstr ""
+"Erro ao contactar os servidores da IfthenPay para criar o Pagamento Payshop"
+
+#: class-wc-ifthen-webdados.php:1067 class-wc-ifthen-webdados.php:1097
+#: class-wc-ifthen-webdados.php:1115 class-wc-ifthen-webdados.php:1149
+#: class-wc-ifthen-webdados.php:1175 class-wc-ifthen-webdados.php:1191
 #, php-format
 msgid "The %s payment details have changed"
 msgstr "Os dados de pagamento via %s foram alterados"
 
-#: class-wc-ifthen-webdados.php:1069
+#: class-wc-ifthen-webdados.php:1071
 msgid "Previous entity"
 msgstr "Entidade anterior"
 
-#: class-wc-ifthen-webdados.php:1070 class-wc-ifthen-webdados.php:1151
+#: class-wc-ifthen-webdados.php:1072 class-wc-ifthen-webdados.php:1153
 msgid "Previous reference"
 msgstr "Referência anterior"
 
-#: class-wc-ifthen-webdados.php:1071 class-wc-ifthen-webdados.php:1152
+#: class-wc-ifthen-webdados.php:1073 class-wc-ifthen-webdados.php:1154
 msgid "Previous value"
 msgstr "Valor anterior"
 
-#: class-wc-ifthen-webdados.php:1073 class-wc-ifthen-webdados.php:1098
+#: class-wc-ifthen-webdados.php:1075 class-wc-ifthen-webdados.php:1100
 msgid "New entity"
 msgstr "Nova entidade"
 
-#: class-wc-ifthen-webdados.php:1074 class-wc-ifthen-webdados.php:1099
-#: class-wc-ifthen-webdados.php:1154 class-wc-ifthen-webdados.php:1176
+#: class-wc-ifthen-webdados.php:1076 class-wc-ifthen-webdados.php:1101
+#: class-wc-ifthen-webdados.php:1156 class-wc-ifthen-webdados.php:1178
 msgid "New reference"
 msgstr "Nova referência"
 
-#: class-wc-ifthen-webdados.php:1075 class-wc-ifthen-webdados.php:1100
-#: class-wc-ifthen-webdados.php:1155 class-wc-ifthen-webdados.php:1177
+#: class-wc-ifthen-webdados.php:1077 class-wc-ifthen-webdados.php:1102
+#: class-wc-ifthen-webdados.php:1157 class-wc-ifthen-webdados.php:1179
 msgid "New value"
 msgstr "Novo valor"
 
-#: class-wc-ifthen-webdados.php:1078 class-wc-ifthen-webdados.php:1158
+#: class-wc-ifthen-webdados.php:1080 class-wc-ifthen-webdados.php:1160
 #, php-format
 msgid ""
 "If the customer pays using the previous details, the payment will be "
@@ -271,69 +275,69 @@ msgstr ""
 "será aceite pelo sistema %s, mas a encomenda não será actualizada via "
 "callback."
 
-#: class-wc-ifthen-webdados.php:1115 class-wc-ifthen-webdados.php:1191
+#: class-wc-ifthen-webdados.php:1117 class-wc-ifthen-webdados.php:1193
 msgid "The customer will be notified"
 msgstr "O cliente será notificado"
 
-#: class-wc-ifthen-webdados.php:1115 class-wc-ifthen-webdados.php:1191
+#: class-wc-ifthen-webdados.php:1117 class-wc-ifthen-webdados.php:1193
 msgid "You should notify the customer"
 msgstr "Deve notificar o cliente"
 
-#: class-wc-ifthen-webdados.php:1115 class-wc-ifthen-webdados.php:1191
+#: class-wc-ifthen-webdados.php:1117 class-wc-ifthen-webdados.php:1193
 msgid "The page will now reload."
 msgstr "Esta página vai agora recarregar."
 
-#: class-wc-ifthen-webdados.php:1332
+#: class-wc-ifthen-webdados.php:1334
 msgid "Unpaid order cancelled - time limit exceeded."
 msgstr "Encomenda por pagar cancelada - tempo limite excedido."
 
-#: class-wc-ifthen-webdados.php:1374
+#: class-wc-ifthen-webdados.php:1376
 msgid "Ent."
 msgstr "Ent."
 
-#: class-wc-ifthen-webdados.php:1378 class-wc-ifthen-webdados.php:1424
+#: class-wc-ifthen-webdados.php:1380 class-wc-ifthen-webdados.php:1426
 msgid "Ref."
 msgstr "Ref."
 
-#: class-wc-ifthen-webdados.php:1431
+#: class-wc-ifthen-webdados.php:1433
 msgid "Valid."
 msgstr "Valid."
 
-#: class-wc-ifthen-webdados.php:1594
+#: class-wc-ifthen-webdados.php:1596
 msgid "Commercial information"
 msgstr "Informação comercial"
 
-#: class-wc-ifthen-webdados.php:1595 class-wc-ifthen-webdados.php:1597
+#: class-wc-ifthen-webdados.php:1597 class-wc-ifthen-webdados.php:1599
 #, php-format
 msgid "Please contact %s"
 msgstr "Por favor contactar %s"
 
-#: class-wc-ifthen-webdados.php:1596
+#: class-wc-ifthen-webdados.php:1598
 msgid "Technical support or custom WordPress/WooCommerce development"
 msgstr "Suporte técnico ou desenvolvimento WordPress/WooCommerce à medida"
 
-#: class-wc-ifthen-webdados.php:1598
+#: class-wc-ifthen-webdados.php:1600
 msgid "Please rate our plugin at WordPress.org"
 msgstr "Por favor classifique o nosso plugin no WordPress.org"
 
-#: class-wc-ifthen-webdados.php:1635
+#: class-wc-ifthen-webdados.php:1637
 msgid "MB WAY Payment has been requested"
 msgstr "Pagamento MB WAY solicitado"
 
-#: class-wc-ifthen-webdados.php:1640 class-wc-mbway-ifthen-webdados.php:908
+#: class-wc-ifthen-webdados.php:1642 class-wc-mbway-ifthen-webdados.php:908
 msgid "Error contacting IfthenPay servers to create MB WAY Payment"
 msgstr ""
 "Erro ao contactar os servidores da IfthenPay para criar o Pagamento MB WAY"
 
-#: class-wc-ifthen-webdados.php:1646
+#: class-wc-ifthen-webdados.php:1648
 msgid "Invalid parameters"
 msgstr "Parâmetros inválidos"
 
-#: class-wc-ifthen-webdados.php:1652
+#: class-wc-ifthen-webdados.php:1654
 msgid "Error"
 msgstr "Erro"
 
-#: class-wc-ifthen-webdados.php:1711
+#: class-wc-ifthen-webdados.php:1713
 msgid "Are you sure you want to ask IfthenPay to activate the “Callback”?"
 msgstr ""
 "Tem a certeza que deseja solicitar à IfthenPay para activar o “Callback”?"
@@ -1120,11 +1124,6 @@ msgstr ""
 #: class-wc-payshop-ifthen-webdados.php:1035
 msgid "Payshop payment received."
 msgstr "Pagamento Payshop recebido."
-
-#: class-wc-payshop-ifthen-webdados.php:913
-msgid "Error contacting IfthenPay servers to create Payshop Payment"
-msgstr ""
-"Erro ao contactar os servidores da IfthenPay para criar o Pagamento Payshop"
 
 #: multibanco_ifthen_for_woocommerce.php:78
 msgid ""

@@ -179,7 +179,6 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Admin CSS and JS as external assets instead of inline
 * Check for order currency instead of global WooCommerce currency when the order already exists
 * Several minor bugfixes and minimal code refactoring
-* ...
 
 = 3.6.4 =
 * **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**

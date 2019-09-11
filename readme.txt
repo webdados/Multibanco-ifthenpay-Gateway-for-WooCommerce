@@ -170,8 +170,11 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 4.0.2 =
+= ??? =
 * **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**
+* Fix bug when showing the MB WAY expiration date on the order admin page
+
+= 4.0.2 =
 * Fix version number
 
 = 4.0.1 =

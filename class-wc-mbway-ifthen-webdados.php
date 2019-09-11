@@ -518,7 +518,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 							<input type="hidden" id="mbway-order-id" value="<?php echo intval( $order_id ); ?>"/>
 							<input type="hidden" id="mbway-order-key" value="<?php echo esc_attr( $order->mb_get_order_key() ); ?>"/>
 							<?php
-							wp_enqueue_script( 'mbway-ifthenpay', plugins_url( 'assets/mbway.js', __FILE__ ) , array( 'jquery' ), WP_DEBUG ? rand(0,99999) : $this->version, true );
+							wp_enqueue_script( 'mbway-ifthenpay', plugins_url( 'assets/mbway.js', __FILE__ ) , array( 'jquery' ), $this->version.( WP_DEBUG ? '.'.rand( 0, 99999 ) : '' ), true );
 							wp_localize_script( 'mbway-ifthenpay', 'mbway_ifthenpay', array(
 								'interval' => apply_filters( 'mbway_ifthen_check_order_status_thankyou_interval', 10 ),
 								'mbway_minutes' => WC_IfthenPay_Webdados()->mbway_minutes,
@@ -843,27 +843,36 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 				if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
 					if ( function_exists( 'simplexml_load_string' ) ) {
 						$xmlData = simplexml_load_string( $response['body'] );
-						if ( trim( $xmlData->IdPedido ) != '' && floatval( $xmlData->Valor ) > 0 ) {
-							$id_pedido = trim( $xmlData->IdPedido );
-							$valor = floatval( $xmlData->Valor );
-							if ( $valor == round( floatval( $order->mb_get_total() ), 2 ) ) {
-								WC_IfthenPay_Webdados()->multibanco_set_order_mbway_details( $order_id, array(
-									'mbwaykey'  => $mbwaykey,
-									'id_pedido' => $id_pedido,
-									'phone'     => $phone,
-									'val'       => $valor,
-								) );
-								$this->debug_log( '- MB Way payment request created on IfthenPay servers - Order '.$order->mb_get_id() );
-								do_action( 'mbway_ifthen_created_reference', $id_pedido, $order_id, $phone );
-								return true;
+						//$this->debug_log( '- MB Way payment request response - Order '.$order->mb_get_id().' - '.$xmlData->asXML() ); //Desnecessário - vai para o email
+						//Verificar primeiro se temos o Estado correcto ou não
+						if ( trim( $xmlData->Estado ) == '000' ) {
+							if ( trim( $xmlData->IdPedido ) != '' && floatval( $xmlData->Valor ) > 0 ) {
+								$id_pedido = trim( $xmlData->IdPedido );
+								$valor = floatval( $xmlData->Valor );
+								if ( $valor == round( floatval( $order->mb_get_total() ), 2 ) ) {
+									WC_IfthenPay_Webdados()->multibanco_set_order_mbway_details( $order_id, array(
+										'mbwaykey'  => $mbwaykey,
+										'id_pedido' => $id_pedido,
+										'phone'     => $phone,
+										'val'       => $valor,
+									) );
+									$this->debug_log( '- MB Way payment request created on IfthenPay servers - Order '.$order->mb_get_id() );
+									do_action( 'mbway_ifthen_created_reference', $id_pedido, $order_id, $phone );
+									return true;
+								} else {
+									$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->mb_get_id().' - Incorrect "Valor"';
+									$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
+									$this->debug_log( $debug_msg, 'error', true, $debug_msg_email );
+									return false;
+								}
 							} else {
-								$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->mb_get_id().' - Incorrect "Valor"';
+								$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->mb_get_id().' - Missing "IdPedido" or "Valor"';
 								$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
 								$this->debug_log( $debug_msg, 'error', true, $debug_msg_email );
 								return false;
 							}
 						} else {
-							$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->mb_get_id().' - Missing "IdPedido" or "Valor"';
+							$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->mb_get_id().' - '.trim( $xmlData->Estado ).' '.trim( $xmlData->MsgDescricao );
 							$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
 							$this->debug_log( $debug_msg, 'error', true, $debug_msg_email );
 							return false;

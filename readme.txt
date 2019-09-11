@@ -174,7 +174,8 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**
 * Fix small bug on Payshop that allowed the anti-phishing key to be changed
 * Fix small icons by default
-* Move mbway.js to the new assets folder
+* Move mbway.js to the new assets folder and fix scripts version number
+* Better MB WAY payment request debug
 
 = 4.0.0 =
 * Payshop support (WooCommerce >= 3.0)

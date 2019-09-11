@@ -1658,7 +1658,7 @@ wc_price( $order_total )
 		
 		wp_enqueue_style( 'woocommerce_multibanco_ifthen_admin_css', plugins_url( 'assets/admin.css', __FILE__ ), array(), $this->version );
 		
-		wp_enqueue_script( 'woocommerce_multibanco_ifthen_admin_js', plugins_url( 'assets/admin.js', __FILE__ ), array( 'jquery' ), $this->version.'.'.rand(0,9999), true );
+		wp_enqueue_script( 'woocommerce_multibanco_ifthen_admin_js', plugins_url( 'assets/admin.js', __FILE__ ), array( 'jquery' ), $this->version.( WP_DEBUG ? '.'.rand( 0, 99999 ) : '' ), true );
 
 		//Javascript variables
 		$gateway             = str_replace( '_ifthen_for_woocommerce', '', $_GET['section'] );

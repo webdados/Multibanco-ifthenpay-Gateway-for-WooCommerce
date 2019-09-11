@@ -171,6 +171,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 == Changelog ==
 
 = 4.0.0 =
+* **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**
 * Payshop support (WooCommerce >= 3.0)
 * Plugin name change
 * Enforce payment gateways minimum and maximum default values
@@ -181,10 +182,8 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Several minor bugfixes and minimal code refactoring
 
 = 3.6.4 =
-* **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**
 * Bugfix when creating a new reference if the order value changes while editing it on wp-admin
 * Tested with WordPress 5.2.3-alpha-45666 and WooCommerce 3.7.0-rc.1
-
 
 = 3.6.3.1 =
 * Bugfix on the WooCommerce Subscriptions integration (Thanks (@vascothemudo)

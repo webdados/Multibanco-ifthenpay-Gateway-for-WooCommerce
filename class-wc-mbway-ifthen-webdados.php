@@ -38,7 +38,6 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 			$this->version = WC_IfthenPay_Webdados()->version;
 			$this->upgrade();
 	
-			$this->icon = ( $this->get_option( 'small_icon' ) == 'yes' ? plugins_url( 'images/icon_mbway_48_small.png', __FILE__ ) : plugins_url( 'images/icon_mbway_48.png', __FILE__ ) );
 			$this->has_fields = true;
 
 			$this->method_title = __( 'Pagamento MB WAY no telemóvel (IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
@@ -476,9 +475,12 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 		/**
 		 * Icon HTML
 		 */
+		public function get_icon_url() {
+			return ( $this->get_option( 'small_icon' ) == 'yes' ? plugins_url( 'images/icon_mbway_48_small.png', __FILE__ ) : plugins_url( 'images/icon_mbway_48.png', __FILE__ ) );
+		}
 		public function get_icon() {
 			$alt = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
-			$icon_html = ( $this->get_option( 'small_icon' ) == 'yes' ? '<img src="'.esc_attr( $this->icon ).'" alt="'.esc_attr( $alt ).'" width="26" height="24"/>' : '<img src="'.esc_attr( $this->icon ).'" alt="'.esc_attr( $alt ).'" width="50" height="24"/>' );
+			$icon_html = ( $this->get_option( 'small_icon' ) == 'yes' ? '<img src="'.esc_attr( $this->get_icon_url() ).'" alt="'.esc_attr( $alt ).'" width="26" height="24"/>' : '<img src="'.esc_attr( $this->get_icon_url() ).'" alt="'.esc_attr( $alt ).'" width="50" height="24"/>' );
 			return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
 		}
 

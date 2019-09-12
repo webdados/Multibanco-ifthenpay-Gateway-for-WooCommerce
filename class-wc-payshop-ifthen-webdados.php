@@ -513,14 +513,14 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 			$order = new WC_Order_MB_Ifthen( $order_id );
 			if ( $this->id === $order->mb_get_payment_method() ) {
 				if ( $order->mb_has_status( 'on-hold' ) || $order->mb_has_status( 'pending' ) ) {
-					if ( date_i18n( 'Y-m-d' ) > $order->mb_get_meta( '_'.WC_IfthenPay_Webdados()->payshop_id.'_exp' ) ) {
+					if ( $order->mb_get_meta( '_'.WC_IfthenPay_Webdados()->payshop_id.'_exp' ) != '' && date_i18n( 'Y-m-d' ) > $order->mb_get_meta( '_'.WC_IfthenPay_Webdados()->payshop_id.'_exp' ) ) {
 						//Expired
 						$expired = true;
-						echo $this->thankyou_instructions_table_html_expired( $order_id, round( $order->mb_get_total(), 2 ) );
+						echo $this->thankyou_instructions_table_html_expired( $order_id, round( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), 2 ) );
 					} else {
 						//Not expired
 						$expired = false;
-						echo $this->thankyou_instructions_table_html( $order_id, round( $order->mb_get_total(), 2 ) );
+						echo $this->thankyou_instructions_table_html( $order_id, round( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), 2 ) );
 					}
 				} else {
 					//Processing
@@ -703,7 +703,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 								//WooCommerce deposits - No instructions
 							} else {
 								if ( apply_filters( 'payshop_ifthen_email_instructions_pending_send', true, $order_id ) ) {
-									echo $this->email_instructions_table_html( $order_id, round( $order->mb_get_total(), 2 ) );
+									echo $this->email_instructions_table_html( $order_id, round( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), 2 ) );
 								}
 							}
 						} else {
@@ -799,7 +799,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 				'body'     => array(
 					'payshopkey' => $payshopkey,
 					'id'         => (string) $id,
-					'valor'      => (string) round( floatval( $order->mb_get_total() ), 2 ),
+					'valor'      => (string) round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 ),
 				),
 			);
 			if ( $date_exp ) {
@@ -823,7 +823,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 								'ref'        => trim( $response_data->Reference ),
 								'request_id' => trim( $response_data->RequestId ),
 								'id'         => $id,
-								'val'        => $order->mb_get_total(),
+								'val'        => WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ),
 							);
 							if ( $date_exp ) {
 								$details['exp'] = $date_exp->format( 'Y-m-d' );
@@ -1016,7 +1016,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 
 						if ( $orders_exist ) {
 							if ( $orders_count == 1 ) {
-								if ( floatval( $val ) == floatval( $order->mb_get_total() ) ) {
+								if ( floatval( $val ) == floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
 									/*if ( $this->stock_when=='' || $this->order_initial_status_pending ) $order->mb_reduce_order_stock();
 									$order->update_status( 'processing', __( 'Payshop payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); //Paid */
 									$note=__( 'Payshop payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );

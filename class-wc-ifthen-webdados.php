@@ -248,6 +248,18 @@ final class WC_IfthenPay_Webdados {
 
 	/* Just above/bellow certain amounts */
 	public function disable_only_above_or_bellow( $available_gateways, $gateway_id, $default_only_above = null, $default_only_bellow = null ) {
+		//Order total or cart total?
+		$pay_slug = get_option('woocommerce_checkout_pay_endpoint', 'order-pay');
+		$order_id = absint(get_query_var($pay_slug));
+		if ( $order_id > 0 ) {
+			//Pay screen on My Account
+			$order = new WC_Order_MB_Ifthen( $order_id );
+			$value_to_pay = $this->get_order_total_to_pay( $order );
+		} else {
+			//Checkout
+			$value_to_pay = WC()->cart->total; //We're not checking if we're paying just a deposit...
+		}
+
 		if ( isset( $available_gateways[$gateway_id] ) ) {
 			//Only above
 			$only_above = $default_only_above ? $default_only_above : 0;
@@ -258,7 +270,7 @@ final class WC_IfthenPay_Webdados {
 					floatval( $available_gateways[$gateway_id]->only_above ) > $only_above
 				) $only_above = floatval( $available_gateways[$gateway_id]->only_above );
 			}
-			if ( $only_above > 0 && WC()->cart->total < floatval( $only_above ) ) {
+			if ( $only_above > 0 && $value_to_pay < floatval( $only_above ) ) {
 				unset( $available_gateways[$gateway_id] );
 			}
 			//Only below
@@ -270,7 +282,7 @@ final class WC_IfthenPay_Webdados {
 					floatval( $available_gateways[$gateway_id]->only_bellow ) < $only_bellow
 				) $only_bellow = floatval( $available_gateways[$gateway_id]->only_bellow );
 			}
-			if ( $only_bellow > 0 && WC()->cart->total > floatval( $only_bellow ) ) {
+			if ( $only_bellow > 0 && $value_to_pay > floatval( $only_bellow ) ) {
 				unset( $available_gateways[$gateway_id] );
 			}
 		}
@@ -753,7 +765,7 @@ final class WC_IfthenPay_Webdados {
 				);
 			} else {
 				//Value ok?
-				if ( $order->mb_get_total() < $this->multibanco_min_value ){
+				if ( $this->get_order_total_to_pay( $order ) < $this->multibanco_min_value ){
 					return sprintf(
 							__( 'It’s not possible to use %1$s to pay values under %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'Multibanco',
@@ -761,7 +773,7 @@ final class WC_IfthenPay_Webdados {
 						);
 			 	} else {
 			 		//Value ok? (again)
-					if ( $order->mb_get_total() > $this->multibanco_max_value ){
+					if ( $this->get_order_total_to_pay( $order ) > $this->multibanco_max_value ){
 						return sprintf(
 								__( 'It’s not possible to use %1$s to pay values above %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 								'Multibanco',
@@ -784,22 +796,22 @@ final class WC_IfthenPay_Webdados {
 						) {
 							if ( version_compare( WC_VERSION, '3.0', '>=' ) && isset( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) && intval( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) > 0 ) {
 								//No repeat in x days
-								$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $order->mb_get_total(), intval( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) );
+								$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $this->get_order_total_to_pay( $order ), intval( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) );
 							} else {
 								if ( in_array( intval( $base['ent'] ), $this->multibanco_ents_no_check_digit ) && ( $this->multibanco_settings['use_order_id'] =='yes' ) ) {
 									//Special entities with no check digit and (eventually) expiration date - We can use the order ID
-									$ref = $this->multibanco_create_ref_no_check_digit( $base['ent'], $base['subent'], $order_id, $order->mb_get_total() );
+									$ref = $this->multibanco_create_ref_no_check_digit( $base['ent'], $base['subent'], $order_id, $this->get_order_total_to_pay( $order ) );
 								} else {
-									$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $order->mb_get_total() ); //For random mode - Less loop possibility
+									$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $this->get_order_total_to_pay( $order ) ); //For random mode - Less loop possibility
 								}
 							}
 							//Store on the order for later use (like the email)
 							$this->multibanco_set_order_mb_details( $order_id, array(
 								'ent'	=>	$base['ent'],
 								'ref'	=>	$ref,
-								'val'	=>	$order->mb_get_total(),
+								'val'	=>	$this->get_order_total_to_pay( $order ),
 							) );
-							$this->debug_log( $this->multibanco_id, 'Multibanco payment details ('.$base['ent'].' / '.$ref.' / '.$order->mb_get_total().') generated for Order '.$order_id );
+							$this->debug_log( $this->multibanco_id, 'Multibanco payment details ('.$base['ent'].' / '.$ref.' / '.$this->get_order_total_to_pay( $order ).') generated for Order '.$order_id );
 							//Return it!
 							do_action( 'multibanco_ifthen_created_reference', array(
 								'ent' => $base['ent'],
@@ -968,7 +980,7 @@ final class WC_IfthenPay_Webdados {
 				return $order_mb_details;
 			} else {
 				//Value ok?
-				if ( $order->mb_get_total() < $this->payshop_min_value ){
+				if ( $this->get_order_total_to_pay( $order ) < $this->payshop_min_value ){
 					return sprintf(
 							__( 'It’s not possible to use %1$s to pay values under %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'Payshop',
@@ -976,7 +988,7 @@ final class WC_IfthenPay_Webdados {
 						);
 			 	} else {
 			 		//Value ok? (again)
-					if ( $order->mb_get_total() > $this->payshop_max_value ){
+					if ( $this->get_order_total_to_pay( $order ) > $this->payshop_max_value ){
 						return sprintf(
 								__( 'It’s not possible to use %1$s to pay values above %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 								'Payshop',
@@ -1014,6 +1026,24 @@ final class WC_IfthenPay_Webdados {
 		}
 	}
 
+	/* Get total to pay */
+	public function get_order_total_to_pay( $order ) {
+		$order_total_to_pay = $order->mb_get_total();
+		if ( $this->wc_deposits_active ) {
+			//Has deposit
+			if ( $order->mb_get_meta( '_wc_deposits_order_has_deposit' ) == 'yes' ) {
+				//First payment?
+				if ( $order->mb_get_meta( '_wc_deposits_deposit_paid' ) != 'yes' || $order->mb_get_status() == 'partially-paid' ) {
+					$order_total_to_pay = floatval( $order->mb_get_meta( '_wc_deposits_deposit_amount' ) );
+				} else {
+					//Second payment
+					$order_total_to_pay = floatval( $order->mb_get_meta( '_wc_deposits_second_payment' ) );
+				}
+			}
+		}
+		return $order_total_to_pay;
+	}
+
 	/* Change Ref if order total is changed on wp-admin */
 	public function multibanco_maybe_value_changed( $order ) {
 
@@ -1029,14 +1059,17 @@ final class WC_IfthenPay_Webdados {
 					if ( $this->version >= '1.7.9.2' ) {
 						//Details already existed - Let's check the order status
 						$order_status = $order->mb_get_status();
-						if ( in_array( $order_status , array( 'on-hold', 'pending' ) ) ) {
+						if ( in_array( $order_status , array( 'on-hold', 'pending', 'partially-paid' ) ) ) {
 	
-							$order_total = $order->mb_get_total();
+							$order_total_to_pay = $this->get_order_total_to_pay( $order );
+
 							if (
 								( !$order_mb_details = $this->get_multibanco_order_details( $order_id ) )
 								||
-								( floatval( $order_total ) != floatval( $order_mb_details['val'] ) )
+								( floatval( $order_total_to_pay ) != floatval( $order_mb_details['val'] ) )
 							) {
+echo '<h1>CHANGED</h1>';
+/*
 								//WPML?
 								if ( $this->wpml_active ) {
 									$this->woocommerce_new_customer_note_fix_wpml_do_it( $order_id );
@@ -1068,7 +1101,7 @@ isset( $order_mb_details['ref'] ) ? $this->format_multibanco_ref( $order_mb_deta
 isset( $order_mb_details['val'] ) ? wc_price( $order_mb_details['val'] ) : '',
 trim( $ref['ent'] ),
 $this->format_multibanco_ref( $ref['ref'] ),
-wc_price( $order_total )
+wc_price( $order_total_to_pay )
 									)
 							);
 							//Notify client?
@@ -1085,7 +1118,7 @@ wc_price( $order_total )
 '.__( 'New value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': %s',
 trim( $ref['ent'] ),
 $this->format_multibanco_ref( $ref['ref'] ),
-wc_price( $order_total )
+wc_price( $order_total_to_pay )
 											)
 											,
 											1
@@ -1102,6 +1135,7 @@ wc_price( $order_total )
 									</script>
 									<?php
 								}
+*/
 							}
 						}
 					}
@@ -1113,11 +1147,11 @@ wc_price( $order_total )
 							$order_status = $order->mb_get_status();
 							if ( in_array( $order_status , array( 'on-hold', 'pending' ) ) ) {
 
-								$order_total = $order->mb_get_total();
+								$order_total_to_pay = $order->mb_get_total();
 								if (
 									( !$order_mb_details = $this->get_payshop_order_details( $order_id ) )
 									||
-									( floatval( $order_total ) != floatval( $order_mb_details['val'] ) )
+									( floatval( $order_total_to_pay ) != floatval( $order_mb_details['val'] ) )
 								) {
 									//WPML?
 									if ( $this->wpml_active ) {
@@ -1146,7 +1180,7 @@ wc_price( $order_total )
 isset( $order_mb_details['ref'] ) ? $this->format_payshop_ref( $order_mb_details['ref'] ) : '',
 isset( $order_mb_details['val'] ) ? wc_price( $order_mb_details['val'] ) : '',
 $this->format_payshop_ref( $ref['ref'] ),
-wc_price( $order_total )
+wc_price( $order_total_to_pay )
 										)
 								);
 								//Notify client?
@@ -1161,7 +1195,7 @@ wc_price( $order_total )
 '.__( 'New reference', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': %s
 '.__( 'New value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': %s',
 $this->format_payshop_ref( $ref['ref'] ),
-wc_price( $order_total )
+wc_price( $order_total_to_pay )
 												)
 												,
 												1

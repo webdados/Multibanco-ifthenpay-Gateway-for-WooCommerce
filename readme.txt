@@ -40,8 +40,8 @@ If not, get to know our new plugin: [Invoicing with InvoiceXpress for WooCommerc
 	* Other providers can be added upon request (under quotation);
 * WPML tested and compatible (for multilingual shops);
 * Polylang tested;
-* WooCommerce Subscriptions (experimental) integration (only Multibanco and MB WAY);
-* WooCommerce Deposits (experimental) integration;
+* [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco and MB WAY);
+* [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration;
 * PHP7 tested and compatible;
 
 = Premium add-ons: =
@@ -258,7 +258,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Tested with WordPress 5.0 / Bumped `Tested up to` tag
 
 = 3.4 =
-* WooCommerce Deposits (experimental) integration on WooCommerce >= 3.0 (sponsored by mojobrands.net)
+* WooCommerce Deposits by webtomizer (experimental) integration on WooCommerce >= 3.0 (sponsored by mojobrands.net)
 * Bugfix: MB WAY details not showing up on wp-admin
 * Bugfix: Reduce stock correctly according to settings since [WooCommerce changed it’s behaviour in 3.4.0](https://github.com/woocommerce/woocommerce/commit/70c9cff608761fcd48b57f709059e00b1ffeee38#diff-27a48ce67fa604181c90b4bb464164ac)
 

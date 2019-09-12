@@ -583,7 +583,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 				if ( $order->mb_has_status( 'on-hold' ) || $order->mb_has_status( 'pending' ) ) {
 					$ref = WC_IfthenPay_Webdados()->multibanco_get_ref( $order_id );
 					if ( is_array( $ref ) ) {
-						echo $this->thankyou_instructions_table_html( $ref['ent'], $ref['ref'], $order->mb_get_total(), $order_id );
+						echo $this->thankyou_instructions_table_html( $ref['ent'], $ref['ref'], WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), $order_id );
 					} else {
 						?>
 						<p><strong><?php _e( 'Error getting Multibanco payment details', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>.</strong></p>
@@ -754,7 +754,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 								$ref = WC_IfthenPay_Webdados()->multibanco_get_ref( $order_id );
 								if ( is_array( $ref) ) {
 									if ( apply_filters( 'multibanco_ifthen_email_instructions_pending_send', true, $order_id ) ) {
-										echo $this->email_instructions_table_html( $ref['ent'], $ref['ref'], $order->mb_get_total(), $order_id );
+										echo $this->email_instructions_table_html( $ref['ent'], $ref['ref'], WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), $order_id );
 									}
 								} else {
 									?>
@@ -1046,7 +1046,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 
 					if ( $orders_exist ) {
 						if ( $orders_count == 1 ) {
-							$value_ok = ( $val == floatval( $order->mb_get_total() ) );
+							$value_ok = ( $val == floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) );
 							if ( $value_ok ) {
 								
 								if ( version_compare( WC_VERSION, '2.6', '<' ) ) {

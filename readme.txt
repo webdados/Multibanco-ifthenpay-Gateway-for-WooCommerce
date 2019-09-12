@@ -5,7 +5,7 @@ Author URI: https://www.webdados.pt
 Plugin URI: https://www.webdados.pt/produtos-e-servicos/internet/desenvolvimento-wordpress/multibanco-ifthen-software-gateway-woocommerce-wordpress/
 Requires at least: 3.8
 Tested up to: 5.2.3
-Stable tag: 4.0.2
+Stable tag: 4.0.2.1
 
 This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using Multibanco (Pag. Serviços), MB WAY and Payshop through IfthenPay’s payment gateway.
 
@@ -156,7 +156,7 @@ Tell them to change the callback URL from `https://yourwebsite/wc-api/WC_Multiba
 
 Although this is the official IfthenPay WooCommerce plugin, development and support is provided by [Webdados](https://www.webdados.pt).
 For free/standard support you should use the support forums here at WordPress.org
-For premium/urgent support or custom developments you should contact [Webdados](https://www.webdados.pt/contactos/). Charges may (and most certainly will) apply.
+For premium, urgent and experimental integrations support or custom developments you should contact [Webdados](https://www.webdados.pt/contactos/). Charges may (and most certainly will) apply.
 
 = Is this plugin compliant with the European Union General Data Protection Regulation (GDPR)? =
 
@@ -170,9 +170,10 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= ??? =
+= 4.0.2.1 =
 * **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**
 * Fix bug when showing the MB WAY expiration date on the order admin page
+* readme.txt adjustments
 
 = 4.0.2 =
 * Fix version number

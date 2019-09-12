@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.0.2';
+	public $version = '4.0.2.1';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';

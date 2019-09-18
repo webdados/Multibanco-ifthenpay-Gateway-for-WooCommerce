@@ -83,6 +83,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				if ( WC_IfthenPay_Webdados()->wpml_active ) add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'register_wpml_strings' ) );
 				add_action( 'woocommerce_thankyou_'.$this->id, array( $this, 'thankyou' ) );
 				add_action( 'woocommerce_order_details_after_order_table', array( $this, 'order_details_after_order_table' ), 9 );
+				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_if_settings_missing' ) );
 				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_if_currency_not_euro' ) );
 				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_unless_portugal' ) );
 				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_only_above_or_bellow' ) );
@@ -882,6 +883,22 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 			);
 		}
 
+
+		/**
+		 * Disable if key not correctly set
+		 */
+		function disable_if_settings_missing( $available_gateways ) {
+			if (
+				strlen( trim( $this->ent ) ) != 5
+				||
+				( strlen( trim( $this->subent ) ) != 2 && strlen( trim( $this->subent ) ) != 3 )
+				||
+				trim( $this->enabled ) != 'yes'
+			) {
+				unset( $available_gateways[$this->id] );
+			}
+			return $available_gateways;
+		}
 
 		/**
 		 * Just for €

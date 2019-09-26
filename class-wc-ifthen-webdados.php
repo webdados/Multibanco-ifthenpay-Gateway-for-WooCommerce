@@ -1150,7 +1150,6 @@ wc_price( $order_total_to_pay )
 							if ( in_array( $order_status , array( 'on-hold', 'pending', 'partially-paid' ) ) ) {
 
 								$order_total_to_pay = $this->get_order_total_to_pay( $order );
-								var_dump($order_total_to_pay);
 								if (
 									( !$order_mb_details = $this->get_payshop_order_details( $order_id ) )
 									||

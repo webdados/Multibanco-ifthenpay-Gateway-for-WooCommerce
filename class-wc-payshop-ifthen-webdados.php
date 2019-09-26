@@ -53,8 +53,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 			}
 
 			//Webservice
-			//$this->webservice_url = 'https://ifthenpay.com/api/payshop/sandbox/';     //Sandbox
-			$this->webservice_url = 'https://ifthenpay.com/api/payshop/reference/'; //Produção
+			$this->webservice_url = 'https://ifthenpay.com/api/payshop/reference/';
 	
 			//Plugin options and settings
 			$this->init_form_fields();

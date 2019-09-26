@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.0.3';
+	public $version = '4.0.4';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -762,6 +762,7 @@ final class WC_IfthenPay_Webdados {
 				return array(
 					'ent' => $order_mb_details['ent'],
 					'ref' => $order_mb_details['ref'],
+					'val' => $order_mb_details['val']
 				);
 			} else {
 				//Value ok?
@@ -825,7 +826,8 @@ final class WC_IfthenPay_Webdados {
 							}
 							return array(
 								'ent' => $base['ent'],
-								'ref' => $ref
+								'ref' => $ref,
+								'val' => $this->get_order_total_to_pay( $order )
 							);
 						} else {
 							$error_details='';
@@ -1033,7 +1035,7 @@ final class WC_IfthenPay_Webdados {
 			//Has deposit
 			if ( $order->mb_get_meta( '_wc_deposits_order_has_deposit' ) == 'yes' ) {
 				//First payment?
-				if ( $order->mb_get_meta( '_wc_deposits_deposit_paid' ) != 'yes' || $order->mb_get_status() == 'partially-paid' ) {
+				if ( $order->mb_get_meta( '_wc_deposits_deposit_paid' ) != 'yes' && $order->mb_get_status() != 'partially-paid' ) {
 					$order_total_to_pay = floatval( $order->mb_get_meta( '_wc_deposits_deposit_amount' ) );
 				} else {
 					//Second payment
@@ -1062,11 +1064,14 @@ final class WC_IfthenPay_Webdados {
 						if ( in_array( $order_status , array( 'on-hold', 'pending', 'partially-paid' ) ) ) {
 	
 							$order_total_to_pay = $this->get_order_total_to_pay( $order );
-
 							if (
 								( !$order_mb_details = $this->get_multibanco_order_details( $order_id ) )
 								||
-								( floatval( $order_total_to_pay ) != floatval( $order_mb_details['val'] ) )
+								(
+									floatval( $order_total_to_pay ) != floatval( $order_mb_details['val'] )
+									&&
+									$order_status != 'partially-paid' //If it's partially paid the value will be diferent and we need to ignore it
+								)
 							) {
 								//WPML?
 								if ( $this->wpml_active ) {
@@ -1142,13 +1147,18 @@ wc_price( $order_total_to_pay )
 					case $this->payshop_id:
 						if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
 							$order_status = $order->mb_get_status();
-							if ( in_array( $order_status , array( 'on-hold', 'pending' ) ) ) {
+							if ( in_array( $order_status , array( 'on-hold', 'pending', 'partially-paid' ) ) ) {
 
-								$order_total_to_pay = $order->mb_get_total();
+								$order_total_to_pay = $this->get_order_total_to_pay( $order );
+								var_dump($order_total_to_pay);
 								if (
 									( !$order_mb_details = $this->get_payshop_order_details( $order_id ) )
 									||
-									( floatval( $order_total_to_pay ) != floatval( $order_mb_details['val'] ) )
+									(
+										floatval( $order_total_to_pay ) != floatval( $order_mb_details['val'] )
+										&&
+										$order_status != 'partially-paid' //If it's partially paid the value will be diferent and we need to ignore it
+									)
 								) {
 									//WPML?
 									if ( $this->wpml_active ) {

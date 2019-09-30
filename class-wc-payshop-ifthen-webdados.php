@@ -47,7 +47,16 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 			if ( trim( $this->secret_key )=='' ) {
 				//First load?
 				$this->secret_key = md5( home_url().time().rand( 0, 999 ) );
-				$this->update_option( 'secret_key', $this->secret_key );
+				//Save
+				if ( version_compare( WC_VERSION, '3.4.0', '>=' ) ) {
+					$this->update_option( 'secret_key', $this->secret_key );
+				} else {
+					if ( empty( $this->settings ) ) {
+						$this->init_settings();
+					}
+					$this->settings[ 'secret_key' ] = $this->secret_key;
+					update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->settings ), 'yes' );
+				}
 				//Let's set the callback activation email as NOT sent
 				update_option( $this->id . '_callback_email_sent', 'no' );
 			}

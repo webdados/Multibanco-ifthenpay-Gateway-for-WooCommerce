@@ -45,11 +45,11 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 			if ( $this->get_option( 'support_woocommerce_subscriptions' ) == 'yes' ) {
 				$this->supports = array(
 					'products',
-					'subscriptions',
 					'subscription_suspension',
 					'subscription_reactivation',
 					'subscription_date_changes',
-					'subscription_payment_method_change_admin'
+					'subscriptions',                           //Deprecated?
+					'subscription_payment_method_change_admin' //Deprecated?
 				); //products is by default
 			}
 			$this->secret_key = $this->get_option( 'secret_key' );

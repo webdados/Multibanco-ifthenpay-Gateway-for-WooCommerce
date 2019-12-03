@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.0.7';
+	public $version = '4.0.8';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -248,6 +248,7 @@ final class WC_IfthenPay_Webdados {
 
 	/* Just above/bellow certain amounts */
 	public function disable_only_above_or_bellow( $available_gateways, $gateway_id, $default_only_above = null, $default_only_bellow = null ) {
+		$value_to_pay = null;
 		//Order total or cart total?
 		$pay_slug = get_option('woocommerce_checkout_pay_endpoint', 'order-pay');
 		$order_id = absint(get_query_var($pay_slug));
@@ -256,11 +257,15 @@ final class WC_IfthenPay_Webdados {
 			$order = new WC_Order_MB_Ifthen( $order_id );
 			$value_to_pay = $this->get_order_total_to_pay( $order );
 		} else {
-			//Checkout
-			$value_to_pay = WC()->cart->total; //We're not checking if we're paying just a deposit...
+			//Checkout?
+			if ( ! is_null( WC()->cart ) ) {
+				$value_to_pay = WC()->cart->total; //We're not checking if we're paying just a deposit...
+			} else {
+				//No cart? Where are we? We shouldn't unset our payment gateway
+			}
 		}
 
-		if ( isset( $available_gateways[$gateway_id] ) ) {
+		if ( isset( $available_gateways[$gateway_id] ) && ! is_null( $value_to_pay ) ) {
 			//Only above
 			$only_above = $default_only_above ? $default_only_above : 0;
 			if ( isset( $available_gateways[$gateway_id]->only_above ) ) {

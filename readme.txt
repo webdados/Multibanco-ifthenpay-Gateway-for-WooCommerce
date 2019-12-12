@@ -171,6 +171,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 == Changelog ==
 
 = 4.0.8 =
+* **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**
 * Fix WooCommerce Subscriptions experimental integration
 * Tested with WooCommerce 3.8.1
 
@@ -183,7 +184,6 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Tested with WordPress 5.2.5-alpha and WooCommerce 3.8.0
 
 = 4.0.5 =
-* **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**
 * Fix fatal error on WooCommerce below 3.4.0 when MB WAY or Payshop were not initialized yet
 
 = 4.0.4 =

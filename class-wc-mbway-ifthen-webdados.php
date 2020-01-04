@@ -229,7 +229,8 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 									'title' => __( 'Use small icon?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 									'type' => 'checkbox', 
 									'label' => __( 'Use a small MB WAY icon on the checkout', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
-									'default' => 'yes'
+									'default' => 'yes',
+									'description' => __( 'Non-small icons are deprecated and will be removed soon. If you enable this option you’ll not be able to disable it again.', 'multibanco-ifthen-software-gateway-for-woocommerce' )
 								),
 					'extra_instructions' => array(
 									'title' => __( 'Extra instructions', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
@@ -332,6 +333,11 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 							),
 			) );
 
+			//Deprecate non-small icons
+			if ( $this->get_option( 'small_icon', 'yes' ) == 'yes' ) {
+				unset( $this->form_fields['small_icon'] );
+			}
+
 			//Allow other plugins to add settings fields
 			$this->form_fields = array_merge( $this->form_fields , apply_filters( 'multibanco_ifthen_mbway_settings_fields', array( ) ) );
 		
@@ -343,7 +349,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				<?php if ( ! apply_filters( 'multibanco_ifthen_hide_settings_right_bar', false ) ) WC_IfthenPay_Webdados()->admin_right_bar(); ?>
 				<div id="wc_ifthen_settings">
 					<h2>
-						<img src="<?php echo plugins_url( 'images/banner_mbway.png', __FILE__ ); ?>"/>
+						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->mbway_banner ); ?>" alt="<?php echo esc_attr( $title ); ?>" width="114" height="48"/>
 						<br/>
 						<?php echo esc_html( version_compare( WC_VERSION, '2.6', '>=' ) ? $this->get_method_title() : $this->method_title ); ?>
 						<small>v.<?php echo $this->version; ?></small>
@@ -492,12 +498,9 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 		/**
 		 * Icon HTML
 		 */
-		public function get_icon_url() {
-			return ( $this->get_option( 'small_icon' ) == 'yes' ? plugins_url( 'images/icon_mbway_48_small.png', __FILE__ ) : plugins_url( 'images/icon_mbway_48.png', __FILE__ ) );
-		}
 		public function get_icon() {
 			$alt = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
-			$icon_html = ( $this->get_option( 'small_icon' ) == 'yes' ? '<img src="'.esc_attr( $this->get_icon_url() ).'" alt="'.esc_attr( $alt ).'" width="26" height="24"/>' : '<img src="'.esc_attr( $this->get_icon_url() ).'" alt="'.esc_attr( $alt ).'" width="50" height="24"/>' );
+			$icon_html = ( $this->get_option( 'small_icon', 'yes' ) == 'yes' ? '<img src="'.esc_url( WC_IfthenPay_Webdados()->mbway_icon ).'" alt="'.esc_attr( $alt ).'" width="25" height="24"/>' : '<img src="'.esc_url( WC_IfthenPay_Webdados()->mbway_banner ).'" alt="'.esc_attr( $alt ).'" width="57" height="24"/>' );
 			return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
 		}
 
@@ -585,6 +588,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 				table.<?php echo $this->id; ?>_table th img {
 					margin: auto;
 					margin-top: 10px;
+					max-height: 48px;
 				}
 				.<?php echo $this->id; ?>_text_small {
 					font-size: small;
@@ -615,7 +619,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 					<th colspan="2">
 						<?php _e( 'Payment instructions', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						<br/>
-						<img src="<?php echo plugins_url( 'images/banner_mbway.png', __FILE__ ); ?>" alt="<?php echo esc_attr( $alt); ?>" title="<?php echo esc_attr( $alt); ?>"/>
+						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->mbway_banner ); ?>" alt="<?php echo esc_attr( $alt); ?>" title="<?php echo esc_attr( $alt); ?>"/>
 					</th>
 				</tr>
 				<tr>
@@ -659,7 +663,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 					<th colspan="2">
 						<?php _e( 'Payment instructions', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						<br/>
-						<img src="<?php echo plugins_url( 'images/banner_mbway.png', __FILE__ ); ?>" alt="<?php echo esc_attr( $alt); ?>" title="<?php echo esc_attr( $alt); ?>"/>
+						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->mbway_banner ); ?>" alt="<?php echo esc_attr( $alt); ?>" title="<?php echo esc_attr( $alt); ?>"/>
 					</th>
 				</tr>
 				<tr>
@@ -766,7 +770,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 					<td style="border: 1px solid #1465AA; border-top-right-radius: 4px !important; border-top-left-radius: 4px !important; text-align: center; color: #000000; font-weight: bold;" colspan="2">
 						<?php _e( 'Payment instructions', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						<br/>
-						<img src="<?php echo plugins_url( 'images/banner_mbway.png', __FILE__ ); ?>" alt="<?php echo esc_attr( $alt); ?>" title="<?php echo esc_attr( $alt); ?>" style="margin-top: 10px;"/>
+						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->mbway_banner_email ); ?>" alt="<?php echo esc_attr( $alt); ?>" title="<?php echo esc_attr( $alt); ?>" style="margin-top: 10px; max-height: 48px"/>
 					</td>
 				</tr>
 				<tr>
@@ -804,7 +808,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 			ob_start();
 			?>
 			<p style="text-align: center; margin: auto; margin-top: 2em; margin-bottom: 2em;">
-				<img src="<?php echo plugins_url( 'images/banner_mbway.png', __FILE__ ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin: auto;"/>
+				<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->mbway_banner_email ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin-top: 10px; max-height: 48px;"/>
 				<br/>
 				<strong><?php _e( 'MB WAY payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
 				<br/>
@@ -1277,7 +1281,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 			) {
 				?>
 				<div id="mbway_ifthen_newmethod_notice" class="notice notice-info is-dismissible" style="padding-right: 38px; position: relative; display: none;">
-					<img src="<?php echo plugins_url( 'images/banner_mbway.png', __FILE__ ); ?>" style="float: left; margin-top: 0.5em; margin-bottom: 0.5em; margin-right: 1em;"/>
+					<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->mbway_banner ); ?>" style="float: left; margin-top: 0.5em; margin-bottom: 0.5em; margin-right: 1em; max-height: 48px;"/>
 					<p>
 						<?php
 							echo sprintf(

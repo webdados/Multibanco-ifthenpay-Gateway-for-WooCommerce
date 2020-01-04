@@ -4,8 +4,9 @@ Tags: woocommerce, multibanco, mbway, payshop, payment, pagamentos, gateway, mb 
 Author URI: https://www.webdados.pt
 Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
 Requires at least: 3.8
-Tested up to: 5.3.1
-Stable tag: 4.0.8
+Tested up to: 5.3.3
+Requires PHP: 5.5
+Stable tag: 4.1.0
 
 This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using Multibanco (Pag. Serviços), MB WAY and Payshop through IfthenPay’s payment gateway.
 
@@ -17,6 +18,8 @@ This plugin will allow you to generate a payment Reference the customer can then
 The new MB WAY (using the customer mobile phone number) and CTT Payshop payment methods are also available.
 
 This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [Webdados](https://www.webdados.pt).
+
+**This plugin will soon require WooCommerce 3.0 and PHP 7 or above.**
 
 = Are you already issuing automatic invoices on your WooCommerce store? =
 
@@ -170,8 +173,17 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 4.1.0 =
+* You can safely update this plugin even if you’re running WooCommece all the way back to version 2.4 **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
+* This is the first release aimed at bringing the plugin, and it’s users, to recent technology (many more will follow)
+* Requires WooCommerce 2.4 or above
+* Requires PHP 5.5 or above
+* Use SVG icons and banners (except on emails where we still use PNG because SVG is not fully supported)
+* Deprecate non-small icons on the checkout
+* Tested with WordPress 5.3.3-alpha-46995 and WooCommerce 3.9.0-rc.2
+
+
 = 4.0.8 =
-* **You can safely update this plugin even if you’re running WooCommece all the way back to version 2.2**
 * Fix WooCommerce Subscriptions experimental integration
 * Tested with WooCommerce 3.8.1
 

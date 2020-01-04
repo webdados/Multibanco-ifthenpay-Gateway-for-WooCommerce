@@ -39,7 +39,10 @@
 	}
 	#wc_ifthen_rightbar p {
 	}
-	#wc_ifthen_rightbar p img {
+	#wc_ifthen_rightbar p > a {
+		display: block;
+	}
+	#wc_ifthen_rightbar p > a > img {
 		max-width: 100%;
 		height: auto;
 	}

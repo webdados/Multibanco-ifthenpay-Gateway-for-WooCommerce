@@ -3,7 +3,7 @@ Contributors: webdados, ifthenpay
 Tags: woocommerce, multibanco, mbway, payshop, payment, pagamentos, gateway, mb way, mobile, atm, debit card, credit card, bank, ecommerce, e-commerce, ifthen, ifthen software, ifthenpay, webdados, sms, php7, cartão de débito, cartão de crédito, cartões, gdpr
 Author URI: https://www.webdados.pt
 Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
-Requires at least: 3.8
+Requires at least: 4.0
 Tested up to: 5.3.3
 Requires PHP: 5.5
 Stable tag: 4.1.0
@@ -19,7 +19,8 @@ The new MB WAY (using the customer mobile phone number) and CTT Payshop payment 
 
 This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [Webdados](https://www.webdados.pt).
 
-**This plugin will soon require WooCommerce 3.0 and PHP 7 or above.**
+**This plugin will soon require WordPress 4.4, WooCommerce 3.0 and PHP 7.0 or above.**
+If you cannot update any of these components, you should check the changelog of this plugin to find out which is the last version you can use in your scenario.
 
 = Are you already issuing automatic invoices on your WooCommerce store? =
 
@@ -173,13 +174,19 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 4.1.1 =
+* You can safely update this plugin if you’re running WooCommece 2.4 or newer **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
+* Admin notice regarding old WordPress, WooCommerce or PHP versions in use (if you like to live in danger, you may disable it by returning `false`to the `ifthen_show_old_techonology_notice` filter)
+* Better readme.txt information regarding updates
+
 = 4.1.0 =
-* You can safely update this plugin even if you’re running WooCommece all the way back to version 2.4 **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
 * This is the first release aimed at bringing the plugin, and it’s users, to recent technology (many more will follow)
+* Requires WordPress 4.0 or above
 * Requires WooCommerce 2.4 or above
 * Requires PHP 5.5 or above
+* **For WordPress 3.8 and WooCommerce 2.2 support you need to use [https://downloads.wordpress.org/plugin/multibanco-ifthen-software-gateway-for-woocommerce.4.0.8.zip](version 4.0.8)**
 * Use SVG icons and banners (except on emails where we still use PNG because SVG is not fully supported)
-* Deprecate non-small icons on the checkout
+* Deprecate big icons on the checkout
 * Tested with WordPress 5.3.3-alpha-46995 and WooCommerce 3.9.0-rc.2
 
 

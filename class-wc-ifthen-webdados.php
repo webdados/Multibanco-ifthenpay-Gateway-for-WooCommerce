@@ -150,6 +150,8 @@ final class WC_IfthenPay_Webdados {
 		add_action( 'wp_ajax_mbway_ifthen_request_payment_again', array( $this, 'wp_ajax_mbway_ifthen_request_payment_again' ) );
 		//Order value changed?
 		add_action( 'woocommerce_order_item_add_action_buttons', array( $this, 'multibanco_maybe_value_changed' ) );
+		//Admin notices to warn about old technology
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 	}
 
 	/* Set images */
@@ -1751,6 +1753,66 @@ wc_price( $order_total_to_pay )
 			'callback_email_sent' => $callback_email_sent,
 			'callback_auto_open'  => $callback_auto_open,
 		) );
+	}
+
+	/* Admin notices to warn about old technology */
+	function admin_notices() {
+		if ( apply_filters( 'ifthen_show_old_techonology_notice', true ) ) {
+			if ( isset( $_GET['page'] ) && trim( $_GET['page'] ) != '' && in_array( trim( $_GET['page'] ), array(
+				'wc-settings',
+				'wc-status'
+			) ) ) {
+				$notices = array();
+				//WordPress below 4.4
+				if ( version_compare( get_bloginfo( 'version' ), '4.4', '<' ) ) {
+					$notices[] = sprintf(
+						__( '%1$s - Your version: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'<strong>WordPress 4.4</strong>',
+						sprintf( 
+							'<strong style="color:red;">%s</strong>',
+							get_bloginfo( 'version' )
+						)
+					);
+				}
+				//WooCommerce below 3.0
+				if ( version_compare( WC_VERSION, '3.0', '<' ) ) {
+					$notices[] = sprintf(
+						__( '%1$s - Your version: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'<strong>WooCommerce 3.0</strong>',
+						sprintf( 
+							'<strong style="color:red;">%s</strong>',
+							WC_VERSION
+						)
+					);
+				}
+				//PHP below 7.0
+				if ( version_compare( phpversion(), '7.0', '<' ) ) {
+					$notices[] = sprintf(
+						__( '%1$s - Your version: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'<strong>PHP 7.0</strong>',
+						sprintf( 
+							'<strong style="color:red;">%s</strong>',
+							phpversion()
+						)
+					);
+				}
+				if ( count( $notices ) > 0 ) {
+					?>
+					<div class="notice notice-error notice-alt">
+						<p><strong><?php _e( 'Multibanco, MBWAY and Payshop (IfthenPay) for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
+						<p>
+							<?php _e( 'We are working on implementing the latest and safest technology, so you will soon need:', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+						</p>
+						<ul>
+							<?php foreach ($notices as $notice ) { ?>
+								<li>- <?php echo $notice; ?></li>
+							<?php } ?>
+						</ul>
+					</div>
+					<?php
+				}
+			}
+		}
 	}
 
 }

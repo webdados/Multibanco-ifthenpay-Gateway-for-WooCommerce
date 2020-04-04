@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.2.0';
+	public $version = '4.2.1';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -1087,7 +1087,10 @@ final class WC_IfthenPay_Webdados {
 		if ( in_array(
 			get_class( $order_object ),
 			apply_filters( 'multibanco_ifthen_valid_order_classes',
-				array( 'WC_Order' )
+				array(
+					'WC_Order',
+					'Automattic\WooCommerce\Admin\Overrides\Order'
+				)
 			)
 		) ) return true;
 		return false;
@@ -1713,6 +1716,52 @@ wc_price( $order_total_to_pay )
 			<a href="https://wordpress.org/support/view/plugin-reviews/multibanco-ifthen-software-gateway-for-woocommerce?filter=5#postform" target="_blank" style="text-align: center;">
 				<div class="star-rating"><div class="star star-full"></div><div class="star star-full"></div><div class="star star-full"></div><div class="star star-full"></div><div class="star star-full"></div></div>
 			</a>
+			<div class="clear"></div>
+			<hr/>
+			<h4><?php _e( 'Extensions', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
+			<ul>
+				<li>
+					-
+					<a href="https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/<?php echo esc_attr( $this->out_link_utm); ?>#extensions" target="_blank">
+						<?php _e( 'Multibanco and MBWAY (IfthenPay) Entity per Category add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+					</a>
+				</li>
+			</ul>
+			<div class="clear"></div>
+			<hr/>
+			<h4><?php _e( 'Other premium plugins', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
+			<ul>
+				<li>
+					-
+					<a href="https://www.webdados.pt/wordpress/plugins/dpd-portugal-para-woocommerce-wordpress/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank">
+						<?php _e( 'DPD (Chronopost/SEUR) Portugal for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+					</a>
+				</li>
+				<li>
+					-
+					<a href="https://invoicewoo.com/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank">
+						<?php _e( 'Invoicing with InvoiceXpress for WooCommerce – Pro', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+					</a>
+				</li>
+				<li>
+					-
+					<a href="https://www.webdados.pt/wordpress/plugins/shop-as-client-for-woocommerce/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank">
+						<?php _e( 'Shop as Client for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+					</a>
+				</li>
+				<li>
+					-
+					<a href="https://www.webdados.pt/wordpress/plugins/feed-kuantokusta-para-woocommerce/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank">
+						<?php _e( 'Feed KuantoKusta for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+					</a>
+				</li>
+				<li>
+					-
+					<a href="https://www.webdados.pt/wordpress/plugins/multicaixa-gateway-proxypay-para-woocommerce-wordpress/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank">
+						<?php _e( 'Payment Multicaixa (ProxyPay gateway) for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+					</a>
+				</li>
+			</ul>
 			<div class="clear"></div>
 		</div>
 		<?php

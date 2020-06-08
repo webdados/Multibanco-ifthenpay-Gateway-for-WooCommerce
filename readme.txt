@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 4.1
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 
 This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using Multibanco (Pag. Serviços), MB WAY and Payshop through IfthenPay’s payment gateway.
 
@@ -99,7 +99,7 @@ There are also filters for this. See `hooks-examples.php`.
 
 = I want to charge an additional fee for Multibanco and/or MB WAY payments. How should I do it? =
 
-You shouldn't! To our knowledge, it’s illegal under Portuguese law to charge an extra fee based on the payment method chosen by the customer.
+You shouldn't! To our knowledge, it’s illegal under [https://www.bportugal.pt/sites/default/files/anexos/legislacoes/dl3ano2010.PDF](Portuguese law) and a [https://europa.eu/youreurope/business/finance-funding/making-receiving-payments/electronic-cash-payments/index_en.htm](European directive) to charge an extra fee based on the payment method chosen by the customer.
 If you don't care about legislation, plugins are available that allow you to set extra fees per payment method. Please, don't ask us for support on this.
 
 = How much time does the customer have to pay with MB WAY? =
@@ -130,7 +130,7 @@ Go to YITH Plugins > SMS Notifications > SMS Settings and add the `{multibanco_i
 
 Yes, you should use the `multibanco_ifthen_base_ent_subent` filter. See `hooks-examples.php`.
 
-= [Advanced] Can I use a specific MB Way Key based on order details? =
+= [Advanced] Can I use a specific MB WAY Key based on order details? =
 
 Yes, you should use the `multibanco_ifthen_base_mbwaykey` filter. See `hooks-examples.php`.
 
@@ -165,7 +165,7 @@ For premium, urgent and experimental integrations support or custom developments
 = Is this plugin compliant with the European Union General Data Protection Regulation (GDPR)? =
 
 This plugin does not collect or send to Webdados (the plugin author) or IfthenPay (the payment processor) any private data of the website where it’s installed, it’s customers or the orders themselves.
-In the MB Way module, the mobile phone number is collected to request the payment authorization and it can be legitimately processed based on article 6 (1) (b) of the GDPR.
+In the MB WAY module, the mobile phone number is collected to request the payment authorization and it can be legitimately processed based on article 6 (1) (b) of the GDPR.
 IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termos-politica-privacidade/](https://ifthenpay.com/termos-politica-privacidade/)
 
 = Can I contribute with a translation? =
@@ -174,8 +174,18 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 4.2.1 =
+= 4.2.2 =
 * You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
+* Clarification on the settings page that the same set of entities or keys should never be used in more than one platform
+* Links to the Payshop agents and CTT stores search on the Payshop method extra instructions default message
+* Fix MB WAY phone number field hidden on some themes
+* Fix MB WAY and Payshop key fields apperance on the payment method settings
+* Better information when MB WAY order is already paid for
+* Better debug when requesting the MB WAY payment to the IfthenPay webservice
+* readme.txt tweaks
+* Tested with WordPress 5.5-alpha-47923 and WooCommerce 4.2.0
+
+= 4.2.1 =
 * Bugfix issuing new Multibanco or Payshop payment details when the order value is changed on wp-admin on WooCommerce 4.0 and above
 * Extensions and other premium plugins list on the payment gateways settings page
 * Tested with WordPress 5.5-alpha-47547 and WooCommerce 4.0.1
@@ -348,13 +358,13 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Fixed a small bug where the Multibanco payment details would be regenerated if, for some exotic reason, an order value was changed on wp-admin for already paid orders
 
 = 3.2.1 =
-* New `multibanco_ifthen_multibanco_settings_fields` and `multibanco_ifthen_mbway_settings_fields` filters to allow 3rd party plugins to add fields to the Multibanco and MB Way settings screen
+* New `multibanco_ifthen_multibanco_settings_fields` and `multibanco_ifthen_mbway_settings_fields` filters to allow 3rd party plugins to add fields to the Multibanco and MB WAY settings screen
 * `index.php` file because "best practices"
 * Small coding standards fixes
 
 = 3.2 =
 * New behaviour for special entities that don't allow repeated payments in a specific time frame (only for WooCommerce 3.0 and above)
-* New `multibanco_ifthen_base_mbwaykey` filter to be able to change the base MB Way Key used to generate the payment details, based on the order, which may be useful for marketplaces
+* New `multibanco_ifthen_base_mbwaykey` filter to be able to change the base MB WAY Key used to generate the payment details, based on the order, which may be useful for marketplaces
 * Bumped `WC tested up to` tag
 
 = 3.1.2 =
@@ -365,26 +375,26 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 3.1.1 =
 * GDPR chit-chat on the FAQ
-* We no longer store the mobile phone number used for MB Way
+* We no longer store the mobile phone number used for MB WAY
 
 = 3.1 =
 * Complete grammar and spelling review
-* MB Way description limited to 70 characters (Site name #order_id)
+* MB WAY description limited to 70 characters (Site name #order_id)
 * Bumped `WC tested up to` tag
 
 = 3.0.6 =
-* Fixed a fatal error bug if the order is not found when the MB Way callback is invoked by IfthenPay
+* Fixed a fatal error bug if the order is not found when the MB WAY callback is invoked by IfthenPay
 * Better feedback to the customer, informing that there are only 5 minutes to complete the payment – because it seems SIBS has changed the timeout and told no one about it  ¯\_(ツ)_/¯
 
 = 3.0.5 =
 * Better WooCommerce detection
-* Always round MB Way values to two decimals
-* Clean problematic characters from the MB Way payment description
+* Always round MB WAY values to two decimals
+* Clean problematic characters from the MB WAY payment description
 * Small fixes
 * Bumped `WC tested up to` tag
 
 = 3.0.4 =
-* Debug when contacting the IfthenPay webservice to create the MB Way payment request (shame on us...)
+* Debug when contacting the IfthenPay webservice to create the MB WAY payment request (shame on us...)
 * Better feedback to the customer, informing that there are only 15 minutes to complete the payment
 * Bumped `WC tested up to` tag
 

@@ -218,7 +218,7 @@ add_filter( 'multibanco_ifthen_base_mbwaykey', 'testing_multibanco_ifthen_base_m
 function testing_multibanco_ifthen_base_mbwaykey( $mbwaykey, $order ) {
 	//Test whatever you want here related to the $order object
 	if ( true ) {
-		//Change MB Way Key
+		//Change MB WAY Key
 		$mbwaykey = 'XXX-999999';
 	} else {
 		//Just use the plugin settings

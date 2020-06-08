@@ -196,7 +196,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 							),
 				'payshopkey' => array(
 								'title' => __( 'Payshop Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
-								'type' => 'input',
+								'type' => 'text',
 								'description' => __( 'Payshop Key provided by IfthenPay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'default' => '',
 								'css' => 'width: 130px;',
@@ -241,7 +241,8 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 									'type' => 'textarea',
 									'description' => __( 'This controls the text which the user sees below the payment details on the “Thank you” page and “New order” email.', 'multibanco-ifthen-software-gateway-for-woocommerce' )
 													.( WC_IfthenPay_Webdados()->wpml_active ? ' '.__( 'You should translate this string in <a href="admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php">WPML - String Translation</a> after saving the settings', 'multibanco-ifthen-software-gateway-for-woocommerce' ) : '' ), 
-									'default' => __( 'Payable at any Payshop agent, CTT store or post office.', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+									'default' => __( 'Payable at any <a href="https://www.payshop.pt/fepsapl/app/open/showSearchAgent.jspx" target="_blank">Payshop agent</a>, <a href="https://www.ctt.pt/feapl_2/app/open/stationSearch/stationSearch.jspx?request_locale=en" target="_blank">CTT store or post office</a>.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									'css' => 'height: 8em;'
 								),
 					'only_portugal' => array(
 									'title' => __( 'Only for Portuguese customers?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
@@ -379,6 +380,11 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 						<li><?php printf( __( 'Set WooCommerce currency to <strong>Euros (&euro;)</strong> %1$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<a href="admin.php?page=wc-settings&amp;tab=general">&gt;&gt;</a>.' ); ?></li>
 						<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://ifthenpay.com/'.esc_attr( WC_IfthenPay_Webdados()->out_link_utm ).'" target="_blank">IfthenPay</a></strong>', '<a href="https://ifthenpay.com/'.esc_attr( WC_IfthenPay_Webdados()->out_link_utm ).'" target="_blank">https://ifthenpay.com</a>' ); ?></li>
 						<li><?php _e( 'Fill out all the details (Payshop Key) provided by <strong>IfthenPay</strong> in the fields below.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+						<li><?php printf(
+							__( 'Never use the same %1$s on more than one website or any other system, online or offline. Ask %2$s for new ones for each single platform.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							__( 'Payshop Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'<a href="https://ifthenpay.com/'.esc_attr( WC_IfthenPay_Webdados()->out_link_utm ).'" target="_blank">IfthenPay</a>'
+						); ?></li>
 						<li class="mb_hide_extra_fields"><?php printf( __( 'Ask IfthenPay to activate “Payshop Callback” on your account using this exact URL: %1$s and this Anti-phishing key: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<br/><code><strong>'.WC_IfthenPay_Webdados()->payshop_notify_url.'</strong></code><br/>', '<br/><code><strong>'.$this->secret_key.'</strong></code>' ); ?></li>
 					</ul>
 					<?php

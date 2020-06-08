@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.2.1';
+	public $version = '4.2.2';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -483,6 +483,10 @@ final class WC_IfthenPay_Webdados {
 						$order_mbway_details = $this->get_mbway_order_details( $order->mb_get_id() )
 					) {
 						echo '<p><img src="'.esc_url( $this->mbway_banner ).'" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="MB WAY" title="MB WAY"/></p>';
+						echo '<p>'.__( 'MB WAY Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mbway_details['mbwaykey'] ).'<br/>';
+						echo __( 'Request ID', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mbway_details['id_pedido'] ).'<br/>';
+						echo __( 'Phone', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order->mb_get_meta( '_'.$this->mbway_id.'_phone' ) ).'<br/>';
+						echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mbway_details['val'] ).'</p>';
 						if ( $order->mb_has_status( 'on-hold' ) || $order->mb_has_status( 'pending' ) ) {
 							if ( trim( $order_mbway_details['exp'] ) != '' ) {
 								echo '<p>'.__( 'Expiration', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->mbway_format_expiration( $order_mbway_details['exp'], $order->mb_get_id() ).'</p>';
@@ -1400,7 +1404,6 @@ wc_price( $order_total_to_pay )
 		if ( apply_filters( 'mbway_ifthen_cancel_unpaid_orders', false ) ) {
 			$methods[] = $this->mbway_id;
 		}
-		var_dump($methods);
 		if ( count( $methods ) > 0 ) {
 			if ( version_compare( WC_VERSION, '3.0', '<' ) ) return;
 			$held_duration = get_option( 'woocommerce_hold_stock_minutes' );

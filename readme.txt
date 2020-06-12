@@ -181,6 +181,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Show paid date and time on the order admin metabox
 * Better handling when the customer decides to change payment method in "My Account"
 * Only apply our WooCommerce 4.2.0 fix if "Prices entered with tax" is set to "Yes"
+* Code refactoring to prepare the next phase of supporting only WooCommerce 3.0 and above
 
 = 4.2.2 =
 * **Temporarily, while [this WooCommerce bug](https://github.com/woocommerce/woocommerce/issues/26582) is not solved, the value will not be matched when checking the callback and no new Multibanco or Payshop reference will be issued if the order changes value**

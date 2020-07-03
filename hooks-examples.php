@@ -152,28 +152,35 @@ function my_multibanco_ifthen_sms_instructions( $message, $ent, $ref, $order_tot
 // Multibanco - Action when payment complete via callback
 add_action( 'multibanco_ifthen_callback_payment_complete', 'my_multibanco_ifthen_callback_payment_complete', 10, 1 );
 function my_multibanco_ifthen_callback_payment_complete( $order_id ) {
-	wp_mail( 'email@domain', 'Multibanco order '.$order_id.' paid', 'Multibanco order '.$order_id.' paid' );
+	wp_mail( 'email@your.domain', 'Multibanco order '.$order_id.' paid', 'Multibanco order '.$order_id.' paid' );
 }
 
 
 // MB WAY - Action when payment complete via callback
 add_action( 'mbway_ifthen_callback_payment_complete', 'my_mbway_ifthen_callback_payment_complete', 10, 1 );
 function my_mbway_ifthen_callback_payment_complete( $order_id ) {
-	wp_mail( 'email@domain', 'MB WAY order '.$order_id.' paid', 'MB WAY order '.$order_id.' paid' );
+	wp_mail( 'email@your.domain', 'MB WAY order '.$order_id.' paid', 'MB WAY order '.$order_id.' paid' );
 }
 
 
 // Multibanco - Callback call failed
-add_action( 'multibanco_ifthen_callback_payment_failed', 'my_multibanco_ifthen_callback_payment_failed', 10, 1 );
-function my_multibanco_ifthen_callback_payment_failed( $order_id ) {
-	wp_mail( 'email@domain', 'Multibanco callback for order '.$order_id.' failed', 'Multibanco callback for order '.$order_id.' failed' );
+add_action( 'multibanco_ifthen_callback_payment_failed', 'my_multibanco_ifthen_callback_payment_failed', 10, 3 );
+function my_multibanco_ifthen_callback_payment_failed( $order_id, $error, $get ) {
+	wp_mail( 'email@your.domain', 'Multibanco callback for order '.$order_id.' failed', 'Multibanco callback for order '.$order_id.' failed - '.$error.' - '.serialize( $get ) );
 }
 
 
 // MB WAY - Callback call failed
-add_action( 'mbway_ifthen_callback_payment_failed', 'my_mbway_ifthen_callback_payment_failed', 10, 1 );
-function my_mbway_ifthen_callback_payment_failed( $order_id ) {
-	wp_mail( 'email@domain', 'MB WAY callback for order '.$order_id.' failed', 'MB WAY callback for order '.$order_id.' failed' );
+add_action( 'mbway_ifthen_callback_payment_failed', 'my_mbway_ifthen_callback_payment_failed', 10, 3 );
+function my_mbway_ifthen_callback_payment_failed( $order_id, $error, $get ) {
+	wp_mail( 'email@your.domain', 'MB WAY callback for order '.$order_id.' failed', 'MB WAY callback for order '.$order_id.' failed - '.$error.' - '.serialize( $get ) );
+}
+
+
+// Payshop - Callback call failed
+add_action( 'payshop_ifthen_callback_payment_failed', 'my_payshop_ifthen_callback_payment_failed', 10, 3 );
+function my_payshop_ifthen_callback_payment_failed( $order_id, $error, $get ) {
+	wp_mail( 'email@your.domain', 'Payshop callback for order '.$order_id.' failed', 'Payshop callback for order '.$order_id.' failed - '.$error.' - '.serialize( $get ) );
 }
 
 
@@ -230,14 +237,14 @@ function testing_multibanco_ifthen_base_mbwaykey( $mbwaykey, $order ) {
 // Multibanco - Action when the reference is generated
 add_action( 'multibanco_ifthen_created_reference', 'my_multibanco_ifthen_created_reference', 10, 3 );
 function my_multibanco_ifthen_created_reference( $ref, $order_id, $force_change ) {
-	wp_mail( 'email@domain', 'Multibanco reference generated for #'.$order_id, 'Ent: '.$ref['ent'].' Ref: '.$ref['ref'].' '.( $force_change ? 'Re-generation was forced' : 'Re-generation was not forced' ) );
+	wp_mail( 'email@your.domain', 'Multibanco reference generated for #'.$order_id, 'Ent: '.$ref['ent'].' Ref: '.$ref['ref'].' '.( $force_change ? 'Re-generation was forced' : 'Re-generation was not forced' ) );
 }
 
 
 // MB WAY - Action when the reference is generated
 add_action( 'mbway_ifthen_created_reference', 'my_mbway_ifthen_created_reference', 10, 3 );
 function my_mbway_ifthen_created_reference( $id_pedido, $order_id, $phone ) {
-	wp_mail( 'email@domain', 'MB WAY reference generated for #'.$order_id, 'Id pedido: '.$id_pedido.' Phone: '.$phone );
+	wp_mail( 'email@your.domain', 'MB WAY reference generated for #'.$order_id, 'Id pedido: '.$id_pedido.' Phone: '.$phone );
 }
 
 
@@ -266,7 +273,7 @@ function my_multibanco_ifthen_cancel_unpaid_orders_restore_stock( $bool, $order_
 // Multibanco - Action when the unpaid orders is cancelled
 add_action( 'multibanco_ifthen_unpaid_order_cancelled', 'my_multibanco_ifthen_unpaid_order_cancelled' );
 function my_multibanco_ifthen_unpaid_order_cancelled( $order_id ) {
-	wp_mail( 'email@domain', 'Multibanco unpaid order #'.$order_id.' cancelled', 'Multibanco unpaid order #'.$order_id.' cancelled' );
+	wp_mail( 'email@your.domain', 'Multibanco unpaid order #'.$order_id.' cancelled', 'Multibanco unpaid order #'.$order_id.' cancelled' );
 }
 
 
@@ -284,7 +291,7 @@ function my_mbway_ifthen_cancel_unpaid_orders_restore_stock( $bool, $order_id ) 
 // MB WAY - Action when the unpaid orders is cancelled
 add_action( 'mbway_ifthen_unpaid_order_cancelled', 'my_mbway_ifthen_unpaid_order_cancelled' );
 function my_mbway_ifthen_unpaid_order_cancelled( $order_id ) {
-	wp_mail( 'email@domain', 'MB WAY unpaid order #'.$order_id.' cancelled', 'MB WAY unpaid order #'.$order_id.' cancelled' );
+	wp_mail( 'email@your.domain', 'MB WAY unpaid order #'.$order_id.' cancelled', 'MB WAY unpaid order #'.$order_id.' cancelled' );
 }
 
 

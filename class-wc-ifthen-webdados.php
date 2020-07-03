@@ -11,27 +11,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.2.3';
+	public $version = '4.3.0';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
-	public $mbway_id = 'mbway_ifthen_for_woocommerce';
-	public $payshop_id = 'payshop_ifthen_for_woocommerce';
+	public $mbway_id      = 'mbway_ifthen_for_woocommerce';
+	public $payshop_id    = 'payshop_ifthen_for_woocommerce';
 
 	/* Debug */
 	public $log = null;
 
 	/* Internal variables */
-	public $wpml_active = false;
-	public $wc_deposits_active = false;
-	public $mb_ifthen_locale = null;
-	public $out_link_utm = '';
-	public $is_pay_form = false;
+	public $wpml_active         = false;
+	public $wc_deposits_active  = false;
+	public $mb_ifthen_locale    = null;
+	public $out_link_utm        = '';
+	public $is_pay_form         = false;
+	public $callback_email      = 'callback@ifthenpay.com';
+	public $callback_webservice = 'https://www.ifthenpay.com/api/endpoint/callback/activation';
 
 	/* Internal variables - For Multibanco */
-	public $multibanco_settings = null;
-	public $multibanco_notify_url = '';
-	public $multibanco_callback_email = 'callback@ifthenpay.com';
+	public $multibanco_settings            = null;
+	public $multibanco_notify_url          = '';
 	public $multibanco_ents_no_check_digit = array( //Special entities with no check digit
 		21721,
 	);
@@ -52,7 +53,6 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables - For MB WAY */
 	public $mbway_settings = null;
 	public $mbway_notify_url = '';
-	public $mbway_callback_email = 'callback@ifthenpay.com';
 	public $mbway_minutes = 5;
 	public $mbway_multiplier_new_payment = 1.2;
 	public $mbway_min_value = 1;
@@ -65,7 +65,6 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables - For Payshop */
 	public $payshop_settings = null;
 	public $payshop_notify_url = '';
-	public $payshop_callback_email = 'callback@ifthenpay.com';
 	public $payshop_action_deposits_set = false;
 	public $payshop_deposits_already_forced = false;
 	public $payshop_min_value = 1.2;
@@ -282,10 +281,15 @@ final class WC_IfthenPay_Webdados {
 		}
 	}
 
+	/* Customer shipping country */
+	public function get_customer_shipping_country() {
+		return trim( WC()->customer->get_shipping_country() );
+	}
+
 	/* Disable unless Portugal */
 	public function disable_unless_portugal( $available_gateways, $gateway_id ) {
 		if ( isset( $available_gateways[$gateway_id] ) ) {
-			if ( $available_gateways[$gateway_id]->only_portugal && WC()->customer && $this->get_customer_billing_country() != 'PT' ) unset( $available_gateways[$gateway_id] );
+			if ( $available_gateways[$gateway_id]->only_portugal && WC()->customer && $this->get_customer_billing_country() != 'PT' && $this->get_customer_shipping_country() != 'PT' ) unset( $available_gateways[$gateway_id] );
 		}
 		return $available_gateways;
 	}
@@ -1532,7 +1536,6 @@ wc_price( $order_total_to_pay )
 						.__( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' )
 						.' '
 						.$ref['val'];
-					$instructions = preg_replace( '/\s+/', ' ', $instructions ); //Remove extra spaces if necessary
 					//Filters in case the website owner wants to customize the message
 					$instructions = apply_filters( 'multibanco_ifthen_sms_instructions', $instructions, $ref['ent'], $ref['ref'], $ref['val'], $order_id );
 				} else {
@@ -1581,7 +1584,6 @@ wc_price( $order_total_to_pay )
 					if ( isset( $ref['exp'] ) && trim( $ref['exp'] ) != '') {
 						$instructions .= ' '.__( 'Valid.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' '.$ref['exp'];
 					}
-					$instructions = preg_replace( '/\s+/', ' ', $instructions ); //Remove extra spaces if necessary
 					//Filters in case the website owner wants to customize the message
 					$instructions = apply_filters( 'payshop_ifthen_sms_instructions', $instructions, $ref['ref'], $ref['val'], $ref['exp'], $order_id );
 				} else {
@@ -1893,13 +1895,60 @@ wc_price( $order_total_to_pay )
 	*/
 	public function should_fix_woocommerce_420() {
 		if (
-			version_compare( WC_VERSION, '4.2.0', '=' )
+			version_compare( WC_VERSION, '4.2.0', '>=' )
+			&&
+			version_compare( WC_VERSION, '4.3.0', '<' )
 			&&
 			( 'yes' === get_option( 'woocommerce_prices_include_tax' ) )
 		) {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	* Activate callback via webservice
+	*
+	* @since 4.2.3
+	*/
+	public function callback_webservice( $bo_key, $ent, $subent, $secret_key, $callback_url ) {
+		$result = array(
+			'success' => false,
+			'message' => ''
+		);
+		$args = array(
+			'method'   => 'POST',
+			'timeout'  => apply_filters( 'ifthen_callback_webservice_timeout', 30 ),
+			'blocking' => true,
+			'headers'  => array(
+				'content-type' => 'application/json',
+			),
+			'body'     => json_encode( array(
+				'chave'       => $bo_key,
+				'entidade'    => $ent,
+				'subentidade' => $subent,
+				'apKey'       => $secret_key,
+				'urlCb'       => $callback_url,
+			) ),
+		);
+		$response = wp_remote_post( $this->callback_webservice, $args );
+		if ( is_wp_error( $response ) ) {
+			$result['message'] = __( 'Unknown error 1', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+		} else {
+			if ( isset( $response['response']['code'] ) ) {
+				switch( $response['response']['code'] ) {
+					case 200:
+						$result['success'] = true;
+						break;
+					default:
+						$result['message'] = trim( $response['body'] );
+						break;
+				}
+			} else {
+				$result['message'] = __( 'Unknown error 2', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			}
+		}
+		return $result;
 	}
 
 	/**
@@ -1932,6 +1981,7 @@ wc_price( $order_total_to_pay )
 		wp_localize_script( 'woocommerce_multibanco_ifthen_admin_js', 'ifthenpay', array(
 			'gateway'             => $gateway,
 			'callback_confirm'    => strip_tags( __( 'Are you sure you want to ask IfthenPay to activate the “Callback”?', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ),
+			'callback_bo_key'     => strip_tags( __( 'Please provide the IfthenPay backoffice key you got after signing the contract', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ),
 			'callback_email_sent' => $callback_email_sent,
 			'callback_auto_open'  => $callback_auto_open,
 		) );
@@ -1939,11 +1989,27 @@ wc_price( $order_total_to_pay )
 
 	/* Admin notices to warn about old technology */
 	function admin_notices() {
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
 		if ( apply_filters( 'ifthen_show_old_techonology_notice', true ) ) {
-			if ( isset( $_GET['page'] ) && trim( $_GET['page'] ) != '' && in_array( trim( $_GET['page'] ), array(
-				'wc-settings',
-				'wc-status'
-			) ) ) {
+			if (
+				isset( $_GET['page'] ) && trim( $_GET['page'] ) != '' && in_array( trim( $_GET['page'] ), array(
+					'wc-settings',
+					'wc-status',
+					'wc-admin',
+					'wc-reports',
+					'wc-addons'
+				) )
+				||
+				in_array( $screen_id, 
+					array(
+						'dashboard',
+						'plugins',
+						'edit-shop_order',
+						'edit-product'
+					)
+				)
+			) {
 				$notices = array();
 				//WordPress below 4.4
 				if ( version_compare( get_bloginfo( 'version' ), '4.4', '<' ) ) {
@@ -1965,7 +2031,9 @@ wc_price( $order_total_to_pay )
 							'<strong style="color:red;">%s</strong>',
 							WC_VERSION
 						)
-					);
+					)
+					.
+					' - <strong>'.__( 'Support for WC &lt; 3.0 will end VERY SOON!', 'multibanco-ifthen-software-gateway-for-woocommerce' ).'</strong>';
 				}
 				//PHP below 7.0
 				if ( version_compare( phpversion(), '7.0', '<' ) ) {

@@ -91,6 +91,18 @@
 				return false;
 			}
 		});
+		//Callback webservice
+		$( '#wc_ifthen_callback_submit_webservice' ).click( function() {
+			var bo_key = prompt( ifthenpay.callback_bo_key, '' );
+			if ( bo_key ) {
+				$( '#wc_ifthen_callback_bo_key' ).val( $.trim( bo_key ) );
+				$( '#wc_ifthen_callback_send' ).val( 2 );
+				$( '#mainform' ).submit()
+				return true;
+			} else {
+				return false;
+			}
+		});
 		setTimeout( function() {
 			if ( ifthenpay.callback_email_sent == 'no' ) {
 				$( '#wc_ifthen_callback_open' ).addClass('button-link-delete');

@@ -389,7 +389,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 						?>
 						<p id="wc_ifthen_callback_open_p"><a href="#" id="wc_ifthen_callback_open" class="button button-small"><?php _e( 'Click here to ask IfthenPay to activate the “Callback”', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></a></p>
 						<div id="wc_ifthen_callback_div">
-							<p><?php _e( 'This will submit a request to IfthenPay, asking them to activate the “Callback” on your account. If you have already asked for the “Callback” activation, wait for their feedback before submiting a new request. The following details will be sent via email to IfthenPay (with CC to your email address):', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></p>
+							<p><?php _e( 'This will submit a request to IfthenPay, asking them to activate the “Callback” on your account. The following details will be sent to IfthenPay:', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></p>
 							<table class="form-table">
 								<tr valign="top">
 									<th scope="row" class="titledesc"><?php _e( 'Email', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></th>
@@ -421,7 +421,10 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 							</p>
 							<p style="text-align: center; margin-bottom: 0px;">
 								<input type="hidden" id="wc_ifthen_callback_send" name="wc_ifthen_callback_send" value="0"/>
-								<button id="wc_ifthen_callback_submit" class="button-primary" type="button" value="<?php _e( 'Ask for Callback activation', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>"><?php _e( 'Ask for Callback activation', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></button>
+								<input type="hidden" id="wc_ifthen_callback_bo_key" name="wc_ifthen_callback_bo_key" value=""/>
+								<button id="wc_ifthen_callback_submit_webservice" class="button-primary" type="button"><?php _e( 'Ask for Callback activation', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?> - <?php _e( 'Via webservice (recommended)', '' ); ?></button>
+								<br/><br/>
+								<button id="wc_ifthen_callback_submit" class="button" type="button"><?php _e( 'Ask for Callback activation', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?> - <?php _e( 'Via email (old method)', '' ); ?></button>
 								<input id="wc_ifthen_callback_cancel" class="button" type="button" value="<?php _e( 'Cancel', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>"/>
 								<input type="hidden" name="save" value="<?php esc_attr_e( 'Save changes', 'woocommerce' ); ?>"/> <!-- Force action woocommerce_update_options_payment_gateways_ to run, from WooCommerce 3.5.5 -->
 							</p>
@@ -471,8 +474,22 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 		}
 
 		public function send_callback_email() {
-			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 1) {
-				$to = WC_IfthenPay_Webdados()->mbway_callback_email;
+			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) != '' ) {
+				//Webservice
+				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'MBWAY', $this->mbwaykey, $this->secret_key, WC_IfthenPay_Webdados()->mbway_notify_url );
+				if ( $result['success'] ) {
+					update_option( $this->id . '_callback_email_sent', 'yes' );
+					WC_Admin_Settings::add_message( __( 'The “Callback” activation request has been submited to IfthenPay via webservice and is now active.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+				} else {
+					WC_Admin_Settings::add_error(
+						__( 'The “Callback” activation request via webservice has failed.', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+						.' - '.
+						$result['message']
+					);
+				}
+			} elseif ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 1) {
+				//Email
+				$to = WC_IfthenPay_Webdados()->callback_email;
 				$cc = get_option( 'admin_email' );
 				$subject = 'Activação de Callback MB WAY (Key: '.$this->mbwaykey.')';
 				$message = 'Por favor activar Callback MB WAY com os seguintes dados:
@@ -1200,42 +1217,42 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 									$err = 'Error: The value does not match';
 									$this->debug_log( '-- '.$err.' - Order '.$order->mb_get_id(), 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - The value does not match' );
 									echo $err;
-									do_action( 'mbway_ifthen_callback_payment_failed', $order->mb_get_id(), $err );
+									do_action( 'mbway_ifthen_callback_payment_failed', $order->mb_get_id(), $err, $_GET );
 								}
 							} else {
 								header( 'HTTP/1.1 200 OK' );
 								$err = 'Error: More than 1 order found awaiting payment with these details';
 								$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - More than 1 order found awaiting payment with these details' );
 								echo $err;
-								do_action( 'mbway_ifthen_callback_payment_failed', 0, $err );
+								do_action( 'mbway_ifthen_callback_payment_failed', 0, $err, $_GET );
 							}
 						} else {
 							header( 'HTTP/1.1 200 OK' );
 							$err = 'Error: No orders found awaiting payment with these details';
 							$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - No orders found awaiting payment with these details' );
 							echo $err;
-							do_action( 'mbway_ifthen_callback_payment_failed', 0, $err );
+							do_action( 'mbway_ifthen_callback_payment_failed', 0, $err, $_GET );
 						}
 					} else {
 						header( 'HTTP/1.1 200 OK' );
 						$err = 'Error: Cannot process '.trim( $estado ).' status';
 						$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - Cannot process '.trim( $estado ).' status' );
 						echo $err;
-						do_action( 'mbway_ifthen_callback_payment_failed', 0, $err );
+						do_action( 'mbway_ifthen_callback_payment_failed', 0, $err, $_GET );
 					}
 
 				} else {
 					//header("Status: 400");
 					$err = 'Argument errors';
 					$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') with argument errors from '.$_SERVER['REMOTE_ADDR'].$arguments_error );
-					do_action( 'mbway_ifthen_callback_payment_failed', 0, $err );
+					do_action( 'mbway_ifthen_callback_payment_failed', 0, $err, $_GET );
 					wp_die( $err, 'WC_MBWAY_IfThen_Webdados', array( 'response' => 500 ) ); //Sends 500
 				}
 			} else {
 				//header("Status: 400");
 				$err = 'Callback ('.$_SERVER['REQUEST_URI'].') with missing arguments from '.$_SERVER['REMOTE_ADDR'];
 				$this->debug_log( '- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') with missing arguments from '.$_SERVER['REMOTE_ADDR'] );
-				do_action( 'mbway_ifthen_callback_payment_failed', 0, $err );
+				do_action( 'mbway_ifthen_callback_payment_failed', 0, $err, $_GET );
 				wp_die( 'Error: Something is missing...', 'WC_MBWAY_IfThen_Webdados', array( 'response' => 500 ) ); //Sends 500
 			}
 		}

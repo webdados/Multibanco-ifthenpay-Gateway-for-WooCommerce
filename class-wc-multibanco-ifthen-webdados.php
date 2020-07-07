@@ -1033,53 +1033,24 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 					$orders_exist = false;
 					$orders_count = 0;
 					if ( version_compare( WC_VERSION, '3.0', '<' ) ) {
-						if ( version_compare( WC_VERSION, '2.2', '<' ) ) {
-							//The old way before WooCommerce 2.2
-							$args = array(
-								'post_type'	=> 'shop_order',
-								'post_status' => 'publish',
-								'posts_per_page' => -1,
-								'tax_query' => array(
-									//We should also look for pending because of the filter added on 2017-12-15, but people should not be using WC < 2.2 by now...
-									array(
-										'taxonomy' => 'shop_order_status',
-										'field' => 'slug',
-										'terms' => array( 'on-hold', 'pending' ),
-									)
+						//The old way
+						$args = array(
+							'post_type' => 'shop_order',
+							'post_status' => array( 'wc-on-hold', 'wc-pending' ),
+							'posts_per_page' => -1,
+							'meta_query' => array(
+								array(
+									'key' => '_'.$this->id.'_ent',
+									'value' => $ent,
+									'compare' => 'LIKE'
 								),
-								'meta_query' => array(
-									array(
-										'key' => '_'.$this->id.'_ent',
-										'value' => $ent,
-										'compare' => 'LIKE'
-									),
-									array(
-										'key' => '_'.$this->id.'_ref',
-										'value' => $ref,
-										'compare' => 'LIKE'
-									)
+								array(
+									'key' => '_'.$this->id.'_ref',
+									'value' => $ref,
+									'compare' => 'LIKE'
 								)
-							);
-						} else {
-							//The old way From WooCommerce 2.2
-							$args = array(
-								'post_type' => 'shop_order',
-								'post_status' => array( 'wc-on-hold', 'wc-pending' ),
-								'posts_per_page' => -1,
-								'meta_query' => array(
-									array(
-										'key' => '_'.$this->id.'_ent',
-										'value' => $ent,
-										'compare' => 'LIKE'
-									),
-									array(
-										'key' => '_'.$this->id.'_ref',
-										'value' => $ref,
-										'compare' => 'LIKE'
-									)
-								)
-							);
-						}
+							)
+						);
 						$the_query = new WP_Query( $args );
 						if ( $the_query->have_posts() ) {
 							$orders_exist = true;

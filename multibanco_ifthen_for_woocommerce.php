@@ -8,7 +8,7 @@
  * Author URI: https://www.webdados.pt
  * Text Domain: multibanco-ifthen-software-gateway-for-woocommerce
  * Domain Path: /lang
- * WC requires at least: 2.5.0
+ * WC requires at least: 2.6.0
  * WC tested up to: 4.3.0
 **/
 
@@ -36,7 +36,7 @@ if ( in_array( 'woocommerce/woocommerce.php', (array) get_option( 'active_plugin
 	/* Our own order class and the main classes */
 	add_action( 'plugins_loaded', 'mbifthen_init', 1 );
 	function mbifthen_init() {
-		if ( class_exists( 'WooCommerce' ) && defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.2.0', '>=' ) ) { //We check again because WooCommerce could have "died", also wee need to check the WooCommerce version
+		if ( class_exists( 'WooCommerce' ) && defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.6.0', '>=' ) ) { //We check again because WooCommerce could have "died", also wee need to check the WooCommerce version
 			require_once( dirname( __FILE__ ) . '/class-wc-ifthen-webdados.php' );
 			require_once( dirname( __FILE__ ) . '/class-wc-order-mb-ifthen.php' );
 			require_once( dirname( __FILE__ ) . '/class-wc-multibanco-ifthen-webdados.php' );
@@ -75,7 +75,7 @@ if ( in_array( 'woocommerce/woocommerce.php', (array) get_option( 'active_plugin
 function admin_notices_mbifthen_woocommerce_not_active() {
 	?>
 	<div class="notice notice-error is-dismissible">
-		<p><?php _e( '<strong>Multibanco, MBWAY and Payshop (IfthenPay) for WooCommerce</strong> is installed and active but <strong>WooCommerce (2.5.0 or above)</strong> is not.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></p>
+		<p><?php _e( '<strong>Multibanco, MBWAY and Payshop (IfthenPay) for WooCommerce</strong> is installed and active but <strong>WooCommerce (2.6.0 or above)</strong> is not.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></p>
 	</div>
 	<?php
 }

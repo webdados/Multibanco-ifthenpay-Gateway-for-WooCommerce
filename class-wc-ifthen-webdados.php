@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.4.0';
+	public $version = '4.4.1';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -157,7 +157,7 @@ final class WC_IfthenPay_Webdados {
 		add_action( 'init', function() {
 			$this->unpaid_statuses = apply_filters( 'ifthen_unpaid_statuses', $this->unpaid_statuses );
 		} );
-		add_filter( 'woocommerce_valid_order_statuses_for_payment', array( $this, 'woocommerce_valid_order_statuses_for_payment' ), 10, 2 );
+		add_filter( 'woocommerce_valid_order_statuses_for_payment', array( $this, 'woocommerce_valid_order_statuses_for_payment' ), PHP_INT_MAX, 2 );
 		// Our crons - Only if WooCommerce >= 3
 		if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
 			// Create cron
@@ -457,7 +457,7 @@ final class WC_IfthenPay_Webdados {
 					echo '<p>'.__( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mb_details['ent'] ).'<br/>';
 					echo __( 'Reference', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->format_multibanco_ref( $order_mb_details['ref'] ).'<br/>';
 					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mb_details['val'] ).'</p>';
-					if ( $order->needs_payment() ) {
+					if ( $this->order_needs_payment( $order ) ) {
 						if ( trim( $order_mb_details['exp'] ) != '' ) {
 							echo '<p>'.__( 'Expiration', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->multibanco_format_expiration( $order_mb_details['exp'], $order->mb_get_id() ).'</p>';
 						}
@@ -528,7 +528,7 @@ final class WC_IfthenPay_Webdados {
 						echo __( 'Request ID', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mbway_details['id_pedido'] ).'<br/>';
 						echo __( 'Phone', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order->mb_get_meta( '_'.$this->mbway_id.'_phone' ) ).'<br/>';
 						echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mbway_details['val'] ).'</p>';
-						if ( $order->needs_payment() ) {
+						if ( $this->order_needs_payment( $order ) ) {
 							if ( trim( $order_mbway_details['exp'] ) != '' ) {
 								echo '<p>'.__( 'Expiration', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->mbway_format_expiration( $order_mbway_details['exp'], $order->mb_get_id() ).'</p>';
 							}
@@ -638,7 +638,7 @@ final class WC_IfthenPay_Webdados {
 					echo '<p><img src="'.esc_url( $this->payshop_banner ).'" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="Payshop" title="Payshop"/></p>';
 					echo '<p>'.__( 'Reference', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->format_payshop_ref( $order_mb_details['ref'] ).'<br/>';
 					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mb_details['val'] ).'</p>';
-					if ( $order->needs_payment() ) {
+					if ( $this->order_needs_payment( $order ) ) {
 						if ( trim( $order_mb_details['exp'] ) != '' ) {
 							echo '<p>'.__( 'Expiration', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->payshop_format_expiration( $order_mb_details['exp'], $order->mb_get_id() ).'</p>';
 						}
@@ -1161,7 +1161,7 @@ final class WC_IfthenPay_Webdados {
 					if ( $this->version >= '1.7.9.2' ) {
 						//Details already existed - Let's check the order status
 						$order_status = $order->mb_get_status();
-						if ( $order->needs_payment() ) {
+						if ( $this->order_needs_payment( $order ) ) {
 	
 							$order_total_to_pay = $this->get_order_total_to_pay( $order );
 							if (
@@ -1247,7 +1247,7 @@ wc_price( $order_total_to_pay )
 					case $this->payshop_id:
 						if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
 							$order_status = $order->mb_get_status();
-							if ( $order->needs_payment() ) {
+							if ( $this->order_needs_payment( $order ) ) {
 
 								$order_total_to_pay = $this->get_order_total_to_pay( $order );
 								if (
@@ -1400,7 +1400,7 @@ wc_price( $order_total_to_pay )
 			if ( $order->mb_get_payment_method() == $payment_method ) {
 				if ( version_compare( WC_VERSION, '3.4.0', '>=' ) ) { //https://github.com/woocommerce/woocommerce/commit/70c9cff608761fcd48b57f709059e00b1ffeee38#diff-27a48ce67fa604181c90b4bb464164ac
 					//After 3.4.0
-					if ( $order->needs_payment() ) {
+					if ( $this->order_needs_payment( $order ) ) {
 						//Pending payment
 						if ( $stock_when == 'order' ) {
 							//Yes, because we want to reduce on the order
@@ -1518,7 +1518,7 @@ wc_price( $order_total_to_pay )
 		$order = new WC_Order_MB_Ifthen( $order_id );
 		$instructions = ''; //We return an empty string so that we always replace our placeholder, even if it's not our gateway
 		if ( $order->mb_get_payment_method() == $this->multibanco_id ) {
-			if ( $order->needs_payment() ) {
+			if ( $this->order_needs_payment( $order ) ) {
 				$ref = $this->multibanco_get_ref( $order_id );
 				if ( is_array( $ref) ) {
 					$instructions =  
@@ -1560,7 +1560,7 @@ wc_price( $order_total_to_pay )
 		$order = new WC_Order_MB_Ifthen( $order_id );
 		$instructions = ''; //We return an empty string so that we always replace our placeholder, even if it's not our gateway
 		if ( $order->mb_get_payment_method() == $this->payshop_id ) {
-			if ( $order->needs_payment() ) {
+			if ( $this->order_needs_payment( $order ) ) {
 				$ref = $this->payshop_get_ref( $order_id );
 				if ( is_array( $ref) ) {
 					$instructions = 
@@ -1956,6 +1956,15 @@ wc_price( $order_total_to_pay )
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * Load admin scripts.
+	 *
+	 * @since 4.4.1
+	 */
+	public function order_needs_payment( $order ) {
+		return $order->needs_payment() || $order->mb_get_status() == 'on-hold' || $order->mb_get_status() == 'pending';
 	}
 
 	/**

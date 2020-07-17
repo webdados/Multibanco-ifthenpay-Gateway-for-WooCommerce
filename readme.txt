@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 4.1
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 4.4.0
+Stable tag: 4.4.1
 
 This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using Multibanco (Pag. Serviços), MB WAY and Payshop through IfthenPay’s payment gateway.
 
@@ -48,6 +48,7 @@ If not, get to know our new plugin: [Invoicing with InvoiceXpress for WooCommerc
 * Polylang tested;
 * [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco and MB WAY);
 * [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration;
+* [WooCommerce Blocks](https://wordpress.org/plugins/woo-gutenberg-products-block/) checkout block (experimental) integration (only Multibanco);
 * PHP7 tested and compatible;
 
 = Premium add-ons: =
@@ -176,8 +177,11 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 4.4.0 =
+= 4.4.1 =
 * You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
+* Bugfix checking if order is paid when the "WooCommerce Order Status Manager" (by SkyVerge) plugin is active
+
+= 4.4.0 =
 * New `ifthen_unpaid_statuses` filter to allow developers to set additional valid "unpaid" statuses for Multibanco, MBWAY and Payshop orders, besides the default ones ("on-hold", "pending" and "partially-paid"). The statuses are used for callback validation, SMS message template, show order as unpaid on the backoffice, show "Pay" button on My Account orders list, issue new references if order value changes on the backoffice, reduce order stock rules, thank you page and email payment instructions.
 * Enforce requirement of WooCommerce 2.6.0 or above and bumped the `WC requires at least` tag accordingly
 * Enforce requirement of WordPress 4.4 or above and bumped the `Requires at least` tag accordingly

@@ -554,7 +554,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 			}
 			$order = wc_get_order( $order_id );
 			if ( $this->id === $order->get_payment_method() ) {
-				if ( $order->needs_payment() ) {
+				if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 					if ( $order->get_meta( '_'.WC_IfthenPay_Webdados()->payshop_id.'_exp' ) != '' && date_i18n( 'Y-m-d' ) > $order->get_meta( '_'.WC_IfthenPay_Webdados()->payshop_id.'_exp' ) ) {
 						//Expired
 						$expired = true;
@@ -566,7 +566,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 					}
 				} else {
 					//Processing
-					if ( $order->has_status( 'processing' ) && !is_wc_endpoint_url( 'view-order') ) {
+					if ( ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) && !is_wc_endpoint_url( 'view-order') ) {
 						echo $this->email_instructions_payment_received( $order_id );
 					}
 				}
@@ -739,7 +739,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 							}
 						}
 						//On Hold or pending
-						if ( $order->needs_payment() ) {
+						if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 							if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->get_status() == 'partially-paid' ) {
 								//WooCommerce deposits - No instructions
 							} else {
@@ -749,7 +749,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 							}
 						} else {
 							//Processing
-							if ( $order->has_status( 'processing' ) ) {
+							if ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) {
 								if ( apply_filters( 'payshop_ifthen_email_instructions_payment_received_send', true, $order->get_id() ) ) {
 									echo $this->email_instructions_payment_received( $order->get_id() );
 								}

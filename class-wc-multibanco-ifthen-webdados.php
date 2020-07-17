@@ -627,7 +627,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 			}
 			$order = new WC_Order_MB_Ifthen( $order_id );
 			if ( $this->id === $order->mb_get_payment_method() ) {
-				if ( $order->needs_payment() ) {
+				if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 					$ref = WC_IfthenPay_Webdados()->multibanco_get_ref( $order_id );
 					if ( is_array( $ref ) ) {
 						echo $this->thankyou_instructions_table_html( $ref['ent'], $ref['ref'], WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), $order_id );
@@ -791,7 +791,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 						}
 						//On Hold or pending
 						$this->debug_log_extra( 'Email ('.$email->id.') instructions show: '.( $show ? 'true' : 'false' ).' - Status '.$order->mb_get_status().' - Order '.$order->mb_get_id() );
-						if ( $order->needs_payment() ) {
+						if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 							if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->mb_get_status() == 'partially-paid' ) {
 								//WooCommerce deposits - No instructions
 							} else {
@@ -814,7 +814,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 							}
 						} else {
 							//Processing
-							if ( $order->has_status( 'processing' ) ) {
+							if ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) {
 								if ( apply_filters( 'multibanco_ifthen_email_instructions_payment_received_send', true, $order_id ) ) {
 									echo $this->email_instructions_payment_received( $order_id );
 								}

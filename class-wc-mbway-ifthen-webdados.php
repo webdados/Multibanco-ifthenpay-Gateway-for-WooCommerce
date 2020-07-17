@@ -535,7 +535,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 			}
 			$order = new WC_Order_MB_Ifthen( $order_id );
 			if ( $this->id === $order->mb_get_payment_method() ) {
-				if ( $order->needs_payment() ) {
+				if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 					if ( date_i18n( 'Y-m-d H:i:s', strtotime( '-'.intval( WC_IfthenPay_Webdados()->mbway_minutes * WC_IfthenPay_Webdados()->mbway_multiplier_new_payment * 60 ).' SECONDS', current_time( 'timestamp' ) ) ) > $order->mb_get_meta( '_'.WC_IfthenPay_Webdados()->mbway_id.'_time' ) ) {
 						//Expired
 						$expired = true;
@@ -569,7 +569,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 					}
 				} else {
 					//Processing
-					if ( $order->has_status( 'processing' ) && !is_wc_endpoint_url( 'view-order') ) {
+					if ( ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) && ! is_wc_endpoint_url( 'view-order') ) {
 						echo $this->email_instructions_payment_received( $order_id );
 					}
 				}
@@ -759,7 +759,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 							}
 						}
 						//On Hold or pending
-						if ( $order->needs_payment() ) {
+						if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 							if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->mb_get_status() == 'partially-paid' ) {
 								//WooCommerce deposits - No instructions
 							} else {
@@ -769,7 +769,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 							}
 						} else {
 							//Processing
-							if ( $order->has_status( 'processing' ) ) {
+							if ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) {
 								if ( apply_filters( 'mbway_ifthen_email_instructions_payment_received_send', true, $order_id ) ) {
 									echo $this->email_instructions_payment_received( $order_id );
 								}
@@ -1138,7 +1138,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 								try {
 									$order = new WC_Order_MB_Ifthen( intval( $referencia ) );
 									//Maybe we should check for failed?
-									if ( $order->needs_payment() ) {
+									if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 										$orders_exist = true;
 										$orders_count = 1;
 									}

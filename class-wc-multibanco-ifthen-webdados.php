@@ -746,10 +746,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 		/**
 		 * Email instructions
 		 */
-		function email_instructions_1( $order, $sent_to_admin, $plain_text, $email ) { //"Hyyan WooCommerce Polylang" Integration removes "email_instructions" so we use "email_instructions_1"
+		function email_instructions_1( $order, $sent_to_admin, $plain_text, $email = null ) { //"Hyyan WooCommerce Polylang" Integration removes "email_instructions" so we use "email_instructions_1"
 			$this->email_instructions( $order, $sent_to_admin, $plain_text, $email );
 		}
-		function email_instructions( $order, $sent_to_admin, $plain_text, $email ) {
+		function email_instructions( $order, $sent_to_admin, $plain_text, $email = null ) {
 			//Avoid duplicate email instructions on some edge cases
 			$send = false;
 			if ( ( $sent_to_admin ) ) {
@@ -763,7 +763,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 					$send = true;
 				}
 			}
-			$this->debug_log_extra( 'Email ('.$email->id.') instructions send: '.( $send ? 'true' : 'false' ) );
+			$email_id = $email ? $email->id : '';
+			$this->debug_log_extra( 'Email ('.$email_id.') instructions send: '.( $send ? 'true' : 'false' ) );
 			//Send
 			if ( $send ) {
 				$order_id = version_compare( WC_VERSION, '3.0', '>=' ) ? $order->get_id() : $order->id;
@@ -790,13 +791,13 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 							}
 						}
 						//On Hold or pending
-						$this->debug_log_extra( 'Email ('.$email->id.') instructions show: '.( $show ? 'true' : 'false' ).' - Status '.$order->mb_get_status().' - Order '.$order->mb_get_id() );
+						$this->debug_log_extra( 'Email ('.$email_id.') instructions show: '.( $show ? 'true' : 'false' ).' - Status '.$order->mb_get_status().' - Order '.$order->mb_get_id() );
 						if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 							if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->mb_get_status() == 'partially-paid' ) {
 								//WooCommerce deposits - No instructions
 							} else {
 								$ref = WC_IfthenPay_Webdados()->multibanco_get_ref( $order_id );
-								$this->debug_log_extra( 'Email ('.$email->id.') instructions - Got reference '.serialize( $ref ).' - Order '.$order->mb_get_id() );
+								$this->debug_log_extra( 'Email ('.$email_id.') instructions - Got reference '.serialize( $ref ).' - Order '.$order->mb_get_id() );
 								if ( is_array( $ref ) ) {
 									if ( apply_filters( 'multibanco_ifthen_email_instructions_pending_send', true, $order_id ) ) {
 										echo $this->email_instructions_table_html( $ref['ent'], $ref['ref'], WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), $order_id );

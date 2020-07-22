@@ -29,7 +29,7 @@ final class MultibancoIfthenPay extends AbstractPaymentMethodType {
 	 *
 	 * @var array
 	 */
-	private $settings;
+	protected $settings;
 
 	/**
 	 * An instance of the Asset Api

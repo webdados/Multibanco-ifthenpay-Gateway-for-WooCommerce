@@ -107,8 +107,8 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				// NO SMS Integrations for MB WAY
 		 		
 				// Customer Emails
-				//add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 3 ); - "Hyyan WooCommerce Polylang Integration" removes this action
-				add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions_1' ), 10, 3 ); //Avoid "Hyyan WooCommerce Polylang Integration" remove_action
+				//add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 4 ); - "Hyyan WooCommerce Polylang Integration" removes this action
+				add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions_1' ), 10, 4 ); //Avoid "Hyyan WooCommerce Polylang Integration" remove_action
 		
 				// Payment listener/API hook
 				add_action( 'woocommerce_api_wc_mbway_ifthen_webdados', array( $this, 'callback' ) );
@@ -715,10 +715,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 		/**
 		 * Email instructions
 		 */
-		function email_instructions_1( $order, $sent_to_admin, $plain_text ) { //"Hyyan WooCommerce Polylang" Integration removes "email_instructions" so we use "email_instructions_1"
-			$this->email_instructions( $order, $sent_to_admin, $plain_text );
+		function email_instructions_1( $order, $sent_to_admin, $plain_text, $email = null ) { //"Hyyan WooCommerce Polylang" Integration removes "email_instructions" so we use "email_instructions_1"
+			$this->email_instructions( $order, $sent_to_admin, $plain_text, $email );
 		}
-		function email_instructions( $order, $sent_to_admin, $plain_text ) {
+		function email_instructions( $order, $sent_to_admin, $plain_text, $email = null ) {
 			//Avoid duplicate email instructions on some edge cases
 			$send = false;
 			if ( ( $sent_to_admin ) ) {

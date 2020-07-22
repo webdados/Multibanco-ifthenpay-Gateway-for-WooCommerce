@@ -1094,7 +1094,6 @@ final class WC_IfthenPay_Webdados {
 	public function multibanco_woocommerce_checkout_update_order_meta( $order_id ) {
 		$order = new WC_Order_MB_Ifthen( $order_id );
 		//Avoid duplicate instructions on the email...
-		//remove_action( 'woocommerce_email_before_order_table', array( 'WC_Multibanco_IfThen_Webdados', 'email_instructions_1' ), 10, 3 ); //Not needed since v3 fixes
 		if ( $order->mb_get_payment_method() == $this->multibanco_id ) {
 			$this->debug_log_extra( $this->multibanco_id, 'multibanco_woocommerce_checkout_update_order_meta - Force ref generation before anything - Order '.$order_id );
 			$ref = $this->multibanco_get_ref( $order_id );

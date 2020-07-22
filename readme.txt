@@ -177,8 +177,13 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 4.4.1 =
+= 4.4.2 =
 * You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
+* Bugfix when WooCommerce Blocks 3.0.0 or above is active
+* Try to fix a fatal error when themes override the WooCommerce email templates with old (pre WooCommerce 2.6.0) versions
+* 
+
+= 4.4.1 =
 * Bugfix checking if order is paid when the "WooCommerce Order Status Manager" (by SkyVerge) plugin is active
 
 = 4.4.0 =

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Multibanco and MBWAY (IfthenPay gateway) for WooCommerce 3.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce\n"
-"POT-Creation-Date: 2020-07-17 13:35+0100\n"
+"POT-Creation-Date: 2020-07-23 15:29+0100\n"
 "Last-Translator: Webdados <info@webdados.pt>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,386 +20,386 @@ msgstr ""
 "Language-Team: \n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: class-wc-ifthen-webdados.php:199
+#: class-wc-ifthen-webdados.php:202
 msgid "Multibanco settings"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:200
+#: class-wc-ifthen-webdados.php:203
 msgid "MB WAY settings"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:203
+#: class-wc-ifthen-webdados.php:206
 msgid "Payshop settings"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:434
+#: class-wc-ifthen-webdados.php:444
 msgid "Multibanco, MB WAY or Payshop payment details"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:459 class-wc-ifthen-webdados.php:945
+#: class-wc-ifthen-webdados.php:469 class-wc-ifthen-webdados.php:955
 #: class-wc-multibanco-ifthen-webdados.php:225
-#: class-wc-multibanco-ifthen-webdados.php:477
-#: class-wc-multibanco-ifthen-webdados.php:709
-#: class-wc-multibanco-ifthen-webdados.php:843
+#: class-wc-multibanco-ifthen-webdados.php:494
+#: class-wc-multibanco-ifthen-webdados.php:726
+#: class-wc-multibanco-ifthen-webdados.php:861
 msgid "Entity"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:460 class-wc-ifthen-webdados.php:641
-#: class-wc-multibanco-ifthen-webdados.php:713
-#: class-wc-multibanco-ifthen-webdados.php:847
-#: class-wc-payshop-ifthen-webdados.php:640
-#: class-wc-payshop-ifthen-webdados.php:779
+#: class-wc-ifthen-webdados.php:470 class-wc-ifthen-webdados.php:651
+#: class-wc-multibanco-ifthen-webdados.php:730
+#: class-wc-multibanco-ifthen-webdados.php:865
+#: class-wc-payshop-ifthen-webdados.php:645
+#: class-wc-payshop-ifthen-webdados.php:784
 msgid "Reference"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:461 class-wc-ifthen-webdados.php:532
-#: class-wc-ifthen-webdados.php:642 class-wc-ifthen-webdados.php:1536
-#: class-wc-ifthen-webdados.php:1574 class-wc-mbway-ifthen-webdados.php:652
-#: class-wc-mbway-ifthen-webdados.php:803
-#: class-wc-multibanco-ifthen-webdados.php:717
-#: class-wc-multibanco-ifthen-webdados.php:851
-#: class-wc-payshop-ifthen-webdados.php:644
-#: class-wc-payshop-ifthen-webdados.php:783
+#: class-wc-ifthen-webdados.php:471 class-wc-ifthen-webdados.php:542
+#: class-wc-ifthen-webdados.php:652 class-wc-ifthen-webdados.php:1545
+#: class-wc-ifthen-webdados.php:1583 class-wc-mbway-ifthen-webdados.php:656
+#: class-wc-mbway-ifthen-webdados.php:807
+#: class-wc-multibanco-ifthen-webdados.php:734
+#: class-wc-multibanco-ifthen-webdados.php:869
+#: class-wc-payshop-ifthen-webdados.php:649
+#: class-wc-payshop-ifthen-webdados.php:788
 msgid "Value"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:464 class-wc-ifthen-webdados.php:535
-#: class-wc-ifthen-webdados.php:645 class-wc-mbway-ifthen-webdados.php:659
-#: class-wc-mbway-ifthen-webdados.php:810
-#: class-wc-multibanco-ifthen-webdados.php:724
-#: class-wc-multibanco-ifthen-webdados.php:858
-#: class-wc-payshop-ifthen-webdados.php:651
-#: class-wc-payshop-ifthen-webdados.php:790
+#: class-wc-ifthen-webdados.php:474 class-wc-ifthen-webdados.php:545
+#: class-wc-ifthen-webdados.php:655 class-wc-mbway-ifthen-webdados.php:663
+#: class-wc-mbway-ifthen-webdados.php:814
+#: class-wc-multibanco-ifthen-webdados.php:741
+#: class-wc-multibanco-ifthen-webdados.php:876
+#: class-wc-payshop-ifthen-webdados.php:656
+#: class-wc-payshop-ifthen-webdados.php:795
 msgid "Expiration"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:468 class-wc-ifthen-webdados.php:539
-#: class-wc-ifthen-webdados.php:649
+#: class-wc-ifthen-webdados.php:478 class-wc-ifthen-webdados.php:549
+#: class-wc-ifthen-webdados.php:659
 msgid "Partially paid."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:470
+#: class-wc-ifthen-webdados.php:480
 msgid "Awaiting second Multibanco payment."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:475 class-wc-ifthen-webdados.php:1645
-#: class-wc-multibanco-ifthen-webdados.php:919
+#: class-wc-ifthen-webdados.php:485 class-wc-ifthen-webdados.php:1654
+#: class-wc-multibanco-ifthen-webdados.php:937
 msgid "Awaiting Multibanco payment."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:488 class-wc-ifthen-webdados.php:600
-#: class-wc-ifthen-webdados.php:670 class-wc-mbway-ifthen-webdados.php:413
-#: class-wc-multibanco-ifthen-webdados.php:489
-#: class-wc-payshop-ifthen-webdados.php:432
+#: class-wc-ifthen-webdados.php:498 class-wc-ifthen-webdados.php:610
+#: class-wc-ifthen-webdados.php:680 class-wc-mbway-ifthen-webdados.php:417
+#: class-wc-multibanco-ifthen-webdados.php:506
+#: class-wc-payshop-ifthen-webdados.php:437
 msgid "Callback URL"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:494 class-wc-ifthen-webdados.php:606
-#: class-wc-ifthen-webdados.php:676
+#: class-wc-ifthen-webdados.php:504 class-wc-ifthen-webdados.php:616
+#: class-wc-ifthen-webdados.php:686
 msgid "This is a testing tool and will set the order as paid. Are you sure you want to proceed?"
-msgstr ""
-
-#: class-wc-ifthen-webdados.php:496 class-wc-ifthen-webdados.php:608
-#: class-wc-ifthen-webdados.php:678
-msgid "This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs."
-msgstr ""
-
-#: class-wc-ifthen-webdados.php:499 class-wc-ifthen-webdados.php:611
-#: class-wc-ifthen-webdados.php:681
-msgid "Error: Could not set the order as paid"
 msgstr ""
 
 #: class-wc-ifthen-webdados.php:506 class-wc-ifthen-webdados.php:618
 #: class-wc-ifthen-webdados.php:688
+msgid "This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs."
+msgstr ""
+
+#: class-wc-ifthen-webdados.php:509 class-wc-ifthen-webdados.php:621
+#: class-wc-ifthen-webdados.php:691
+msgid "Error: Could not set the order as paid"
+msgstr ""
+
+#: class-wc-ifthen-webdados.php:516 class-wc-ifthen-webdados.php:628
+#: class-wc-ifthen-webdados.php:698
 msgid "Simulate callback payment"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:513 class-wc-ifthen-webdados.php:625
-#: class-wc-ifthen-webdados.php:695
+#: class-wc-ifthen-webdados.php:523 class-wc-ifthen-webdados.php:635
+#: class-wc-ifthen-webdados.php:705
 msgid "Paid"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:517 class-wc-ifthen-webdados.php:629
-#: class-wc-ifthen-webdados.php:699 class-wc-ifthen-webdados.php:707
+#: class-wc-ifthen-webdados.php:527 class-wc-ifthen-webdados.php:639
+#: class-wc-ifthen-webdados.php:709 class-wc-ifthen-webdados.php:717
 msgid "No details available"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:518 class-wc-ifthen-webdados.php:630
-#: class-wc-ifthen-webdados.php:700
+#: class-wc-ifthen-webdados.php:528 class-wc-ifthen-webdados.php:640
+#: class-wc-ifthen-webdados.php:710
 #, php-format
 msgid "This must be an error because the payment method of this order is %s"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:529 class-wc-mbway-ifthen-webdados.php:194
-#: class-wc-mbway-ifthen-webdados.php:366
+#: class-wc-ifthen-webdados.php:539 class-wc-mbway-ifthen-webdados.php:194
+#: class-wc-mbway-ifthen-webdados.php:370
 msgid "MB WAY Key"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:530
+#: class-wc-ifthen-webdados.php:540
 msgid "Request ID"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:531
+#: class-wc-ifthen-webdados.php:541
 msgid "Phone"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:541
+#: class-wc-ifthen-webdados.php:551
 msgid "Awaiting second MB WAY payment."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:546 class-wc-mbway-ifthen-webdados.php:948
-#: class-wc-mbway-ifthen-webdados.php:952
+#: class-wc-ifthen-webdados.php:556 class-wc-mbway-ifthen-webdados.php:952
+#: class-wc-mbway-ifthen-webdados.php:956
 msgid "Awaiting MB WAY payment."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:550 class-wc-ifthen-webdados.php:572
-#: class-wc-ifthen-webdados.php:576
+#: class-wc-ifthen-webdados.php:560 class-wc-ifthen-webdados.php:582
+#: class-wc-ifthen-webdados.php:586
 msgid "Request MB WAY payment again"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:555
+#: class-wc-ifthen-webdados.php:565
 msgid "Are you sure you want to request the payment again? Don’t do it unless your client asks you to."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:556
+#: class-wc-ifthen-webdados.php:566
 msgid "Wait..."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:558
+#: class-wc-ifthen-webdados.php:568
 msgid "MB WAY phone number"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:568
+#: class-wc-ifthen-webdados.php:578
 msgid "Done!"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:577
+#: class-wc-ifthen-webdados.php:587
 msgid "Unknown error."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:580
+#: class-wc-ifthen-webdados.php:590
 msgid "Invalid phone number"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:651
+#: class-wc-ifthen-webdados.php:661
 msgid "Awaiting second Payshop payment."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:656 class-wc-payshop-ifthen-webdados.php:928
+#: class-wc-ifthen-webdados.php:666 class-wc-payshop-ifthen-webdados.php:933
 msgid "Awaiting Payshop payment."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:707
+#: class-wc-ifthen-webdados.php:717
 msgid "The payment method of this order is not Multibanco, MB WAY or Payshop"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:786 class-wc-ifthen-webdados.php:795
-#: class-wc-ifthen-webdados.php:806
+#: class-wc-ifthen-webdados.php:796 class-wc-ifthen-webdados.php:805
+#: class-wc-ifthen-webdados.php:816
 msgid "(expired)"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:878 class-wc-ifthen-webdados.php:1068
+#: class-wc-ifthen-webdados.php:888 class-wc-ifthen-webdados.php:1078
 #, php-format
 msgid "It’s not possible to use %1$s to pay values under %2$s."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:886 class-wc-ifthen-webdados.php:1076
+#: class-wc-ifthen-webdados.php:896 class-wc-ifthen-webdados.php:1086
 #, php-format
 msgid "It’s not possible to use %1$s to pay values above %2$s."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:948 class-wc-multibanco-ifthen-webdados.php:237
-#: class-wc-multibanco-ifthen-webdados.php:477
+#: class-wc-ifthen-webdados.php:958 class-wc-multibanco-ifthen-webdados.php:237
+#: class-wc-multibanco-ifthen-webdados.php:494
 msgid "Subentity"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:951 class-wc-mbway-ifthen-webdados.php:209
-#: class-wc-mbway-ifthen-webdados.php:407
+#: class-wc-ifthen-webdados.php:961 class-wc-mbway-ifthen-webdados.php:209
+#: class-wc-mbway-ifthen-webdados.php:411
 #: class-wc-multibanco-ifthen-webdados.php:262
-#: class-wc-multibanco-ifthen-webdados.php:483
+#: class-wc-multibanco-ifthen-webdados.php:500
 #: class-wc-payshop-ifthen-webdados.php:213
-#: class-wc-payshop-ifthen-webdados.php:426
+#: class-wc-payshop-ifthen-webdados.php:431
 msgid "Anti-phishing key"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:955
+#: class-wc-ifthen-webdados.php:965
 msgid "Configuration error. This payment method is disabled because required information was not set."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:961 class-wc-ifthen-webdados.php:1091
+#: class-wc-ifthen-webdados.php:971 class-wc-ifthen-webdados.php:1101
 msgid "Configuration error. This order currency is not Euros (&euro;)."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1085 class-wc-payshop-ifthen-webdados.php:941
+#: class-wc-ifthen-webdados.php:1095 class-wc-payshop-ifthen-webdados.php:946
 msgid "Error contacting IfthenPay servers to create Payshop Payment"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1188 class-wc-ifthen-webdados.php:1218
-#: class-wc-ifthen-webdados.php:1236 class-wc-ifthen-webdados.php:1274
-#: class-wc-ifthen-webdados.php:1300 class-wc-ifthen-webdados.php:1316
+#: class-wc-ifthen-webdados.php:1197 class-wc-ifthen-webdados.php:1227
+#: class-wc-ifthen-webdados.php:1245 class-wc-ifthen-webdados.php:1283
+#: class-wc-ifthen-webdados.php:1309 class-wc-ifthen-webdados.php:1325
 #, php-format
 msgid "The %s payment details have changed"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1192
+#: class-wc-ifthen-webdados.php:1201
 msgid "Previous entity"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1193 class-wc-ifthen-webdados.php:1278
+#: class-wc-ifthen-webdados.php:1202 class-wc-ifthen-webdados.php:1287
 msgid "Previous reference"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1194 class-wc-ifthen-webdados.php:1279
+#: class-wc-ifthen-webdados.php:1203 class-wc-ifthen-webdados.php:1288
 msgid "Previous value"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1196 class-wc-ifthen-webdados.php:1221
+#: class-wc-ifthen-webdados.php:1205 class-wc-ifthen-webdados.php:1230
 msgid "New entity"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1197 class-wc-ifthen-webdados.php:1222
-#: class-wc-ifthen-webdados.php:1281 class-wc-ifthen-webdados.php:1303
+#: class-wc-ifthen-webdados.php:1206 class-wc-ifthen-webdados.php:1231
+#: class-wc-ifthen-webdados.php:1290 class-wc-ifthen-webdados.php:1312
 msgid "New reference"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1198 class-wc-ifthen-webdados.php:1223
-#: class-wc-ifthen-webdados.php:1282 class-wc-ifthen-webdados.php:1304
+#: class-wc-ifthen-webdados.php:1207 class-wc-ifthen-webdados.php:1232
+#: class-wc-ifthen-webdados.php:1291 class-wc-ifthen-webdados.php:1313
 msgid "New value"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1201 class-wc-ifthen-webdados.php:1285
+#: class-wc-ifthen-webdados.php:1210 class-wc-ifthen-webdados.php:1294
 #, php-format
 msgid "If the customer pays using the previous details, the payment will be accepted by the %s system, but the order will not be updated via callback."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1238 class-wc-ifthen-webdados.php:1318
+#: class-wc-ifthen-webdados.php:1247 class-wc-ifthen-webdados.php:1327
 msgid "The customer will be notified"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1238 class-wc-ifthen-webdados.php:1318
+#: class-wc-ifthen-webdados.php:1247 class-wc-ifthen-webdados.php:1327
 msgid "You should notify the customer"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1238 class-wc-ifthen-webdados.php:1318
+#: class-wc-ifthen-webdados.php:1247 class-wc-ifthen-webdados.php:1327
 msgid "The page will now reload."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1468
+#: class-wc-ifthen-webdados.php:1477
 msgid "Unpaid order cancelled - time limit exceeded."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1511
+#: class-wc-ifthen-webdados.php:1520
 msgid "Unpaid order cancelled - Multibanco reference expired."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1529
+#: class-wc-ifthen-webdados.php:1538
 msgid "Ent."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1533 class-wc-ifthen-webdados.php:1571
+#: class-wc-ifthen-webdados.php:1542 class-wc-ifthen-webdados.php:1580
 msgid "Ref."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1578
+#: class-wc-ifthen-webdados.php:1587
 msgid "Valid."
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1735
+#: class-wc-ifthen-webdados.php:1744
 msgid "Commercial information"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1737 class-wc-ifthen-webdados.php:1743
+#: class-wc-ifthen-webdados.php:1746 class-wc-ifthen-webdados.php:1752
 #, php-format
 msgid "Please contact %s"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1741
+#: class-wc-ifthen-webdados.php:1750
 msgid "Technical support or custom WordPress/WooCommerce development"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1747
+#: class-wc-ifthen-webdados.php:1756
 msgid "Please rate our plugin at WordPress.org"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1753
+#: class-wc-ifthen-webdados.php:1762
 msgid "Extensions"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1758
+#: class-wc-ifthen-webdados.php:1767
 msgid "Multibanco and MBWAY (IfthenPay) Entity per Category add-on"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1764
+#: class-wc-ifthen-webdados.php:1773
 msgid "Other premium plugins"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1769
+#: class-wc-ifthen-webdados.php:1778
 msgid "DPD (Chronopost/SEUR) Portugal for WooCommerce"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1775
+#: class-wc-ifthen-webdados.php:1784
 msgid "Invoicing with InvoiceXpress for WooCommerce – Pro"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1781
+#: class-wc-ifthen-webdados.php:1790
 msgid "Shop as Client for WooCommerce PRO add-on"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1787
+#: class-wc-ifthen-webdados.php:1796
 msgid "Feed KuantoKusta for WooCommerce PRO add-on"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1793
+#: class-wc-ifthen-webdados.php:1802
 msgid "Payment Multicaixa (ProxyPay gateway) for WooCommerce PRO add-on"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1828
+#: class-wc-ifthen-webdados.php:1837
 msgid "MB WAY Payment has been requested"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1833 class-wc-mbway-ifthen-webdados.php:964
+#: class-wc-ifthen-webdados.php:1842 class-wc-mbway-ifthen-webdados.php:968
 msgid "Error contacting IfthenPay servers to create MB WAY Payment"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1839
+#: class-wc-ifthen-webdados.php:1848
 msgid "Invalid parameters"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1845
+#: class-wc-ifthen-webdados.php:1854
 msgid "Error"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1945
+#: class-wc-ifthen-webdados.php:1954
 msgid "Unknown error 1"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1957
+#: class-wc-ifthen-webdados.php:1966
 msgid "Unknown error 2"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1992
+#: class-wc-ifthen-webdados.php:2010
 msgid "Are you sure you want to ask IfthenPay to activate the “Callback”?"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1993
+#: class-wc-ifthen-webdados.php:2011
 msgid "Please provide the IfthenPay backoffice key you got after signing the contract"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2026 class-wc-ifthen-webdados.php:2037
-#: class-wc-ifthen-webdados.php:2050
+#: class-wc-ifthen-webdados.php:2044 class-wc-ifthen-webdados.php:2055
+#: class-wc-ifthen-webdados.php:2068
 #, php-format
 msgid "%1$s - Your version: %2$s"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2045
+#: class-wc-ifthen-webdados.php:2063
 msgid "Support for WC &lt; 3.0 will end VERY SOON!"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2061
+#: class-wc-ifthen-webdados.php:2079
 msgid "Multibanco, MBWAY and Payshop (IfthenPay) for WooCommerce"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2063
+#: class-wc-ifthen-webdados.php:2081
 msgid "We are working on implementing the latest and safest technology, so you will soon need:"
 msgstr ""
 
@@ -569,318 +569,318 @@ msgstr ""
 msgid "when order is paid (requires active callback)"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:287
-#: class-wc-multibanco-ifthen-webdados.php:357
+#: class-wc-mbway-ifthen-webdados.php:288
+#: class-wc-multibanco-ifthen-webdados.php:360
 msgid "WooCommerce Subscriptions"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:289
-#: class-wc-multibanco-ifthen-webdados.php:359
+#: class-wc-mbway-ifthen-webdados.php:290
+#: class-wc-multibanco-ifthen-webdados.php:362
 msgid "Enable WooCommerce Subscriptions (experimental) support."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:290
+#: class-wc-mbway-ifthen-webdados.php:291
 msgid "Shows “MB WAY” (using IfthenPay) as a supported payment gateway, and automatically sets subscription renewal orders to be paid with MB WAY if the original subscription used this payment method. If this option is not activated, MB WAY will only be available as a payment method for subscriptions if the “Manual Renewal Payments” option is enabled on WooCommerce Subscriptions settings."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:294
-#: class-wc-multibanco-ifthen-webdados.php:364
-#: class-wc-payshop-ifthen-webdados.php:313
+#: class-wc-mbway-ifthen-webdados.php:298
+#: class-wc-multibanco-ifthen-webdados.php:381
+#: class-wc-payshop-ifthen-webdados.php:318
 msgid "Send instructions to admin?"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:296
-#: class-wc-multibanco-ifthen-webdados.php:366
-#: class-wc-payshop-ifthen-webdados.php:315
+#: class-wc-mbway-ifthen-webdados.php:300
+#: class-wc-multibanco-ifthen-webdados.php:383
+#: class-wc-payshop-ifthen-webdados.php:320
 msgid "Should the payment details also be sent to admin?"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:306
-#: class-wc-multibanco-ifthen-webdados.php:376
-#: class-wc-payshop-ifthen-webdados.php:325
+#: class-wc-mbway-ifthen-webdados.php:310
+#: class-wc-multibanco-ifthen-webdados.php:393
+#: class-wc-payshop-ifthen-webdados.php:330
 msgid "Debug Log"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:308
-#: class-wc-multibanco-ifthen-webdados.php:378
-#: class-wc-payshop-ifthen-webdados.php:327
+#: class-wc-mbway-ifthen-webdados.php:312
+#: class-wc-multibanco-ifthen-webdados.php:395
+#: class-wc-payshop-ifthen-webdados.php:332
 msgid "Enable logging"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:311
-#: class-wc-multibanco-ifthen-webdados.php:381
-#: class-wc-payshop-ifthen-webdados.php:330
+#: class-wc-mbway-ifthen-webdados.php:315
+#: class-wc-multibanco-ifthen-webdados.php:398
+#: class-wc-payshop-ifthen-webdados.php:335
 #, php-format
 msgid "Log plugin events, such as callback requests, in %s"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:314
-#: class-wc-multibanco-ifthen-webdados.php:384
-#: class-wc-payshop-ifthen-webdados.php:333
+#: class-wc-mbway-ifthen-webdados.php:318
+#: class-wc-multibanco-ifthen-webdados.php:401
+#: class-wc-payshop-ifthen-webdados.php:338
 msgid "WooCommerce &gt; Status &gt; Logs"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:320
-#: class-wc-multibanco-ifthen-webdados.php:390
-#: class-wc-payshop-ifthen-webdados.php:339
+#: class-wc-mbway-ifthen-webdados.php:324
+#: class-wc-multibanco-ifthen-webdados.php:407
+#: class-wc-payshop-ifthen-webdados.php:344
 msgid "Debug to email"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:322
-#: class-wc-multibanco-ifthen-webdados.php:392
-#: class-wc-payshop-ifthen-webdados.php:341
+#: class-wc-mbway-ifthen-webdados.php:326
+#: class-wc-multibanco-ifthen-webdados.php:409
+#: class-wc-payshop-ifthen-webdados.php:346
 msgid "Enable email logging"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:324
-#: class-wc-multibanco-ifthen-webdados.php:394
-#: class-wc-payshop-ifthen-webdados.php:343
+#: class-wc-mbway-ifthen-webdados.php:328
+#: class-wc-multibanco-ifthen-webdados.php:411
+#: class-wc-payshop-ifthen-webdados.php:348
 msgid "Send plugin events to this email address, such as callback requests."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:356
-#: class-wc-multibanco-ifthen-webdados.php:426
-#: class-wc-payshop-ifthen-webdados.php:375
+#: class-wc-mbway-ifthen-webdados.php:360
+#: class-wc-multibanco-ifthen-webdados.php:443
+#: class-wc-payshop-ifthen-webdados.php:380
 msgid "Return to payments"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:359
-#: class-wc-multibanco-ifthen-webdados.php:429
-#: class-wc-payshop-ifthen-webdados.php:378
+#: class-wc-mbway-ifthen-webdados.php:363
+#: class-wc-multibanco-ifthen-webdados.php:446
+#: class-wc-payshop-ifthen-webdados.php:383
 msgid "In order to use this plugin you <u>must</u>:"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:361
-#: class-wc-mbway-ifthen-webdados.php:460
-#: class-wc-multibanco-ifthen-webdados.php:431
-#: class-wc-multibanco-ifthen-webdados.php:549
-#: class-wc-payshop-ifthen-webdados.php:380
-#: class-wc-payshop-ifthen-webdados.php:479
+#: class-wc-mbway-ifthen-webdados.php:365
+#: class-wc-mbway-ifthen-webdados.php:464
+#: class-wc-multibanco-ifthen-webdados.php:448
+#: class-wc-multibanco-ifthen-webdados.php:566
+#: class-wc-payshop-ifthen-webdados.php:385
+#: class-wc-payshop-ifthen-webdados.php:484
 #, php-format
 msgid "Set WooCommerce currency to <strong>Euros (&euro;)</strong> %1$s"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:362
-#: class-wc-multibanco-ifthen-webdados.php:432
-#: class-wc-payshop-ifthen-webdados.php:381
+#: class-wc-mbway-ifthen-webdados.php:366
+#: class-wc-multibanco-ifthen-webdados.php:449
+#: class-wc-payshop-ifthen-webdados.php:386
 #, php-format
 msgid "Sign a contract with %1$s. To know more about this service, please go to %2$s."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:363
+#: class-wc-mbway-ifthen-webdados.php:367
 msgid "Fill out all the details (MB WAY Key) provided by <strong>IfthenPay</strong> in the fields below."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:365
-#: class-wc-multibanco-ifthen-webdados.php:435
-#: class-wc-payshop-ifthen-webdados.php:384
+#: class-wc-mbway-ifthen-webdados.php:369
+#: class-wc-multibanco-ifthen-webdados.php:452
+#: class-wc-payshop-ifthen-webdados.php:389
 #, php-format
 msgid "Never use the same %1$s on more than one website or any other system, online or offline. Ask %2$s for new ones for each single platform."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:369
+#: class-wc-mbway-ifthen-webdados.php:373
 #, php-format
 msgid "Ask IfthenPay to activate “MB WAY Callback” on your account using this exact URL: %1$s and this Anti-phishing key: %2$s"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:383
-#: class-wc-mbway-ifthen-webdados.php:1262
-#: class-wc-multibanco-ifthen-webdados.php:459
-#: class-wc-multibanco-ifthen-webdados.php:1241
-#: class-wc-payshop-ifthen-webdados.php:402
-#: class-wc-payshop-ifthen-webdados.php:1180
+#: class-wc-mbway-ifthen-webdados.php:387
+#: class-wc-mbway-ifthen-webdados.php:1266
+#: class-wc-multibanco-ifthen-webdados.php:476
+#: class-wc-multibanco-ifthen-webdados.php:1259
+#: class-wc-payshop-ifthen-webdados.php:407
+#: class-wc-payshop-ifthen-webdados.php:1185
 msgid "You haven’t yet asked IfthenPay for the “Callback” activation. The orders will NOT be automatically updated upon payment."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:390
-#: class-wc-multibanco-ifthen-webdados.php:466
-#: class-wc-payshop-ifthen-webdados.php:409
+#: class-wc-mbway-ifthen-webdados.php:394
+#: class-wc-multibanco-ifthen-webdados.php:483
+#: class-wc-payshop-ifthen-webdados.php:414
 msgid "Click here to ask IfthenPay to activate the “Callback”"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:392
-#: class-wc-multibanco-ifthen-webdados.php:468
-#: class-wc-payshop-ifthen-webdados.php:411
+#: class-wc-mbway-ifthen-webdados.php:396
+#: class-wc-multibanco-ifthen-webdados.php:485
+#: class-wc-payshop-ifthen-webdados.php:416
 msgid "This will submit a request to IfthenPay, asking them to activate the “Callback” on your account. The following details will be sent to IfthenPay:"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:395
-#: class-wc-multibanco-ifthen-webdados.php:471
-#: class-wc-payshop-ifthen-webdados.php:414
+#: class-wc-mbway-ifthen-webdados.php:399
+#: class-wc-multibanco-ifthen-webdados.php:488
+#: class-wc-payshop-ifthen-webdados.php:419
 msgid "Email"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:420
-#: class-wc-multibanco-ifthen-webdados.php:496
-#: class-wc-payshop-ifthen-webdados.php:439
+#: class-wc-mbway-ifthen-webdados.php:424
+#: class-wc-multibanco-ifthen-webdados.php:513
+#: class-wc-payshop-ifthen-webdados.php:444
 msgid "Attention: if you ever change from HTTP to HTTPS or vice versa, or the permalinks structure,<br/>you may have to ask IfthenPay to update the callback URL."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:425
-#: class-wc-mbway-ifthen-webdados.php:427
-#: class-wc-multibanco-ifthen-webdados.php:501
-#: class-wc-multibanco-ifthen-webdados.php:503
-#: class-wc-payshop-ifthen-webdados.php:444
-#: class-wc-payshop-ifthen-webdados.php:446
+#: class-wc-mbway-ifthen-webdados.php:429
+#: class-wc-mbway-ifthen-webdados.php:431
+#: class-wc-multibanco-ifthen-webdados.php:518
+#: class-wc-multibanco-ifthen-webdados.php:520
+#: class-wc-payshop-ifthen-webdados.php:449
+#: class-wc-payshop-ifthen-webdados.php:451
 msgid "Ask for Callback activation"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:425
-#: class-wc-multibanco-ifthen-webdados.php:501
-#: class-wc-payshop-ifthen-webdados.php:444
+#: class-wc-mbway-ifthen-webdados.php:429
+#: class-wc-multibanco-ifthen-webdados.php:518
+#: class-wc-payshop-ifthen-webdados.php:449
 msgid "Via webservice (recommended)"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:427
-#: class-wc-multibanco-ifthen-webdados.php:503
-#: class-wc-payshop-ifthen-webdados.php:446
+#: class-wc-mbway-ifthen-webdados.php:431
+#: class-wc-multibanco-ifthen-webdados.php:520
+#: class-wc-payshop-ifthen-webdados.php:451
 msgid "Via email (old method)"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:428
-#: class-wc-multibanco-ifthen-webdados.php:504
-#: class-wc-payshop-ifthen-webdados.php:447
+#: class-wc-mbway-ifthen-webdados.php:432
+#: class-wc-multibanco-ifthen-webdados.php:521
+#: class-wc-payshop-ifthen-webdados.php:452
 msgid "Cancel"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:438
+#: class-wc-mbway-ifthen-webdados.php:442
 msgid "Invalid MB WAY Key (exactly 10 characters)."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:444
+#: class-wc-mbway-ifthen-webdados.php:448
 msgid "Set the MB WAY Key and Save changes to set other plugin options."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:460
-#: class-wc-multibanco-ifthen-webdados.php:549
-#: class-wc-payshop-ifthen-webdados.php:479
+#: class-wc-mbway-ifthen-webdados.php:464
+#: class-wc-multibanco-ifthen-webdados.php:566
+#: class-wc-payshop-ifthen-webdados.php:484
 msgid "ERROR!"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:460
-#: class-wc-multibanco-ifthen-webdados.php:549
-#: class-wc-payshop-ifthen-webdados.php:479
+#: class-wc-mbway-ifthen-webdados.php:464
+#: class-wc-multibanco-ifthen-webdados.php:566
+#: class-wc-payshop-ifthen-webdados.php:484
 msgid "here"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:482
-#: class-wc-multibanco-ifthen-webdados.php:571
-#: class-wc-payshop-ifthen-webdados.php:501
+#: class-wc-mbway-ifthen-webdados.php:486
+#: class-wc-multibanco-ifthen-webdados.php:588
+#: class-wc-payshop-ifthen-webdados.php:506
 msgid "The “Callback” activation request has been submited to IfthenPay via webservice and is now active."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:485
-#: class-wc-multibanco-ifthen-webdados.php:574
-#: class-wc-payshop-ifthen-webdados.php:504
+#: class-wc-mbway-ifthen-webdados.php:489
+#: class-wc-multibanco-ifthen-webdados.php:591
+#: class-wc-payshop-ifthen-webdados.php:509
 msgid "The “Callback” activation request via webservice has failed."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:513
-#: class-wc-multibanco-ifthen-webdados.php:605
-#: class-wc-payshop-ifthen-webdados.php:532
+#: class-wc-mbway-ifthen-webdados.php:517
+#: class-wc-multibanco-ifthen-webdados.php:622
+#: class-wc-payshop-ifthen-webdados.php:537
 msgid "The “Callback” activation request has been submited to IfthenPay. Wait for their feedback."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:515
-#: class-wc-multibanco-ifthen-webdados.php:607
-#: class-wc-payshop-ifthen-webdados.php:534
+#: class-wc-mbway-ifthen-webdados.php:519
+#: class-wc-multibanco-ifthen-webdados.php:624
+#: class-wc-payshop-ifthen-webdados.php:539
 msgid "The “Callback” activation request could not be sent. Check if your WordPress install can send emails."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:552
+#: class-wc-mbway-ifthen-webdados.php:556
 msgid "Click here if you wish to use another payment method"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:642
-#: class-wc-mbway-ifthen-webdados.php:686
-#: class-wc-mbway-ifthen-webdados.php:793
-#: class-wc-multibanco-ifthen-webdados.php:703
-#: class-wc-multibanco-ifthen-webdados.php:837
-#: class-wc-payshop-ifthen-webdados.php:634
-#: class-wc-payshop-ifthen-webdados.php:675
-#: class-wc-payshop-ifthen-webdados.php:773
+#: class-wc-mbway-ifthen-webdados.php:646
+#: class-wc-mbway-ifthen-webdados.php:690
+#: class-wc-mbway-ifthen-webdados.php:797
+#: class-wc-multibanco-ifthen-webdados.php:720
+#: class-wc-multibanco-ifthen-webdados.php:855
+#: class-wc-payshop-ifthen-webdados.php:639
+#: class-wc-payshop-ifthen-webdados.php:680
+#: class-wc-payshop-ifthen-webdados.php:778
 msgid "Payment instructions"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:648
-#: class-wc-mbway-ifthen-webdados.php:692
-#: class-wc-mbway-ifthen-webdados.php:799
+#: class-wc-mbway-ifthen-webdados.php:652
+#: class-wc-mbway-ifthen-webdados.php:696
+#: class-wc-mbway-ifthen-webdados.php:803
 msgid "Information"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:668
+#: class-wc-mbway-ifthen-webdados.php:672
 #, php-format
 msgid "You only have %d minutes to approve the payment."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:697
-#: class-wc-payshop-ifthen-webdados.php:682
+#: class-wc-mbway-ifthen-webdados.php:701
+#: class-wc-payshop-ifthen-webdados.php:687
 #, php-format
 msgid "The payment deadline expired. %1$sPlease try again%2$s."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:819
+#: class-wc-mbway-ifthen-webdados.php:823
 #, php-format
 msgid "You only have %d minutes to approve payment"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:835
-#: class-wc-mbway-ifthen-webdados.php:1166
+#: class-wc-mbway-ifthen-webdados.php:839
+#: class-wc-mbway-ifthen-webdados.php:1170
 msgid "MB WAY payment received."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:837
-#: class-wc-multibanco-ifthen-webdados.php:880
-#: class-wc-payshop-ifthen-webdados.php:814
+#: class-wc-mbway-ifthen-webdados.php:841
+#: class-wc-multibanco-ifthen-webdados.php:898
+#: class-wc-payshop-ifthen-webdados.php:819
 msgid "We will now process your order."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1012
-#: class-wc-mbway-ifthen-webdados.php:1022
-#: class-wc-mbway-ifthen-webdados.php:1028
+#: class-wc-mbway-ifthen-webdados.php:1016
+#: class-wc-mbway-ifthen-webdados.php:1026
+#: class-wc-mbway-ifthen-webdados.php:1032
 msgid "Phone number linked to MB WAY"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1013
+#: class-wc-mbway-ifthen-webdados.php:1017
 msgid "required"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1022
+#: class-wc-mbway-ifthen-webdados.php:1026
 #, php-format
 msgid "%s is required"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1028
+#: class-wc-mbway-ifthen-webdados.php:1032
 #, php-format
 msgid "%s must be a valid portuguese mobile phone number"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1179
-#: class-wc-multibanco-ifthen-webdados.php:1150
-#: class-wc-payshop-ifthen-webdados.php:1096
+#: class-wc-mbway-ifthen-webdados.php:1183
+#: class-wc-multibanco-ifthen-webdados.php:1168
+#: class-wc-payshop-ifthen-webdados.php:1101
 msgid "Temporary status. Used to force WooCommerce Deposits to correctly set the order to processing."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1264
-#: class-wc-multibanco-ifthen-webdados.php:1243
-#: class-wc-payshop-ifthen-webdados.php:1182
+#: class-wc-mbway-ifthen-webdados.php:1268
+#: class-wc-multibanco-ifthen-webdados.php:1261
+#: class-wc-payshop-ifthen-webdados.php:1187
 msgid "This is important"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1264
-#: class-wc-multibanco-ifthen-webdados.php:1243
-#: class-wc-payshop-ifthen-webdados.php:1182
+#: class-wc-mbway-ifthen-webdados.php:1268
+#: class-wc-multibanco-ifthen-webdados.php:1261
+#: class-wc-payshop-ifthen-webdados.php:1187
 msgid "Do it here"
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1285
-#: class-wc-payshop-ifthen-webdados.php:1203
+#: class-wc-mbway-ifthen-webdados.php:1289
+#: class-wc-payshop-ifthen-webdados.php:1208
 #, php-format
 msgid "There’s a new payment method available: %s."
 msgstr ""
 
-#: class-wc-mbway-ifthen-webdados.php:1291
-#: class-wc-payshop-ifthen-webdados.php:1209
+#: class-wc-mbway-ifthen-webdados.php:1295
+#: class-wc-payshop-ifthen-webdados.php:1214
 #, php-format
 msgid "Ask IfthenPay to activate it on your account and then %sconfigure it here%s."
 msgstr ""
@@ -947,57 +947,69 @@ msgstr ""
 msgid "If the %1$s“New order” email notification%2$s is active"
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:360
+#: class-wc-multibanco-ifthen-webdados.php:363
 msgid "Shows “Pagamento de Serviços no Multibanco” (using IfthenPay) as a supported payment gateway, and automatically sets subscription renewal orders to be paid with Multibanco if the original subscription used this payment method. If this option is not activated, Multibanco will only be available as a payment method for subscriptions if the “Manual Renewal Payments” option is enabled on WooCommerce Subscriptions settings."
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:370
-#: class-wc-payshop-ifthen-webdados.php:319
+#: class-wc-multibanco-ifthen-webdados.php:371
+msgid "WooCommerce Blocks Checkout"
+msgstr ""
+
+#: class-wc-multibanco-ifthen-webdados.php:373
+msgid "Enable WooCommerce Blocks Checkout (experimental)  support."
+msgstr ""
+
+#: class-wc-multibanco-ifthen-webdados.php:374
+msgid "Shows “Pagamento de Serviços no Multibanco” (using IfthenPay) as a supported payment gateway on the new WooCommerce Blocks Checkout."
+msgstr ""
+
+#: class-wc-multibanco-ifthen-webdados.php:387
+#: class-wc-payshop-ifthen-webdados.php:324
 msgid "Email reference update to client?"
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:372
-#: class-wc-payshop-ifthen-webdados.php:321
+#: class-wc-multibanco-ifthen-webdados.php:389
+#: class-wc-payshop-ifthen-webdados.php:326
 msgid "If the payment details change because of an update on the backend, should the client be notified?"
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:433
+#: class-wc-multibanco-ifthen-webdados.php:450
 msgid "Fill out all the details (Entity and Subentity) provided by <strong>IfthenPay</strong> in the fields below."
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:436
+#: class-wc-multibanco-ifthen-webdados.php:453
 msgid "Entity and Subentity"
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:439
+#: class-wc-multibanco-ifthen-webdados.php:456
 #, php-format
 msgid "Ask IfthenPay to activate “Multibanco Callback” on your account using this exact URL: %1$s and this Anti-phishing key: %2$s"
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:514
+#: class-wc-multibanco-ifthen-webdados.php:531
 msgid "Invalid Entity (exactly 5 numeric characters) and/or Subentity (1 to 3 numeric characters)."
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:520
+#: class-wc-multibanco-ifthen-webdados.php:537
 msgid "Set the Entity/Subentity and Save changes to set other plugin options."
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:534
+#: class-wc-multibanco-ifthen-webdados.php:551
 msgid "Mode"
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:538
+#: class-wc-multibanco-ifthen-webdados.php:555
 #, php-format
 msgid "Incremental references with expiration date (%d days)"
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:636
-#: class-wc-multibanco-ifthen-webdados.php:806
+#: class-wc-multibanco-ifthen-webdados.php:653
+#: class-wc-multibanco-ifthen-webdados.php:824
 msgid "Error getting Multibanco payment details"
 msgstr ""
 
-#: class-wc-multibanco-ifthen-webdados.php:878
-#: class-wc-multibanco-ifthen-webdados.php:1134
+#: class-wc-multibanco-ifthen-webdados.php:896
+#: class-wc-multibanco-ifthen-webdados.php:1152
 msgid "Multibanco payment received."
 msgstr ""
 
@@ -1014,7 +1026,7 @@ msgid "Enable “Payshop” (using IfthenPay)"
 msgstr ""
 
 #: class-wc-payshop-ifthen-webdados.php:198
-#: class-wc-payshop-ifthen-webdados.php:385
+#: class-wc-payshop-ifthen-webdados.php:390
 msgid "Payshop Key"
 msgstr ""
 
@@ -1050,25 +1062,25 @@ msgstr ""
 msgid "How many days must the reference be valid for payment?"
 msgstr ""
 
-#: class-wc-payshop-ifthen-webdados.php:382
+#: class-wc-payshop-ifthen-webdados.php:387
 msgid "Fill out all the details (Payshop Key) provided by <strong>IfthenPay</strong> in the fields below."
 msgstr ""
 
-#: class-wc-payshop-ifthen-webdados.php:388
+#: class-wc-payshop-ifthen-webdados.php:393
 #, php-format
 msgid "Ask IfthenPay to activate “Payshop Callback” on your account using this exact URL: %1$s and this Anti-phishing key: %2$s"
 msgstr ""
 
-#: class-wc-payshop-ifthen-webdados.php:457
+#: class-wc-payshop-ifthen-webdados.php:462
 msgid "Invalid Payshop Key (exactly 10 characters)."
 msgstr ""
 
-#: class-wc-payshop-ifthen-webdados.php:463
+#: class-wc-payshop-ifthen-webdados.php:468
 msgid "Set the Payshop Key and Save changes to set other plugin options."
 msgstr ""
 
-#: class-wc-payshop-ifthen-webdados.php:812
-#: class-wc-payshop-ifthen-webdados.php:1083
+#: class-wc-payshop-ifthen-webdados.php:817
+#: class-wc-payshop-ifthen-webdados.php:1088
 msgid "Payshop payment received."
 msgstr ""
 

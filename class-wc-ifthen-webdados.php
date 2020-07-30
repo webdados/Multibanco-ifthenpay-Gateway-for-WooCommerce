@@ -85,38 +85,47 @@ final class WC_IfthenPay_Webdados {
 
 	/* Constructor */
 	public function __construct() {
-		$this->wpml_active = function_exists( 'icl_object_id' ) && function_exists( 'icl_register_string' );
-		$this->wc_deposits_active = function_exists( 'wc_deposits_woocommerce_is_active' );
+		$this->wpml_active             = function_exists( 'icl_object_id' ) && function_exists( 'icl_register_string' );
+		$this->wc_deposits_active      = function_exists( 'wc_deposits_woocommerce_is_active' );
 		$this->wc_subscriptions_active = function_exists( 'wcs_get_subscription' );
-		$this->wc_blocks_active = class_exists( '\Automattic\WooCommerce\Blocks\Package' ) && version_compare( \Automattic\WooCommerce\Blocks\Package::get_version(), '3.0.0', '>=' );
-		$this->out_link_utm = '?utm_source='.rawurlencode( esc_url( home_url( '/' ) ) ).'&amp;utm_medium=link&amp;utm_campaign=mb_ifthen_plugin';
+		$this->wc_blocks_active        =
+			class_exists( '\Automattic\WooCommerce\Blocks\Package' )
+			&&
+			//Only above 3.0
+			version_compare( \Automattic\WooCommerce\Blocks\Package::get_version(), '3.0.0', '>=' )
+			&&
+			//And only if the featured plugin is installed
+			defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' )
+			&&
+			WC_BLOCKS_IS_FEATURE_PLUGIN;
+		$this->out_link_utm            = '?utm_source='.rawurlencode( esc_url( home_url( '/' ) ) ).'&amp;utm_medium=link&amp;utm_campaign=mb_ifthen_plugin';
 		//Multibanco
-		$this->multibanco_settings = get_option( 'woocommerce_multibanco_ifthen_for_woocommerce_settings', '' );
-		$this->multibanco_notify_url = (
-									get_option( 'permalink_structure' ) == ''
-									?
-									home_url( '/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]' )
-									:
-									home_url( '/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]' )
-								);
+		$this->multibanco_settings     = get_option( 'woocommerce_multibanco_ifthen_for_woocommerce_settings', '' );
+		$this->multibanco_notify_url   = (
+			get_option( 'permalink_structure' ) == ''
+			?
+			home_url( '/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]' )
+			:
+			home_url( '/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]' )
+		);
 		//MB WAY
-		$this->mbway_settings = get_option( 'woocommerce_mbway_ifthen_for_woocommerce_settings', '' );
-		$this->mbway_notify_url = (
-									get_option( 'permalink_structure' ) == ''
-									?
-									home_url( '/?wc-api=WC_MBWAY_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]' )
-									:
-									home_url( '/wc-api/WC_MBWAY_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]' )
-								);
+		$this->mbway_settings          = get_option( 'woocommerce_mbway_ifthen_for_woocommerce_settings', '' );
+		$this->mbway_notify_url        = (
+			get_option( 'permalink_structure' ) == ''
+			?
+			home_url( '/?wc-api=WC_MBWAY_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]' )
+			:
+			home_url( '/wc-api/WC_MBWAY_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]' )
+		);
 		//Payshop
-		$this->payshop_settings = get_option( 'woocommerce_payshop_ifthen_for_woocommerce_settings', '' );
-		$this->payshop_notify_url = (
-									get_option( 'permalink_structure' ) == ''
-									?
-									home_url( '/?wc-api=WC_Payshop_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]' )
-									:
-									home_url( '/wc-api/WC_Payshop_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]' )
-								);
+		$this->payshop_settings        = get_option( 'woocommerce_payshop_ifthen_for_woocommerce_settings', '' );
+		$this->payshop_notify_url      = (
+			get_option( 'permalink_structure' ) == ''
+			?
+			home_url( '/?wc-api=WC_Payshop_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]' )
+			:
+			home_url( '/wc-api/WC_Payshop_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]' )
+		);
 		//Hooks
 		$this->init_hooks();
 	}

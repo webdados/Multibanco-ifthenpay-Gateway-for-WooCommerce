@@ -500,7 +500,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 		public function send_callback_email() {
 			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) != '' ) {
 				//Webservice
-				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'PAYSHOP', $this->payshopkey, $this->secret_key, WC_IfthenPay_Webdados()->mbway_notify_url );
+				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'PAYSHOP', $this->payshopkey, $this->secret_key, WC_IfthenPay_Webdados()->payshop_notify_url );
 				if ( $result['success'] ) {
 					update_option( $this->id . '_callback_email_sent', 'yes' );
 					WC_Admin_Settings::add_message( __( 'The “Callback” activation request has been submited to IfthenPay via webservice and is now active.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );

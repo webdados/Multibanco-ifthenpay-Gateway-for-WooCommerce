@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 4.1
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 4.4.3
+Stable tag: 4.4.4
 
 This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using Multibanco (Pag. Serviços), MB WAY and Payshop through IfthenPay’s payment gateway.
 
@@ -177,8 +177,13 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 4.4.3 - 2020-07-23 =
+= 4.4.4 - 2020-08-05 =
 * You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
+* Bugfix on the Payshop callback activation request
+* Tested with WordPress 5.5-RC1-48708, WooCommerce 4.4.0-rc.1 and WooCommerce Blocks 3.1.0
+
+
+= 4.4.3 - 2020-07-23 =
 * Revert showing the Multibanco "payment received" message on order completed emails (introduced on 4.4.0)
 * Only show WooCommerce Subscriptions options if the plugin is active
 * Only enable Multibanco support for the WooCommerce Blocks checkout if WooCommerce Blocks version is 3.0.0. or above and the support is enabled via the payment method options

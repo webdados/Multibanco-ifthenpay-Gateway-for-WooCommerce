@@ -179,7 +179,9 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 4.4.4 - 2020-08-05 =
 * You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
+* New WooCommerce Blocks checkout only if the feature plugin is installed and activated
 * Bugfix on the Payshop callback activation request
+* Fix a PHP notice
 * Tested with WordPress 5.5-RC1-48708, WooCommerce 4.4.0-rc.1 and WooCommerce Blocks 3.1.0
 
 

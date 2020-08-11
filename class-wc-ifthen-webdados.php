@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.4.4';
+	public $version = '4.4.5';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -1984,7 +1984,12 @@ wc_price( $order_total_to_pay )
 	 * @since 4.4.1
 	 */
 	public function order_needs_payment( $order ) {
-		return $order->needs_payment() || $order->mb_get_status() == 'on-hold' || $order->mb_get_status() == 'pending';
+		if ( method_exists( $order, 'mb_get_status' ) ) {
+			return $order->needs_payment() || $order->mb_get_status() == 'on-hold' || $order->mb_get_status() == 'pending';
+		} else {
+			//Payshop might send us a regular WooCommerce order and not ours - In the future this is the only one to be used
+			return $order->needs_payment() || $order->get_status() == 'on-hold' || $order->get_status() == 'pending';
+		}
 	}
 
 	/**

@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.4.5';
+	public $version = '4.4.6';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -177,10 +177,12 @@ final class WC_IfthenPay_Webdados {
 			if( ! wp_next_scheduled ( 'wc_ifthen_hourly_cron' ) ) {
 				wp_schedule_event( time(), 'hourly', 'wc_ifthen_hourly_cron' );
 			}
-			// Cancel orders with expired references - Multibanco
-			if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && $this->multibanco_settings['cancel_expired'] == 'yes' ) {
-				add_action( 'wc_ifthen_hourly_cron', array( $this, 'multibanco_cancel_expired_orders' ) );
-			}
+			// Cancel orders with expired references - Multibanco (after_setup_theme so it runs after theme's functions.php file)
+			add_action( 'after_setup_theme', function() {
+				if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && $this->multibanco_settings['cancel_expired'] == 'yes' ) {
+					add_action( 'wc_ifthen_hourly_cron', array( $this, 'multibanco_cancel_expired_orders' ) );
+				}
+			} );
 		}
 		//Identify pay form form existing orders
 		add_action( 'woocommerce_before_pay_action', function() {

@@ -14,5 +14,6 @@ MULTIBANCO:
 - Opção para cancelar encomendas cuja expiração da referência já passou
 
 MBWAY:
+- O mbway.js deve verificar se está paga e não o estado da encomenda, ou então pelo menos pesquisar "processing" e "completed"
 - Processar refunds e pedir pelo webservice (callback já está)
 	- Verificar condições e para quem pode ou não ser activado

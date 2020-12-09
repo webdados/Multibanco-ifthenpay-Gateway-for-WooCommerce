@@ -179,7 +179,7 @@ final class WC_IfthenPay_Webdados {
 			}
 			// Cancel orders with expired references - Multibanco (after_setup_theme so it runs after theme's functions.php file)
 			add_action( 'after_setup_theme', function() {
-				if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && $this->multibanco_settings['cancel_expired'] == 'yes' ) {
+				if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && isset( $this->multibanco_settings['cancel_expired'] ) && ( $this->multibanco_settings['cancel_expired'] == 'yes' ) ) {
 					add_action( 'wc_ifthen_hourly_cron', array( $this, 'multibanco_cancel_expired_orders' ) );
 				}
 			} );
@@ -1517,8 +1517,7 @@ wc_price( $order_total_to_pay )
 	/* Multibanco cancel expired orders if incremental_expire mode is active */
 	public function multibanco_cancel_expired_orders() {
 		// We are not doing this on the gateway itself because the cron doesn't always load the gateways
-		if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && $this->multibanco_settings['cancel_expired'] == 'yes' ) {
-
+		if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && isset( $this->multibanco_settings['cancel_expired'] ) && ( $this->multibanco_settings['cancel_expired'] == 'yes' ) ) {
 			$expired_orders = wc_get_orders( array( // https://github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
 				'status'                            => array( 'on-hold', 'pending' ), //Aqui não usamos os unpaid statuses porque podemos entrar num loop se alguém adicionar o estado cancelada e também porque não faz sentido para parcialmente pagas
 				'type'                              => array( 'shop_order' ),

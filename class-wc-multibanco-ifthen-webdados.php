@@ -335,7 +335,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 					$this->form_fields = array_merge( $this->form_fields, array(
 						'cancel_expired' => array(
 							'title'   => __( 'Cancel unpaid orders after expire?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
-							'type'    => 'checkbox', 
+							'type'    => 'checkbox',
 							'label'   => __( 'Automatically cancel unpaid orders after the Multibanco reference expires', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' '.__( '(experimental)', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 							'default' => 'no'
 						),
@@ -943,7 +943,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY and Paysh
 			WC()->cart->empty_cart();
 			
 			// Empty awaiting payment session
-			if ( isset( $_SESSION['order_awaiting_payment'] ) ) unset($_SESSION['order_awaiting_payment'] );
+			if ( isset( $_SESSION['order_awaiting_payment'] ) ) unset( $_SESSION['order_awaiting_payment'] );
 			
 			// Paying again? Force new payment details?
 			if ( WC_IfthenPay_Webdados()->is_pay_form ) {

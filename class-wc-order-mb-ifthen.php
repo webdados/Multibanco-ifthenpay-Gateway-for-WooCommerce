@@ -17,14 +17,14 @@ class WC_Order_MB_Ifthen extends WC_Order {
 	 * @return int
 	 */
 	public function mb_get_id() {
-		return version_compare( WC_VERSION, '3.0', '>=' ) ? $this->get_id() : $this->id;
+		return $this->get_id();
 	}
 
 	/**
 	 * Returns the unique key for this order.
 	 */
 	public function mb_get_order_key() {
-		return version_compare( WC_VERSION, '3.0', '>=' ) ? $this->get_order_key() : $this->order_key;
+		return ? $this->get_order_key();
 	}
 
 	/**
@@ -32,7 +32,7 @@ class WC_Order_MB_Ifthen extends WC_Order {
 	 * @return string
 	 */
 	public function mb_get_payment_method() {
-		return version_compare( WC_VERSION, '3.0', '>=' ) ? $this->get_payment_method() : $this->payment_method;
+		return $this->get_payment_method();
 	}
 
 	/**
@@ -40,7 +40,7 @@ class WC_Order_MB_Ifthen extends WC_Order {
 	 * @return float
 	 */
 	public function mb_get_total() {
-		return version_compare( WC_VERSION, '3.0', '>=' ) ? $this->get_total() : $this->order_total;
+		return $this->get_total();
 	}
 
 	/**
@@ -48,11 +48,11 @@ class WC_Order_MB_Ifthen extends WC_Order {
 	 * @return string
 	 */
 	public function mb_get_status() {
-		return version_compare( WC_VERSION, '3.0', '>=' ) ? $this->get_status() : $this->status;
+		return $this->get_status();
 	}
 
 	/**
-	 * Returns the order WPML Language
+	 * Returns the order WPML Language - Needs to go somewhere else and be replaced on the other classes
 	 * @return string
 	 */
 	public function mb_get_wpml_language() {
@@ -63,68 +63,44 @@ class WC_Order_MB_Ifthen extends WC_Order {
 	 * Gets order meta
 	 */
 	public function mb_get_meta( $key ) {
-		if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
-			return $this->get_meta( $key );
-		} else {
-			return get_post_meta( $this->mb_get_id(), $key, true );
-		}
+		return $this->get_meta( $key );
 	}
 
 	/**
 	 * Sets order meta
 	 */
 	public function mb_update_meta_data( $key, $value ) {
-		if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
-			$this->update_meta_data( $key, $value );
-			$this->save();
-		} else {
-			update_post_meta( $this->mb_get_id(), $key, $value );
-		}
+		$this->update_meta_data( $key, $value );
+		$this->save();
 	}
 
 	/**
 	 * Delete order meta
 	 */
 	public function mb_delete_meta_data( $key ) {
-		if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
-			$this->delete_meta_data( $key );
-			$this->save();
-		} else {
-			delete_post_meta( $this->mb_get_id(), $key );
-		}
+		$this->delete_meta_data( $key );
+		$this->save();
 	}
 
 	/**
-	 * Reduce order stock
+	 * Reduce order stock - Needs to go somewhere else and be replaced on the other classes
 	 */
 	public function mb_reduce_order_stock() {
-		if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
-			wc_reduce_stock_levels( $this->get_id() );
-		} else {
-			$this->reduce_order_stock();
-		}
+		wc_reduce_stock_levels( $this->get_id() );
 	}
 
 	/**
 	 * Returns date created
 	 */
 	public function mb_get_date_created() {
-		if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
-			return $this->get_date_created()->date( 'Y-m-d H:i:s' );
-		} else {
-			return $this->order_date;
-		}
+		return $this->get_date_created()->date( 'Y-m-d H:i:s' );
 	}
 
 	/**
 	 * Returns date paid
 	 */
 	public function mb_get_date_paid() {
-		if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
-			return $this->get_date_paid();
-		} else {
-			return get_post_meta( $this->mb_get_id(), '_paid_date', true );
-		}
+		return $this->get_date_paid();
 	}
 
 

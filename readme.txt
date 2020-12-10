@@ -176,9 +176,13 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 = ... =
 * New payment method available: Credit or Debit Card
 * Plugin name changed
+
+* Requires WooCommerce 3.0.0 or above
+* **For WooCommerce 2.6.0 support you need to use [version 4.4.6](https://downloads.wordpress.org/plugin/multibanco-ifthen-software-gateway-for-woocommerce.4.4.6.zip)**
+
 * Full readme.txt and hooks-examples.php revision
 * Fix a PHP notice on Multibanco “Incremental references with expiration date” mode
-* Tested with WordPress 5.6 and WooCommerce 4.8.0-rc.2
+* Tested with WordPress 5.6 and WooCommerce 4.8.0
 
 = 4.4.6 - 2020-11-04 =
 * You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**

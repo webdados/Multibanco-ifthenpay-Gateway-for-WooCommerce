@@ -168,7 +168,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 					$orders = get_posts( $args );
 					/* THIS SHOULD BE ABSTRACTED FROM POST / POST META - END - Not really because on these versions orders will always be posts */
 					foreach ( $orders as $orderpost ) {
-						$order = new WC_Order_MB_Ifthen( $orderpost->ID );
+						$order = wc_get_order( $orderpost->ID );
 						$order->update_meta_data( '_'.$this->id.'_val', $order->get_total() );
 						$order->save();
 					}
@@ -629,9 +629,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		 */
 		function thankyou( $order_id ) {
 			if ( is_object( $order_id ) ) {
-				$order_id = $order_id->get_id();
+				$order = $order_id;
+			} else {
+				$order = wc_get_order( $order_id );
 			}
-			$order = new WC_Order_MB_Ifthen( $order_id );
 			if ( $this->id === $order->get_payment_method() ) {
 				if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 					//We might have to deal with deposits...
@@ -774,8 +775,6 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 			$this->debug_log_extra( 'Email ('.$email_id.') instructions send: '.( $send ? 'true' : 'false' ) );
 			//Send
 			if ( $send ) {
-				$order_id = $order->get_id();
-				$order = new WC_Order_MB_Ifthen( $order_id );
 				//Go
 				if ( $this->id === $order->get_payment_method() ) {
 					$show = false;
@@ -914,7 +913,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		 */
 		function process_payment( $order_id ) {
 			
-			$order = new WC_Order_MB_Ifthen( $order_id );
+			$order = wc_get_order( $order_id );
 			$this->debug_log_extra( 'process_payment - Order '.$order->get_id() );
 			
 			//WooCommerce Deposits - When generating second payment reference the order goes from partially paid to on hold, and that has an email (??!)
@@ -1027,7 +1026,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		}
 		/* Reduce stock on 'wc_maybe_reduce_stock_levels'? */
 		function woocommerce_payment_complete_reduce_order_stock( $bool, $order_id ) {
-			$order = new WC_Order_MB_Ifthen( $order_id );
+			$order = wc_get_order( $order_id );
 			if ( $order->get_payment_method() == $this->id ) {
 				return ( WC_IfthenPay_Webdados()->woocommerce_payment_complete_reduce_order_stock( $bool, $order_id, $this->id, $this->stock_when ) );
 			} else {
@@ -1097,7 +1096,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 						$orders_exist = true;
 						$orders_count = count($orders);
 						foreach ( $orders as $order ) {
-							$order = new WC_Order_MB_Ifthen( $order->get_id() );
+							//Just getting the last one
 						}
 					}
 					if ( $orders_exist ) {

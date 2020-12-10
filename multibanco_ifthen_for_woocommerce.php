@@ -38,7 +38,6 @@ if ( in_array( 'woocommerce/woocommerce.php', (array) get_option( 'active_plugin
 	function mbifthen_init() {
 		if ( class_exists( 'WooCommerce' ) && defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '3.0', '>=' ) ) { //We check again because WooCommerce could have "died", also wee need to check the WooCommerce version
 			require_once( dirname( __FILE__ ) . '/class-wc-ifthen-webdados.php' );
-			require_once( dirname( __FILE__ ) . '/class-wc-order-mb-ifthen.php' );
 			require_once( dirname( __FILE__ ) . '/class-wc-multibanco-ifthen-webdados.php' );
 			require_once( dirname( __FILE__ ) . '/class-wc-mbway-ifthen-webdados.php' );
 			if ( version_compare( WC_VERSION, '4.0', '>=' ) ) {

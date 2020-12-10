@@ -523,9 +523,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		 */
 		function thankyou( $order_id ) {
 			if ( is_object( $order_id ) ) {
-				$order_id = $order_id->get_id();
+				$order = $order_id;
+			} else {
+				$order = wc_get_order( $order_id );
 			}
-			$order = new WC_Order_MB_Ifthen( $order_id );
 			if ( $this->id === $order->get_payment_method() ) {
 				if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 					//We might have to deal with deposits...
@@ -669,7 +670,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		}
 		function thankyou_instructions_table_html_expired( $order_id, $order_total ) { //Missing MB WAY email or phone number?
 			$alt = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
-			$order = new WC_Order_MB_Ifthen( $order_id );
+			$order = wc_get_order( $order_id );
 			ob_start();
 			echo $this->thankyou_instructions_table_html_css();
 			?>
@@ -728,8 +729,6 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 			//$this->debug_log( 'Email instructions send: '.( $send ? 'true' : 'false' ) );
 			//Send
 			if ( $send ) {
-				$order_id = $order->get_id();
-				$order = new WC_Order_MB_Ifthen( $order_id );
 				//Go
 				if ( $this->id === $order->get_payment_method() ) {
 					$show = false;
@@ -849,13 +848,13 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 			return $desc;
 		}
 		function webservice_set_pedido( $order_id, $phone ) {
-			$url = $this->webservice_url.'/SetPedido';
-			$order = new WC_Order_MB_Ifthen( $order_id );
+			$url      = $this->webservice_url.'/SetPedido';
+			$order    = wc_get_order( $order_id );
 			$mbwaykey = apply_filters( 'multibanco_ifthen_base_mbwaykey', $this->mbwaykey, $order );
-			$desc = trim( get_bloginfo( 'name' ) );
-			$desc = substr( $desc, 0, MBWAY_IFTHEN_DESC_LEN - strlen( ' #'.$order_id ) );
-			$desc .= ' #'.$order_id;
-			$args = array(
+			$desc     = trim( get_bloginfo( 'name' ) );
+			$desc     = substr( $desc, 0, MBWAY_IFTHEN_DESC_LEN - strlen( ' #'.$order_id ) );
+			$desc     .= ' #'.$order_id;
+			$args     = array(
 				'method'   => 'POST',
 				'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 30 ),
 				'blocking' => true,
@@ -933,7 +932,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		 */
 		function process_payment( $order_id ) {
 			//Webservice
-			$order = new WC_Order_MB_Ifthen( $order_id );
+			$order = wc_get_order( $order_id );
 			$phone = isset( $_POST[$this->id.'_phone'] ) ? trim( sanitize_text_field( $_POST[$this->id.'_phone'] ) ) : '';
 			if ( $this->webservice_set_pedido( $order_id, $phone ) ) {
 				if ( ! $this->order_initial_status_pending ) {
@@ -1033,7 +1032,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		}
 		/* Reduce stock on 'wc_maybe_reduce_stock_levels'? */
 		function woocommerce_payment_complete_reduce_order_stock( $bool, $order_id ) {
-			$order = new WC_Order_MB_Ifthen( $order_id );
+			$order = wc_get_order( $order_id );
 			if ( $order->get_payment_method() == $this->id ) {
 				return ( WC_IfthenPay_Webdados()->woocommerce_payment_complete_reduce_order_stock( $bool, $order_id, $this->id, $this->stock_when ) );
 			} else {
@@ -1098,18 +1097,18 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 							'_'.$this->id.'_id_pedido' => $id_pedido,
 						);
 						$orders = wc_get_orders( $args );
-						if ( count($orders)>0 ) {
+						if ( count( $orders ) > 0 ) {
 							$orders_exist = true;
-							$orders_count = count($orders);
+							$orders_count = count( $orders );
 							foreach ( $orders as $order ) {
-								$order = new WC_Order_MB_Ifthen( $order->get_id() );
+								//Just getting the last one
 							}
 						} else {
 							$err = 'Error: No orders found awaiting payment with these details - We are going to try by reference (order id) only';
 							$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - No orders found awaiting payment with these details - We are going to try by reference only (if, immediately after, you get the “MB WAY payment received” log entry, you can ignore this error)' );
 							//Maybe the webservice timed-out and we are getting the payment anyway?
 							try {
-								$order = new WC_Order_MB_Ifthen( intval( $referencia ) );
+								$order = wc_get_order( intval( $referencia ) );
 								//Maybe we should check for failed?
 								if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 									$orders_exist = true;

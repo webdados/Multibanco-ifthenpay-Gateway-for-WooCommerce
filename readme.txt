@@ -180,6 +180,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * **For WooCommerce 2.6.0 support you need to use [version 4.4.7](https://downloads.wordpress.org/plugin/multibanco-ifthen-software-gateway-for-woocommerce.4.4.7.zip)**
 * Plugin name changed
 * Remove non-small icons
+* Renamed our order metabox to “IfthenPay” for simplicity
 * Bugfix: check for the “Completed” status on mbway.js, in addition to “Processing”
 * Bugfix: PHP notice on Multibanco “Incremental references with expiration date” mode
 * Full readme.txt and hooks-examples.php revision

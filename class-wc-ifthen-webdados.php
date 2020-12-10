@@ -2152,19 +2152,19 @@ wc_price( $order_total_to_pay )
 						)
 					);
 				}
-				//WooCommerce below 3.0
-				if ( version_compare( WC_VERSION, '3.0', '<' ) ) {
+				//WooCommerce below x
+				/*if ( version_compare( WC_VERSION, 'x', '<' ) ) {
 					$notices[] = sprintf(
 						__( '%1$s - Your version: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'<strong>WooCommerce 3.0</strong>',
+						'<strong>WooCommerce x</strong>',
 						sprintf( 
 							'<strong style="color:red;">%s</strong>',
 							WC_VERSION
 						)
 					)
 					.
-					' - <strong>'.__( 'Support for WC &lt; 3.0 will be removed IN THE NEXT RELEASE!', 'multibanco-ifthen-software-gateway-for-woocommerce' ).'</strong>';
-				}
+					' - <strong>'.__( 'Support for WC &lt; x will end VERY SOON!', 'multibanco-ifthen-software-gateway-for-woocommerce' ).'</strong>';
+				}*/
 				//PHP below 7.0
 				if ( version_compare( phpversion(), '7.0', '<' ) ) {
 					$notices[] = sprintf(

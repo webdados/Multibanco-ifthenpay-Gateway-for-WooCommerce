@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.4.6';
+	public $version = '4.4.7';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -2141,8 +2141,8 @@ wc_price( $order_total_to_pay )
 				)
 			) {
 				$notices = array();
-				//WordPress below 4.4
-				if ( version_compare( get_bloginfo( 'version' ), '4.4', '<' ) ) {
+				//WordPress below 4.5
+				if ( version_compare( get_bloginfo( 'version' ), '4.5', '<' ) ) {
 					$notices[] = sprintf(
 						__( '%1$s - Your version: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'<strong>WordPress 4.4</strong>',
@@ -2163,7 +2163,7 @@ wc_price( $order_total_to_pay )
 						)
 					)
 					.
-					' - <strong>'.__( 'Support for WC &lt; 3.0 will end VERY SOON!', 'multibanco-ifthen-software-gateway-for-woocommerce' ).'</strong>';
+					' - <strong>'.__( 'Support for WC &lt; 3.0 will be removed IN THE NEXT RELEASE!', 'multibanco-ifthen-software-gateway-for-woocommerce' ).'</strong>';
 				}
 				//PHP below 7.0
 				if ( version_compare( phpversion(), '7.0', '<' ) ) {

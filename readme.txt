@@ -3,10 +3,10 @@ Contributors: webdados, ifthenpay
 Tags: woocommerce, multibanco, mbway, payshop, credit card, payment, pagamentos, gateway, mb way, debit card, mobile, atm, debit card, credit card, bank, ecommerce, e-commerce, ifthen, ifthen software, ifthenpay, webdados, sms, php7, cartão de débito, cartão de crédito, cartões, gdpr
 Author URI: https://www.webdados.pt
 Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
-Requires at least: 4.1
+Requires at least: 4.4
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 4.4.6
+Stable tag: 4.4.7
 
 This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using using Multibanco (Pag. Serviços), MB WAY, Credit Card and Payshop through IfthenPay’s payment gateway.
 
@@ -19,7 +19,7 @@ The MB WAY (using the customer mobile phone number), Credit or Debit Card and CT
 
 This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [Webdados](https://www.webdados.pt).
 
-**This plugin will soon require WordPress 4.4, WooCommerce 3.0 and PHP 7.0 or above.**
+**This plugin will soon require WordPress 4.5, WooCommerce 3.0 and PHP 7.0 or above.**
 If you cannot update any of these components, you should check the changelog of this plugin to find out which is the last version you can use in your scenario.
 
 = Are you already issuing automatic invoices on your WooCommerce store? =
@@ -172,20 +172,23 @@ IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termos-polit
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
-
 = ... =
 * New payment method available: Credit or Debit Card
 * Plugin name changed
 
 * Requires WooCommerce 3.0.0 or above
-* **For WooCommerce 2.6.0 support you need to use [version 4.4.6](https://downloads.wordpress.org/plugin/multibanco-ifthen-software-gateway-for-woocommerce.4.4.6.zip)**
+* **For WooCommerce 2.6.0 support you need to use [version 4.4.7](https://downloads.wordpress.org/plugin/multibanco-ifthen-software-gateway-for-woocommerce.4.4.7.zip)**
 
 * Full readme.txt and hooks-examples.php revision
 * Fix a PHP notice on Multibanco “Incremental references with expiration date” mode
-* Tested with WordPress 5.6 and WooCommerce 4.8.0
+
+= 4.4.7 - 2020-12-10 =
+* You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll drop support for WooCommerce previous to 3.0 IN THE NEXT RELEASE**
+* Requires WordPress 4.4 or above
+* Small readme.txt fix
+* Tested with WordPress 5.7-alpha-49782 and WooCommerce 4.8
 
 = 4.4.6 - 2020-11-04 =
-* You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.0 (which was launched in April 2017)**
 * Bugfix setting the Multibanco order cancelation when using references with expiration (Thanks @josefreitas2)
 * Lay ground for a (yet to be confirmed) MBWAY refund functionality - Callback processing
 * Tested with WordPress 5.6-beta1-49314 and WooCommerce 4.7.0-rc.1

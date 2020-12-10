@@ -442,6 +442,15 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 						<small>v.<?php echo $this->version; ?></small>
 						<?php if ( function_exists('wc_back_link') ) echo wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ); ?>
 					</h2>
+					<?php
+					if ( version_compare( WC_VERSION, '3.0', '<' )) {
+						?>
+						<p style="font-size: 1.5em; color: red; font-weight: bold;">
+							<?php _e( 'Support for WooCommerce below 3.0 will be REMOVED in the next release.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+						</p>
+						<?php
+					}
+					?>
 					<?php echo wp_kses_post( wpautop( $this->get_method_description() ) ); ?>
 					<p><strong><?php _e( 'In order to use this plugin you <u>must</u>:', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
 					<ul class="wc_ifthen_list">

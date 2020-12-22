@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '4.4.7';
+	public $version = '4.4.8';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -46,8 +46,8 @@ final class WC_IfthenPay_Webdados {
 	public $multibanco_deposits_already_forced     = false;
 	public $multibanco_ref_mode                    = 'random';
 	public $multibanco_last_incremental_expire_ref = null;
-	public $multibanco_min_value                   = 1;
-	public $multibanco_max_value                   = 999999;
+	public $multibanco_min_value                   = 0;
+	public $multibanco_max_value                   = 99999.99;
 	public $multibanco_banner_email                = '';
 	public $multibanco_banner                      = '';
 	public $multibanco_icon                        = '';
@@ -58,8 +58,8 @@ final class WC_IfthenPay_Webdados {
 	public $mbway_notify_url             = '';
 	public $mbway_minutes                = 5;
 	public $mbway_multiplier_new_payment = 1.2;
-	public $mbway_min_value              = 1;
-	public $mbway_max_value              = 999999;
+	public $mbway_min_value              = 0;
+	public $mbway_max_value              = 99999.99;
 	public $mbway_banner_email           = '';
 	public $mbway_banner                 = '';
 	public $mbway_icon                   = '';
@@ -70,7 +70,7 @@ final class WC_IfthenPay_Webdados {
 	public $payshop_notify_url              = '';
 	public $payshop_action_deposits_set     = false;
 	public $payshop_deposits_already_forced = false;
-	public $payshop_min_value               = 1.2;
+	public $payshop_min_value               = 0;
 	public $payshop_max_value               = 4000;
 	public $payshop_banner_email            = '';
 	public $payshop_banner                  = '';
@@ -179,7 +179,7 @@ final class WC_IfthenPay_Webdados {
 			}
 			// Cancel orders with expired references - Multibanco (after_setup_theme so it runs after theme's functions.php file)
 			add_action( 'after_setup_theme', function() {
-				if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && $this->multibanco_settings['cancel_expired'] == 'yes' ) {
+				if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && isset( $this->multibanco_settings['cancel_expired'] ) && $this->multibanco_settings['cancel_expired'] == 'yes' ) {
 					add_action( 'wc_ifthen_hourly_cron', array( $this, 'multibanco_cancel_expired_orders' ) );
 				}
 			} );
@@ -1517,7 +1517,7 @@ wc_price( $order_total_to_pay )
 	/* Multibanco cancel expired orders if incremental_expire mode is active */
 	public function multibanco_cancel_expired_orders() {
 		// We are not doing this on the gateway itself because the cron doesn't always load the gateways
-		if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && $this->multibanco_settings['cancel_expired'] == 'yes' ) {
+		if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && isset( $this->multibanco_settings['cancel_expired'] ) && $this->multibanco_settings['cancel_expired'] == 'yes' ) {
 
 			$expired_orders = wc_get_orders( array( // https://github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
 				'status'                            => array( 'on-hold', 'pending' ), //Aqui não usamos os unpaid statuses porque podemos entrar num loop se alguém adicionar o estado cancelada e também porque não faz sentido para parcialmente pagas

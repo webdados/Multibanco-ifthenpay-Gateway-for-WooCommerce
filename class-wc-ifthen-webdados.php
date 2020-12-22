@@ -48,7 +48,7 @@ final class WC_IfthenPay_Webdados {
 	public $multibanco_ref_mode                    = 'random';
 	public $multibanco_last_incremental_expire_ref = null;
 	public $multibanco_min_value                   = 0;
-	public $multibanco_max_value                   = 999999;
+	public $multibanco_max_value                   = 99999.99;
 	public $multibanco_banner_email                = '';
 	public $multibanco_banner                      = '';
 	public $multibanco_icon                        = '';
@@ -57,10 +57,10 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables - For MB WAY */
 	public $mbway_settings               = null;
 	public $mbway_notify_url             = '';
-	public $mbway_minutes                = 4;
+	public $mbway_minutes                = 5;
 	public $mbway_multiplier_new_payment = 1.2;
-	public $mbway_min_value              = 0.1;
-	public $mbway_max_value              = 3000;
+	public $mbway_min_value              = 0;
+	public $mbway_max_value              = 99999.99;
 	public $mbway_banner_email           = '';
 	public $mbway_banner                 = '';
 	public $mbway_icon                   = '';
@@ -71,7 +71,7 @@ final class WC_IfthenPay_Webdados {
 	public $payshop_notify_url              = '';
 	public $payshop_action_deposits_set     = false;
 	public $payshop_deposits_already_forced = false;
-	public $payshop_min_value               = 1.2;
+	public $payshop_min_value               = 0;
 	public $payshop_max_value               = 4000;
 	public $payshop_banner_email            = '';
 	public $payshop_banner                  = '';
@@ -81,8 +81,8 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables - For Credit Card */
 	public $creditcard_settings     = null;
 	public $creditcard_notify_url   = '';
-	public $creditcard_min_value    = 0.1; /* No limit in theory */
-	public $creditcard_max_value    = 999999; /* No limit in theory */
+	public $creditcard_min_value    = 0; /* No limit in theory */
+	public $creditcard_max_value    = 99999.99; /* No limit in theory */
 	public $creditcard_banner_email = ''; /* Needed ? */
 	public $creditcard_banner       = ''; /* Needed ? */
 	public $creditcard_icon         = '';

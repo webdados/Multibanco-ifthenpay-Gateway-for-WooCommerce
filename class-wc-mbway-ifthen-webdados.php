@@ -244,8 +244,8 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 									'description' => __( 'Enable only for orders above x &euro;. Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' <br/> '.sprintf(
 										__( 'By design, %1$s only allows payments from %2$s to %3$s (inclusive). You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 										'MB WAY',
-										wc_price( WC_IfthenPay_Webdados()->multibanco_min_value, array( 'currency' => 'EUR' ) ),
-										wc_price( WC_IfthenPay_Webdados()->multibanco_max_value, array( 'currency' => 'EUR' ) )
+										wc_price( WC_IfthenPay_Webdados()->mbway_min_value, array( 'currency' => 'EUR' ) ),
+										wc_price( WC_IfthenPay_Webdados()->mbway_max_value, array( 'currency' => 'EUR' ) )
 									), 
 									'default' => ''
 								),
@@ -255,8 +255,8 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 									'description' => __( 'Enable only for orders below x &euro; (exclusive). Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' <br/> '.sprintf(
 										__( 'By design, %1$s only allows payments from %2$s to %3$s (inclusive). You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 										'MB WAY',
-										wc_price( WC_IfthenPay_Webdados()->multibanco_min_value, array( 'currency' => 'EUR' ) ),
-										wc_price( WC_IfthenPay_Webdados()->multibanco_max_value, array( 'currency' => 'EUR' ) )
+										wc_price( WC_IfthenPay_Webdados()->mbway_min_value, array( 'currency' => 'EUR' ) ),
+										wc_price( WC_IfthenPay_Webdados()->mbway_max_value, array( 'currency' => 'EUR' ) )
 									), 
 									'default' => ''
 								),
@@ -514,7 +514,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		 */
 		public function get_icon() {
 			$alt       = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
-			$icon_html = '<img src="'.esc_url( WC_IfthenPay_Webdados()->mbway_icon ).'" alt="'.esc_attr( $alt ).'" width="25" height="24"/>';
+			$icon_html = '<img src="'.esc_url( WC_IfthenPay_Webdados()->mbway_icon ).'" alt="'.esc_attr( $alt ).'" width="28" height="24"/>';
 			return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
 		}
 
@@ -993,7 +993,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 		 * Just above/bellow certain amounts
 		 */
 		function disable_only_above_or_bellow( $available_gateways ) {
-			return WC_IfthenPay_Webdados()->disable_only_above_or_bellow( $available_gateways, $this->id, WC_IfthenPay_Webdados()->multibanco_min_value, WC_IfthenPay_Webdados()->multibanco_max_value );
+			return WC_IfthenPay_Webdados()->disable_only_above_or_bellow( $available_gateways, $this->id, WC_IfthenPay_Webdados()->mbway_min_value, WC_IfthenPay_Webdados()->mbway_max_value );
 		}
 
 

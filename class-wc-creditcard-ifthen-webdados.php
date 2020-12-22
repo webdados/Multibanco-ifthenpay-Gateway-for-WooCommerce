@@ -274,7 +274,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				<?php if ( ! apply_filters( 'multibanco_ifthen_hide_settings_right_bar', false ) ) WC_IfthenPay_Webdados()->admin_right_bar(); ?>
 				<div id="wc_ifthen_settings">
 					<h2>
-						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->creditcard_banner ); ?>" alt="<?php echo esc_attr( $title ); ?>" width="68" height="48"/>
+						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->creditcard_banner ); ?>" alt="<?php echo esc_attr( $title ); ?>" width="56" height="48"/>
 						<br/>
 						<?php echo $title; ?>
 						<small>v.<?php echo $this->version; ?></small>
@@ -346,7 +346,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		 */
 		public function get_icon() {
 			$alt       = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
-			$icon_html = '<img src="'.esc_attr( WC_IfthenPay_Webdados()->creditcard_icon ).'" alt="'.esc_attr( $alt ).'" width="25" height="24"/>';
+			$icon_html = '<img src="'.esc_attr( WC_IfthenPay_Webdados()->creditcard_icon ).'" alt="'.esc_attr( $alt ).'" width="28" height="24"/>';
 			return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
 		}
 

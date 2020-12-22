@@ -47,7 +47,7 @@ final class WC_IfthenPay_Webdados {
 	public $multibanco_deposits_already_forced     = false;
 	public $multibanco_ref_mode                    = 'random';
 	public $multibanco_last_incremental_expire_ref = null;
-	public $multibanco_min_value                   = 1;
+	public $multibanco_min_value                   = 0;
 	public $multibanco_max_value                   = 999999;
 	public $multibanco_banner_email                = '';
 	public $multibanco_banner                      = '';
@@ -57,10 +57,10 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables - For MB WAY */
 	public $mbway_settings               = null;
 	public $mbway_notify_url             = '';
-	public $mbway_minutes                = 5;
+	public $mbway_minutes                = 4;
 	public $mbway_multiplier_new_payment = 1.2;
-	public $mbway_min_value              = 1;
-	public $mbway_max_value              = 999999;
+	public $mbway_min_value              = 0.1;
+	public $mbway_max_value              = 3000;
 	public $mbway_banner_email           = '';
 	public $mbway_banner                 = '';
 	public $mbway_icon                   = '';

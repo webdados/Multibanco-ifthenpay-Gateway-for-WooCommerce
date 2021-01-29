@@ -71,7 +71,8 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 			}
 
 			//Webservice
-			$this->webservice_url = 'https://www.ifthenpay.com/mbwayWS/IfthenPayMBW.asmx';
+			//$this->webservice_url = 'https://www.ifthenpay.com/mbwayWS/IfthenPayMBW.asmx';
+			$this->webservice_url = 'https://ifthenpaymbway.azurewebsites.net/IfthenPayMBW.asmx';
 
 			//on hold or pending?
 			$this->order_initial_status_pending = apply_filters( 'mbway_ifthen_order_initial_status_pending', true );

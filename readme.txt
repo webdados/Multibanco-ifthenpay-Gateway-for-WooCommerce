@@ -181,7 +181,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Plugin name changed
 * Remove non-small icons
 * Renamed our order metabox to “IfthenPay” for simplicity
-* New and faster MBWAY endpoint
+* --------------------------------------------------------------->>>>> New and faster MBWAY endpoint TBC
 * Bugfix: check for the “Completed” status on mbway.js, in addition to “Processing”
 * Bugfix: PHP notice on Multibanco “Incremental references with expiration date” mode
 * Full readme.txt and hooks-examples.php revision

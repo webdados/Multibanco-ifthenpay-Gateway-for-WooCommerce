@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 4.4
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 5.5.0-beta
+Stable tag: 5.0.0-beta
 
 This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using using Multibanco (Pag. Serviços), MB WAY, Credit Card and Payshop through IfthenPay’s payment gateway.
 
@@ -173,18 +173,27 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 5.0.0 =
+= 5.0.0 - DATE? =
 * You can safely update this plugin if you’re running WooCommece 3.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.4 (which was launched in May 2018)**
 * **New payment method available: “Credit or Debit Card”** (WooCommerce >= 4.0)
 * **Requires WooCommerce 3.0.0 or above**
-* **For WooCommerce 2.6.0 support you need to use [version 4.4.7](https://downloads.wordpress.org/plugin/multibanco-ifthen-software-gateway-for-woocommerce.4.4.7.zip)**
+* **For WooCommerce 2.6.0 support you need to use [version 4.4.8](https://downloads.wordpress.org/plugin/multibanco-ifthen-software-gateway-for-woocommerce.4.4.8.zip)**
 * Plugin name changed
 * Remove non-small icons
 * Renamed our order metabox to “IfthenPay” for simplicity
 * --------------------------------------------------------------->>>>> New and faster MBWAY endpoint TBC
 * Bugfix: check for the “Completed” status on mbway.js, in addition to “Processing”
 * Bugfix: PHP notice on Multibanco “Incremental references with expiration date” mode
+* Bugfix: When paying again from the customer area, the old reference was being sent on the email in Multibanco “Incremental references with expiration date” mode
+* Fix force “New order” email to the store owner upon Multibanco payment on WooCommerce 5.0 and above and add the same functionality to Payshop
 * Full readme.txt and hooks-examples.php revision
+
+= 4.4.8 - 2020-12-22 =
+* You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll drop support for WooCommerce previous to 3.0 IN THE NEXT RELEASE**
+* Last release before 5.0 (good news are on its way)
+* Fix minimum and maximum values for all gateways
+* Fix PHP notice
+* Tested with WordPress 5.7-alpha-49862 and WooCommerce 4.9.0-beta.1
 
 = 4.4.7 - 2020-12-10 =
 * You can safely update this plugin if you’re running WooCommece 2.6.0 or newer **but we’ll drop support for WooCommerce previous to 3.0 IN THE NEXT RELEASE**

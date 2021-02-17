@@ -145,15 +145,19 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 		 */
 		function upgrade() {
 			if ( $this->get_option( 'version' ) < $this->version ) {
+				$current_options = get_option( 'woocommerce_'.$this->id.'_settings', '' );
+				if ( ! is_array( $current_options ) ) $current_options = array();
 				//Upgrade
 				$this->debug_log( 'Upgrade to '.$this->version.' started' );
-				//Nothing so far
-				//...
+				if ( $this->version >= '5.0.0' ) {
+					//Activate the resend new order option by default
+					if ( ! isset( $current_options['resend_new_order_when_paid'] ) ) {
+						$current_options['resend_new_order_when_paid'] = 'yes';
+					}
+				}
 				//Upgrade on the database - Risky?
-				$temp = get_option( 'woocommerce_'.$this->id.'_settings', '' );
-				if ( !is_array($temp) ) $temp = array();
-				$temp['version'] = $this->version;
-				update_option( 'woocommerce_'.$this->id.'_settings', $temp );
+				$current_options['version'] = $this->version;
+				update_option( 'woocommerce_'.$this->id.'_settings', $current_options );
 				$this->debug_log( 'Upgrade to '.$this->version.' finished' );
 			}
 		}
@@ -285,6 +289,17 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 										'order'	=> __( 'when order is placed (before payment, WooCommerce default)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 										''		=> __( 'when order is paid (requires active callback)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 									),
+								),
+					'resend_new_order_when_paid' => array(
+									'title' => __( 'Notify store owner of payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+									'type' => 'checkbox', 
+									'label' => __( 'Force resending the “New order” email to the store owner upon payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									'description' => sprintf(
+										__( 'If the %1$s“New order” email notification%2$s is active', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+										'<a href="admin.php?page=wc-settings&amp;tab=email&section=wc_email_new_order" target="_blank">',
+										'</a>'
+									),
+									'default' => 'yes'
 								),
 					'validity' => array(
 									'title' => __( 'Reference validity', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
@@ -1097,6 +1112,15 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 										}
 									}
 									$this->payment_complete( $order, '', $note );
+									//Force resending "New Order" email to the store owner (before 3.4.2 we had a "bug" that made this email duplicate - and people are used to it)
+									if ( apply_filters( 'payshop_ifthen_set_on_hold', true, $order->get_id() ) ) { //Only if we set it on hold in the first place
+										if ( $this->get_option( 'resend_new_order_when_paid' ) == 'yes' ) { //And the option is activated
+											//From WooCommerce 5.0 we need to force it
+											add_filter( 'woocommerce_new_order_email_allows_resend', '__return_true' );
+											WC()->mailer()->emails['WC_Email_New_Order']->trigger( $order->get_id(), $order );
+											remove_filter( 'woocommerce_new_order_email_allows_resend', '__return_true' );
+										}
+									}
 									do_action( 'payshop_ifthen_callback_payment_complete', $order->get_id() );
 									
 									header( 'HTTP/1.1 200 OK' );

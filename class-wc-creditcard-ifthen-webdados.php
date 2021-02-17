@@ -113,15 +113,15 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		 */
 		function upgrade() {
 			if ( $this->get_option( 'version' ) < $this->version ) {
+				$current_options = get_option( 'woocommerce_'.$this->id.'_settings', '' );
+				if ( ! is_array( $current_options ) ) $current_options = array();
 				//Upgrade
 				$this->debug_log( 'Upgrade to '.$this->version.' started' );
 				//Nothing so far
 				//...
 				//Upgrade on the database - Risky?
-				$temp = get_option( 'woocommerce_'.$this->id.'_settings', '' );
-				if ( !is_array($temp) ) $temp = array();
-				$temp['version'] = $this->version;
-				update_option( 'woocommerce_'.$this->id.'_settings', $temp );
+				$current_options['version'] = $this->version;
+				update_option( 'woocommerce_'.$this->id.'_settings', $current_options );
 				$this->debug_log( 'Upgrade to '.$this->version.' finished' );
 			}
 		}

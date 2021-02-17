@@ -142,7 +142,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 		function upgrade() {
 			if ( $this->get_option( 'version' ) < $this->version ) {
 				$current_options = get_option( 'woocommerce_'.$this->id.'_settings', '' );
-				if ( !is_array($current_options) ) $current_options = array();
+				if ( ! is_array( $current_options ) ) $current_options = array();
 				//Upgrade
 				$this->debug_log( 'Upgrade to '.$this->version.' started' );
 				if ( $this->version == '1.0.1' ) {
@@ -920,21 +920,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 				add_filter( 'woocommerce_email_enabled_customer_processing_order', '__return_false' );
 				add_filter( 'woocommerce_email_enabled_full_payment', '__return_false' );
 			}
-			
-			// Mark as on-hold
-			if ( apply_filters( 'multibanco_ifthen_set_on_hold', true, $order->get_id() ) ) $order->update_status( 'on-hold', __( 'Awaiting Multibanco payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
-			
-			// Reduce stock levels
-			if ( $this->stock_when == 'order' && version_compare( WC_VERSION, '3.4.0', '<' ) ) wc_reduce_stock_levels( $order->get_id() );
-			
-			// Remove cart
-			if ( isset( WC()->cart ) ) {
-				WC()->cart->empty_cart();
-			}
-			
-			// Empty awaiting payment session
-			if ( isset( $_SESSION['order_awaiting_payment'] ) ) unset( $_SESSION['order_awaiting_payment'] );
-			
+
 			// Paying again? Force new payment details?
 			if ( WC_IfthenPay_Webdados()->is_pay_form ) {
 				//We only force new payment details for incremental_expire mode and entities with no repetition of references 
@@ -968,6 +954,22 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 					$this->debug_log_extra( 'process_payment - Is pay form, details from database NOT cleared - Order '.$order->get_id() );
 				}
 			}
+			
+			// Mark as on-hold
+			if ( apply_filters( 'multibanco_ifthen_set_on_hold', true, $order->get_id() ) ) $order->update_status( 'on-hold', __( 'Awaiting Multibanco payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+			
+			// Reduce stock levels
+			if ( $this->stock_when == 'order' && version_compare( WC_VERSION, '3.4.0', '<' ) ) wc_reduce_stock_levels( $order->get_id() );
+			
+			// Remove cart
+			if ( isset( WC()->cart ) ) {
+				WC()->cart->empty_cart();
+			}
+			
+			// Empty awaiting payment session
+			if ( isset( $_SESSION['order_awaiting_payment'] ) ) unset( $_SESSION['order_awaiting_payment'] );
+			
+			// Paying again old location, before 5.0.0
 
 			// Return thankyou redirect
 			$url = $this->get_return_url( $order );
@@ -1135,7 +1137,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MBWAY, Credit C
 								//Force resending "New Order" email to the store owner (before 3.4.2 we had a "bug" that made this email duplicate - and people are used to it)
 								if ( apply_filters( 'multibanco_ifthen_set_on_hold', true, $order->get_id() ) ) { //Only if we set it on hold in the first place
 									if ( $this->get_option( 'resend_new_order_when_paid' ) == 'yes' ) { //And the option is activated
+										//From WooCommerce 5.0 we need to force it
+										add_filter( 'woocommerce_new_order_email_allows_resend', '__return_true' );
 										WC()->mailer()->emails['WC_Email_New_Order']->trigger( $order->get_id(), $order );
+										remove_filter( 'woocommerce_new_order_email_allows_resend', '__return_true' );
 									}
 								}
 								do_action( 'multibanco_ifthen_callback_payment_complete', $order->get_id() );

@@ -923,36 +923,58 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 
 			// Paying again? Force new payment details?
 			if ( WC_IfthenPay_Webdados()->is_pay_form ) {
-				//We only force new payment details for incremental_expire mode and entities with no repetition of references 
+
+				//by default: no
 				$clear_details = false;
-				if ( WC_IfthenPay_Webdados()->get_multibanco_ref_mode() == 'incremental_expire' ) {
-					$clear_details = true;
-					$this->debug_log_extra( 'process_payment - Is pay form, clear details from database to force new ref because mode is incremental_expire - Order '.$order->get_id() );
-				} else {
+				//Do we have Multibanco details?
+				if ( $order_mb_details = WC_IfthenPay_Webdados()->get_multibanco_order_details( $order->get_id() ) ) {
+					//"No repeat" entity? - Force it!
 					$base = apply_filters( 'multibanco_ifthen_base_ent_subent', array( 'ent' => WC_IfthenPay_Webdados()->multibanco_settings['ent'], 'subent' => WC_IfthenPay_Webdados()->multibanco_settings['subent'] ), $order );
 					if ( isset( WC_IfthenPay_Webdados()->multibanco_ents_no_repeat[ $base['ent'] ] ) && intval( WC_IfthenPay_Webdados()->multibanco_ents_no_repeat[ $base['ent'] ] ) > 0 ) {
 						$clear_details = true;
-						$this->debug_log_extra( 'process_payment - Is pay form, clear details from database to force new ref because its a special entity with no repetition of references - Order '.$order->get_id() );
+						$this->debug_log( 'process_payment - Is pay form, clear details from database to force new ref because its a special entity with no repetition of references - Order '.$order->get_id() );
 					} else {
 						//Check if value changed - not very likely
-						if ( $order_mb_details = WC_IfthenPay_Webdados()->get_multibanco_order_details( $order->get_id() ) ) {
-							if ( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) != floatval( $order_mb_details['val'] ) ) {
-								$clear_details = true;
-								$this->debug_log_extra( 'process_payment - Is pay form, clear details from database to force new ref because the value has changed - Order '.$order->get_id() );
-							} else {
-								//NO CHANGE
-							}
+						if ( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) != floatval( $order_mb_details['val'] ) ) {
+							$clear_details = true;
+							$this->debug_log( 'process_payment - Is pay form, clear details from database to force new ref because the value has changed - Order '.$order->get_id() );
 						} else {
-							$clear_details = true; // Unecessary
-							$this->debug_log_extra( 'process_payment - Is pay form, clear details from database to force new ref because there were no details before - Order '.$order->get_id() );
+							//The value hasn't changed - Is it incremental?
+							if ( WC_IfthenPay_Webdados()->get_multibanco_ref_mode() == 'incremental_expire' ) {
+								//Is it expired already?
+								if ( isset( $order_mb_details['exp'] ) && trim( $order_mb_details['exp'] ) != '' ) {
+									if ( trim( $order_mb_details['exp'] ) <= date_i18n( 'Y-m-d H:i' ) ) {
+										//It's expired
+										$clear_details = true;
+										$this->debug_log( 'process_payment - Is pay form, clear details from database to force new ref because because mode is incremental_expire and it is already expired - Order '.$order->get_id() );
+									} else {
+										//Not expired
+										$this->debug_log_extra( 'process_payment - Is pay form, do not issue a new Multibanco reference because the mode is incremental_expire but it is not expired yet - Order '.$order->get_id() );
+									}
+								} else {
+									//No expiration date - not very likely
+									$clear_details = true;
+									$this->debug_log( 'process_payment - Is pay form, clear details from database to force new ref because because mode is incremental_expire but there is no expiration date - Order '.$order->get_id() );
+								}
+							} else {
+								$this->debug_log_extra( 'process_payment - Is pay form, do not issue a new Multibanco reference because the mode is not incremental_expire and the value has not changed - Order '.$order->get_id() );
+							}
 						}
 					}
-				}				
+				} else {
+					//No details - Force it!
+					$clear_details = true;
+					$this->debug_log( 'process_payment - Is pay form, clear details from database to force new ref because there were no details before - Order '.$order->get_id() );
+				}
+
 				if ( $clear_details ) {
 					WC_IfthenPay_Webdados()->multibanco_clear_order_mb_details( $order->get_id() );
+					//And set as pending to force the client email (again) when changing to "On hold" - The shop owner email will NOT be resent because WooCommerce 5.0 does not allow it be sent on duplicate
+					if ( apply_filters( 'multibanco_ifthen_set_on_hold', true, $order->get_id() ) ) $order->update_status( 'pending', __( 'Issue new Multibanco payment details by customer request.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
 				} else {
 					$this->debug_log_extra( 'process_payment - Is pay form, details from database NOT cleared - Order '.$order->get_id() );
 				}
+
 			}
 			
 			// Mark as on-hold

@@ -184,9 +184,11 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Remove non-small icons
 * Renamed our order metabox to “IfthenPay” for simplicity
 * Simplification of the way we check if WooCommerce is active
+* Do not change the Multibanco reference when paying again from the customer areain “Incremental references with expiration date” mode and the reference is not expired yet
 * Bugfix: check for the “Completed” status on mbway.js, in addition to “Processing”
 * Bugfix: PHP notice on Multibanco “Incremental references with expiration date” mode
 * Bugfix: When paying again from the customer area, the old reference was being sent on the email in Multibanco “Incremental references with expiration date” mode
+* Bugfix: When paying again from the customer area, no email was sent if the customer changes from Multibanco to Multibanco in “Incremental references with expiration date” mode and the reference is already expired
 * Full readme.txt and hooks-examples.php revision
 * Several small improvements
 

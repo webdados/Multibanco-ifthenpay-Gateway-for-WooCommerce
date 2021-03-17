@@ -180,6 +180,9 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 = 5.xxx - DATE =
 * You can safely update this plugin if you’re running WooCommece 3.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.4 (which was launched in May 2018)**
 * Fix Credit card settings fields not hiding when the key is not set
+* WooCommerce Blocks (4.7.0 and above) improvements: respect the Multibanco "Only for Portuguese customers" setting and fix icon size
+* Small copy adjustments
+* Tested with WordPress XXXX, WooCommerce XXXX and WooCommerce Blocks 4.7.0
 
 = 5.0.0 - 2020-03-16 =
 * **New payment method available: “Credit or debit card”** (WooCommerce >= 4.0) - You need to sign an [amendment to the contract](https://www.ifthenpay.com/downloads/ifmb/AditamentoCCredito.pdf)

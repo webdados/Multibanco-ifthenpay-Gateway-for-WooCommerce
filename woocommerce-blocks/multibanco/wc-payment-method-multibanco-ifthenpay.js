@@ -65,7 +65,7 @@
 			},
 			s = function (e) {
 
-				var icon = React.createElement( 'img', { src: u.icon, width: 25, height: 24, style: { display: 'inline' } } );
+				var icon = React.createElement( 'img', { src: u.icon, width: 28, height: 24, style: { display: 'inline' } } );
 				var span = React.createElement( 'span', { className: 'wc-block-components-payment-method-label wc-block-components-payment-method-label--with-icon' }, icon, a );
 				return span;
 
@@ -77,7 +77,6 @@
 				content: React.createElement(f, null),
 				edit: React.createElement(f, null),
 				icons: null,
-				//This is not reloading when the user changes country
 				canMakePayment: function ( canPayArgument ) {
 
 					//console.log( 'Multibanco canMakePayment' );
@@ -89,9 +88,13 @@
 					}
 
 					//Portugal?
-					//We only have access to the shipping address
+					if ( u.only_portugal && canPayArgument.billingData ) { //canPayArgument.billingData fixed in WooCommerce Blocks 4.7.0
+						if ( canPayArgument.billingData.country != 'PT' && canPayArgument.shippingAddress.country != 'PT' ) {
+							return false;
+						}
+					}
 
-					//Minimum and maximum value - We are applying these rules but we don't get an update if the value changes because of a coupon or shipping option
+					//Minimum and maximum value
 					var cart_total = canPayArgument.cartTotals.total_price / 100; //It's return in cents (?)
 					if ( u.only_above ) {
 						if ( cart_total < u.only_above ) {

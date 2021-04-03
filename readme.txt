@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 4.6
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 5.0.0
+Stable tag: 5.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -177,13 +177,13 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 5.xxx - DATE =
+= 5.0.1 - 2020-04-03 =
 * You can safely update this plugin if you’re running WooCommece 3.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.4 (which was launched in May 2018)**
 * New `multibanco_ifthen_send_email_instructions`, `mbway_ifthen_send_email_instructions`, `creditcard_ifthen_send_email_instructions` and `payshop_ifthen_send_email_instructions` filters to allow removing the payment gateway instructions from emails
 * Fix Credit card settings fields not hiding when the key is not set
 * WooCommerce Blocks (4.7.0 and above) improvements: respect the Multibanco "Only for Portuguese customers" setting and fix icon size
 * Small copy adjustments
-* Tested with WordPress XXXX, WooCommerce XXXX and WooCommerce Blocks 4.7.0
+* Tested with WordPress 5.8-alpha-50650, WooCommerce 5.2.0-rc.1 and WooCommerce Blocks 4.7.0
 
 = 5.0.0 - 2020-03-16 =
 * **New payment method available: “Credit or debit card”** (WooCommerce >= 4.0) - You need to sign an [amendment to the contract](https://www.ifthenpay.com/downloads/ifmb/AditamentoCCredito.pdf)

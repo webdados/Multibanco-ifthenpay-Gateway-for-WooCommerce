@@ -1,3 +1,18 @@
+TOOLBOX PAGA:
+- Depois de expirar o MBWAY, mudar para Multibanco automaticamente e enviar referência ao cliente
+	- Ou enviar email para escolher outro método
+	- Ou ambos
+- Cancelamento de encomendas Multibanco e Payshop depois de x tempo
+	- Também pode ter de MBWAY e CC desde que não colida com cancelamento do WooCommerce
+	- Multibanco: Opção para cancelar encomendas cuja expiração da referência já passou (se o plugin principal estiver nesse modo)
+- Integrar o módulo de entidades/ref por categorias
+- Ter campos em cada método para o cliente inserir o que tem contratado com a IfthenPay, por omissão com os valores que estão no site -> isto pode ser uma extensão premium!
+	- Na verdade isto deveria vir no callback (email enviado a 2020-12-10)
+	- Na encomenda, fazer como no Stripe e mostrar o valor pago em comissões
+	- Ter opção de ordenar os métodos de pagamento pela ordem do que fica mais barato
+- Olhar para outros hooks disponíveis no plugin e "inventar" funcionalidades
+
+
 5.0.0:
 
 - Credit Card
@@ -16,20 +31,21 @@
 No caso das encomendas canceladas até devíamos gerar um alerta mais importante.
 
 
-FUTURO:
-- Ter campos em cada método para o cliente inserir o que tem contratado com a IfthenPay, por omissão com os valores que estão no site -> isto pode ser uma extensão premium!
-	- Na verdade isto deveria vir no callback (email enviado a 2020-12-10)
-	- Na encomenda, fazer como no Stripe e mostrar o valor pago em comissões
-	- Ter opção de ordenar os métodos de pagamento pela ordem do que fica mais barato
-
 MB WAY e MULTIBANCO:
 - Verificar funcionamento na inserção de encomendas manuais
 
 MULTIBANCO:
-- Opção para cancelar encomendas cuja expiração da referência já passou
 
 MB WAY:
 - O mbway.js deve verificar se está paga e não o estado da encomenda
 	ou então pelo menos pesquisar "processing" e "completed": Feito
 - Processar refunds e pedir pelo webservice (callback já está)
 	- Verificar condições e para quem pode ou não ser activado
+- Implementar WooCommerce Blocks Checkout
+
+CARTÃO DE CRÉDITO:
+- Implementar os vários filtros já existentes nos outros métodos de pagamento
+- Implementar WooCommerce Blocks Checkout
+
+PAYHSOP:
+- Implementar WooCommerce Blocks Checkout

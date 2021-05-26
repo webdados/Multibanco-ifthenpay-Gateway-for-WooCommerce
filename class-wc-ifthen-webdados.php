@@ -998,6 +998,7 @@ final class WC_IfthenPay_Webdados {
 		$order->update_meta_data( '_'.$this->creditcard_id.'_id', $order_creditcard_details['id'] );
 		$order->update_meta_data( '_'.$this->creditcard_id.'_val', $order_creditcard_details['val'] );
 		$order->update_meta_data( '_'.$this->creditcard_id.'_payment_url', $order_creditcard_details['payment_url'] );
+		$order->update_meta_data( '_'.$this->creditcard_id.'_wd_secret', $order_creditcard_details['wd_secret'] );
 		$order->update_meta_data( '_'.$this->creditcard_id.'_time', date_i18n( 'Y-m-d H:i:s' ) );
 		$order->save();
 	}
@@ -1527,6 +1528,13 @@ wc_price( $order_total_to_pay )
 			$query['meta_query'][] = array(
 				'key' => '_'.$this->creditcard_id.'_request_id',
 				'value' => esc_attr( $query_vars['_'.$this->creditcard_id.'_request_id'] ),
+			);
+		}
+		//Credit card - WD Secret
+		if ( ! empty( $query_vars['_'.$this->creditcard_id.'_wd_secret'] ) ) {
+			$query['meta_query'][] = array(
+				'key' => '_'.$this->creditcard_id.'_wd_secret',
+				'value' => esc_attr( $query_vars['_'.$this->creditcard_id.'_wd_secret'] ),
 			);
 		}
 		return $query;

@@ -1080,8 +1080,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			) {
 				//Let's process it
 				$this->debug_log( '- Callback ('.$_SERVER['REQUEST_URI'].') with all arguments from '.$_SERVER['REMOTE_ADDR'] );
-				$ref = trim( str_replace( ' ', '', $_GET['referencia'] ) );
-				$ent = trim( $_GET['entidade'] );
+				$ref = trim( str_replace( ' ', '', sanitize_text_field( $_GET['referencia'] ) ) );
+				$ent = trim( sanitize_text_field( $_GET['entidade'] ) );
 				$val = floatval( $_GET['valor'] );
 				$arguments_ok = true;
 				$arguments_error = '';

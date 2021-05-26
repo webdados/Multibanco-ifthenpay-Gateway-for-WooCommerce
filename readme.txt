@@ -169,7 +169,7 @@ Any support related to failed payments or credit card authorizations should be d
 
 This plugin does not collect or send to Webdados (the plugin author) or IfthenPay (the payment processor) any private data of the website where it’s installed, it’s customers or the orders themselves.
 In the MB WAY module, the mobile phone number is collected to request the payment authorization and it can be legitimately processed based on article 6 (1) (b) of the GDPR.
-IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termos-politica-privacidade/](https://ifthenpay.com/termos-politica-privacidade/)
+IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termosCondicoes](https://ifthenpay.com/termosCondicoes)
 
 = Can I contribute with a translation? =
 

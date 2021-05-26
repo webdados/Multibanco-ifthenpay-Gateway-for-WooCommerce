@@ -1032,9 +1032,9 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			) {
 				//Let's process it
 				$this->debug_log( '- Callback ('.$_SERVER['REQUEST_URI'].') with all arguments from '.$_SERVER['REMOTE_ADDR'] );
-				$referencia   = trim( $_GET['referencia'] );
-				$id_cliente   = trim( $_GET['id_cliente'] );
-				$id_transacao = str_replace( ' ', '+', trim( $_GET['id_transacao'] ) ); //If there's a plus sign on the URL We'll get it as a space, so we need to get it back
+				$referencia   = trim( sanitize_text_field( $_GET['referencia'] ) );
+				$id_cliente   = trim( sanitize_text_field( $_GET['id_cliente'] ) );
+				$id_transacao = str_replace( ' ', '+', trim( sanitize_text_field( $_GET['id_transacao'] ) ) ); //If there's a plus sign on the URL We'll get it as a space, so we need to get it back
 				$val          = floatval( $_GET['valor'] );
 				$estado       = trim( $_GET['estado'] );
 				$arguments_ok = true;

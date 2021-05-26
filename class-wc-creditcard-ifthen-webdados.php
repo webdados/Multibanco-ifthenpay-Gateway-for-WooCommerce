@@ -527,18 +527,19 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			$order         = wc_get_order( $order_id );
 			$valor         = round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 );
 			$creditcardkey = apply_filters( 'multibanco_ifthen_base_creditcardkey', $this->creditcardkey, $order );
+			$wd_secret     = substr( strrev( md5( time() ) ), 0, 10 ); //Set a secret on our end for extra validation
 			$url           = $this->api_url.'/'.$creditcardkey;
 			$args          = array(
 				'method'   => 'POST',
 				'timeout'  => apply_filters( 'creditcard_ifthen_api_timeout', 30 ),
 				'blocking' => true,
 				'body'     => array(
-					'orderId'     => (string) $id,
-					'amount'      => (string) $valor,
-					'successUrl'  => add_query_arg( 'status', 'success', WC_IfthenPay_Webdados()->creditcard_notify_url ),
-					'errorUrl'    => add_query_arg( 'status', 'error', WC_IfthenPay_Webdados()->creditcard_notify_url ),
-					'cancelUrl'   => add_query_arg( 'status', 'cancel', WC_IfthenPay_Webdados()->creditcard_notify_url ),
-					'language'    => substr( trim( get_locale() ), 0, 2 ),
+					'orderId'    => (string) $id,
+					'amount'     => (string) $valor,
+					'successUrl' => add_query_arg( 'wd_secret', $wd_secret, add_query_arg( 'status', 'success', WC_IfthenPay_Webdados()->creditcard_notify_url ) ),
+					'errorUrl'   => add_query_arg( 'status', 'error', WC_IfthenPay_Webdados()->creditcard_notify_url ),
+					'cancelUrl'  => add_query_arg( 'status', 'cancel', WC_IfthenPay_Webdados()->creditcard_notify_url ),
+					'language'   => substr( trim( get_locale() ), 0, 2 ),
 				),
 			);
 			$args['body'] = json_encode( $args['body'] ); //Json not post variables
@@ -558,6 +559,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 								'id'            => $id,
 								'val'           => $valor,
 								'payment_url'   => $body->PaymentUrl,
+								'wd_secret'     => $wd_secret,
 							) );
 							$this->debug_log( '- Credit card payment request created on IfthenPay servers - Redirecting to payment gateway - Order '.$order->get_id().' - RequestId: '.$body->RequestId );
 							do_action( 'creditcard_ifthen_created_reference', $body->RequestId, $order->get_id() );
@@ -679,17 +681,18 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				isset( $_GET['requestId'] )
 			) {
 				$this->debug_log( '- Callback ('.$_SERVER['REQUEST_URI'].') with all arguments' );
-				$request_id = trim( $_GET['requestId'] );
-				$id         = trim( $_GET['id'] );
+				$request_id = trim( sanitize_text_field( $_GET['requestId'] ) );
+				$id         = trim( sanitize_text_field( $_GET['id'] ) );
 				$val        = floatval( $_GET['amount'] );
+				$wd_secret  = isset( $_GET['wd_secret'] ) ? trim( sanitize_text_field( $_GET['wd_secret'] ) ) : '_';
 				switch( trim( $_GET['status'] ) ) {
 
 					case 'success':
-						$get_order = $this->callback_helper_get_pending_order( $request_id, $id, $val );
+						$get_order = $this->callback_helper_get_pending_order( $request_id, $id, $val, $wd_secret );
 						if ( $get_order['success'] && $get_order['order'] ) {
-							$order = $get_order['order'];
+							$order    = $get_order['order'];
 							$order_id = $order->get_id();
-							$note = __( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+							$note     = __( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 							//WooCommerce Deposits second payment?
 							if ( WC_IfthenPay_Webdados()->wc_deposits_active ) {
 								if ( $order->get_meta( '_wc_deposits_order_has_deposit' ) == 'yes' ) { //Has deposit
@@ -766,7 +769,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 
 		}
 
-		function callback_helper_get_pending_order( $request_id, $id, $val ) {
+		function callback_helper_get_pending_order( $request_id, $id, $val, $wd_secret = null ) {
 			$return = array(
 				'success' => false,
 				'error'   => false,
@@ -780,7 +783,11 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				'_'.$this->id.'_request_id' => $request_id,
 				'_'.$this->id.'_id'         => $id,
 			);
-			$orders = wc_get_orders( $args );
+			if ( ! is_null( $wd_secret ) ) {
+				$args['_'.$this->id.'_wd_secret'] = $wd_secret;
+			}
+			$orders_exist = false;
+			$orders       = wc_get_orders( $args );
 			if ( count( $orders ) > 0 ) {
 				$orders_exist = true;
 				$orders_count = count( $orders );
@@ -795,15 +802,15 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						$return['order']   = $order;
 						return $return;
 					} else {
-						$return['error'] = 'Error: More than 1 order found awaiting payment with these details';
+						$return['error'] = 'Error: The value does not match';
 						return $return;
 					}
 				} else {
-					$return['error'] = 'Error: No orders found awaiting payment with these details';
+					$return['error'] = 'Error: More than 1 order found awaiting payment with these details';
 					return $return;
 				}
 			} else {
-				$return['error'] = 'Error: The value does not match';
+				$return['error'] = 'Error: No orders found awaiting payment with these details';
 				return $return;
 			}
 		}

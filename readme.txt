@@ -178,11 +178,11 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 == Changelog ==
 
 = 5.1.0 - 2020-05-27 =
+* You can safely update this plugin if you’re running WooCommece 3.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.4 (which was launched in May 2018)**
 * Several code tweaks, input sanitization and extra checks
 * Tested with WordPress 5.8-alpha-51034, WooCommerce 5.4.0-rc.1 and WooCommerce Blocks 5.2.0
 
 = 5.0.1 - 2020-04-03 =
-* You can safely update this plugin if you’re running WooCommece 3.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.4 (which was launched in May 2018)**
 * New `multibanco_ifthen_send_email_instructions`, `mbway_ifthen_send_email_instructions`, `creditcard_ifthen_send_email_instructions` and `payshop_ifthen_send_email_instructions` filters to allow removing the payment gateway instructions from emails
 * Fix Credit card settings fields not hiding when the key is not set
 * WooCommerce Blocks (4.7.0 and above) improvements: respect the Multibanco "Only for Portuguese customers" setting and fix icon size

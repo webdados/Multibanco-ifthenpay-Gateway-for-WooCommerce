@@ -948,7 +948,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					WC()->cart->empty_cart();
 				}
 				// Empty awaiting payment session
-				if ( isset( $_SESSION['order_awaiting_payment'] ) ) unset($_SESSION['order_awaiting_payment'] );
+				unset( WC()->session->order_awaiting_payment );
 				// Return thankyou redirect
 				return array(
 					'result' => 'success',

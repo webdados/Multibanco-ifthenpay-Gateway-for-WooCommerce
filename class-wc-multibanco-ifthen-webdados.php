@@ -995,7 +995,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			}
 			
 			// Empty awaiting payment session
-			if ( isset( $_SESSION['order_awaiting_payment'] ) ) unset( $_SESSION['order_awaiting_payment'] );
+			unset( WC()->session->order_awaiting_payment );
 			
 			// Paying again old location, before 5.0.0
 

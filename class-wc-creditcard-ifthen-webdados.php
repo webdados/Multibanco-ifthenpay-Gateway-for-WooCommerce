@@ -602,8 +602,8 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				//if ( isset( WC()->cart ) ) {
 				//	WC()->cart->empty_cart();
 				//}
-				// Empty awaiting payment session
-				if ( isset( $_SESSION['order_awaiting_payment'] ) ) unset($_SESSION['order_awaiting_payment'] );
+				// Empty awaiting payment session - not now, only after paid
+				//unset( WC()->session->order_awaiting_payment );
 				// Return payment url redirect
 				return array(
 					'result'   => 'success',
@@ -659,6 +659,8 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			if ( isset( WC()->cart ) ) {
 				WC()->cart->empty_cart();
 			}
+			// Empty awaiting payment session - Only now
+			unset( WC()->session->order_awaiting_payment );
 		}
 
 		/**
@@ -683,7 +685,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				$this->debug_log( '- Callback ('.$_SERVER['REQUEST_URI'].') with all arguments' );
 				$request_id = trim( sanitize_text_field( $_GET['requestId'] ) );
 				$id         = trim( sanitize_text_field( $_GET['id'] ) );
-				$val        = floatval( $_GET['amount'] );
+				$val        = trim( sanitize_text_field( $_GET['amount'] ) ); //Não fazemos float porque 7.40 passaria a 7.4 e depois não validava a hash
 				$wd_secret  = isset( $_GET['wd_secret'] ) ? trim( sanitize_text_field( $_GET['wd_secret'] ) ) : '_';
 				switch( trim( $_GET['status'] ) ) {
 
@@ -691,11 +693,13 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						$get_order = $this->callback_helper_get_pending_order( $request_id, $id, $val, $wd_secret );
 						if ( $get_order['success'] && $get_order['order'] ) {
 							$order         = $get_order['order'];
+							$this->debug_log_extra( 'Order found: '.$order->get_id().' - Status: '.$order->get_status() );
 							$order_id      = $order->get_id();
 							$order_details = WC_IfthenPay_Webdados()->get_creditcard_order_details( $order->get_id() );
 							$sk            = trim( sanitize_text_field( $_GET['sk'] ) );
 							$hash          = hash_hmac( 'sha256', $id.$val.$request_id, $order_details['creditcardkey'] );
 							if ( $sk == $hash ) {
+								$this->debug_log_extra( 'Order found: '.$order->get_id().' - Hash ok' );
 								$note     = __( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 								//WooCommerce Deposits second payment?
 								if ( WC_IfthenPay_Webdados()->wc_deposits_active ) {
@@ -712,15 +716,20 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 										}
 									}
 								}
+								$url = $this->get_return_url( $order );
 								$this->payment_complete( $order, '', $note );
 								do_action( 'creditcard_ifthen_callback_payment_complete', $order->get_id() );
-								wp_redirect( $this->get_return_url( $order ) );
+								$debug_order = wc_get_order( $order->get_id() );
+								$this->debug_log_extra( 'payment_complete - Redirect to thank you page: '.$url.' - Order '.$order->get_id().' - Status: '.$debug_order->get_status() );
+								wp_redirect( $url );
 								exit;
 							} else {
 								$error = 'Error: IfthenPay security hash validation failed';
+								//We should set a $redirect_url
 							}
 						} else {
 							$error = $get_order['error'];
+							//We should set a $redirect_url
 						}
 						break;
 
@@ -749,12 +758,14 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							$redirect_url = $order->get_cancel_order_url_raw();
 						} else {
 							$error = __( 'Payment cancelled by the customer at the gateway.', 'multibanco-ifthen-software-gateway-for-woocommerce').' - '.$get_order['error'];
+							//We can't get the order so we just redirect the customer to the checkout
+							$redirect_url = wc_get_checkout_url();
 						}
 						wc_add_notice( $error, 'error' );
 						break;
 
 					default:
-						//??
+						$error = 'Callback with invalid status';
 						break;
 
 				}
@@ -826,6 +837,11 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		public function debug_log( $message, $level = 'debug', $to_email = false, $email_message = '' ) {
 			if ( $this->debug ) {
 				WC_IfthenPay_Webdados()->debug_log( $this->id, $message, $level, ( trim( $this->debug_email ) != '' && $to_email ? $this->debug_email : false ) , $email_message );
+			}
+		}
+		public function debug_log_extra( $message, $level = 'debug', $to_email = false, $email_message = '' ) {
+			if ( $this->debug ) {
+				WC_IfthenPay_Webdados()->debug_log_extra( $this->id, $message, $level, ( trim( $this->debug_email ) != '' && $to_email ? $this->debug_email : false ) , $email_message );
 			}
 		}
 

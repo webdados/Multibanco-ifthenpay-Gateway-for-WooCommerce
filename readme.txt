@@ -177,8 +177,13 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 5.1.0 - 2020-05-27 =
+= 5.1.1 - 2020-06-16 =
 * You can safely update this plugin if you’re running WooCommece 3.0 or newer **but we’ll very soon drop support for WooCommerce previous to 3.4 (which was launched in May 2018)**
+* Fix a bug on the credit card gateway where some payments were not recognised
+* Small tweaks and debug
+* Tested with 5.8-beta2-51167 and WooCommerce 5.4.1
+
+= 5.1.0 - 2020-05-27 =
 * Several code tweaks, input sanitization and extra checks
 * Tested with WordPress 5.8-alpha-51034, WooCommerce 5.4.0-rc.1 and WooCommerce Blocks 5.2.0
 

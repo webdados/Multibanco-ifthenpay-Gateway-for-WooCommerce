@@ -6,16 +6,32 @@
 
 		switch( ifthenpay.gateway ) {
 			case 'multibanco':
+				ifthen_toogle_mb_api_mode();
+				$( '#woocommerce_multibanco_ifthen_for_woocommerce_api_mode' ).change( function() {
+					ifthen_toogle_mb_api_mode();
+				});
 				if (
-					$( '#woocommerce_multibanco_ifthen_for_woocommerce_ent' ).val().trim().length == 5
-					&&
-					$( '#woocommerce_multibanco_ifthen_for_woocommerce_subent' ).val().trim().length <= 3
-					&&
-					parseInt( $( '#woocommerce_multibanco_ifthen_for_woocommerce_ent' ).val() ) > 0
-					&&
-					parseInt( $( '#woocommerce_multibanco_ifthen_for_woocommerce_subent' ).val() ) > 0
-					&&
-					$( '#woocommerce_multibanco_ifthen_for_woocommerce_secret_key' ).val().trim() != ''
+					(
+						$( '#woocommerce_multibanco_ifthen_for_woocommerce_api_mode' ).val() == ''
+						&&
+						$( '#woocommerce_multibanco_ifthen_for_woocommerce_ent' ).val().trim().length == 5
+						&&
+						$( '#woocommerce_multibanco_ifthen_for_woocommerce_subent' ).val().trim().length <= 3
+						&&
+						parseInt( $( '#woocommerce_multibanco_ifthen_for_woocommerce_ent' ).val() ) > 0
+						&&
+						parseInt( $( '#woocommerce_multibanco_ifthen_for_woocommerce_subent' ).val() ) > 0
+						&&
+						$( '#woocommerce_multibanco_ifthen_for_woocommerce_secret_key' ).val().trim() != ''
+					)
+					||
+					(
+						$( '#woocommerce_multibanco_ifthen_for_woocommerce_api_mode' ).val() == 'yes'
+						&&
+						$( '#woocommerce_multibanco_ifthen_for_woocommerce_mbkey' ).val().trim().length == 10
+						&&
+						$( '#woocommerce_multibanco_ifthen_for_woocommerce_secret_key' ).val().trim() != ''
+					)
 				) {
 					hide_extra_fields = false;
 				}
@@ -56,7 +72,7 @@
 		if ( hide_extra_fields ) {
 			switch( ifthenpay.gateway ) {
 				case 'multibanco':
-					var number_fields = 4;
+					var number_fields = 6;
 					if ( $( '#wc_ifthen_mb_mode' ).length ) {
 						number_fields++;
 					}
@@ -130,6 +146,20 @@
 	function ifthen_callback_open() {
 		$( '#wc_ifthen_callback_div' ).toggle();
 		$( '#wc_ifthen_callback_open_p' ).toggle();
+	}
+
+	function ifthen_toogle_mb_api_mode() {
+		if ( $( '#woocommerce_multibanco_ifthen_for_woocommerce_api_mode' ).val() == 'yes' ) {
+			$( '#woocommerce_multibanco_ifthen_for_woocommerce_ent' ).closest( 'tr' ).hide();
+			$( '#woocommerce_multibanco_ifthen_for_woocommerce_subent' ).closest( 'tr' ).hide();
+			$( '#woocommerce_multibanco_ifthen_for_woocommerce_mbkey' ).closest( 'tr' ).show();
+			$( '#woocommerce_multibanco_ifthen_for_woocommerce_api_expiry' ).closest( 'tr' ).show();
+		} else {
+			$( '#woocommerce_multibanco_ifthen_for_woocommerce_ent' ).closest( 'tr' ).show();
+			$( '#woocommerce_multibanco_ifthen_for_woocommerce_subent' ).closest( 'tr' ).show();
+			$( '#woocommerce_multibanco_ifthen_for_woocommerce_mbkey' ).closest( 'tr' ).hide();
+			$( '#woocommerce_multibanco_ifthen_for_woocommerce_api_expiry' ).closest( 'tr' ).hide();
+		}
 	}
 
 })( jQuery );

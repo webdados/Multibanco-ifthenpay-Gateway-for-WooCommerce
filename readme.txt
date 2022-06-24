@@ -1,10 +1,10 @@
 === Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce ===
-Contributors: webdados, ifthenpay
+Contributors: webdados, ptwooplugins, ifthenpay
 Tags: woocommerce, multibanco, mbway, payshop, credit card, payment, pagamentos, gateway, mb way, debit card, mobile, atm, debit card, credit card, bank, ecommerce, e-commerce, ifthen, ifthen software, ifthenpay, webdados, sms, php7, cartão de débito, cartão de crédito, cartões, gdpr
-Author URI: https://www.webdados.pt
+Author URI: https://ptwooplugins.com
 Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
 Requires at least: 4.6
-Tested up to: 5.9
+Tested up to: 6.1
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3
@@ -31,6 +31,7 @@ If not, get to know our new plugin: [Invoicing with InvoiceXpress for WooCommerc
 = Features: =
 
 * Generates a Multibanco Reference for simple payment on the Portuguese ATM network or Home Banking service;
+* Multibanco references with expiration date if the "MB Key" configuration method is used;
 * Allows the customer to pay using MB WAY using his mobile phone;
 * Allows the customer to pay using his Credit or debit card (WooCommerce >= 4.0);
 * Generates a Payshop Reference for simple payment on the [Payshop agents network](https://www.payshop.pt/fepsapl/app/open/showSearchAgent.jspx), CTT stores or post offices available all over Portugal;
@@ -54,9 +55,9 @@ If not, get to know our new plugin: [Invoicing with InvoiceXpress for WooCommerc
 
 = Premium add-ons: =
 
-* [Entity per Category](https://shop.webdados.com/product/multibanco-and-mbway-ifthenpay-entity-per-category/):
-	* Set a base Multibanco Entity and Subentity, or MB WAY Key, at the product category level, so you can get the payment on different accounts based on the order;
-	* Lock the cart so you can only have products from the same account on each order;
+* [Entity per Category](https://ptwooplugins.com/product/multibanco-and-mbway-ifthenpay-entity-per-category/):
+* Set a base Multibanco Entity and Subentity, or MB WAY Key, at the product category level, so you can get the payment on different accounts based on the order;
+* Lock the cart so you can only have products from the same account on each order;
 
 == Installation ==
 
@@ -176,6 +177,16 @@ IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termosCondic
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 6.0.0 - 2022-06-24 =
+* New configuration method with an "MB Key" instead of an Entity and Subentity, which uses an API and allows for reference expiration (you should ask IfthenPay for configuration details for this method)
+* New filters for the new configuration method: `multibanco_ifthen_base_mbkey`, `multibanco_ifthen_webservice_timeout`, `multibanco_ifthen_webservice_desc` and `multibanco_ifthen_webservice_expire_days`
+* Tested with WordPress 6.1-alpha-53556 and WooCommerce 6.7.0-beta.1
+
+= 5.2.0 - 2022-05-31 =
+* New brand: PT Woo Plugins 🥳
+* See you in WordCamp Europe 2022, in Porto?
+* Tested with WordPress 6.1-alpha-53451 and WooCommerce 6.6.0-rc.1
 
 = 5.1.4 - 2022-05-04 =
 * May the 4th be with you

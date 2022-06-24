@@ -841,7 +841,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		/**
 		 * Webservice SetPedido
 		 */
-		function webservice_filter_descricao( $desc ) {
+		private function webservice_filter_descricao( $desc ) {
 			//Trim and decode
 			$desc = htmlspecialchars_decode( trim( $desc ), ENT_QUOTES );
 			//Remove '

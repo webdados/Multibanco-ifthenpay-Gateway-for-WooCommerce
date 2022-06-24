@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '5.1.4';
+	public $version = '6.0.0';
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -52,6 +52,9 @@ final class WC_IfthenPay_Webdados {
 	public $multibanco_banner_email                = '';
 	public $multibanco_banner                      = '';
 	public $multibanco_icon                        = '';
+	public $multibanco_api_mode_available          = true;
+	public $multibanco_api_mode_enabled            = false;
+	public $multibanco_api_url                     = 'https://ifthenpay.com/api/multibanco/reference/init';
 
 
 	/* Internal variables - For MB WAY */
@@ -120,6 +123,8 @@ final class WC_IfthenPay_Webdados {
 			:
 			home_url( '/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]' )
 		);
+		$this->multibanco_api_mode_enabled = $this->multibanco_settings['api_mode'] == 'yes';
+		if ( $this->multibanco_api_mode_enabled && $this->multibanco_settings['mbkey'] == 'YAK-504589' ) $this->multibanco_api_url = 'https://ifthenpay.com/api/multibanco/reference/sandbox'; //Sandbox
 		//MB WAY
 		$this->mbway_settings          = get_option( 'woocommerce_mbway_ifthen_for_woocommerce_settings', '' );
 		$this->mbway_notify_url        = (
@@ -902,6 +907,12 @@ final class WC_IfthenPay_Webdados {
 			//Update order reference expiration
 			$order->update_meta_data( '_'.$this->multibanco_id.'_exp', $this->get_reference_expiration_days( intval( apply_filters( 'multibanco_ifthen_incremental_expire_days', 0 ) ) ) );
 		}
+		if ( isset( $order_mb_details['exp'] ) ) {
+			$order->update_meta_data( '_'.$this->multibanco_id.'_exp', $order_mb_details['exp'] );
+		}
+		if ( isset( $order_mb_details['RequestId'] ) ) {
+			$order->update_meta_data( '_'.$this->multibanco_id.'_RequestId', $order_mb_details['RequestId'] );
+		}
 		$order->save();
 		$this->debug_log_extra( $this->multibanco_id, 'multibanco_set_order_mb_details - Details updated on the database: '.serialize( $order_mb_details ).' - Order: '.$order->get_id() );
 	}
@@ -913,6 +924,7 @@ final class WC_IfthenPay_Webdados {
 		$order->delete_meta_data( '_'.$this->multibanco_id.'_ref' );
 		$order->delete_meta_data( '_'.$this->multibanco_id.'_val' );
 		$order->delete_meta_data( '_'.$this->multibanco_id.'_exp' );
+		$order->delete_meta_data( '_'.$this->multibanco_id.'_RequestId' );
 		$order->save();
 	}
 
@@ -1004,6 +1016,18 @@ final class WC_IfthenPay_Webdados {
 	}
 
 	/* Get/Create Multibanco Reference */
+	private function mb_webservice_filter_descricao( $desc ) {
+		//Trim and decode
+		$desc = htmlspecialchars_decode( trim( $desc ), ENT_QUOTES );
+		//Remove '
+		$desc = str_replace( "'", "", $desc );
+		//Remove "
+		$desc = str_replace( '"', '', $desc );
+		//Limit
+		$desc = trim( $desc );
+		$desc = substr( $desc, 0, MBWAY_IFTHEN_DESC_LEN );
+		return $desc;
+	}
 	public function multibanco_get_ref( $order_id, $force_change = false ) {
 		$order = wc_get_order( $order_id );
 		$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Force change: '.( $force_change ? 'true' : 'false' ).' - Order '.$order->get_id() );
@@ -1052,70 +1076,177 @@ final class WC_IfthenPay_Webdados {
 							);
 					} else {
 						//Create a new reference
-						//Filters to be able to override the Entity and Sub-entity - Can be usefull for marketplaces
-						$base = apply_filters( 'multibanco_ifthen_base_ent_subent', array( 'ent' => $this->multibanco_settings['ent'], 'subent' => $this->multibanco_settings['subent'] ), $order );
-						if (
-							strlen( trim( $base['ent'] ) ) == 5
-							&&
-							strlen( trim( $base['subent'] ) ) <= 3
-							&&
-							intval( $base['ent'] ) > 0
-							&&
-							intval( $base['subent'] ) > 0
-							&&
-							trim( $this->multibanco_settings['secret_key'] ) != ''
-						) {
-							if ( isset( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) && intval( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) > 0 ) {
-								//No repeat in x days
-								$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - will create reference (No repeat in x days) - Order '.$order->get_id() );
-								$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $this->get_order_total_to_pay( $order ), intval( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) );
-							} else {
-								if ( in_array( intval( $base['ent'] ), $this->multibanco_ents_no_check_digit ) && ( $this->multibanco_settings['use_order_id'] =='yes' ) ) {
-									//Special entities with no check digit and (eventually) expiration date - We can use the order ID
-									$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Will create reference (Special entities with no check digit and (eventually) expiration date) - Order '.$order->get_id() );
-									$ref = $this->multibanco_create_ref_no_check_digit( $base['ent'], $base['subent'], $order->get_id(), $this->get_order_total_to_pay( $order ) );
-								} else {
-									$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Will create reference (Default mode) - Order '.$order->get_id() );
-									$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $this->get_order_total_to_pay( $order ) ); //For random mode - Less loop possibility
+						if ( $this->multibanco_api_mode_enabled ) {
+
+							//API Mode
+							$mbkey = apply_filters( 'multibanco_ifthen_base_mbkey', $this->multibanco_settings['mbkey'], $order );
+							if (
+								strlen( trim( $mbkey ) ) == 10
+								&&
+								trim( $this->multibanco_settings['secret_key'] ) != ''
+							) {
+								$url      = $this->multibanco_api_url;
+								$desc     = trim( get_bloginfo( 'name' ) );
+								$args     = array(
+									'method'   => 'POST',
+									'timeout'  => apply_filters( 'multibanco_ifthen_webservice_timeout', 30 ),
+									'blocking' => true,
+									'headers'  => array('Content-Type' => 'application/json; charset=utf-8'),
+									'body'     => array(
+										'mbKey'          => $mbkey,
+										'orderId'        => 'WC-'.$order->get_id(),
+										'amount'         => (string) round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 ),
+										'description'    => $this->mb_webservice_filter_descricao( apply_filters( 'multibanco_ifthen_webservice_desc', $desc, $order->get_id() ) ),
+										//'url'            => '', //??
+										//'clientCode'     => '',
+										//'clientName'     => '',
+										//'clientEmail'    => '',
+										//'clientUsername' => '',
+										//'clientPhone'    => '',
+									),
+								);
+								$expire_days = apply_filters( 'multibanco_ifthen_webservice_expire_days', trim( $this->multibanco_settings['api_expiry'] ), $order );
+								if ( $expire_days != '' ) {
+									$args['body']['expiryDays'] = trim( $this->multibanco_settings['api_expiry'] );
+									//Temos de calcular a data e guardar mais lá à frente
 								}
-							}
-							//Store on the order for later use (like the email)
-							$this->multibanco_set_order_mb_details( $order->get_id(), array(
-								'ent'	=>	$base['ent'],
-								'ref'	=>	$ref,
-								'val'	=>	$this->get_order_total_to_pay( $order ),
-							) );
-							$this->debug_log( $this->multibanco_id, 'Multibanco payment details ('.$base['ent'].' / '.$ref.' / '.$this->get_order_total_to_pay( $order ).') generated for Order '.$order->get_id() );
-							//Return it!
-							do_action( 'multibanco_ifthen_created_reference', array(
-								'ent' => $base['ent'],
-								'ref' => $ref
-							), $order->get_id(), $force_change );
-							//WooCommerce Deposits support - force ref creation again
-							if ( ! $force_change && $this->wc_deposits_active && ! $this->multibanco_action_deposits_set ) {
-								add_action( 'woocommerce_checkout_order_processed', array( $this, 'multibanco_get_ref_deposit' ), 20, 1 );
-								$this->debug_log( $this->multibanco_id, 'Because of WooCommerce Deposits a new reference will be generated for Order '.$order->get_id() );
-								$this->multibanco_action_deposits_set = true;
-							}
-							return array(
-								'ent' => $base['ent'],
-								'ref' => $ref,
-								'val' => $this->get_order_total_to_pay( $order )
-							);
-						} else {
-							$error_details='';
-							if ( strlen( trim( $base['ent'] ) ) != 5 || ( !intval( $base['ent'] ) > 0 ) ) {
-								$error_details = __( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+								$args['body'] = json_encode( $args['body'] );
+								$response = wp_remote_post( $url, $args );
+								if ( is_wp_error( $response ) ) {
+									$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->get_id().' - '.$response->get_error_message();
+									$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
+									$this->debug_log( $this->multibanco_id, $debug_msg, 'error', true, $debug_msg_email );
+									return false;
+								} else {
+									if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
+										if ( $body = json_decode( $response['body'] ) ) {
+											if ( trim( $body->Status ) == '0' ) {
+												$details = array(
+													'ent'	    => $body->Entity,
+													'ref'	    => $body->Reference,
+													'val'	    => $this->get_order_total_to_pay( $order ),
+													'RequestId' => $body->RequestId
+												);
+												if ( trim( $body->ExpiryDate ) != '' ) {
+													$temp = explode( '-', trim( $body->ExpiryDate ) );
+													$date = implode( '-', array_reverse( $temp ) ).' 23:59:59';
+													$details['exp'] = $date;
+												}
+												//Store on the order for later use (like the email)
+												$this->multibanco_set_order_mb_details( $order->get_id(), $details );
+												$this->debug_log( $this->multibanco_id, 'Multibanco payment details ('.$details['ent'].' / '.$details['ref'].' / '.$details['val'].') generated for Order '.$order->get_id() );
+												//Return it!
+												do_action( 'multibanco_ifthen_created_reference', array(
+													'ent' => $details['ent'],
+													'ref' => $details['ref']
+												), $order->get_id(), $force_change );
+												//WooCommerce Deposits support - force ref creation again
+												if ( ! $force_change && $this->wc_deposits_active && ! $this->multibanco_action_deposits_set ) {
+													add_action( 'woocommerce_checkout_order_processed', array( $this, 'multibanco_get_ref_deposit' ), 20, 1 );
+													$this->debug_log( $this->multibanco_id, 'Because of WooCommerce Deposits a new reference will be generated for Order '.$order->get_id() );
+													$this->multibanco_action_deposits_set = true;
+												}
+												return $details;
+											} else {
+												$debug_msg = '- Error: '.trim( $body->Message ).' - Order '.$order->get_id();
+												$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
+												$this->debug_log( $this->multibanco_id, $debug_msg, 'error', true, $debug_msg_email );
+												return false;
+											}
+										} else {
+											$debug_msg = '- Response body is not JSON - Order '.$order->get_id();
+											$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
+											$this->debug_log( $this->multibanco_id, $debug_msg, 'error', true, $debug_msg_email );
+											return false;
+										}
+									} else {
+										$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->get_id().' - Incorrect response code: '.$response['response']['code'];
+										$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
+										$this->debug_log( $this->multibanco_id, $debug_msg, 'error', true, $debug_msg_email );
+										return false;
+									}
+								}
 							} else {
-								if ( strlen( trim( $base['subent'] ) ) > 3 || ( !intval( $base['subent'] ) > 0 ) ) {
-									$error_details = __( 'Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+								$error_details='';
+								if ( strlen( trim( $base['mbkey'] ) ) != 10 ) {
+									$error_details = __( 'MB Key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 								} else {
 									if ( trim( $this->multibanco_settings['secret_key'] ) == '' ) {
 										$error_details = __( 'Anti-phishing key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 									}
 								}
+								return __( 'Configuration error. This payment method is disabled because required information was not set.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' '.$error_details.'.';
 							}
-							return __( 'Configuration error. This payment method is disabled because required information was not set.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' '.$error_details.'.';
+
+						} else {
+
+							//LOCAL MODE
+							//Filters to be able to override the Entity and Sub-entity - Can be usefull for marketplaces
+							$base = apply_filters( 'multibanco_ifthen_base_ent_subent', array( 'ent' => $this->multibanco_settings['ent'], 'subent' => $this->multibanco_settings['subent'] ), $order );
+							if (
+								strlen( trim( $base['ent'] ) ) == 5
+								&&
+								strlen( trim( $base['subent'] ) ) <= 3
+								&&
+								intval( $base['ent'] ) > 0
+								&&
+								intval( $base['subent'] ) > 0
+								&&
+								trim( $this->multibanco_settings['secret_key'] ) != ''
+							) {
+								if ( isset( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) && intval( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) > 0 ) {
+									//No repeat in x days
+									$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - will create reference (No repeat in x days) - Order '.$order->get_id() );
+									$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $this->get_order_total_to_pay( $order ), intval( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) );
+								} else {
+									if ( in_array( intval( $base['ent'] ), $this->multibanco_ents_no_check_digit ) && ( $this->multibanco_settings['use_order_id'] =='yes' ) ) {
+										//Special entities with no check digit and (eventually) expiration date - We can use the order ID
+										$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Will create reference (Special entities with no check digit and (eventually) expiration date) - Order '.$order->get_id() );
+										$ref = $this->multibanco_create_ref_no_check_digit( $base['ent'], $base['subent'], $order->get_id(), $this->get_order_total_to_pay( $order ) );
+									} else {
+										$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Will create reference (Default mode) - Order '.$order->get_id() );
+										$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $this->get_order_total_to_pay( $order ) ); //For random mode - Less loop possibility
+									}
+								}
+								//Store on the order for later use (like the email)
+								$this->multibanco_set_order_mb_details( $order->get_id(), array(
+									'ent'	=>	$base['ent'],
+									'ref'	=>	$ref,
+									'val'	=>	$this->get_order_total_to_pay( $order ),
+								) );
+								$this->debug_log( $this->multibanco_id, 'Multibanco payment details ('.$base['ent'].' / '.$ref.' / '.$this->get_order_total_to_pay( $order ).') generated for Order '.$order->get_id() );
+								//Return it!
+								do_action( 'multibanco_ifthen_created_reference', array(
+									'ent' => $base['ent'],
+									'ref' => $ref
+								), $order->get_id(), $force_change );
+								//WooCommerce Deposits support - force ref creation again
+								if ( ! $force_change && $this->wc_deposits_active && ! $this->multibanco_action_deposits_set ) {
+									add_action( 'woocommerce_checkout_order_processed', array( $this, 'multibanco_get_ref_deposit' ), 20, 1 );
+									$this->debug_log( $this->multibanco_id, 'Because of WooCommerce Deposits a new reference will be generated for Order '.$order->get_id() );
+									$this->multibanco_action_deposits_set = true;
+								}
+								return array(
+									'ent' => $base['ent'],
+									'ref' => $ref,
+									'val' => $this->get_order_total_to_pay( $order )
+								);
+							} else {
+								$error_details='';
+								if ( strlen( trim( $base['ent'] ) ) != 5 || ( !intval( $base['ent'] ) > 0 ) ) {
+									$error_details = __( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+								} else {
+									if ( strlen( trim( $base['subent'] ) ) > 3 || ( !intval( $base['subent'] ) > 0 ) ) {
+										$error_details = __( 'Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+									} else {
+										if ( trim( $this->multibanco_settings['secret_key'] ) == '' ) {
+											$error_details = __( 'Anti-phishing key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+										}
+									}
+								}
+								return __( 'Configuration error. This payment method is disabled because required information was not set.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' '.$error_details.'.';
+							}
+
 						}
 					}
 				}
@@ -1886,8 +2017,14 @@ wc_price( $order_total_to_pay )
 					<img src="<?php echo plugins_url( 'images/ifthenpay.svg', __FILE__ ); ?>" width="200"/>
 				</a>
 			</p>
-			<h4><?php _e( 'Premium technical support or custom WordPress/WooCommerce development', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
+			<h4><?php _e( 'Development and premium technical support', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 			<p>
+				<a href="https://ptwooplugins.com<?php echo esc_attr( $this->out_link_utm); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 'PT Woo Plugins' ) ); ?>" target="_blank">
+					<img src="<?php echo plugins_url( 'images/ptwooplugins.svg', __FILE__ ); ?>" width="200"/>
+				</a>
+			</p>
+			<p>
+				<h4><?php _e( 'Custom WordPress/WooCommerce development', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 				<a href="https://www.webdados.pt/contactos/<?php echo esc_attr( $this->out_link_utm); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 'Webdados' ) ); ?>" target="_blank">
 					<img src="<?php echo plugins_url( 'images/webdados.svg', __FILE__ ); ?>" width="200"/>
 				</a>
@@ -1932,7 +2069,7 @@ wc_price( $order_total_to_pay )
 						'image'       => 'dpd-portugal.png',
 					),
 					array(
-						'url'         => 'https://shop.webdados.com/product/portuguese-postcodes-for-woocommerce-technical-support/',
+						'url'         => 'https://ptwooplugins.com/product/portuguese-postcodes-for-woocommerce-technical-support/',
 						'title'       => __( 'Portuguese Postcodes for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'Portuguese Postcodes', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'postcodes.png',

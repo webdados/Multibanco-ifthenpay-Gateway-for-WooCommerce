@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Multibanco and MBWAY (IfthenPay gateway) for WooCommerce 3.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce\n"
-"POT-Creation-Date: 2022-05-04 14:19+0100\n"
+"POT-Creation-Date: 2022-05-31 16:00+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Webdados <info@webdados.pt>\n"
 "Language-Team: \n"
@@ -609,133 +609,138 @@ msgid "Commercial information"
 msgstr ""
 
 #: class-wc-ifthen-webdados.php:1885 class-wc-ifthen-webdados.php:1891
+#: class-wc-ifthen-webdados.php:1897
 #, php-format
 msgid "Please contact %s"
 msgstr ""
 
 #: class-wc-ifthen-webdados.php:1889
-msgid "Premium technical support or custom WordPress/WooCommerce development"
+msgid "Development and premium technical support"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1895
-msgid "Free technical support"
-msgstr ""
-
-#: class-wc-ifthen-webdados.php:1898
-msgid "WordPress.org forum"
+#: class-wc-ifthen-webdados.php:1896
+msgid "Custom WordPress/WooCommerce development"
 msgstr ""
 
 #: class-wc-ifthen-webdados.php:1901
-msgid "Please rate our plugin"
+msgid "Free technical support"
+msgstr ""
+
+#: class-wc-ifthen-webdados.php:1904
+msgid "WordPress.org forum"
 msgstr ""
 
 #: class-wc-ifthen-webdados.php:1907
+msgid "Please rate our plugin"
+msgstr ""
+
+#: class-wc-ifthen-webdados.php:1913
 msgid "Extensions"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1912
+#: class-wc-ifthen-webdados.php:1918
 msgid "Entity per Category add-on"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1918
+#: class-wc-ifthen-webdados.php:1924
 msgid "Other premium plugins"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1924
+#: class-wc-ifthen-webdados.php:1930
 msgid "Invoicing with InvoiceXpress for WooCommerce – Pro"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1925
+#: class-wc-ifthen-webdados.php:1931
 msgid "InvoiceXpress"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1930
+#: class-wc-ifthen-webdados.php:1936
 msgid "DPD (Chronopost/SEUR) Portugal for WooCommerce"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1931
+#: class-wc-ifthen-webdados.php:1937
 msgid "DPD Portugal"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1936
+#: class-wc-ifthen-webdados.php:1942
 msgid "Portuguese Postcodes for WooCommerce"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1937
+#: class-wc-ifthen-webdados.php:1943
 msgid "Portuguese Postcodes"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1942
+#: class-wc-ifthen-webdados.php:1948
 msgid "Feed KuantoKusta for WooCommerce PRO add-on"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1943
+#: class-wc-ifthen-webdados.php:1949
 msgid "KuantoKusta"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1948
+#: class-wc-ifthen-webdados.php:1954
 msgid "Shop as Client for WooCommerce PRO add-on"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1949
+#: class-wc-ifthen-webdados.php:1955
 msgid "Shop as Client"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1954
+#: class-wc-ifthen-webdados.php:1960
 msgid "Payment Multicaixa (ProxyPay gateway) for WooCommerce PRO add-on"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:1955
+#: class-wc-ifthen-webdados.php:1961
 msgid "Payment Multicaixa"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2002
+#: class-wc-ifthen-webdados.php:2008
 msgid "MB WAY Payment has been requested"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2007 class-wc-mbway-ifthen-webdados.php:964
+#: class-wc-ifthen-webdados.php:2013 class-wc-mbway-ifthen-webdados.php:964
 msgid "Error contacting IfthenPay servers to create MB WAY Payment"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2013
+#: class-wc-ifthen-webdados.php:2019
 msgid "Invalid parameters"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2019
+#: class-wc-ifthen-webdados.php:2025
 msgid "Error"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2109
+#: class-wc-ifthen-webdados.php:2115
 msgid "Unknown error 1"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2121
+#: class-wc-ifthen-webdados.php:2127
 msgid "Unknown error 2"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2165
+#: class-wc-ifthen-webdados.php:2171
 msgid "Are you sure you want to ask IfthenPay to activate the “Callback”?"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2166
+#: class-wc-ifthen-webdados.php:2172
 msgid "Please provide the IfthenPay backoffice key you got after signing the contract"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2199 class-wc-ifthen-webdados.php:2210
-#: class-wc-ifthen-webdados.php:2223
+#: class-wc-ifthen-webdados.php:2205 class-wc-ifthen-webdados.php:2216
+#: class-wc-ifthen-webdados.php:2229
 #, php-format
 msgid "%1$s - Your version: %2$s"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2218
+#: class-wc-ifthen-webdados.php:2224
 msgid "Support for WC &lt; 3.4 will end VERY SOON!"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2234
+#: class-wc-ifthen-webdados.php:2240
 msgid "Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce"
 msgstr ""
 
-#: class-wc-ifthen-webdados.php:2236
+#: class-wc-ifthen-webdados.php:2242
 msgid "We are working on implementing the latest and safest technology, so you will soon need:"
 msgstr ""
 

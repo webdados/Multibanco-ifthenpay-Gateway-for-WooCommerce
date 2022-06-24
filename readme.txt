@@ -178,6 +178,11 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 6.0.1 - 2022-06-24 =
+* Fix a bug on the callback activation request with the new "MB Key" configuration method (do not request for callback activation on 6.0.0, intall 6.0.1 and then do it)
+* Fix a PHP warning
+* Under the hood: Change the way the plugin version is called
+
 = 6.0.0 - 2022-06-24 =
 * New configuration method with an "MB Key" instead of an Entity and Subentity, which uses an API and allows for reference expiration (you should ask IfthenPay for configuration details for this method)
 * New filters for the new configuration method: `multibanco_ifthen_base_mbkey`, `multibanco_ifthen_webservice_timeout`, `multibanco_ifthen_webservice_desc` and `multibanco_ifthen_webservice_expire_days`

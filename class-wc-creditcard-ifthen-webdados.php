@@ -33,7 +33,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			$this->debug_email = $this->get_option( 'debug_email' );
 			
 			//Check version and upgrade
-			$this->version = WC_IfthenPay_Webdados()->version;
+			$this->version = WC_IfthenPay_Webdados()->get_version();
 			$this->upgrade();
 
 			$this->has_fields = false;

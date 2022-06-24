@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WC_IfthenPay_Webdados {
 	
 	/* Version */
-	public $version = '6.0.0';
+	public $version = false;
 
 	/* IDs */
 	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
@@ -99,7 +99,8 @@ final class WC_IfthenPay_Webdados {
 	protected static $_instance = null;
 
 	/* Constructor */
-	public function __construct() {
+	public function __construct( $version ) {
+		$this->version                 = $version;
 		$this->wpml_active             = function_exists( 'icl_object_id' ) && function_exists( 'icl_register_string' );
 		$this->wc_deposits_active      = function_exists( 'wc_deposits_woocommerce_is_active' );
 		$this->wc_subscriptions_active = function_exists( 'wcs_get_subscription' );
@@ -123,7 +124,7 @@ final class WC_IfthenPay_Webdados {
 			:
 			home_url( '/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]' )
 		);
-		$this->multibanco_api_mode_enabled = $this->multibanco_settings['api_mode'] == 'yes';
+		$this->multibanco_api_mode_enabled = isset( $this->multibanco_settings['api_mode'] ) && $this->multibanco_settings['api_mode'] == 'yes';
 		if ( $this->multibanco_api_mode_enabled && $this->multibanco_settings['mbkey'] == 'YAK-504589' ) $this->multibanco_api_url = 'https://ifthenpay.com/api/multibanco/reference/sandbox'; //Sandbox
 		//MB WAY
 		$this->mbway_settings          = get_option( 'woocommerce_mbway_ifthen_for_woocommerce_settings', '' );
@@ -157,9 +158,9 @@ final class WC_IfthenPay_Webdados {
 	}
 
 	/* Ensures only one instance of our plugin is loaded or can be loaded */
-	public static function instance() {
+	public static function instance( $version ) {
 		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
+			self::$_instance = new self( $version );
 		}
 		return self::$_instance;
 	}
@@ -213,6 +214,11 @@ final class WC_IfthenPay_Webdados {
 		} );
 		//Remove pay button for Multibanco, MB WAY or Payshop
 		add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'woocommerce_my_account_my_orders_actions' ), 10, 2 );
+	}
+
+	/* Get version */
+	public function get_version() {
+		return $this->version;
 	}
 
 	/* Set images */
@@ -2286,9 +2292,9 @@ wc_price( $order_total_to_pay )
 			return;
 		}
 		
-		wp_enqueue_style( 'woocommerce_multibanco_ifthen_admin_css', plugins_url( 'assets/admin.css', __FILE__ ), array(), $this->version.( WP_DEBUG ? '.'.rand( 0, 99999 ) : '' ) );
+		wp_enqueue_style( 'woocommerce_multibanco_ifthen_admin_css', plugins_url( 'assets/admin.css', __FILE__ ), array(), $this->get_version().( WP_DEBUG ? '.'.rand( 0, 99999 ) : '' ) );
 		
-		wp_enqueue_script( 'woocommerce_multibanco_ifthen_admin_js', plugins_url( 'assets/admin.js', __FILE__ ), array( 'jquery' ), $this->version.( WP_DEBUG ? '.'.rand( 0, 99999 ) : '' ), true );
+		wp_enqueue_script( 'woocommerce_multibanco_ifthen_admin_js', plugins_url( 'assets/admin.js', __FILE__ ), array( 'jquery' ), $this->get_version().( WP_DEBUG ? '.'.rand( 0, 99999 ) : '' ), true );
 
 		//Javascript variables
 		$gateway             = str_replace( '_ifthen_for_woocommerce', '', $_GET['section'] );

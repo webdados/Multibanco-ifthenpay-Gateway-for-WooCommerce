@@ -33,7 +33,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 			$this->debug_email = $this->get_option( 'debug_email' );
 			
 			//Check version and upgrade
-			$this->version = WC_IfthenPay_Webdados()->version;
+			$this->version = WC_IfthenPay_Webdados()->get_version();
 			$this->upgrade();
 
 			$this->has_fields = false;
@@ -231,7 +231,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				'api_mode' => array(
 								'title' => __( 'Entity and subentity or MB Key?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'type' => 'select',
-								'description' => __( 'What kind of details did you get from IfthenPay?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+								'description' => __( 'What kind of details did you get from IfthenPay? After changing this setting you need to request the callback activation again.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'default' => '',
 								'options'	=> array(
 									''	  => __( 'Entity with 5 digits and subentity with 3 digits', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
@@ -265,7 +265,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				'mbkey' => array(
 								'title' => __( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' / '.__( 'MB Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'type' => 'text',
-								'description' => __( 'MB Key provided by IfthenPay when signing the contract. (E.g.: AAA-000000)', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+								'description' => __( 'MB Key provided by IfthenPay when signing the contract. (E.g.: AAA-000000) - If you have an entity and subentity and want to change to this new method, you should request IfthenPay for a MB Key.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'default' => '',
 								'css' => 'width: 80px;',
 								'custom_attributes' => array(
@@ -326,7 +326,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				'api_expiry' => array(
 								'title' => __( 'Reference expiration', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'type' => 'select',
-								'description' => __( 'When should the refenence expire', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+								'description' => __( 'Number of days until the reference expires (it will always expire at 23:59:59 when the number of days is reached)', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'default' => '',
 								'options'	=> $days_api_expiry
 							),
@@ -490,7 +490,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 					<?php
 					if(
 						(
-							WC_IfthenPay_Webdados()->multibanco_api_mode_enabled == ''
+							( ! WC_IfthenPay_Webdados()->multibanco_api_mode_enabled )
 							&&
 							strlen( trim( $this->ent ) ) == 5
 							&&
@@ -502,7 +502,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 						)
 						||
 						(
-							WC_IfthenPay_Webdados()->multibanco_api_mode_enabled == 'yes'
+							WC_IfthenPay_Webdados()->multibanco_api_mode_enabled
 							&&
 							strlen( trim( $this->mbkey ) ) == 10
 						)
@@ -566,7 +566,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 						<?php
 					} else {
 						if ( $this->settings_saved == 1 ) {
-							if ( WC_IfthenPay_Webdados()->multibanco_api_mode_enabled == 'yes' ) {
+							if ( WC_IfthenPay_Webdados()->multibanco_api_mode_enabled ) {
 								?>
 								<div id="message" class="error">
 									<p><strong><?php _e( 'Invalid Entity / MB Key (exactly 3 letters and 6 numeric characters).', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
@@ -629,9 +629,15 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 		}
 
 		public function send_callback_email() {
+			$ent    = $this->ent;
+			$subent = $this->subent;
+			if ( WC_IfthenPay_Webdados()->multibanco_api_mode_enabled ) {
+				$ent    = 'MB';
+				$subent = $this->mbkey;
+			}
 			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) != '' ) {
 				//Webservice
-				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), $this->ent, $this->subent, $this->secret_key, WC_IfthenPay_Webdados()->multibanco_notify_url );
+				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), $ent, $subent, $this->secret_key, WC_IfthenPay_Webdados()->multibanco_notify_url );
 				if ( $result['success'] ) {
 					update_option( $this->id . '_callback_email_sent', 'yes' );
 					WC_Admin_Settings::add_message( __( 'The “Callback” activation request has been submited to IfthenPay via webservice and is now active.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
@@ -646,14 +652,14 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				//Email
 				$to = WC_IfthenPay_Webdados()->callback_email;
 				$cc = get_option( 'admin_email' );
-				$subject = 'Activação de Callback Multibanco (Ent.: '.$this->ent.' Subent.: '.$this->subent.')';
+				$subject = 'Activação de Callback Multibanco (Ent.: '.$ent.' Subent.: '.$subent.')';
 				$message = 'Por favor activar Callback Multibanco com os seguintes dados:
 
 Entidade:
-'.$this->ent.'
+'.$ent.'
 
 Sub-entidade:
-'.$this->subent.'
+'.$subent.'
 
 Chave anti-phishing (Multibanco):
 '.$this->secret_key.'
@@ -1288,7 +1294,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				trim( $this->enabled ) == 'yes'
 				&&
 				(
-					WC_IfthenPay_Webdados()->multibanco_api_mode_enabled == ''
+					( ! WC_IfthenPay_Webdados()->multibanco_api_mode_enabled )
 					&&
 					strlen( trim( $this->ent ) ) == 5
 					&&
@@ -1300,7 +1306,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				)
 				||
 				(
-					WC_IfthenPay_Webdados()->multibanco_api_mode_enabled == 'yes'
+					WC_IfthenPay_Webdados()->multibanco_api_mode_enabled
 					&&
 					strlen( trim( $this->mbkey ) ) == 10
 				)

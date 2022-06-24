@@ -71,7 +71,7 @@ final class MultibancoIfthenPay extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_script_handles() {
-		wp_register_script( 'wc-payment-method-multibanco-ifthenpay', plugins_url( 'wc-payment-method-multibanco-ifthenpay.js', __FILE__ ), array(), WC_IfthenPay_Webdados()->version, true );
+		wp_register_script( 'wc-payment-method-multibanco-ifthenpay', plugins_url( 'wc-payment-method-multibanco-ifthenpay.js', __FILE__ ), array(), WC_IfthenPay_Webdados()->get_version(), true );
 		return [ 'wc-payment-method-multibanco-ifthenpay' ];
 	}
 

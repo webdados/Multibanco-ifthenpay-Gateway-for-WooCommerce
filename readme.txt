@@ -179,12 +179,12 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 == Changelog ==
 
 = ? =
-* You can safely update this plugin if you’re running WooCommece 4.0 or newer **but we’ll very soon drop support for WooCommerce previous to 4.0**
+* You can safely update this plugin if you’re running WooCommece 4.0 or newer **but we’ll very soon drop support for WooCommerce previous to 5.0**
 * Dev - Removed support for WooCommerce below 4.0 (launched in March 2020)
 * Dev - Removed support for WordPress below 5.0 (launched in December 2018)
 * Dev - Removed support for PHP below 7.0 (launched in December 2015)
 * Remove - The option to reduce stock when the order is created is no longer available as it worked only for WooCommerce below 3.4.0
-* Fix - Set order as pais when order total is 0 and bypass any payments
+* Fix - Set order as paid when order total is 0 and bypass any payments
 * Requires WordPress 5.0, WooCommerce 4.0 and PHP 7.0
 
 = 6.0.3 - 2022-06-30 =

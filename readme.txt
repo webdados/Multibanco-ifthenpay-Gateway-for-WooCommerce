@@ -178,7 +178,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 6.1.0 =
+= 6.1.0 - 2022-07-28 =
 * You can safely update this plugin if you’re running WooCommece 4.0 or newer **but we’ll very soon drop support for WooCommerce previous to 5.0**
 * **Dev - Removed support for WooCommerce below 4.0 (launched in March 2020)**
 * **Dev - Removed support for WordPress below 5.0 (launched in December 2018)**

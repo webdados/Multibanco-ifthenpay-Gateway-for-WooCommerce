@@ -84,6 +84,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 			$this->only_portugal      = ( $this->get_option( 'only_portugal' )=='yes' ? true : false );
 			$this->only_above         = $this->get_option( 'only_above' );
 			$this->only_bellow        = $this->get_option( 'only_bellow' );
+			$this->stock_when         = $this->get_option( 'stock_when' );
 	 	
 			// Actions and filters
 			if ( self::$instances == 1 ) { //Avoid duplicate actions and filters if it's initiated more than once (if WooCommerce loads after us)
@@ -357,6 +358,16 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 								), 
 								'default' => ''
 							),
+				'stock_when' => array(
+								'title' => __( 'Reduce stock', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+								'type' => 'select',
+								'description' => __( 'Choose when to reduce stock.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+								'default' => '',
+								'options'	=> array(
+									'order'	=> __( 'when order is placed (before payment, WooCommerce default)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									''		=> __( 'when order is paid (requires active callback)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								),
+							)
 			) );
 			if ( WC_IfthenPay_Webdados()->get_multibanco_ref_mode() == 'incremental_expire' ) {
 				$this->form_fields = array_merge( $this->form_fields, array(
@@ -1129,7 +1140,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		function woocommerce_payment_complete_reduce_order_stock( $bool, $order_id ) {
 			$order = wc_get_order( $order_id );
 			if ( $order->get_payment_method() == $this->id ) {
-				return ( WC_IfthenPay_Webdados()->woocommerce_payment_complete_reduce_order_stock( $bool, $order->get_id(), $this->id ) );
+				return ( WC_IfthenPay_Webdados()->woocommerce_payment_complete_reduce_order_stock( $bool, $order->get_id(), $this->id, $this->stock_when ) );
 			} else {
 				return $bool;
 			}

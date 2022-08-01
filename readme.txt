@@ -178,6 +178,9 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 6.1.1 - 2022-08-01 =
+* Restore - The option to reduce stock when the order is created is available again
+
 = 6.1.0 - 2022-07-28 =
 * You can safely update this plugin if you’re running WooCommece 4.0 or newer **but we’ll very soon drop support for WooCommerce previous to 5.0**
 * **Dev - Removed support for WooCommerce below 4.0 (launched in March 2020)**

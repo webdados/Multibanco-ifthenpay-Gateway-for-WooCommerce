@@ -1680,17 +1680,27 @@ wc_price( $order_total_to_pay )
 	}
 
 	/* Reduce stock - on 'woocommerce_payment_complete_reduce_order_stock' */
-	public function woocommerce_payment_complete_reduce_order_stock( $reduce, $order_id, $payment_method ) {
+	public function woocommerce_payment_complete_reduce_order_stock( $reduce, $order_id, $payment_method, $stock_when ) {
 		if ( $reduce ) {
 			$order = wc_get_order( $order_id );
 			if ( $order->get_payment_method() == $payment_method ) {
 				//After 3.4.0
 				if ( $this->order_needs_payment( $order ) ) {
 					//Pending payment
-					return false;
+						if ( $stock_when == 'order' ) {
+							//Yes, because we want to reduce on the order
+							return true;
+						} else {
+							return false;
+						}
 				} else {
 					//Payment done
-					return true;
+						if ( $stock_when == '' ) {
+							//Yes, because we want to reduce on payment
+							return true;
+						} else {
+							return false;
+						}
 				}
 			} else {
 				return $reduce;

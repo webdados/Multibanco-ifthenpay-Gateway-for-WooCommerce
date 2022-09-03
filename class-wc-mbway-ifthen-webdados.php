@@ -115,13 +115,20 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				// NO SMS Integrations for MB WAY
 		 		
 				// Customer Emails
-				//add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 4 ); - "Hyyan WooCommerce Polylang Integration" removes this action
+				//Regular orders
 				add_action(
 					apply_filters( 'mbway_ifthen_email_hook', 'woocommerce_email_before_order_table' ),
-					array( $this, 'email_instructions_1' ),
+					array( $this, 'email_instructions_1' ), //Avoid "Hyyan WooCommerce Polylang Integration" remove_action
 					apply_filters( 'mbway_ifthen_email_hook_priority', 10 ),
 					4
-				); //Avoid "Hyyan WooCommerce Polylang Integration" remove_action
+				);
+				//Subscriptions
+				add_action(
+					apply_filters( 'mbway_ifthen_subscription_email_hook', 'woocommerce_email_before_subscription_table' ),
+					array( $this, 'email_instructions_1' ), //Avoid "Hyyan WooCommerce Polylang Integration" remove_action
+					apply_filters( 'mbway_ifthen_subscription_email_hook_priority', 10 ),
+					4
+				);
 		
 				// Payment listener/API hook
 				add_action( 'woocommerce_api_wc_mbway_ifthen_webdados', array( $this, 'callback' ) );

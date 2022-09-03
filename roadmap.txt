@@ -10,6 +10,7 @@ TOOLBOX PAGA:
 	- Na verdade isto deveria vir no callback (email enviado a 2020-12-10)
 	- Na encomenda, fazer como no Stripe e mostrar o valor pago em comissões
 	- Ter opção de ordenar os métodos de pagamento pela ordem do que fica mais barato
+- Poder definir em que emails não ser quer enviar as instruções de pagamento (ver Toolbox)
 - Olhar para outros hooks disponíveis no plugin e "inventar" funcionalidades
 
 

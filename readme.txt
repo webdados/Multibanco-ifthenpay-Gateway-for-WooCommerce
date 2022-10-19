@@ -192,7 +192,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 6.3.0 - 2022-10-11 =
+= 6.3.0 - 2022-10-19 =
 * You can safely update this plugin if you’re running WooCommece 4.0 or newer **but we’ll very soon drop support for WooCommerce previous to 5.0**
 * **New [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/)**
 * Code refactoring when querying orders, cancel expiring orders

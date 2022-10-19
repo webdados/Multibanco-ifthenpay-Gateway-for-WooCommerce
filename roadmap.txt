@@ -1,4 +1,4 @@
-TOOLBOX PAGA:
+PRO ADD-ON PAGO:
 - Depois de expirar o MBWAY, mudar para Multibanco automaticamente e enviar referência ao cliente
 	- Ou enviar email para escolher outro método
 	- Ou ambos
@@ -13,6 +13,8 @@ TOOLBOX PAGA:
 - Poder definir em que emails não ser quer enviar as instruções de pagamento (ver Toolbox)
 - Olhar para outros hooks disponíveis no plugin e "inventar" funcionalidades
 
+
+- Verificar compatibilidade com HPOS, nomeadamente nas wc_get_orders() - https://github.com/woocommerce/woocommerce/issues/33879
 
 5.0.0:
 
@@ -38,8 +40,6 @@ MB WAY e MULTIBANCO:
 MULTIBANCO:
 
 MB WAY:
-- O mbway.js deve verificar se está paga e não o estado da encomenda
-	ou então pelo menos pesquisar "processing" e "completed": Feito
 - Processar refunds e pedir pelo webservice (callback já está)
 	- Verificar condições e para quem pode ou não ser activado
 - Implementar WooCommerce Blocks Checkout

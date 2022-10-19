@@ -810,8 +810,8 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				'type'                      => array( 'shop_order' ),
 				'status'                    => $pending_status,
 				'limit'                     => -1,
-				'_'.$this->id.'_request_id' => $request_id,
-				'_'.$this->id.'_id'         => $id,
+				'_'.$this->id.'_request_id' => $request_id, //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
+				'_'.$this->id.'_id'         => $id,         //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
 			);
 			if ( ! is_null( $wd_secret ) ) {
 				$args['_'.$this->id.'_wd_secret'] = $wd_secret;

@@ -23,6 +23,7 @@ final class WC_IfthenPay_Webdados {
 	public $log = null;
 
 	/* Internal variables */
+	public $pro_add_on_active       = false;
 	public $wpml_active             = false;
 	public $wc_deposits_active      = false;
 	public $wc_subscriptions_active = false;
@@ -101,6 +102,7 @@ final class WC_IfthenPay_Webdados {
 	/* Constructor */
 	public function __construct( $version ) {
 		$this->version                 = $version;
+		$this->pro_add_on_active       = function_exists( 'WC_IfthenPay_Pro' );
 		$this->wpml_active             = function_exists( 'icl_object_id' ) && function_exists( 'icl_register_string' );
 		$this->wc_deposits_active      = function_exists( 'wc_deposits_woocommerce_is_active' );
 		$this->wc_subscriptions_active = function_exists( 'wcs_get_subscription' );
@@ -199,7 +201,7 @@ final class WC_IfthenPay_Webdados {
 		} );
 		add_filter( 'woocommerce_valid_order_statuses_for_payment', array( $this, 'woocommerce_valid_order_statuses_for_payment' ), PHP_INT_MAX, 2 );
 		// Create cron
-		if( ! wp_next_scheduled ( 'wc_ifthen_hourly_cron' ) ) {
+		if ( ! wp_next_scheduled ( 'wc_ifthen_hourly_cron' ) ) {
 			wp_schedule_event( time(), 'hourly', 'wc_ifthen_hourly_cron' );
 		}
 		// Cancel orders with expired references - Multibanco (after_setup_theme so it runs after theme's functions.php file)
@@ -1286,8 +1288,8 @@ final class WC_IfthenPay_Webdados {
 			$orders = wc_get_orders( array(
 				'type'	=> array( 'shop_order' ),
 				'limit'	=> 1, //If there's one, it's enough
-				'_'.$this->multibanco_id.'_ent' => $ent,
-				'_'.$this->multibanco_id.'_ref' => $ref,
+				'_'.$this->multibanco_id.'_ent' => $ent, //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
+				'_'.$this->multibanco_id.'_ref' => $ref, //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
 				'status' => array( 'wc-on-hold', 'wc-pending' ), //Should we be checking for our valid statuses?
 			) );
 			if ( count($orders) > 0 ) {
@@ -1298,8 +1300,8 @@ final class WC_IfthenPay_Webdados {
 					$orders = wc_get_orders( array(
 						'type'	=> array( 'shop_order' ),
 						'limit'	=> 1, //If there's one, it's enough
-						'_'.$this->multibanco_id.'_ent' => $ent,
-						'_'.$this->multibanco_id.'_ref' => $ref,
+						'_'.$this->multibanco_id.'_ent' => $ent, //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
+						'_'.$this->multibanco_id.'_ref' => $ref, //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
 						'date_after' => date_i18n( 'Y-m-d', strtotime( '-'.intval( $no_repeat_days ).' days ') ),
 					) );
 					if ( count($orders) > 0 ) $exists = true;
@@ -1597,6 +1599,7 @@ wc_price( $order_total_to_pay )
 	}
 
 	/* Filter to be able to use wc_get_orders with our Multibanco and MB WAY references */
+	//HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
 	public function multibanco_woocommerce_order_data_store_cpt_get_orders_query( $query, $query_vars ) {
 		//Multibanco - Entity
 		if ( ! empty( $query_vars['_'.$this->multibanco_id.'_ent'] ) ) {
@@ -1613,10 +1616,10 @@ wc_price( $order_total_to_pay )
 			);
 		}
 		//Multibanco - Already expired
-		if ( ! empty( $query_vars['_'.$this->multibanco_id.'_expired'] ) ) {
+		if ( ! empty( $query_vars['_'.$this->multibanco_id.'_exp'] ) ) {
 			$query['meta_query'][] = array(
 				'key'     => '_'.$this->multibanco_id.'_exp',
-				'value'   => esc_attr( $query_vars['_'.$this->multibanco_id.'_expired'] ),
+				'value'   => esc_attr( $query_vars['_'.$this->multibanco_id.'_exp'] ),
 				'compare' => '<',
 			);
 		}
@@ -1632,6 +1635,14 @@ wc_price( $order_total_to_pay )
 			$query['meta_query'][] = array(
 				'key' => '_'.$this->mbway_id.'_id_pedido',
 				'value' => esc_attr( $query_vars['_'.$this->mbway_id.'_id_pedido'] ),
+			);
+		}
+		//MB WAY - Already expired
+		if ( ! empty( $query_vars['_'.$this->mbway_id.'_exp'] ) ) {
+			$query['meta_query'][] = array(
+				'key'     => '_'.$this->mbway_id.'_exp',
+				'value'   => esc_attr( $query_vars['_'.$this->mbway_id.'_exp'] ),
+				'compare' => '<',
 			);
 		}
 		//Payshop - Request ID
@@ -1653,6 +1664,14 @@ wc_price( $order_total_to_pay )
 			$query['meta_query'][] = array(
 				'key' => '_'.$this->payshop_id.'_id',
 				'value' => esc_attr( $query_vars['_'.$this->payshop_id.'_id'] ),
+			);
+		}
+		//Payshop - Already expired
+		if ( ! empty( $query_vars['_'.$this->payshop_id.'_exp'] ) ) {
+			$query['meta_query'][] = array(
+				'key'     => '_'.$this->payshop_id.'_exp',
+				'value'   => esc_attr( $query_vars['_'.$this->payshop_id.'_exp'] ),
+				'compare' => '<',
 			);
 		}
 		//Credit card - ID
@@ -1774,24 +1793,27 @@ wc_price( $order_total_to_pay )
 		}
 	}
 
-	/* Multibanco cancel expired orders if incremental_expire mode is active */
-	public function multibanco_cancel_expired_orders() {
+	public function cancel_expired_orders( $method_id ) {
 		// We are not doing this on the gateway itself because the cron doesn't always load the gateways
-		if ( $this->get_multibanco_ref_mode() == 'incremental_expire' && isset( $this->multibanco_settings['cancel_expired'] ) && ( $this->multibanco_settings['cancel_expired'] == 'yes' ) ) {
-			$expired_orders = wc_get_orders( array( // https://github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
-				'status'                            => array( 'on-hold', 'pending' ), //Aqui não usamos os unpaid statuses porque podemos entrar num loop se alguém adicionar o estado cancelada e também porque não faz sentido para parcialmente pagas
-				'type'                              => array( 'shop_order' ),
-				'limit'                             => -1,
-				'payment_method'                    => $this->multibanco_id,
-				'_'.$this->multibanco_id.'_expired' => date_i18n( 'Y-m-d H:i:s' )
-			) );
-			if ( $expired_orders ) {
-				foreach ( $expired_orders as $expired_order ) {
-					$expired_order->update_status( 'cancelled', __( 'Unpaid order cancelled - Multibanco reference expired.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
-					//The stocks are automatically restored by wc_maybe_increase_stock_levels via the 'woocommerce_order_status_cancelled' action
-				}
+		$args = array( // https://github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
+			'status'              => array( 'on-hold', 'pending' ), //Aqui não usamos os unpaid statuses porque podemos entrar num loop se alguém adicionar o estado cancelada e também porque não faz sentido para parcialmente pagas
+			'type'                => array( 'shop_order' ),
+			'limit'               => -1,
+			'payment_method'      => $method_id,
+			'_'.$method_id.'_exp' => date_i18n( 'Y-m-d H:i:s' ), //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
+		);
+		$expired_orders = wc_get_orders( $args );
+		if ( $expired_orders ) {
+			foreach ( $expired_orders as $expired_order ) {
+				$expired_order->update_status( 'cancelled', __( 'Unpaid order cancelled - Payment reference expired.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+				//The stocks are automatically restored by wc_maybe_increase_stock_levels via the 'woocommerce_order_status_cancelled' action
 			}
 		}
+	}
+
+	/* Multibanco cancel expired orders if incremental_expire mode is active */
+	public function multibanco_cancel_expired_orders() {
+		$this->cancel_expired_orders( $this->multibanco_id );
 	}
 
 	/* Multibanco SMS instructions - General. Can be used to feed any SMS gateway/plugin */
@@ -1918,7 +1940,7 @@ wc_price( $order_total_to_pay )
 					//Forces MB Ref creation
 					$renewal_order_id = $renewal_order->get_id();
 					$ref = $this->multibanco_get_ref( $renewal_order_id, true );
-					if ( is_array( $ref) ) {
+					if ( is_array( $ref ) ) {
 						//Changes to "on hold" - Forces email sending
 						$renewal_order->update_status( 'on-hold', __( 'Awaiting Multibanco payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' (WooCommerce Subscriptions)' );
 					}
@@ -2009,6 +2031,18 @@ wc_price( $order_total_to_pay )
 	public function admin_right_bar() {
 		?>
 		<div id="wc_ifthen_rightbar">
+			<?php if ( ! $this->pro_add_on_active ) { ?>
+				<div class="wc_ifthen_pro_ad">
+					<h4><?php _e( 'Want more features?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
+					<p>
+						<a href="https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm); ?>#extensions" target="_blank" style="font-weight: bold;">
+							<?php _e( 'Get the PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+						</a>
+					</p>
+				</div>
+				<div class="clear"></div>
+				<hr/>
+			<?php } ?>
 			<h4><?php _e( 'Commercial information', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 			<p>
 				<a href="https://ifthenpay.com/<?php echo esc_attr( $this->out_link_utm); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 'IfthenPay' ) ); ?>" target="_blank">
@@ -2039,17 +2073,6 @@ wc_price( $order_total_to_pay )
 			</a>
 			<div class="clear"></div>
 			<hr/>
-			<h4><?php _e( 'Extensions', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
-			<ul>
-				<li>
-					-
-					<a href="https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/<?php echo esc_attr( $this->out_link_utm); ?>#extensions" target="_blank">
-						<?php _e( 'Entity per Category add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
-					</a>
-				</li>
-			</ul>
-			<div class="clear"></div>
-			<hr/>
 			<h4><?php _e( 'Other premium plugins', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 			<ul id="wc_ifthen_premium_plugins">
 				<?php
@@ -2067,7 +2090,7 @@ wc_price( $order_total_to_pay )
 						'image'       => 'dpd-portugal.png',
 					),
 					array(
-						'url'         => 'https://ptwooplugins.com/product/portuguese-postcodes-for-woocommerce-technical-support/',
+						'url'         => 'https://www.webdados.pt/wordpress/plugins/codigos-postais-portugueses-para-woocommerce/',
 						'title'       => __( 'Portuguese Postcodes for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'Portuguese Postcodes', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'postcodes.png',
@@ -2085,17 +2108,17 @@ wc_price( $order_total_to_pay )
 						'image'       => 'shop-as-client.png',
 					),
 					array(
-						'url'         => 'https://www.webdados.pt/wordpress/plugins/multicaixa-gateway-proxypay-para-woocommerce-wordpress/',
-						'title'       => __( 'Payment Multicaixa (ProxyPay gateway) for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => __( 'Payment Multicaixa', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'multicaixa.png',
+						'url'         => 'https://www.webdados.pt/wordpress/plugins/taxonomy-term-based-discounts-for-woocommerce/',
+						'title'       => __( 'Taxonomy/Term and Role based Discounts for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'short_title' => __( 'Taxonomy based Discounts', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'image'       => 'taxonomy-discounts.png',
 					),
 				);
 				foreach( $premium_plugins as $premium_plugin ) {
 					?>
 					<li>
 						<a href="<?php echo esc_url( $premium_plugin['url'].$this->out_link_utm); ?>" target="_blank" title="<?php echo esc_attr( $premium_plugin['title'] ); ?>">
-							<img src="<?php echo esc_url( plugins_url( 'images/premium_plugins/'.$premium_plugin['image'], __FILE__ ) ); ?>" width="600" height="600" alt="<?php echo esc_attr( $premium_plugin['title'] ); ?>"/>
+							<img src="<?php echo esc_url( plugins_url( 'images/premium_plugins/'.$premium_plugin['image'], __FILE__ ) ); ?>" width="200" height="200" alt="<?php echo esc_attr( $premium_plugin['title'] ); ?>"/>
 							<small><?php echo $premium_plugin['short_title']; ?></small>
 						</a>
 					</li>

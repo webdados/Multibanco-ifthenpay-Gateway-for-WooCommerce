@@ -12,7 +12,7 @@
 				});
 				if (
 					(
-						$( '#woocommerce_multibanco_ifthen_for_woocommerce_api_mode' ).val() == ''
+						( $( '#woocommerce_multibanco_ifthen_for_woocommerce_api_mode' ).val() == '' || $( '#woocommerce_multibanco_ifthen_for_woocommerce_api_mode' ).val() == 'no' )
 						&&
 						$( '#woocommerce_multibanco_ifthen_for_woocommerce_ent' ).val().trim().length == 5
 						&&

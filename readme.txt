@@ -14,8 +14,8 @@ This plugin allows customers with a Portuguese bank account to pay WooCommerce o
 
 == Description ==
 
-“Pagamento de Serviços” (payment of services) on Multibanco (Portuguese ATM network), or Home Banking services, is the most popular way to pay for services and (online) purchases in Portugal. Portuguese consumers trust the “Multibanco” system more than any other.
-This plugin will allow you to generate a payment Reference the customer can then use to pay for his WooCommerce order, through an ATM or Home Banking service.
+“Pagamento de Serviços” (payment of services) on Multibanco (Portuguese ATM network), or homebanking services, is the most popular way to pay for services and (online) purchases in Portugal. Portuguese consumers trust the “Multibanco” system more than any other.
+This plugin will allow you to generate a payment Reference the customer can then use to pay for his WooCommerce order, through an ATM or homebanking service.
 
 The MB WAY (using the customer mobile phone number), Credit or debit card and CTT Payshop payment methods are also available.
 
@@ -30,16 +30,16 @@ If not, get to know our new plugin: [Invoicing with InvoiceXpress for WooCommerc
 
 = Features: =
 
-* Generates a Multibanco Reference for simple payment on the Portuguese ATM network or Home Banking service;
-* Multibanco references with expiration date if the "MB Key" configuration method is used;
+* Generates a Multibanco Reference for simple payment on the Portuguese ATM network or homebanking service;
+* Multibanco references with expiration date if the “MB Key” configuration method is used;
 * Allows the customer to pay using MB WAY using his mobile phone;
 * Allows the customer to pay using his Credit or debit card (WooCommerce >= 4.0);
 * Generates a Payshop Reference for simple payment on the [Payshop agents network](https://www.payshop.pt/fepsapl/app/open/showSearchAgent.jspx), CTT stores or post offices available all over Portugal;
-* Automatically changes the order status to “Processing” (or “Completed” if the order only contains virtual downloadable products) and notifies both the customer and the store owner, if the automatic “Callback” upon payment is activated; 
+* Automatically changes the order status to “Processing” (or “Completed” if the order only contains virtual downloadable products) and notifies both the customer and the store owner, if the automatic “Callback” upon payment is activated;
 * Automatic “Callback” can be activated upon request to IfthenPay, via the plugin settings screen for each payment method;
 * Shop owner can set minimum and maximum order totals for each payment gateway to be available;
 * Ability to reduce stock when the order is created or paid;
-* Allows searching orders (in the admin area) by Multibanco or Payshop Reference;
+* Allows searching orders (in the admin area) by Multibanco or Payshop reference;
 * Integration for 3rd party SMS notification plugins (only Multibanco and Payshop):
 	* [WooCommerce - APG SMS Notifications](https://wordpress.org/plugins/woocommerce-apg-sms-notifications/)
 	* [Twilio SMS Notifications](https://woocommerce.com/products/twilio-sms-notifications/);
@@ -53,11 +53,25 @@ If not, get to know our new plugin: [Invoicing with InvoiceXpress for WooCommerc
 * [WooCommerce Blocks](https://wordpress.org/plugins/woo-gutenberg-products-block/) checkout block (experimental) integration (only Multibanco);
 * PHP7 tested and compatible;
 
-= Premium add-ons: =
+= PRO add-on =
 
-* [Entity per Category](https://ptwooplugins.com/product/multibanco-and-mbway-ifthenpay-entity-per-category/):
-	* Set a base Multibanco Entity and Subentity, MB Key, MB WAY Key, Payshop Key or Credit Card Key, at the product category level, so you can get the payment on different accounts based on the order;
-	* Lock the cart so you can only have products from the same account on each order;
+Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/) and unlock extra features:
+
+* Automatic cancellation of orders when Multibanco, Payshop or MB WAY references expire.
+* Remove payment instructions from specific emails, for example “order completed”, to avoid customer confusion when they are no longer necessary.
+* Set a payment entity for Multibanco, MB WAY, Payshop and Credit Card, at the product category level, so that you can receive payment in different accounts based on the order products. Lock the cart so you can only have products from a single account in the same order. (Replaces previously available specific extension).
+* Change the default timeout for calls to IfthenPay webservices if your website is experiencing communication difficulties.
+* Hide notices of new available payment methods.
+* Hide notices of pending callback activation requests.
+* Hide sidebar in payment method settings screen.
+* More features coming soon.
+* By purchasing the PRO add-on you get:
+	* Technical support (conditions apply);
+	* All the features described above;
+	* Contribution to the continued development of solution;
+	* Automatic updates;
+
+Attention: The PRO add-on is a product of PT Woo Plugins / Webdados, and IfthenPay has no responsibility for it.
 
 == Installation ==
 
@@ -132,9 +146,9 @@ Go to WooCommerce > Settings > SMS and add the `%multibanco_ifthen%` and/or `%pa
 
 Go to YITH Plugins > SMS Notifications > SMS Settings and add the `{multibanco_ifthen}` and/or `{payshop_ifthen}` variables to “On hold”.
 
-= [Advanced] Can I use a specific Multibanco Entity/Subentity, MB WAY, Credit card or Payshop Key based on order details? =
+= [Advanced] Can I use a specific Multibanco Entity/Subentity or Key, MB WAY, Credit card or Payshop Key based on order details? =
 
-Yes, you should use the `multibanco_ifthen_base_ent_subent`, `multibanco_ifthen_base_mbwaykey`, `multibanco_ifthen_base_creditcardkey` or `multibanco_ifthen_base_payshopkey` filters. See `hooks-examples.php`.
+Yes, you should use the `multibanco_ifthen_base_ent_subent` or `multibanco_ifthen_base_mbkey`, `multibanco_ifthen_base_mbwaykey`, `multibanco_ifthen_base_creditcardkey` or `multibanco_ifthen_base_payshopkey` filters. See `hooks-examples.php`.
 
 = [Advanced] The order is set “On Hold” for Multibanco and Payshop, can I make it “Pending” by default? =
 
@@ -178,8 +192,15 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 6.2.0 - 2022-09.03 =
+= 6.3.0 - 2022-10-11 =
 * You can safely update this plugin if you’re running WooCommece 4.0 or newer **but we’ll very soon drop support for WooCommerce previous to 5.0**
+* **New [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/)**
+* Code refactoring when querying orders, cancel expiring orders
+* Suggest MB Key instead of Entity / Subentity
+* Replace “home banking” with “homebanking”
+* Tested with WordPress 6.1-beta3-54428 and WooCommerce 7.1.0-beta.1
+
+= 6.2.0 - 2022-09-03 =
 * Fix - Payment instructions were not shown on subscription parent and renewal orders
 * Tested with WordPress 6.1-alpha-54043 and WooCommerce 6.9.0-beta.2
 

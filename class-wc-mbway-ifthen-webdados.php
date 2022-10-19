@@ -1144,7 +1144,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							'type'                     => array( 'shop_order' ),
 							'status'                   => $pending_status,
 							'limit'                    => -1,
-							'_'.$this->id.'_id_pedido' => $id_pedido,
+							'_'.$this->id.'_id_pedido' => $id_pedido, //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
 						);
 						$orders = wc_get_orders( $args );
 						if ( count( $orders ) > 0 ) {

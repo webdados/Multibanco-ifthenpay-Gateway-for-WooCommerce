@@ -88,3 +88,15 @@
 #wc_ifthen_callback_div.focus {
 	background-color: #FFEFBF;
 }
+
+.wc_ifthen_pro_ad {
+	background-color: #fbe5b3;
+	text-align: center;
+	padding: 0.5em;
+	font-size: 1.2em;
+}
+.wc_ifthen_pro_ad h4,
+.wc_ifthen_pro_ad p {
+	margin: 0px;
+	font-weight: bold;
+}

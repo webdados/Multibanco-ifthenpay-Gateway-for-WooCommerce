@@ -197,7 +197,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Debug tweaks - Stop sending "payment received" emails and only send warning or error emails
 * Tested with WordPress 6.1 and WooCommerce 7.1.0-rc.1
 
-= 6.4.0 - 2022-10-03 =
+= 6.4.0 - 2022-10-25 =
 * You can safely update this plugin if you’re running WooCommece 4.0 or newer **but we’ll very soon drop support for WooCommerce previous to 5.0**
 * [PRO add-on 1.1](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): allow sending order number (for sequential order number plugins) instead of order id to the IfthenPay webservices and backoffice
 * Tested with WordPress 6.1-RC2-54684 and WooCommerce 7.1.0-beta.1

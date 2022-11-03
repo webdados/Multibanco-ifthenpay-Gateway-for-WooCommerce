@@ -1164,8 +1164,6 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							$err = 'Error: No orders found awaiting payment with these details - We are going to try by reference (order id) only';
 							$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - We are going to try by reference (order id) only (if, immediately after, you get the “MB WAY payment received” log entry, you can ignore this error)' );
 							//Maybe the webservice timed-out and we are getting the payment anyway?
-							//Why are we using a try/catch instead of regular ifs?
-							//See https://wordpress.org/support/topic/erro-com-metodo-de-pagamento-mb-way/\
 							//We only used this when the IfthenPay / SIBS webservice was timming out, but now that we have the ifthen_webservice_send_order_number_instead_id filter
 							if ( $order = wc_get_order( intval( $referencia ) ) ) { //Not compatible with the new ifthen_webservice_send_order_number_instead_id filter
 								//Maybe we should check for failed?

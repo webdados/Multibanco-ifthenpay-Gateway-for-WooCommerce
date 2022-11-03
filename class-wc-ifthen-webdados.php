@@ -293,6 +293,7 @@ final class WC_IfthenPay_Webdados {
 		if ( !$this->log ) $this->log = wc_get_logger(); //Init log 
 		$this->log->$level( $message, array( 'source' => $gateway_id ) );
 		if ( $debug_email ) {
+			if ( empty( $email_message ) ) $email_message = $message;
 			wp_mail(
 				trim( $debug_email ),
 				$gateway_id.' - '.$message,
@@ -493,6 +494,7 @@ final class WC_IfthenPay_Webdados {
 		$val           = $order->get_meta( '_'.$this->creditcard_id.'_val' );
 		$time          = $order->get_meta( '_'.$this->creditcard_id.'_time' );
 		$payment_url   = $order->get_meta( '_'.$this->creditcard_id.'_payment_url' );
+		$wd_secret     = $order->get_meta( '_'.$this->creditcard_id.'_wd_secret' );
 		if ( !empty( $creditcardkey ) && !empty( $id ) && !empty( $request_id )  && !empty( $val ) ) {
 			return array(
 				'creditcardkey' => $creditcardkey,
@@ -501,6 +503,7 @@ final class WC_IfthenPay_Webdados {
 				'val'           => $val,
 				'time'          => $time,
 				'payment_url'   => $payment_url,
+				'wd_secret'     => $wd_secret,
 			);
 		}
 		return false;
@@ -666,7 +669,7 @@ final class WC_IfthenPay_Webdados {
 							if ( $show_debug && WP_DEBUG ) {
 								$callback_url = $this->mbway_notify_url;
 								$callback_url = str_replace( '[CHAVE_ANTI_PHISHING]', $this->mbway_settings['secret_key'], $callback_url );
-								$callback_url = str_replace( '[REFERENCIA]', $order->get_id(), $callback_url );
+								$callback_url = str_replace( '[REFERENCIA]', apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id(), $callback_url );
 								$callback_url = str_replace( '[ID_TRANSACAO]', trim( $order_mbway_details['id_pedido'] ), $callback_url );
 								$callback_url = str_replace( '[VALOR]', $order_mbway_details['val'], $callback_url );
 								$callback_url = str_replace( '[DATA_HORA_PAGAMENTO]', '', $callback_url );
@@ -814,6 +817,7 @@ final class WC_IfthenPay_Webdados {
 							$callback_url = add_query_arg( 'id', $order_mb_details['id'], $callback_url );
 							$callback_url = add_query_arg( 'amount', $order_mb_details['val'], $callback_url );
 							$callback_url = add_query_arg( 'requestId', $order_mb_details['request_id'], $callback_url );
+							$callback_url = add_query_arg( 'wd_secret', $order_mb_details['wd_secret'], $callback_url );
 							?>
 							<hr/>
 							<p>
@@ -1104,7 +1108,7 @@ final class WC_IfthenPay_Webdados {
 									'headers'  => array('Content-Type' => 'application/json; charset=utf-8'),
 									'body'     => array(
 										'mbKey'          => $mbkey,
-										'orderId'        => $order->get_id(),
+										'orderId'        => (string) apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id(),
 										'amount'         => (string) round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 ),
 										'description'    => $this->mb_webservice_filter_descricao( apply_filters( 'multibanco_ifthen_webservice_desc', $desc, $order->get_id() ) ),
 										//'url'            => '', //??

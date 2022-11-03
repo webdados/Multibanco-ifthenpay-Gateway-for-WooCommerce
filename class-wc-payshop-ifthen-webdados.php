@@ -654,7 +654,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					<th colspan="2">
 						<?php _e( 'Payment instructions', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						<br/>
-						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->payshop_banner ); ?>" alt="<?php echo esc_attr( $alt); ?>" title="<?php echo esc_attr( $alt); ?>"/>
+						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->payshop_banner ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>"/>
 					</th>
 				</tr>
 				<tr>
@@ -862,7 +862,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				'blocking' => true,
 				'body'     => array(
 					'payshopkey' => $payshopkey,
-					'id'         => (string) $id,
+					'id'         => (string) apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id(),
 					'valor'      => (string) round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 ),
 				),
 			);
@@ -1105,7 +1105,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 									WC_IfthenPay_Webdados()->should_fix_woocommerce_420()
 								) {
 									if ( WC_IfthenPay_Webdados()->should_fix_woocommerce_420() && ( floatval( $val ) != floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) ) {
-										$this->debug_log( '-- Payshop payment received but value does not match - Order '.$order->get_id().' - Callbak value '.floatval( $val ).' - Order value '.floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 'warning' );
+										$this->debug_log( '-- Payshop payment received but value does not match - Order '.$order->get_id().' - Callbak value '.floatval( $val ).' - Order value '.floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 'warning', true );
 									}
 									$note=__( 'Payshop payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 									if ( isset( $_GET['datahorapag'] ) && trim( $_GET['datahorapag'] )!='' ) {
@@ -1139,19 +1139,19 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 									do_action( 'payshop_ifthen_callback_payment_complete', $order->get_id() );
 									
 									header( 'HTTP/1.1 200 OK' );
-									$this->debug_log( '-- Payshop payment received - Order '.$order->get_id(), 'notice', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - Payshop payment received' );
+									$this->debug_log( '-- Payshop payment received - Order '.$order->get_id(), 'notice' );
 									echo 'OK - Payshop payment received';
 								} else {	
 									header( 'HTTP/1.1 200 OK' );
 									$err = 'Error: The value does not match';
-									$this->debug_log( '-- '.$err.' - Order '.$order->get_id(), 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - The value does not match' );
+									$this->debug_log( '-- '.$err.' - Order '.$order->get_id(), 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'] );
 									echo $err;
 									do_action( 'payshop_ifthen_callback_payment_failed', $order->get_id(), $err, $_GET );
 								}
 							} else {
 								header( 'HTTP/1.1 200 OK' );
 								$err = 'Error: More than 1 order found awaiting payment with these details';
-								$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - More than 1 order found awaiting payment with these details' );
+								$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'] );
 								echo $err;
 								do_action( 'payshop_ifthen_callback_payment_failed', 0, $err, $_GET );
 							}
@@ -1159,14 +1159,14 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						} else {
 							header( 'HTTP/1.1 200 OK' );
 							$err = 'Error: No orders found awaiting payment with these details';
-							$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - No orders found awaiting payment with these details' );
+							$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'] );
 							echo $err;
 							do_action( 'payshop_ifthen_callback_payment_failed', 0, $err, $_GET );
 						}
 					} else {
 						header( 'HTTP/1.1 200 OK' );
 						$err = 'Error: Cannot process '.trim( $estado ).' status';
-						$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - Cannot process '.trim( $estado ).' status' );
+						$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'] );
 						echo $err;
 						do_action( 'payshop_ifthen_callback_payment_failed', 0, $err, $_GET );
 					}
@@ -1181,7 +1181,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			} else {
 				//header("Status: 400");
 				$err = 'Callback ('.$_SERVER['REQUEST_URI'].') with missing arguments from '.$_SERVER['REMOTE_ADDR'];
-				$this->debug_log( '- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') with missing arguments from '.$_SERVER['REMOTE_ADDR'] );
+				$this->debug_log( '- '.$err, 'warning', true );
 				do_action( 'payshop_ifthen_callback_payment_failed', 0, $err, $_GET );
 				wp_die( 'Error: Something is missing...', 'WC_Payshop_IfThen_Webdados', array( 'response' => 500 ) ); //Sends 500
 			}

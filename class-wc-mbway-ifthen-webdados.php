@@ -656,6 +656,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$extra_instructions = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id.'_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
 			//We actually do not use $ent, $ref or $order_total - We'll just get the details
 			$mbway_order_details = WC_IfthenPay_Webdados()->get_mbway_order_details( $order_id );
+			$order = wc_get_order( $order_id );
+			$id_for_backoffice = apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id();
 			ob_start();
 			echo $this->thankyou_instructions_table_html_css();
 			?>
@@ -669,7 +671,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				</tr>
 				<tr>
 					<td><?php _e( 'Information', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</td>
-					<td class="mb_value"><?php echo apply_filters( 'mbway_ifthen_webservice_desc', get_bloginfo( 'name' ).' #'.$order_id, $order_id ); ?></td>
+					<td class="mb_value"><?php echo apply_filters( 'mbway_ifthen_webservice_desc', get_bloginfo( 'name' ).' #'.$id_for_backoffice, $order_id ); ?></td>
 				</tr>
 				<tr>
 					<td><?php _e( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</td>
@@ -700,6 +702,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		function thankyou_instructions_table_html_expired( $order_id, $order_total ) { //Missing MB WAY email or phone number?
 			$alt = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id.'_title', $this->title ) : $this->title );
 			$order = wc_get_order( $order_id );
+			$id_for_backoffice = apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id();
 			ob_start();
 			echo $this->thankyou_instructions_table_html_css();
 			?>
@@ -713,7 +716,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				</tr>
 				<tr>
 					<td><?php _e( 'Information', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</td>
-					<td class="mb_value"><?php echo apply_filters( 'mbway_ifthen_webservice_desc', get_bloginfo( 'name' ).' #'.$order->get_id(), $order->get_id() ); ?></td>
+					<td class="mb_value"><?php echo apply_filters( 'mbway_ifthen_webservice_desc', get_bloginfo( 'name' ).' #'.$id_for_backoffice, $order->get_id() ); ?></td>
 				</tr>
 				<tr>
 					<td colspan="2" class="extra_instructions"><?php printf(
@@ -808,6 +811,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$extra_instructions = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id.'_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
 			//We actually do not use $ent, $ref or $order_total - We'll just get the details
 			$mbway_order_details = WC_IfthenPay_Webdados()->get_mbway_order_details( $order_id );
+			$order = wc_get_order( $order_id );
+			$id_for_backoffice = apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id();
 			ob_start();
 			?>
 			<table cellpadding="10" cellspacing="0" align="center" border="0" style="margin: auto; margin-top: 2em; margin-bottom: 2em; border-collapse: collapse; border: 1px solid #1465AA; border-radius: 4px !important; background-color: #FFFFFF;">
@@ -820,7 +825,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				</tr>
 				<tr>
 					<td style="border-top: 1px solid #1465AA; color: #000000;"><?php _e( 'Information', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</td>
-					<td style="border-top: 1px solid #1465AA; color: #000000; white-space: nowrap; text-align: right;"><?php echo apply_filters( 'mbway_ifthen_webservice_desc', get_bloginfo( 'name' ).' #'.$order_id, $order_id ); ?></td>
+					<td style="border-top: 1px solid #1465AA; color: #000000; white-space: nowrap; text-align: right;"><?php echo apply_filters( 'mbway_ifthen_webservice_desc', get_bloginfo( 'name' ).' #'.$id_for_backoffice, $order_id ); ?></td>
 				</tr>
 				<tr>
 					<td style="border-top: 1px solid #1465AA; color: #000000;"><?php _e( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</td>
@@ -882,9 +887,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$url      = $this->webservice_url.'/SetPedido';
 			$order    = wc_get_order( $order_id );
 			$mbwaykey = apply_filters( 'multibanco_ifthen_base_mbwaykey', $this->mbwaykey, $order );
+			$id_for_backoffice = apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id();
 			$desc     = trim( get_bloginfo( 'name' ) );
-			$desc     = substr( $desc, 0, MBWAY_IFTHEN_DESC_LEN - strlen( ' #'.$order->get_id() ) );
-			$desc     .= ' #'.$order->get_id();
+			$desc     = substr( $desc, 0, MBWAY_IFTHEN_DESC_LEN - strlen( ' #'.$id_for_backoffice ) );
+			$desc     .= ' #'.$id_for_backoffice;
 			$args     = array(
 				'method'   => 'POST',
 				'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 30 ),
@@ -892,13 +898,14 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				'body'     => array(
 					'MbWayKey'   => $mbwaykey,
 					'canal'      => '03', //Online
-					'referencia' => (string) $order->get_id(),
+					'referencia' => (string) $id_for_backoffice,
 					'valor'      => (string) round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 ),
 					'nrtlm'      => $phone,
 					'email'      => '', //Não usamos
 					'descricao'  => $this->webservice_filter_descricao( apply_filters( 'mbway_ifthen_webservice_desc', $desc, $order->get_id() ) ),
 				),
 			);
+			$this->debug_log_extra( '- Request payment with args: '.serialize( $args ) );
 			$response = wp_remote_post( $url, $args );
 			if ( is_wp_error( $response ) ) {
 				$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->get_id().' - '.$response->get_error_message();
@@ -945,7 +952,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						}
 					} else {
 						$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->get_id().' - "simplexml_load_string" function does not exist';
-						$this->debug_log( $debug_msg, 'error', true, $debug_msg );
+						$this->debug_log( $debug_msg, 'error', true );
 						return false;
 					}
 				} else {
@@ -1119,10 +1126,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					$arguments_ok = false;
 					$arguments_error .= ' - Key';
 				}
-				if ( !is_numeric( $referencia ) ) {
+				/*if ( !is_numeric( $referencia ) ) { // If using ifthen_webservice_send_order_number_instead_id, this can be a non-numeric value
 					$arguments_ok = false;
 					$arguments_error .= ' - Referencia (numeric)';
-				}
+				}*/
 				if ( trim( $id_pedido ) == '' ) {
 					$arguments_ok = false;
 					$arguments_error .= ' - IdPedido';
@@ -1155,66 +1162,79 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							}
 						} else {
 							$err = 'Error: No orders found awaiting payment with these details - We are going to try by reference (order id) only';
-							$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - No orders found awaiting payment with these details - We are going to try by reference only (if, immediately after, you get the “MB WAY payment received” log entry, you can ignore this error)' );
+							$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - We are going to try by reference (order id) only (if, immediately after, you get the “MB WAY payment received” log entry, you can ignore this error)' );
 							//Maybe the webservice timed-out and we are getting the payment anyway?
-							try {
-								$order = wc_get_order( intval( $referencia ) );
+							//Why are we using a try/catch instead of regular ifs?
+							//See https://wordpress.org/support/topic/erro-com-metodo-de-pagamento-mb-way/\
+							//We only used this when the IfthenPay / SIBS webservice was timming out, but now that we have the ifthen_webservice_send_order_number_instead_id filter
+							if ( $order = wc_get_order( intval( $referencia ) ) ) { //Not compatible with the new ifthen_webservice_send_order_number_instead_id filter
 								//Maybe we should check for failed?
 								if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
 									$orders_exist = true;
 									$orders_count = 1;
+								} else {
+									$err = '-- MB WAY payment received but it does not need payment - Order callbak reference '.$referencia;
+									$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'] );
 								}
-							} catch ( Exception $e ) {
-								$err = 'Error: No orders found awaiting payment with these details - '.$e->getMessage().' - Order '.intval( $referencia );
-								$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - No orders found awaiting payment with these detailss - '.$e->getMessage().' - Order '.intval( $referencia ) );
+							} else {
+								$err = 'Error: No orders found awaiting payment with these details - Order callback reference '.$referencia;
+								$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'] );
 							}
-						}
-						//Order ID?
-						if ( $orders_exist && intval( $order->get_id() ) != intval( $referencia ) ) {
-							$orders_exist = false;
 						}
 						if ( $orders_exist ) {
 							if ( $orders_count == 1 ) {
 								if (
-									floatval( $val ) == floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) )
-									// TEMPORARY - https://github.com/woocommerce/woocommerce/issues/26582
+									$order->get_id() == $referencia
 									||
-									WC_IfthenPay_Webdados()->should_fix_woocommerce_420()
+									$order->get_order_number() == $referencia //because ifthen_webservice_send_order_number_instead_id
 								) {
-									if ( WC_IfthenPay_Webdados()->should_fix_woocommerce_420() && ( floatval( $val ) != floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) ) {
-										$this->debug_log( '-- MB WAY payment received but value does not match - Order '.$order->get_id().' - Callbak value '.floatval( $val ).' - Order value '.floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 'warning' );
-									}
-									$note = __( 'MB WAY payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-									if ( isset( $_GET['datahorapag'] ) && trim( $_GET['datahorapag'] )!='' ) {
-										$note.=' '.trim( $_GET['datahorapag'] );
-									}
-									//WooCommerce Deposits second payment?
-									if ( WC_IfthenPay_Webdados()->wc_deposits_active ) {
-										if ( $order->get_meta( '_wc_deposits_order_has_deposit' ) == 'yes' ) { //Has deposit
-											if ( $order->get_meta( '_wc_deposits_deposit_paid' ) == 'yes' ) { //First payment - OK!
-												if ( $order->get_meta( '_wc_deposits_second_payment_paid' ) != 'yes' ) { //Second payment - not ok
-													if ( floatval( $order->get_meta( '_wc_deposits_second_payment' ) ) == floatval( $val ) ) { //This really seems like the second payment
-														//Set the current order status temporarly back to partially-paid, but first stop the emails
-														add_filter( 'woocommerce_email_enabled_customer_partially_paid', '__return_false' );
-														add_filter( 'woocommerce_email_enabled_partial_payment', '__return_false' );
-														$order->update_status( 'partially-paid', __( 'Temporary status. Used to force WooCommerce Deposits to correctly set the order to processing.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+									if (
+										floatval( $val ) == floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) )
+										// TEMPORARY - https://github.com/woocommerce/woocommerce/issues/26582
+										||
+										WC_IfthenPay_Webdados()->should_fix_woocommerce_420()
+									) {
+										if ( WC_IfthenPay_Webdados()->should_fix_woocommerce_420() && ( floatval( $val ) != floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) ) {
+											$this->debug_log( '-- MB WAY payment received but value does not match - Order '.$order->get_id().' - Callbak value '.floatval( $val ).' - Order value '.floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 'warning', true );
+										}
+										$note = __( 'MB WAY payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+										if ( isset( $_GET['datahorapag'] ) && trim( $_GET['datahorapag'] )!='' ) {
+											$note.=' '.trim( $_GET['datahorapag'] );
+										}
+										//WooCommerce Deposits second payment?
+										if ( WC_IfthenPay_Webdados()->wc_deposits_active ) {
+											if ( $order->get_meta( '_wc_deposits_order_has_deposit' ) == 'yes' ) { //Has deposit
+												if ( $order->get_meta( '_wc_deposits_deposit_paid' ) == 'yes' ) { //First payment - OK!
+													if ( $order->get_meta( '_wc_deposits_second_payment_paid' ) != 'yes' ) { //Second payment - not ok
+														if ( floatval( $order->get_meta( '_wc_deposits_second_payment' ) ) == floatval( $val ) ) { //This really seems like the second payment
+															//Set the current order status temporarly back to partially-paid, but first stop the emails
+															add_filter( 'woocommerce_email_enabled_customer_partially_paid', '__return_false' );
+															add_filter( 'woocommerce_email_enabled_partial_payment', '__return_false' );
+															$order->update_status( 'partially-paid', __( 'Temporary status. Used to force WooCommerce Deposits to correctly set the order to processing.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+														}
 													}
 												}
 											}
 										}
+										$this->payment_complete( $order, '', $note );
+										do_action( 'mbway_ifthen_callback_payment_complete', $order->get_id() );
+										
+										header( 'HTTP/1.1 200 OK' );
+										$this->debug_log( '-- MB WAY payment received - Order '.$order->get_id(), 'notice' );
+										echo 'OK - MB WAY payment received';
+									} else {
+										header( 'HTTP/1.1 200 OK' );
+										$err = 'Error: The value does not match';
+										$this->debug_log( '-- '.$err.' - Order '.$order->get_id(), 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - The value does not match' );
+										echo $err;
+										do_action( 'mbway_ifthen_callback_payment_failed', $order->get_id(), $err, $_GET );
 									}
-									$this->payment_complete( $order, '', $note );
-									do_action( 'mbway_ifthen_callback_payment_complete', $order->get_id() );
-									
-									header( 'HTTP/1.1 200 OK' );
-									$this->debug_log( '-- MB WAY payment received - Order '.$order->get_id(), 'notice', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - MB WAY payment received' );
-									echo 'OK - MB WAY payment received';
 								} else {
 									header( 'HTTP/1.1 200 OK' );
-									$err = 'Error: The value does not match';
-									$this->debug_log( '-- '.$err.' - Order '.$order->get_id(), 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'].' - The value does not match' );
+									$err = 'Error: MB WAY payment received but order id or number does not match reference - Order callbak reference '.$referencia.' - Order id '.$order->get_id().' - Order number '.$order->get_order_number();
+									$this->debug_log( '-- '.$err, 'warning', true, 'Callback ('.$_SERVER['HTTP_HOST'].' '.$_SERVER['REQUEST_URI'].') from '.$_SERVER['REMOTE_ADDR'] );
 									echo $err;
-									do_action( 'mbway_ifthen_callback_payment_failed', $order->get_id(), $err, $_GET );
+									do_action( 'mbway_ifthen_callback_payment_failed', 0, $err, $_GET );
 								}
 							} else {
 								header( 'HTTP/1.1 200 OK' );
@@ -1238,7 +1258,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							'type'    => array( 'shop_order_refund' ), //Refund
 							//'status'  => 'completed',                //Not nedded?
 							'limit'   => -1,
-							'parent'  => intval( $referencia ),        //Child of original order
+							'parent'  => intval( $referencia ),        //NEEDS REVIEW - Child of original order - not compatible with the new ifthen_webservice_send_order_number_instead_id filter
 							'orderby' => 'modified',
 							'order'   => 'ASC',                        //Oldest recent refunds first, so we process them in order if there are several
 						);
@@ -1247,7 +1267,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							if ( $refund->get_meta( '_'.WC_IfthenPay_Webdados()->mbway_id.'_callback_received' ) == '' ) {
 								if ( floatval( $val ) == floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $refund ) ) ) {
 									//Get parent order and add a note
-									if ( $order = wc_get_order( intval( $referencia ) ) ) {
+									//if ( $order = wc_get_order( intval( $referencia ) ) ) { //NEEDS REVIEW - Not compatible with the new ifthen_webservice_send_order_number_instead_id filter
+									if ( $order = wc_get_order( intval( $refund->get_parent_id() ) ) ) {
 										$note = sprintf(
 											__( 'MB WAY callback received for refund #%s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 											$refund->get_id()
@@ -1298,8 +1319,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		/* Do refunds */
 		public function process_refund( $order_id, $amount = null, $reason = '' ) {
 			$order = wc_get_order( $order_id );
-			$this->debug_log( '-- Processing refund - Order '.$order->get_id(), 'notice', true, 'Processing a MB WAY '.$amount.' refund' );
-			if ( ! $this->can_refund_order( $order ) ) {
+			$this->debug_log( '-- Processing refund - Order '.$order->get_id(), 'notice' );
+			if ( ! $this->can_refund_order( $order ) ) { //Is this working? We should extend the method and haven't so far
 				$this->debug_log( '-- Failed refund - Order '.$order->get_id(), 'error', true, 'Cannot refund order' );
 				return new WP_Error( 'error', __( 'Refund failed.', 'woocommerce' ) );
 			}
@@ -1353,6 +1374,11 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		public function debug_log( $message, $level = 'debug', $to_email = false, $email_message = '' ) {
 			if ( $this->debug ) {
 				WC_IfthenPay_Webdados()->debug_log( $this->id, $message, $level, ( trim( $this->debug_email ) != '' && $to_email ? $this->debug_email : false ) , $email_message );
+			}
+		}
+		public function debug_log_extra( $message, $level = 'debug', $to_email = false, $email_message = '' ) {
+			if ( $this->debug ) {
+				WC_IfthenPay_Webdados()->debug_log_extra( $this->id, $message, $level, ( trim( $this->debug_email ) != '' && $to_email ? $this->debug_email : false ) , $email_message );
 			}
 		}
 

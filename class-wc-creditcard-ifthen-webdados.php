@@ -462,7 +462,6 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 					$send = true;
 				}
 			}
-			//$this->debug_log( 'Email instructions send: '.( $send ? 'true' : 'false' ) );
 			//Apply filter
 			$send = apply_filters( 'creditcard_ifthen_send_email_instructions', $send, $order, $sent_to_admin, $plain_text, $email );
 			//Send
@@ -504,7 +503,6 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							}
 						}
 					}
-					//$this->debug_log( 'Email instructions show: '.( $show ? 'true' : 'false' ) );
 				}
 			}
 		}
@@ -541,7 +539,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				'timeout'  => apply_filters( 'creditcard_ifthen_api_timeout', 30 ),
 				'blocking' => true,
 				'body'     => array(
-					'orderId'    => (string) $id,
+					'orderId'    => (string) apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id(),
 					'amount'     => (string) $valor,
 					'successUrl' => add_query_arg( 'wd_secret', $wd_secret, add_query_arg( 'status', 'success', WC_IfthenPay_Webdados()->creditcard_notify_url ) ),
 					'errorUrl'   => add_query_arg( 'status', 'error', WC_IfthenPay_Webdados()->creditcard_notify_url ),
@@ -563,7 +561,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							WC_IfthenPay_Webdados()->multibanco_set_order_creditcard_details( $order->get_id(), array(
 								'creditcardkey' => $creditcardkey,
 								'request_id'    => $body->RequestId,
-								'id'            => $id,
+								'id'            => apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id(),
 								'val'           => $valor,
 								'payment_url'   => $body->PaymentUrl,
 								'wd_secret'     => $wd_secret,
@@ -732,6 +730,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 								$this->payment_complete( $order, '', $note );
 								do_action( 'creditcard_ifthen_callback_payment_complete', $order->get_id() );
 								$debug_order = wc_get_order( $order->get_id() );
+								$this->debug_log( '-- Credit card payment received - Order '.$order->get_id(), 'notice' );
 								$this->debug_log_extra( 'payment_complete - Redirect to thank you page: '.$url.' - Order '.$order->get_id().' - Status: '.$debug_order->get_status() );
 								wp_redirect( $url );
 								exit;
@@ -848,12 +847,12 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		/* Debug / Log - MOVED TO WC_IfthenPay_Webdados with gateway id as first argument */
 		public function debug_log( $message, $level = 'debug', $to_email = false, $email_message = '' ) {
 			if ( $this->debug ) {
-				WC_IfthenPay_Webdados()->debug_log( $this->id, $message, $level, ( trim( $this->debug_email ) != '' && $to_email ? $this->debug_email : false ) , $email_message );
+				WC_IfthenPay_Webdados()->debug_log( $this->id, $message, $level, ( trim( $this->debug_email ) != '' && $to_email ? $this->debug_email : false ), $email_message );
 			}
 		}
 		public function debug_log_extra( $message, $level = 'debug', $to_email = false, $email_message = '' ) {
 			if ( $this->debug ) {
-				WC_IfthenPay_Webdados()->debug_log_extra( $this->id, $message, $level, ( trim( $this->debug_email ) != '' && $to_email ? $this->debug_email : false ) , $email_message );
+				WC_IfthenPay_Webdados()->debug_log_extra( $this->id, $message, $level, ( trim( $this->debug_email ) != '' && $to_email ? $this->debug_email : false ), $email_message );
 			}
 		}
 

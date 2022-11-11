@@ -55,15 +55,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				//First load?
 				$this->secret_key = md5( home_url().time().rand(0,999) );
 				//Save
-				if ( version_compare( WC_VERSION, '3.4.0', '>=' ) ) {
-					$this->update_option( 'secret_key', $this->secret_key );
-				} else {
-					if ( empty( $this->settings ) ) {
-						$this->init_settings();
-					}
-					$this->settings[ 'secret_key' ] = $this->secret_key;
-					update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->settings ), 'yes' );
-				}
+				$this->update_option( 'secret_key', $this->secret_key );
 				//Let's set the callback activation email as NOT sent
 				update_option( $this->id . '_callback_email_sent', 'no' );
 			}

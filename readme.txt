@@ -48,7 +48,7 @@ If not, get to know our new plugin: [Invoicing with InvoiceXpress for WooCommerc
 	* Other providers can be added upon request (under quotation);
 * WPML tested and compatible (for multilingual shops);
 * Polylang tested;
-* [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco and MB WAY);
+* [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco);
 * [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration (not for Credit cards at the moment);
 * [WooCommerce Blocks](https://wordpress.org/plugins/woo-gutenberg-products-block/) checkout block (experimental) integration (only Multibanco);
 * PHP7 tested and compatible;
@@ -196,11 +196,14 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= ? =
+= 6.5.0 - 2022-11-11 =
 * You can safely update this plugin if you’re running WooCommerce 4.3 or newer **but we’ll very soon drop support for WooCommerce previous to 5.0**
 * Requires WooCommerce 4.3
+* Removed MB WAY support for WooCommerce Subscriptions because the customer only have 5 minutes to pay for a renewal he might not be expecting
 * Fix id stored in Payshop references when order number is being used instead of order id
-* Tested...
+* Code cleanup
+* Declare WooCommerce High-Performance Order Storage incompatibility (for now)
+* Tested with WordPress 6.2-alpha-54799 and WooCommerce 7.1.0
 
 = 6.4.1 - 2022-11-03 =
 * Fix bug on MB WAY callback when comparing the incoming reference with the order id and/or number which would cause the order not to be identified

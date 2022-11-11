@@ -42,7 +42,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 
 			$this->method_title = __( 'Pagamento MB WAY no telemóvel (IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			$this->method_description = __( 'Easy and simple payment using “MB WAY” on your mobile phone. (Only available for customers of Portuguese banks with MB WAY app installed - Payment service provided by IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-			if ( WC_IfthenPay_Webdados()->wc_subscriptions_active && $this->get_option( 'support_woocommerce_subscriptions' ) == 'yes' ) {
+			if ( WC_IfthenPay_Webdados()->wc_subscriptions_active && $this->get_option( 'support_woocommerce_subscriptions' ) == 'yes' ) { //Deprecated on version 6.5
 				$this->supports = array(
 					'products',
 					'subscription_suspension',
@@ -57,15 +57,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				//First load?
 				$this->secret_key = md5( home_url().time().rand(0,999) );
 				//Save
-				if ( version_compare( WC_VERSION, '3.4.0', '>=' ) ) {
-					$this->update_option( 'secret_key', $this->secret_key );
-				} else {
-					if ( empty( $this->settings ) ) {
-						$this->init_settings();
-					}
-					$this->settings[ 'secret_key' ] = $this->secret_key;
-					update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->settings ), 'yes' );
-				}
+				$this->update_option( 'secret_key', $this->secret_key );
 				//Let's set the callback activation email as NOT sent
 				update_option( $this->id . '_callback_email_sent', 'no' );
 			}
@@ -93,7 +85,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 			$this->only_above = $this->get_option( 'only_above' );
 			$this->only_bellow = $this->get_option( 'only_bellow' );
 			$this->stock_when = $this->get_option( 'stock_when' );
-			$this->do_refunds =  ( $this->get_option( 'do_refunds' ) == 'yes' ? true : false );
+			$this->do_refunds =  ( $this->get_option( 'do_refunds' ) == 'yes' ? true : false ) && defined( 'WC_IFTHENPAY_WEBDADOS_MBWAY_REFUNDS' ) && WC_IFTHENPAY_WEBDADOS_MBWAY_REFUNDS;
 			$this->do_refunds_backoffice_key = $this->get_option( 'do_refunds_backoffice_key' );
 
 			if ( $this->do_refunds && trim( $this->do_refunds_backoffice_key ) != '' ) {
@@ -295,29 +287,33 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 									),
 					) );
 				}
-				if ( WC_IfthenPay_Webdados()->wc_subscriptions_active ) {
+				if ( WC_IfthenPay_Webdados()->wc_subscriptions_active && $this->get_option( 'support_woocommerce_subscriptions' ) == 'yes' ) {
 					$this->form_fields = array_merge( $this->form_fields, array(
 						'support_woocommerce_subscriptions' => array(
-										'title' => __( 'WooCommerce Subscriptions', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+										'title' => __( 'WooCommerce Subscriptions', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' '.__( 'DEPRECATED', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 										'type' => 'checkbox', 
 										'label' => __( 'Enable WooCommerce Subscriptions (experimental) support.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-										'description' => __( 'Shows “MB WAY” (using IfthenPay) as a supported payment gateway, and automatically sets subscription renewal orders to be paid with MB WAY if the original subscription used this payment method. If this option is not activated, MB WAY will only be available as a payment method for subscriptions if the “Manual Renewal Payments” option is enabled on WooCommerce Subscriptions settings.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+										'description' => '<strong>'.__( 'Will be removed after set to "no".', 'multibanco-ifthen-software-gateway-for-woocommerce' ).'</strong><br/>'.__( 'Shows “MB WAY” (using IfthenPay) as a supported payment gateway, and automatically sets subscription renewal orders to be paid with MB WAY if the original subscription used this payment method. If this option is not activated, MB WAY will only be available as a payment method for subscriptions if the “Manual Renewal Payments” option is enabled on WooCommerce Subscriptions settings.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 										'default' => 'no'
 									),
 						) );
 				}
+				if ( defined( 'WC_IFTHENPAY_WEBDADOS_MBWAY_REFUNDS' ) && WC_IFTHENPAY_WEBDADOS_MBWAY_REFUNDS ) {
+					$this->form_fields = array_merge( $this->form_fields, array(
+						'do_refunds' => array(
+							'title' => __( 'Process refunds?', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' NOT WORKING YET', 
+							'type' => 'checkbox', 
+							'label' => __( 'Automatically refund via MB Way when the order is completely or partially refunded in WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+						),
+						'do_refunds_backoffice_key' => array(
+							'title' => __( 'Backoffice key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'type' => 'text',
+							'default' => '',
+							'description' => __( 'The IfthenPay backoffice key you got after signing the contract is needed to process refunds', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						),
+					) );
+				}
 				$this->form_fields = array_merge( $this->form_fields, array(
-					'do_refunds' => array(
-						'title' => __( 'Process refunds?', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' NOT WORKING YET', 
-						'type' => 'checkbox', 
-						'label' => __( 'Automatically refund via MB Way when the order is completely or partially refunded in WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
-					),
-					'do_refunds_backoffice_key' => array(
-						'title' => __( 'Backoffice key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'type' => 'text',
-						'default' => '',
-						'description' => __( 'The IfthenPay backoffice key you got after signing the contract is needed to process refunds', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-					),
 					'send_to_admin' => array(
 									'title' => __( 'Send instructions to admin?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 									'type' => 'checkbox', 
@@ -1088,7 +1084,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$order->payment_complete( $txn_id );
 		}
 		/* Reduce stock on 'wc_maybe_reduce_stock_levels'? */
-		function woocommerce_payment_complete_reduce_order_stock( $bool, $order_id ) {
+		function woocommerce_payment_complete_preduce_order_stock( $bool, $order_id ) {
 			$order = wc_get_order( $order_id );
 			if ( $order->get_payment_method() == $this->id ) {
 				return ( WC_IfthenPay_Webdados()->woocommerce_payment_complete_reduce_order_stock( $bool, $order->get_id(), $this->id, $this->stock_when ) );
@@ -1126,10 +1122,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					$arguments_ok = false;
 					$arguments_error .= ' - Key';
 				}
-				/*if ( !is_numeric( $referencia ) ) { // If using ifthen_webservice_send_order_number_instead_id, this can be a non-numeric value
+				if ( trim( $referencia ) != '' ) { // If using ifthen_webservice_send_order_number_instead_id, this can be a non-numeric value
 					$arguments_ok = false;
 					$arguments_error .= ' - Referencia (numeric)';
-				}*/
+				}
 				if ( trim( $id_pedido ) == '' ) {
 					$arguments_ok = false;
 					$arguments_error .= ' - IdPedido';
@@ -1138,10 +1134,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					$arguments_ok = false;
 					$arguments_error .= ' - Value';
 				}
-				/*if ( trim( $estado ) != 'PAGO' ) {
+				if ( ! in_array( $estado, array( 'PAGO', 'DEVOLVIDO' ) ) ) {
 					$arguments_ok = false;
 					$arguments_error .= ' - Estado';
-				}*/
+				}
 				if ( $arguments_ok ) { //Isto deve ser separado em vários IFs para melhor se identificar o erro
 					//Payments
 					if ( trim( $estado ) == 'PAGO' ) {
@@ -1241,7 +1237,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							do_action( 'mbway_ifthen_callback_payment_failed', 0, $err, $_GET );
 						}
 					//Refunds
-					} elseif ( trim( $estado ) == 'DEVOLVIDO' ) {
+					} elseif ( trim( $estado ) == 'DEVOLVIDO' && $this->do_refunds ) {
+						//Porque não é compatível com o novo filtro ifthen_webservice_send_order_number_instead_id temos de ir buscar primeiro a order através do idPedido que é o mesmo e depois ir buscar os refunds que são childs dessa order
 						$refunds_exist = false;
 						//Find the exact refund
 						$args = array(

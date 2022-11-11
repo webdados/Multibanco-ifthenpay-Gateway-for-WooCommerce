@@ -182,7 +182,6 @@ final class WC_IfthenPay_Webdados {
 		add_filter( 'wcs_renewal_order_meta', array( $this, 'multibanco_wcs_filter_meta' ), 10, 3 );
 		add_filter( 'wcs_resubscribe_order_meta', array( $this, 'multibanco_wcs_filter_meta' ), 10, 3 );
 		add_filter( 'wcs_renewal_order_created', array( $this, 'multibanco_wcs_renewal_order_created' ), 11, 2 );
-		add_action( 'woocommerce_send_queued_transactional_email', array( $this, 'woocommerce_send_queued_transactional_email' ), 1, 2 );
 		add_action( 'plugins_loaded', array( $this, 'wpml_ajax_fix_locale' ) );
 		add_action( 'woocommerce_new_customer_note', array( $this, 'woocommerce_new_customer_note_fix_wpml' ), 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
@@ -249,9 +248,7 @@ final class WC_IfthenPay_Webdados {
 		$settings_links = __( 'Settings:', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 		$settings_links .= ' <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->multibanco_id.'">Multibanco</a>';
 		$settings_links .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->mbway_id.'">MB WAY</a>';
-		if ( version_compare( WC_VERSION, '4.0', '>=' ) ) {
-			$settings_links .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->creditcard_id.'">' . __( 'Credit card', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>';
-		}
+		$settings_links .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->creditcard_id.'">' . __( 'Credit card', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>';
 		$settings_links .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->payshop_id.'">Payshop</a>';
 		$action_links = array(
 			'settings' => $settings_links
@@ -266,10 +263,8 @@ final class WC_IfthenPay_Webdados {
 		$methods[] = 'WC_Multibanco_IfThen_Webdados';
 		//MB WAY
 		$methods[] = 'WC_MBWAY_IfThen_Webdados';
-		//Credit card 
-		if ( version_compare( WC_VERSION, '4.0', '>=' ) ) {
-			$methods[] = 'WC_CreditCard_IfThen_Webdados';
-		}
+		//Credit card
+		$methods[] = 'WC_CreditCard_IfThen_Webdados';
 		//Payshop
 		$methods[] = 'WC_Payshop_IfThen_Webdados';
 		return $methods;
@@ -1970,16 +1965,6 @@ wc_price( $order_total_to_pay )
 			$locale = $this->locale;
 		}
 		return $locale;
-	}
-
-	/* WooCommerce 3.0 is not allowing payment gateways to add information to transactional emails - Let's fix it for everybody, shall we? */
-	/* https://github.com/woocommerce/woocommerce/issues/13966 - Should be fixed now */
-	public function woocommerce_send_queued_transactional_email( $filter = '', $args = array() ) {
-		//Only in 3.0.0 - It should be fixed on other versions (we hope)
-		if ( version_compare( WC_VERSION, '3.0.0', '==' ) ) {
-			WC()->payment_gateways();
-			WC()->shipping();
-		}
 	}
 
 	/* WPML AJAX fix locale */

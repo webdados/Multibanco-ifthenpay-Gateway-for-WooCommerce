@@ -87,7 +87,6 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 			$this->stock_when = $this->get_option( 'stock_when' );
 			$this->do_refunds =  ( $this->get_option( 'do_refunds' ) == 'yes' ? true : false ) && defined( 'WC_IFTHENPAY_WEBDADOS_MBWAY_REFUNDS' ) && WC_IFTHENPAY_WEBDADOS_MBWAY_REFUNDS;
 			$this->do_refunds_backoffice_key = $this->get_option( 'do_refunds_backoffice_key' );
-
 			if ( $this->do_refunds && trim( $this->do_refunds_backoffice_key ) != '' ) {
 				$this->supports[] = 'refunds';
 			}
@@ -1084,7 +1083,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$order->payment_complete( $txn_id );
 		}
 		/* Reduce stock on 'wc_maybe_reduce_stock_levels'? */
-		function woocommerce_payment_complete_preduce_order_stock( $bool, $order_id ) {
+		function woocommerce_payment_complete_reduce_order_stock( $bool, $order_id ) {
 			$order = wc_get_order( $order_id );
 			if ( $order->get_payment_method() == $this->id ) {
 				return ( WC_IfthenPay_Webdados()->woocommerce_payment_complete_reduce_order_stock( $bool, $order->get_id(), $this->id, $this->stock_when ) );

@@ -201,7 +201,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 7.0.0 - ??? =
+= 7.0.0 - 2022-12-05 =
 * You can safely update to this version if you’re running WooCommerce 5.0 or newer
 * Direct and automatic MB WAY and Credit or debit card refunds via the order admin screen
 * High-Performance Order Storage compatible (in beta and only on WooCommerce 7.1 and above)

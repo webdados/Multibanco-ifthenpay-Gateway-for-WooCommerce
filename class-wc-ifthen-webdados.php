@@ -2483,7 +2483,7 @@ wc_price( $order_total_to_pay )
 					.
 					' - <strong>'.__( 'Support for WooCommerce &lt; 5.4 will end VERY SOON!', 'multibanco-ifthen-software-gateway-for-woocommerce' ).'</strong>';
 				}
-				//PHP below 8
+				//PHP below 7.4
 				if ( version_compare( phpversion(), '7.4', '<' ) ) {
 					$notices[] = sprintf(
 						__( '%1$s - Your version: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),

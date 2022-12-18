@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 7.1.0
+Stable tag: 7.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -201,10 +201,11 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 7.1.0 - 2022-12-18 =
+= 7.1.1 - 2022-12-18 =
 * You can safely update to this version if you’re running WooCommerce 5.0 or newer
 * Set debug to true by default on new installs
 * Fix the callback instructions when using the new MB Key instead of Entity / Subentity
+* Fix version number on 7.1.0
 * Tested with WordPress 6.2-alpha-54951 and WooCommerce 7.2.0
 
 = 7.0.0 - 2022-12-05 =

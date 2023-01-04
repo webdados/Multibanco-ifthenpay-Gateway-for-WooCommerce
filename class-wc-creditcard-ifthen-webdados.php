@@ -257,9 +257,23 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 									),
 					) );
 				}*/
+				if ( WC_IfthenPay_Webdados()->wc_blocks_active ) {
+					$this->form_fields = array_merge( $this->form_fields, array(
+						'support_woocommerce_blocks'  => array(
+							'title'       => __( 'WooCommerce Blocks Checkout', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+							'type'        => 'checkbox',
+							'label'       => __( 'Enable WooCommerce Blocks Checkout (experimental)  support.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'description' => sprintf(
+								__( 'Shows “%s” (using IfthenPay) as a supported payment gateway on the new WooCommerce Blocks Checkout.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								'Credit or debit card'
+							),
+							'default'     => 'no'
+						),
+					) );
+				}
 				$this->form_fields = array_merge( $this->form_fields, array(
 					'do_refunds' => array(
-						'title' => __( 'Process refunds?', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' NOT WORKING YET', 
+						'title' => __( 'Process refunds?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 						'type' => 'checkbox', 
 						'label' => __( 'Allow to refund via Credit or debit card when the order is completely or partially refunded in WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 					),

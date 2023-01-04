@@ -57,8 +57,8 @@
 			c = n(1),
 			o = n(5),
 			i = n(7),
-			u = Object(o.getSetting)("payshop_ifthen_for_woocommerce_data", {}),
-			l = Object(c.__)( 'Payshop (IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+			u = Object(o.getSetting)("creditcard_ifthen_for_woocommerce_data", {}),
+			l = Object(c.__)( 'Credit or debit card (IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 			a = Object(i.decodeEntities)(u.title) || l,
 			f = function () {
 				return React.createElement("div", null, Object(i.decodeEntities)(u.description || ""));
@@ -71,7 +71,7 @@
 
 			},
 			d = {
-				name: "payshop_ifthen_for_woocommerce",
+				name: "creditcard_ifthen_for_woocommerce",
 				label: React.createElement(s, null),
 				//label: <span>{ a }</span>,
 				content: React.createElement(f, null),

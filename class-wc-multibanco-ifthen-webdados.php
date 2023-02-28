@@ -968,6 +968,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		function process_payment( $order_id ) {
 			
 			$order = wc_get_order( $order_id );
+			do_action( 'multibanco_ifthen_before_process_payment', $order );
 			$this->debug_log_extra( 'process_payment - Order '.$order->get_id() );
 			
 			//WooCommerce Deposits - When generating second payment reference the order goes from partially paid to on hold, and that has an email (??!)
@@ -1025,7 +1026,9 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				if ( $clear_details ) {
 					WC_IfthenPay_Webdados()->multibanco_clear_order_mb_details( $order->get_id() );
 					//And set as pending to force the client email (again) when changing to "On hold" - The shop owner email will NOT be resent because WooCommerce 5.0 does not allow it be sent on duplicate
-					if ( apply_filters( 'multibanco_ifthen_set_on_hold', true, $order->get_id() ) ) $order->update_status( 'pending', __( 'Issue new Multibanco payment details by customer request.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+					if ( apply_filters( 'multibanco_ifthen_set_on_hold', true, $order->get_id() ) ) {
+						$order->update_status( 'pending', __( 'Issue new Multibanco payment details by customer request.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+					}
 				} else {
 					$this->debug_log_extra( 'process_payment - Is pay form, details from database NOT cleared - Order '.$order->get_id() );
 				}

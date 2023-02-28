@@ -4,9 +4,9 @@ Tags: woocommerce, multibanco, mbway, payshop, credit card, payment, pagamentos,
 Author URI: https://ptwooplugins.com
 Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 8.0.0
+Stable tag: 8.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -198,6 +198,10 @@ Yes, in beta, from version 7.0 onwards.
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 8.0.1 - 2023-02-28 =
+* New actions before `process_payment` functions
+* Tested with WordPress 6.2-beta3-55428 and WooCommerce 7.5.0-beta.2
 
 = 8.0.0 - 2023-02-03 =
 * You can safely update to this version if you’re running WooCommerce 5.0 or newer

@@ -169,7 +169,6 @@ final class WC_IfthenPay_Webdados {
 	private function init_hooks() {
 		add_filter( 'woocommerce_payment_gateways', array( $this, 'woocommerce_add_payment_gateways' ) );
 		add_action( 'woocommerce_blocks_loaded', array( $this, 'woocommerce_add_payment_gateways_woocommerce_blocks' ) ); // WooCommerce Blocks
-		//add_filter( 'woocommerce_blocks_payment_method_type_registration', array( $this, 'woocommerce_add_payment_gateways_woocommerce_blocks' ) ); 
 		add_action( 'add_meta_boxes', array( $this, 'multibanco_order_metabox' ) );
 		add_filter( 'woocommerce_shop_order_search_fields', array( $this, 'shop_order_search' ) );
 		add_filter( 'woocommerce_order_table_search_query_meta_keys', array( $this, 'shop_order_search' ) );

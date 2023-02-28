@@ -605,6 +605,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		function process_payment( $order_id ) {
 			//Webservice
 			$order = wc_get_order( $order_id );
+			do_action( 'creditcard_ifthen_before_process_payment', $order );
 			if ( $order->get_total() > 0 ) {
 				if ( $redirect_url = $this->api_init_payment( $order->get_id() ) ) {
 					//WooCommerce Deposits - When generating second payment reference the order goes from partially paid to on hold, and that has an email (??!)

@@ -956,6 +956,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		function process_payment( $order_id ) {
 			//Webservice
 			$order = wc_get_order( $order_id );
+			do_action( 'mbway_ifthen_before_process_payment', $order );
 
 			if ( $order->get_total() > 0 ) {
 				$phone = isset( $_POST[$this->id.'_phone'] ) ? trim( sanitize_text_field( $_POST[$this->id.'_phone'] ) ) : '';

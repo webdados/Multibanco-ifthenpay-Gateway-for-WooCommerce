@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 8.0.1
+Stable tag: 8.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -52,6 +52,7 @@ This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract w
 
 Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/) and unlock extra features:
 
+* Recover unpaid MB WAY orders by converting them to Multibanco and notify the customer via email.
 * Automatic cancellation of orders when Multibanco, Payshop or MB WAY references expire.
 * Remove payment instructions from specific emails, for example “order completed”, to avoid customer confusion when they are no longer necessary.
 * Set a payment entity for Multibanco, MB WAY, Payshop and Credit Card, at the product category level, so that you can receive payment in different accounts based on the order products. Lock the cart so you can only have products from a single account in the same order. (Replaces previously available specific extension).
@@ -63,8 +64,9 @@ Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-ca
 * By purchasing the PRO add-on you get:
 	* Technical support (conditions apply);
 	* All the features described above;
-	* Contribution to the continued development of solution;
+	* Contribution to the continued development of the solution;
 	* Automatic updates;
+	* Good karma;
 
 Attention: The PRO add-on is a product of PT Woo Plugins / Webdados, and IfthenPay has no responsibility for it.
 
@@ -198,6 +200,11 @@ Yes, in beta, from version 7.0 onwards.
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 8.0.2 - 2023-04-01 =
+* [PRO add-on 1.3](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Recover unpaid MB WAY orders by converting them to Multibanco and notify the customer via email
+* Fix a PHP notice
+* Tested with WordPress 6.3-alpha-55615 and WooCommerce 7.6.0-beta.2
 
 = 8.0.1 - 2023-02-28 =
 * New actions before `process_payment` functions

@@ -1642,7 +1642,7 @@ wc_price( $order_total_to_pay )
 				case '_'.$this->multibanco_id.'_exp':
 				case '_'.$this->mbway_id.'_exp':
 				case '_'.$this->payshop_id.'_exp':
-					unset( $args[$key] );
+					//unset( $args[$key] ); //WHY?
 					$query['meta_query'][] = array(
 						'key'     => $key,
 						'value'   => esc_attr( $value ), //WHY esc_attr?

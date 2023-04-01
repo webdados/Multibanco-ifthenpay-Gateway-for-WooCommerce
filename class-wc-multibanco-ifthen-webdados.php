@@ -1191,8 +1191,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						'_'.$this->id.'_ent' => $ent,
 						'_'.$this->id.'_ref' => $ref,
 					);
+					$this->debug_log_extra( '-- Searching for orders with args: '.serialize( $args ) );
 					$orders = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( $args ) );
-					if ( count($orders)>0 ) {
+					$this->debug_log_extra( '-- Searching for orders with args (after maybe_translate_order_query_args): '.serialize( $args ) );
+					if ( count( $orders ) > 0 ) {
 						$orders_exist = true;
 						$orders_count = count($orders);
 						foreach ( $orders as $order ) {

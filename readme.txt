@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 8.0.2
+Stable tag: 8.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -131,6 +131,11 @@ If you don’t care about legislation, plugins are available that allow you to s
 
 The MB WAY payment requests expire after 5 minutes.
 
+= Why doesn’t the customer receive an email when paying with MB WAY? =
+
+The MB WAY payment needs to be approved immediately after checking out, just like when using a credit card or PayPal.
+WooCommerce only sends payment instruction emails for payment methods that require later, and not immediate payment, like Multibanco, Payshop and bank transfer for example.
+
 = [WPML] My website is multilingual. Will I be able to use this plugin? =
 
 Yes. This plugin is officially WPML compatible. You will need the WPML and WPML String Translation Plugins (alongside WooCommerce Multilingual, which is mandatory for any WooCommerce + WPML install). 
@@ -201,8 +206,14 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 8.0.2 - 2023-04-01 =
+= 8.1.0 - 2023-04-04 =
 * [PRO add-on 1.3](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Recover unpaid MB WAY orders by converting them to Multibanco and notify the customer via email
+* Fix a bug where old installs would incorrectly show the "MB Key or Entity and subentity" setting on the backoffice
+* Remove debug string from MB WAY settings
+* Add FAQ about why the MB WAY payment instructions are not send by email
+* Tested with PHP 8.1.9, WordPress 6.3-alpha-55618 and WooCommerce 7.6.0-beta.2
+
+= 8.0.2 - 2023-04-01 =
 * Fix a PHP notice
 * Tested with WordPress 6.3-alpha-55615 and WooCommerce 7.6.0-beta.2
 

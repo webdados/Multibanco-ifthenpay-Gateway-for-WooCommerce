@@ -220,7 +220,24 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 		 *	),
 		 */
 		function init_form_fields() {
-		
+			// Fix bug when the plugin is in Entity/Sub-entity mode but settings haven't been saved at least once
+			$api_mode_default = '';
+			if (
+				$this->get_option( 'api_mode' ) == ''
+				&&
+				( ! WC_IfthenPay_Webdados()->multibanco_api_mode_enabled )
+				&&
+				strlen( trim( $this->get_option( 'ent' ) ) ) == 5
+				&&
+				strlen( trim( $this->get_option( 'subent' ) ) ) <= 3
+				&&
+				intval( $this->get_option( 'ent' ) ) > 0
+				&&
+				intval( $this->get_option( 'subent' ) ) > 0
+			) {
+				$api_mode_default = 'no';
+			}
+			// Settings
 			$this->form_fields = array(
 				'enabled' => array(
 								'title' => __( 'Enable/Disable', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
@@ -232,7 +249,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 								'title' => __( 'MB Key or Entity and subentity?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'type' => 'select',
 								'description' => __( 'What kind of details did you get from IfthenPay? After changing this setting you need to request the callback activation again.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
-								'default' => '',
+								'default' => $api_mode_default,
 								'options'	=> array(
 									'yes' => __( 'A key with 3 letters and 6 digits - recommended', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 									'no'  => __( 'Entity with 5 digits and subentity with 3 digits', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
@@ -482,7 +499,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 					<?php
 					do_action( 'multibanco_ifthen_after_settings_intro' );
 					WC_IfthenPay_Webdados()->multibanco_api_mode_enabled = isset( $this->settings['api_mode'] ) && $this->settings['api_mode'] == 'yes';
-					if(
+					if (
 						(
 							( ! WC_IfthenPay_Webdados()->multibanco_api_mode_enabled )
 							&&

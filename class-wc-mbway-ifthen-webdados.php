@@ -299,7 +299,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				}
 				$this->form_fields = array_merge( $this->form_fields, array(
 					'do_refunds' => array(
-						'title' => __( 'Process refunds?', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' NOT WORKING YET', 
+						'title' => __( 'Process refunds?', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 						'type' => 'checkbox', 
 						'label' => __( 'Allow to refund via MB WAY when the order is completely or partially refunded in WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 					),

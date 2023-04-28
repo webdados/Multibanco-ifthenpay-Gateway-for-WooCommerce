@@ -243,15 +243,18 @@ final class WC_IfthenPay_Webdados {
 
 	/* Add settings link to plugin actions */
 	public function add_settings_link( $links ) {
+		$action_links = array();
+		if ( ! $this->pro_add_on_active ) {
+			$action_links['gopro']    = '<a href="https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/' . esc_attr( $this->out_link_utm) . '" target="_blank" style="font-weight: bold;">' . __( 'Get the PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>';
+		}
 		$settings_links = __( 'Settings:', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 		$settings_links .= ' <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->multibanco_id.'">Multibanco</a>';
 		$settings_links .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->mbway_id.'">MB WAY</a>';
 		$settings_links .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->creditcard_id.'">' . __( 'Credit card', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>';
 		$settings_links .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section='.$this->payshop_id.'">Payshop</a>';
-		$action_links = array(
-			'settings' => $settings_links
-		);
-		$action_links['support'] = '<a href="https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/" target="_blank">' . __( 'Technical support', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>';
+		$action_links['settings'] = $settings_links;
+		$action_links['support']  = '<a href="https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/" target="_blank">' . __( 'Technical support', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>';
+		
 		return array_merge( $action_links, $links );
 	}
 
@@ -2096,7 +2099,7 @@ wc_price( $order_total_to_pay )
 		if( !empty( $lang ) && $lang != $sitepress->get_default_language() ){
 			$this->mb_ifthen_locale = $sitepress->get_locale( $lang ); //Set global to be used on wpml_ajax_fix_locale_do_it above
 			add_filter( 'plugin_locale', array( $this, 'wpml_ajax_fix_locale_do_it' ), 1, 2 );
-			mbifthen_load_textdomain();
+			load_plugin_textdomain( 'multibanco-ifthen-software-gateway-for-woocommerce' );
 		}
 	}
 
@@ -2108,7 +2111,7 @@ wc_price( $order_total_to_pay )
 				<div class="wc_ifthen_pro_ad">
 					<h4><?php _e( 'Want more features?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 					<p>
-						<a href="https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm); ?>#extensions" target="_blank" style="font-weight: bold;">
+						<a href="https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank" style="font-weight: bold;">
 							<?php _e( 'Get the PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						</a>
 					</p>

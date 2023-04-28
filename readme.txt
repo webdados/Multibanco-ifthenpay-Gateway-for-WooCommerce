@@ -4,9 +4,9 @@ Tags: woocommerce, multibanco, mbway, payshop, credit card, payment, pagamentos,
 Author URI: https://ptwooplugins.com
 Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 8.1.0
+Stable tag: 8.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -182,14 +182,6 @@ Don’t cry! There’s a solution!
 You probably have weird permalink settings (or permalinks not set at all) in your WordPress installation.
 Tell them to change the callback URL from `https://yourwebsite/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]` to `https://yourwebsite/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]`.
 
-= I need technical support. Who should I contact, IfthenPay or Webdados? =
-
-Although this is the official IfthenPay WooCommerce plugin, development and support is provided by [Webdados](https://www.webdados.pt).
-For free/standard support you should use the support forums here at WordPress.org
-For premium, urgent and experimental integrations support or custom developments you should contact [Webdados](https://www.webdados.pt/contactos/). Charges may (and most certainly will) apply.
-
-Any support related to failed payments or credit card authorizations should be directed to [IfthenPay](https://ifthenpay.com/#contactos).
-
 = Is this plugin compliant with the European Union General Data Protection Regulation (GDPR)? =
 
 This plugin does not collect or send to Webdados (the plugin author) or IfthenPay (the payment processor) any private data of the website where it’s installed, it’s customers or the orders themselves.
@@ -200,11 +192,28 @@ IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termosCondic
 
 Yes, in beta, from version 7.0 onwards.
 
+= I need technical support. Who should I contact, IfthenPay or Webdados? =
+
+Although this is the official IfthenPay WooCommerce plugin, development and support is provided by [Webdados](https://www.webdados.pt).
+For free/standard support you should use the support forums here at WordPress.org
+For premium, urgent and experimental integrations support or custom developments you should contact [Webdados](https://www.webdados.pt/contactos/). Charges will apply.
+
+Any support related to failed payments or credit card authorizations should be directed to [IfthenPay](https://ifthenpay.com/#contactos).
+
+= Where do I report security bugs found in this plugin? =  
+ 
+You can report any security bugs found in the source code of the site-reviews plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/multibanco-ifthen-software-gateway-for-woocommerce). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
+
 = Can I contribute with a translation? =
 
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 8.2.0 - 2023-04-28 =
+* Fix a bug when changing email language if WPML is active
+* Add security bugs report information to the readme file
+* Tested with WordPress 6.3-alpha-55693 and WooCommerce 7.7.0-beta.2
 
 = 8.1.0 - 2023-04-04 =
 * [PRO add-on 1.3](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Recover unpaid MB WAY orders by converting them to Multibanco and notify the customer via email

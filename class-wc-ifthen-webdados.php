@@ -560,7 +560,7 @@ final class WC_IfthenPay_Webdados {
 					echo '<p><img src="'.esc_url( $this->multibanco_banner ).'" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="Multibanco" title="Multibanco"/></p>';
 					echo '<p>'.__( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mb_details['ent'] ).'<br/>';
 					echo __( 'Reference', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->format_multibanco_ref( $order_mb_details['ref'] ).'<br/>';
-					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mb_details['val'] ).'</p>';
+					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ).'</p>';
 					if ( $this->order_needs_payment( $order ) ) {
 						if ( trim( $order_mb_details['exp'] ) != '' ) {
 							echo '<p>'.__( 'Expiration', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->multibanco_format_expiration( $order_mb_details['exp'], $order->get_id() ).'</p>';
@@ -631,7 +631,7 @@ final class WC_IfthenPay_Webdados {
 						echo '<p>'.__( 'MB WAY Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mbway_details['mbwaykey'] ).'<br/>';
 						echo __( 'Request ID', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mbway_details['id_pedido'] ).'<br/>';
 						echo __( 'Phone', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order->get_meta( '_'.$this->mbway_id.'_phone' ) ).'<br/>';
-						echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mbway_details['val'] ).'</p>';
+						echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mbway_details['val'], array( 'currency' => $order->get_currency() ) ).'</p>';
 						if ( $this->order_needs_payment( $order ) ) {
 							if ( trim( $order_mbway_details['exp'] ) != '' ) {
 								echo '<p>'.__( 'Expiration', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->mbway_format_expiration( $order_mbway_details['exp'], $order->get_id() ).'</p>';
@@ -741,7 +741,7 @@ final class WC_IfthenPay_Webdados {
 				) {
 					echo '<p><img src="'.esc_url( $this->payshop_banner ).'" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="Payshop" title="Payshop"/></p>';
 					echo '<p>'.__( 'Reference', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->format_payshop_ref( $order_mb_details['ref'] ).'<br/>';
-					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mb_details['val'] ).'</p>';
+					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ).'</p>';
 					if ( $this->order_needs_payment( $order ) ) {
 						if ( trim( $order_mb_details['exp'] ) != '' ) {
 							echo '<p>'.__( 'Expiration', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.$this->payshop_format_expiration( $order_mb_details['exp'], $order->get_id() ).'</p>';
@@ -812,7 +812,7 @@ final class WC_IfthenPay_Webdados {
 					echo '<p><img src="'.esc_url( $this->creditcard_banner ).'" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="Credit or debit card" title="Credit or debit card"/></p>';
 					echo '<p>'.__( 'Credit card Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mb_details['creditcardkey'] ).'<br/>';
 					echo __( 'Request ID', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.trim( $order_mb_details['request_id'] ).'<br/>';
-					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mb_details['val'] ).'</p>';
+					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': '.wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ).'</p>';
 					if ( $this->order_needs_payment( $order ) ) {
 						$show_debug = true;
 						if ( $this->wc_deposits_active && $order->get_status() == 'partially-paid' ) {
@@ -1489,10 +1489,10 @@ final class WC_IfthenPay_Webdados {
 ),
 isset( $order_mb_details['ent'] ) ? trim( $order_mb_details['ent'] ) : '',
 isset( $order_mb_details['ref'] ) ? $this->format_multibanco_ref( $order_mb_details['ref'] ) : '',
-isset( $order_mb_details['val'] ) ? wc_price( $order_mb_details['val'] ) : '',
+isset( $order_mb_details['val'] ) ? wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ) : '',
 trim( $ref['ent'] ),
 $this->format_multibanco_ref( $ref['ref'] ),
-wc_price( $order_total_to_pay )
+wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 								)
 						);
 						//Notify client?
@@ -1509,7 +1509,7 @@ wc_price( $order_total_to_pay )
 '.__( 'New value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': %s',
 trim( $ref['ent'] ),
 $this->format_multibanco_ref( $ref['ref'] ),
-wc_price( $order_total_to_pay )
+wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 										)
 										,
 										1
@@ -1570,9 +1570,9 @@ wc_price( $order_total_to_pay )
 	'Payshop'
 ),
 isset( $order_mb_details['ref'] ) ? $this->format_payshop_ref( $order_mb_details['ref'] ) : '',
-isset( $order_mb_details['val'] ) ? wc_price( $order_mb_details['val'] ) : '',
+isset( $order_mb_details['val'] ) ? wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ) : '',
 $this->format_payshop_ref( $ref['ref'] ),
-wc_price( $order_total_to_pay )
+wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 									)
 							);
 							//Notify client?
@@ -1587,7 +1587,7 @@ wc_price( $order_total_to_pay )
 '.__( 'New reference', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': %s
 '.__( 'New value', 'multibanco-ifthen-software-gateway-for-woocommerce' ).': %s',
 $this->format_payshop_ref( $ref['ref'] ),
-wc_price( $order_total_to_pay )
+wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 											)
 											,
 											1

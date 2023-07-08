@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 5.0
 Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 8.2.0
+Stable tag: 8.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,9 +70,17 @@ Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-ca
 
 Attention: The PRO add-on is a product of PT Woo Plugins / Webdados, and IfthenPay has no responsibility for it.
 
-= Are you already issuing automatic invoices on your WooCommerce store? =
+= Other (premium) plugins =
 
-If not, get to know our new plugin: [Invoicing with InvoiceXpress for WooCommerce](https://wordpress.org/plugins/woo-billing-with-invoicexpress/)
+Already know our other WooCommerce (premium) plugins?
+
+* [Portuguese Postcodes for WooCommerce](https://ptwooplugins.com/product/portuguese-postcodes-for-woocommerce-technical-support/) - Automatic filling of the address details at the checkout, including street name and neighbourhood, based on the postal code
+* [Invoicing with InvoiceXpress for WooCommerce](https://wordpress.org/plugins/woo-billing-with-invoicexpress/) - Automatically issue invoices directly from the WooCommerce order
+* [DPD Portugal for WooCommerce](https://ptwooplugins.com/product/dpd-portugal-for-woocommerce/) - Create shipping and return guide in the DPD webservice directly from the WooCommerce order
+* [Feed KuantoKusta for WooCommerce](https://ptwooplugins.com/product/feed-kuantokusta-for-woocommerce-pro/) - Publish your products on Kuanto Kusta with this easy to use feed generator
+* [Shop as Client for WooCommerce](https://ptwooplugins.com/product/shop-as-client-for-woocommerce-pro-add-on/) - Quickly create orders on behalf of your customers
+* [Taxonomy/Term and Role based Discounts for WooCommerce](https://ptwooplugins.com/product/taxonomy-term-and-role-based-discounts-for-woocommerce-pro-add-on/) - Easily create bulk discount rules for products based on any taxonomy terms (built-in or custom)
+* [Simple WooCommerce Order Approval](https://ptwooplugins.com/product/simple-woocommerce-order-approval/) - The hassle-free solution for WooCommerce orders approval before payment
 
 == Installation ==
 
@@ -188,9 +196,9 @@ This plugin does not collect or send to Webdados (the plugin author) or IfthenPa
 In the MB WAY module, the mobile phone number is collected to request the payment authorization and it can be legitimately processed based on article 6 (1) (b) of the GDPR.
 IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termosCondicoes](https://ifthenpay.com/termosCondicoes)
 
-= Is this plugin compatible with the new WooCommerce High-Performance order storage (COT)? =
+= Is this plugin compatible with the new WooCommerce High-Performance Order Storage? =
 
-Yes, in beta, from version 7.0 onwards.
+Yes, in beta, from version 7.1 onwards.
 
 = I need technical support. Who should I contact, IfthenPay or Webdados? =
 
@@ -200,15 +208,19 @@ For premium, urgent and experimental integrations support or custom developments
 
 Any support related to failed payments or credit card authorizations should be directed to [IfthenPay](https://ifthenpay.com/#contactos).
 
-= Where do I report security bugs found in this plugin? =  
+= Where do I report security vulnerabilities found in this plugin? =  
  
-You can report any security bugs found in the source code of the site-reviews plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/multibanco-ifthen-software-gateway-for-woocommerce). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
+You can report any security bugs found in the source code of this plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/multibanco-ifthen-software-gateway-for-woocommerce). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
 
 = Can I contribute with a translation? =
 
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 8.3.0 - 2023-07-08 =
+* Fix a small bug when showing the order value on our metabox on the order edit screen on multicurrency websites
+* Tested with WordPress 6.3-beta3-56143 and WooCommerce 7.9.0-rc.2
 
 = 8.2.0 - 2023-04-28 =
 * Fix a bug when changing email language if WPML is active

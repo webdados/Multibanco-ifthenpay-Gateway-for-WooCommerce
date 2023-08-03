@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 5.0
 Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 8.3.0
+Stable tag: 8.3.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,7 +44,7 @@ This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract w
 * WPML tested and compatible (for multilingual shops);
 * Polylang tested;
 * [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco);
-* [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration (not for Credit cards at the moment);
+* [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration;
 * [WooCommerce Blocks](https://wordpress.org/plugins/woo-gutenberg-products-block/) checkout block integration (in beta);
 * PHP7 tested and compatible;
 
@@ -217,6 +217,11 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 8.4.0 - ?? =
+* Better compatibility with newer versions of WooCommerce Deposits by webtomizer (Thanks Instituto Macrobiótico de Portugal)
+* Throw Exception instead of adding notice when finalizing the order, to be compatible with both traditional and blocks checkout
+* Tested with WordPress 6.3-RC3-56344 and WooCommerce 8.0.0-rc.1
 
 = 8.3.0 - 2023-07-08 =
 * Fix a small bug when showing the order value on our metabox on the order edit screen on multicurrency websites
@@ -556,7 +561,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Tested with WordPress 5.2.3-alpha-45666 and WooCommerce 3.7.0-rc.1
 
 = 3.6.3.1 =
-* Bugfix on the WooCommerce Subscriptions integration (Thanks (@vascothemudo)
+* Bugfix on the WooCommerce Subscriptions integration (Thanks @vascothemudo)
 * Tested with WooCommerce 3.6.2
 
 = 3.6.3 =

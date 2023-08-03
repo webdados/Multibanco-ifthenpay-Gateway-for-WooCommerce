@@ -485,7 +485,10 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			//Send
 			if ( $send ) {
 				//Go
-				if ( $this->id === $order->get_payment_method() ) {
+				if ( $this->id === $order->get_payment_method() || $order_deposit = WC_IfthenPay_Webdados()->deposit_is_ifthenpay( $order, $this->id ) ) {
+					if ( $order_deposit ) {
+						$order = $order_deposit;
+					}
 					$show = false;
 					if ( !$sent_to_admin ) {
 						$show = true;
@@ -616,8 +619,8 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 					//Mark pending
 					$order->update_status( 'pending', __( 'Awaiting Credit or debit card payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
 				} else {
-					wc_add_notice( __( 'Error contacting IfthenPay servers to create Credit card Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) , 'error' );
-					return;
+					//wc_add_notice( __( 'Error contacting IfthenPay servers to create Credit card Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) , 'error' );
+					throw new Exception( __( 'Error contacting IfthenPay servers to create Credit card Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
 				}
 			} else {
 				//Value = 0
@@ -828,7 +831,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			);
 			$pending_status = apply_filters( 'creditcard_ifthen_valid_callback_pending_status', WC_IfthenPay_Webdados()->unpaid_statuses ); //Double filter - Should we deprectate this one?
 			$args = array(
-				'type'                      => array( 'shop_order' ),
+				'type'                      => array( 'shop_order', 'wcdp_payment' ), // Regular order or deposit
 				'status'                    => $pending_status,
 				'limit'                     => -1,
 				'_'.$this->id.'_request_id' => $request_id,

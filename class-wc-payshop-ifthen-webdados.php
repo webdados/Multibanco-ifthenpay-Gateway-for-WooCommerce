@@ -734,7 +734,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			//Send
 			if ( $send ) {
 				//Go
-				if ( $this->id === $order->get_payment_method() ) {
+				if ( $this->id === $order->get_payment_method() || $order_deposit = WC_IfthenPay_Webdados()->deposit_is_ifthenpay( $order, $this->id ) ) {
+					if ( $order_deposit ) {
+						$order = $order_deposit;
+					}
 					$show = false;
 					if ( !$sent_to_admin ) {
 						$show = true;
@@ -950,7 +953,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					'redirect' => $this->get_return_url( $order )
 				);
 			} else {
-				wc_add_notice( __( 'Error contacting IfthenPay servers to create Payshop Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) , 'error' );
+				//wc_add_notice( __( 'Error contacting IfthenPay servers to create Payshop Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) , 'error' );
+				throw new Exception( __( 'Error contacting IfthenPay servers to create Payshop Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
 			}
 			return;
 		}
@@ -1065,7 +1069,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						/* Aguardamos resposta do significado dos parâmetros para sabermos o que temos de guardar e como pesquisar depois */
 						$pending_status = apply_filters( 'payshop_ifthen_valid_callback_pending_status', WC_IfthenPay_Webdados()->unpaid_statuses ); //Double filter - Should we deprectate this one?
 						$args = array(
-							'type'                      => array( 'shop_order' ),
+							'type'                      => array( 'shop_order', 'wcdp_payment' ), // Regular order or deposit
 							'status'                    => $pending_status,
 							'limit'                     => -1,
 							'_'.$this->id.'_request_id' => $id_transacao,

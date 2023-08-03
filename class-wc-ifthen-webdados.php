@@ -106,7 +106,7 @@ final class WC_IfthenPay_Webdados {
 		$this->version                 = $version;
 		$this->pro_add_on_active       = function_exists( 'WC_IfthenPay_Pro' );
 		$this->wpml_active             = function_exists( 'icl_object_id' ) && function_exists( 'icl_register_string' );
-		$this->wc_deposits_active      = function_exists( 'wc_deposits_woocommerce_is_active' );
+		$this->wc_deposits_active      = function_exists( 'wc_deposits_woocommerce_is_active' ) || function_exists( '\Webtomizer\WCDP\wc_deposits_woocommerce_is_active' );
 		$this->wc_subscriptions_active = function_exists( 'wcs_get_subscription' );
 		$this->wc_blocks_active        = class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' );
 		$this->out_link_utm            = '?utm_source='.rawurlencode( esc_url( home_url( '/' ) ) ).'&amp;utm_medium=link&amp;utm_campaign=mb_ifthen_plugin';
@@ -530,7 +530,7 @@ final class WC_IfthenPay_Webdados {
 		return false;
 	}
 
-	/* Order metabox to show Multibanco payment details - This will need to change when the order is no longer a WP post */
+	/* Order metabox to show Multibanco payment details - HPOS compatible */
 	public function multibanco_order_metabox() {
 		$screen = $this->hpos_enabled ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order';
 		add_meta_box(
@@ -541,6 +541,17 @@ final class WC_IfthenPay_Webdados {
 			'side',
 			'core'
 		);
+		//WooCommerce Deposits newer versions - Not HPOS tested because Deposits is not yet HPOS compatible (4.1.15)
+		if ( $this->wc_deposits_active ) {
+			add_meta_box(
+				$this->multibanco_id,
+				'IfthenPay',
+				array( $this, 'multibanco_order_metabox_html' ),
+				'wcdp_payment',
+				'side',
+				'core'
+			);
+		}
 	}
 	public function multibanco_order_metabox_html( $post_or_order_object ) {
 		$order = ( $post_or_order_object instanceof WP_Post ) ? wc_get_order( $post_or_order_object->ID ) : $post_or_order_object;
@@ -2355,67 +2366,110 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 	 * @since 7.0
 	 */
 	public function process_refund( $order_id, $amount, $reason, $method_id ) {
-			$order = wc_get_order( $order_id );
-			$this->debug_log( $method_id, '-- Processing refund - Order '.$order->get_id(), 'notice' );
-			/*if ( ! $this->can_refund_order( $order ) ) {
-				$this->debug_log( $method_id, '-- Failed refund - Order '.$order->get_id(), 'error', true, 'Cannot refund order' );
-				return new WP_Error( 'error', __( 'Refund failed.', 'woocommerce' ) );
-			}*/ //Only works at method level
-			switch( $method_id ) {
-				case $this->mbway_id:
-					$order_details  = WC_IfthenPay_Webdados()->get_mbway_order_details( $order->get_id() );
-					$request_id     = trim( $order_details['id_pedido'] );
-					$backoffice_key = trim( $this->mbway_settings['do_refunds_backoffice_key'] );
-					break;
-				case $this->creditcard_id:
-					$order_details  = WC_IfthenPay_Webdados()->get_creditcard_order_details( $order->get_id() );
-					$request_id     = trim( $order_details['request_id'] );
-					$backoffice_key = trim( $this->creditcard_settings['do_refunds_backoffice_key'] );
-					break;
-			}
-			$args     = array(
-				'method'   => 'POST',
-				'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 30 ), //Should use the method own filter, but this will do...
-				'blocking' => true,
-				'headers'  => array('Content-Type' => 'application/json; charset=utf-8'),
-				'body'     => array(
-					'backofficekey' => $backoffice_key,
-					'requestId'     => $request_id,
-					'amount'        => (string) round( floatval( $amount ), 2 ),
-				),
-			);
-			$args['body'] = json_encode( $args['body'] );
-			$response = wp_remote_post( $this->refunds_url, $args );
-			if ( is_wp_error( $response ) ) {
-				$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->get_id().' - '.$response->get_error_message();
-				$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
-				$this->debug_log( $method_id, '-- '.$debug_msg, 'error', true, $debug_msg_email );
-				return new WP_Error( 'error', $response->get_error_message() );
-			} else {
-				if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
-					if ( $body = json_decode( $response['body'] ) ) {
-						if ( trim( $body->Code ) == '1' ) {
-							return true;
-						} else {
-							$debug_msg = '- Error from IfthenPay: '.trim( $body->Message ).' - Order '.$order->get_id();
-							$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
-							$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
-							return new WP_Error( 'error', $debug_msg.' - '.__( 'Do not contact the plugin support. You need to check with IfthenPay why this refund could not be issued.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
-						}
+		$order = wc_get_order( $order_id );
+		$this->debug_log( $method_id, '-- Processing refund - Order '.$order->get_id(), 'notice' );
+		/*if ( ! $this->can_refund_order( $order ) ) {
+			$this->debug_log( $method_id, '-- Failed refund - Order '.$order->get_id(), 'error', true, 'Cannot refund order' );
+			return new WP_Error( 'error', __( 'Refund failed.', 'woocommerce' ) );
+		}*/ //Only works at method level
+		switch( $method_id ) {
+			case $this->mbway_id:
+				$order_details  = WC_IfthenPay_Webdados()->get_mbway_order_details( $order->get_id() );
+				$request_id     = trim( $order_details['id_pedido'] );
+				$backoffice_key = trim( $this->mbway_settings['do_refunds_backoffice_key'] );
+				break;
+			case $this->creditcard_id:
+				$order_details  = WC_IfthenPay_Webdados()->get_creditcard_order_details( $order->get_id() );
+				$request_id     = trim( $order_details['request_id'] );
+				$backoffice_key = trim( $this->creditcard_settings['do_refunds_backoffice_key'] );
+				break;
+		}
+		$args     = array(
+			'method'   => 'POST',
+			'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 30 ), //Should use the method own filter, but this will do...
+			'blocking' => true,
+			'headers'  => array('Content-Type' => 'application/json; charset=utf-8'),
+			'body'     => array(
+				'backofficekey' => $backoffice_key,
+				'requestId'     => $request_id,
+				'amount'        => (string) round( floatval( $amount ), 2 ),
+			),
+		);
+		$args['body'] = json_encode( $args['body'] );
+		$response = wp_remote_post( $this->refunds_url, $args );
+		if ( is_wp_error( $response ) ) {
+			$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->get_id().' - '.$response->get_error_message();
+			$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
+			$this->debug_log( $method_id, '-- '.$debug_msg, 'error', true, $debug_msg_email );
+			return new WP_Error( 'error', $response->get_error_message() );
+		} else {
+			if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
+				if ( $body = json_decode( $response['body'] ) ) {
+					if ( trim( $body->Code ) == '1' ) {
+						return true;
 					} else {
-						$debug_msg = '- Response body is not JSON - Order '.$order->get_id();
+						$debug_msg = '- Error from IfthenPay: '.trim( $body->Message ).' - Order '.$order->get_id();
 						$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
 						$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
-						return new WP_Error( 'error', $debug_msg );
+						return new WP_Error( 'error', $debug_msg.' - '.__( 'Do not contact the plugin support. You need to check with IfthenPay why this refund could not be issued.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
 					}
 				} else {
-					$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->get_id().' - Incorrect response code: '.$response['response']['code'];
+					$debug_msg = '- Response body is not JSON - Order '.$order->get_id();
 					$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
 					$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
 					return new WP_Error( 'error', $debug_msg );
 				}
+			} else {
+				$debug_msg = '- Error contacting the IfthenPay servers - Order '.$order->get_id().' - Incorrect response code: '.$response['response']['code'];
+				$debug_msg_email = $debug_msg.' - Args: '.serialize( $args ).' - Response: '.serialize( $response );
+				$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
+				return new WP_Error( 'error', $debug_msg );
 			}
 		}
+	}
+
+	/**
+	 * Check if Deposit has our payment method
+	 *
+	 * @since 8.4.0
+	 */
+	public function deposit_is_ifthenpay( $order, $method_id ) {
+		if ( $this->wc_deposits_active ) {
+			if ( $order->get_meta( '_wc_deposits_order_has_deposit' ) === 'yes' ) {
+				$payment_schedule = $order->get_meta( '_wc_deposits_payment_schedule', true );
+				// Deposit
+				if ( is_array( $payment_schedule ) && isset( $payment_schedule['deposit'] ) && isset( $payment_schedule['deposit']['id'] ) && intval( $payment_schedule['deposit']['id'] ) > 0 ) {
+					if ( $order_deposit = wc_get_order( intval( $payment_schedule['deposit']['id'] ) ) ) {
+						if ( $method_id === $order_deposit->get_payment_method() ) {
+							if ( $this->order_needs_payment( $order_deposit ) ) {
+								return $order_deposit;
+							}
+						}
+					}
+				}
+				// Future payments
+				if ( is_array( $payment_schedule ) ) {
+					$stop = false;
+					$i    = 0;
+					while ( $stop == false ) {
+						if ( isset( $payment_schedule[$i] ) ) {
+							if ( $order_deposit = wc_get_order( intval( $payment_schedule[$i]['id'] ) ) ) {
+								if ( $method_id === $order_deposit->get_payment_method() ) {
+									if ( $this->order_needs_payment( $order_deposit ) ) {
+										return $order_deposit;
+									}
+								}
+							}
+							$i++;
+						} else {
+							$stop = true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Load admin scripts.

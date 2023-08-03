@@ -856,7 +856,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			//Send
 			if ( $send ) {
 				//Go
-				if ( $this->id === $order->get_payment_method() ) {
+				if ( $this->id === $order->get_payment_method() || $order_deposit = WC_IfthenPay_Webdados()->deposit_is_ifthenpay( $order, $this->id ) ) {
+					if ( $order_deposit ) {
+						$order = $order_deposit;
+					}
 					$show = false;
 					if ( !$sent_to_admin ) {
 						$show = true;
@@ -1202,7 +1205,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					$orders_count = 0;
 					$pending_status = apply_filters( 'multibanco_ifthen_valid_callback_pending_status', WC_IfthenPay_Webdados()->unpaid_statuses ); //Double filter - Should we deprectate this one?
 					$args = array(
-						'type'               => array( 'shop_order' ),
+						'type'               => array( 'shop_order', 'wcdp_payment' ), // Regular order or deposit
 						'status'             => $pending_status,
 						'limit'              => -1,
 						'_'.$this->id.'_ent' => $ent,

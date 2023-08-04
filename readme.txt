@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 5.0
 Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 8.3.1
+Stable tag: 8.4.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -218,7 +218,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 8.4.0 - ?? =
+= 8.4.0 - 2023-08-04 =
 * Better compatibility with newer versions of WooCommerce Deposits by webtomizer (Thanks Instituto Macrobiótico de Portugal)
 * Throw Exception instead of adding notice when finalizing the order, to be compatible with both traditional and blocks checkout
 * Tested with WordPress 6.3-RC3-56344 and WooCommerce 8.0.0-rc.1

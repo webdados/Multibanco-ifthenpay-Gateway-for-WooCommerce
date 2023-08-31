@@ -362,6 +362,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 			$title = esc_html( $this->get_method_title() );
 			?>
 			<div id="wc_ifthen">
+				<?php if ( ! apply_filters( 'multibanco_ifthen_hide_settings_right_bar', false ) ) WC_IfthenPay_Webdados()->admin_pro_banner(); ?>
 				<?php if ( ! apply_filters( 'multibanco_ifthen_hide_settings_right_bar', false ) ) WC_IfthenPay_Webdados()->admin_right_bar(); ?>
 				<div id="wc_ifthen_settings">
 					<h2>
@@ -758,7 +759,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			if ( $send ) {
 				//Go
 				if ( $this->id === $order->get_payment_method() || $order_deposit = WC_IfthenPay_Webdados()->deposit_is_ifthenpay( $order, $this->id ) ) {
-					if ( $order_deposit ) {
+					if ( isset( $order_deposit ) && $order_deposit ) {
 						$order = $order_deposit;
 					}
 					$show = false;

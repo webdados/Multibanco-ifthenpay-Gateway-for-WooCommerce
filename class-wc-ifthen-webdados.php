@@ -2118,18 +2118,6 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 	public function admin_right_bar() {
 		?>
 		<div id="wc_ifthen_rightbar">
-			<?php if ( ! $this->pro_add_on_active ) { ?>
-				<div class="wc_ifthen_pro_ad">
-					<h4><?php _e( 'Want more features?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
-					<p>
-						<a href="https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank" style="font-weight: bold;">
-							<?php _e( 'Get the PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
-						</a>
-					</p>
-				</div>
-				<div class="clear"></div>
-				<hr/>
-			<?php } ?>
 			<h4><?php _e( 'Commercial information', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 			<p>
 				<a href="https://ifthenpay.com/<?php echo esc_attr( $this->out_link_utm); ?>" title="<?php echo esc_attr( sprintf( __( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 'IfthenPay' ) ); ?>" target="_blank">
@@ -2165,6 +2153,12 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 				<?php
 				$premium_plugins = array(
 					array(
+						'url'         => 'https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/',
+						'title'       => __( 'Multibanco, MBWAY, Credit card and Payshop for WooCommerce – PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'short_title' => __( 'PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'image'       => 'multibanco.png',
+					),
+					array(
 						'url'         => 'https://invoicewoo.com/',
 						'title'       => __( 'Invoicing with InvoiceXpress for WooCommerce – Pro', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'InvoiceXpress', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
@@ -2177,7 +2171,7 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 						'image'       => 'dpd-portugal.png',
 					),
 					array(
-						'url'         => 'https://www.webdados.pt/wordpress/plugins/codigos-postais-portugueses-para-woocommerce/',
+						'url'         => 'https://ptwooplugins.com/product/portuguese-postcodes-for-woocommerce-technical-support/',
 						'title'       => __( 'Portuguese Postcodes for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'Portuguese Postcodes', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'postcodes.png',
@@ -2187,6 +2181,12 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 						'title'       => __( 'Feed KuantoKusta for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'KuantoKusta', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'kuantokusta.png',
+					),
+					array(
+						'url'         => 'https://ptwooplugins.com/product/simple-woocommerce-order-approval/',
+						'title'       => __( 'Simple WooCommerce Order Approval', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'short_title' => __( 'Order Approval', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'image'       => 'simple-woocommerce-order-approval-logo.png',
 					),
 					array(
 						'url'         => 'https://www.webdados.pt/wordpress/plugins/shop-as-client-for-woocommerce/',
@@ -2216,6 +2216,23 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 			<div class="clear"></div>
 		</div>
 		<?php
+	}
+
+	/* Pro add-on banner */
+	public function admin_pro_banner() {
+		if ( ! $this->pro_add_on_active ) {
+			?>
+			<div class="wc_ifthen_pro_ad">
+				<h4><?php _e( 'Want more features?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
+				<p>
+					<a href="https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm); ?>" target="_blank" style="font-weight: bold;">
+						<?php _e( 'Get the PRO add-on of Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+					</a>
+				</p>
+			</div>
+			<div class="clear"></div>
+			<?php
+		}
 	}
 
 	/* MB WAY Ajax order status */

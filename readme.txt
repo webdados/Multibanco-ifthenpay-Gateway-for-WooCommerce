@@ -1,12 +1,12 @@
 === Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce ===
 Contributors: webdados, ptwooplugins, ifthenpay
-Tags: woocommerce, multibanco, mbway, payshop, credit card, payment, pagamentos, gateway, mb way, debit card, mobile, atm, debit card, credit card, bank, ecommerce, e-commerce, ifthen, ifthen software, ifthenpay, webdados, sms, php7, cartão de débito, cartão de crédito, cartões, gdpr
+Tags: woocommerce, multibanco, mbway, payshop, credit card, payment, pagamentos, mb way, debit card, credit card, ifthenpay, unicre, sibs, easypay
 Author URI: https://ptwooplugins.com
 Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
 Requires at least: 5.0
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 7.0
-Stable tag: 8.4.0
+Stable tag: 8.5.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -78,18 +78,18 @@ Already know our other WooCommerce (premium) plugins?
 * [Invoicing with InvoiceXpress for WooCommerce](https://wordpress.org/plugins/woo-billing-with-invoicexpress/) - Automatically issue invoices directly from the WooCommerce order
 * [DPD Portugal for WooCommerce](https://ptwooplugins.com/product/dpd-portugal-for-woocommerce/) - Create shipping and return guide in the DPD webservice directly from the WooCommerce order
 * [Feed KuantoKusta for WooCommerce](https://ptwooplugins.com/product/feed-kuantokusta-for-woocommerce-pro/) - Publish your products on Kuanto Kusta with this easy to use feed generator
+* [Simple WooCommerce Order Approval](https://ptwooplugins.com/product/simple-woocommerce-order-approval/) - The hassle-free solution for WooCommerce orders approval before payment
 * [Shop as Client for WooCommerce](https://ptwooplugins.com/product/shop-as-client-for-woocommerce-pro-add-on/) - Quickly create orders on behalf of your customers
 * [Taxonomy/Term and Role based Discounts for WooCommerce](https://ptwooplugins.com/product/taxonomy-term-and-role-based-discounts-for-woocommerce-pro-add-on/) - Easily create bulk discount rules for products based on any taxonomy terms (built-in or custom)
-* [Simple WooCommerce Order Approval](https://ptwooplugins.com/product/simple-woocommerce-order-approval/) - The hassle-free solution for WooCommerce orders approval before payment
 
 == Installation ==
 
 * Make sure you already have a contract with [IfthenPay](https://ifthenpay.com)
 * Use the included automatic install feature on your WordPress admin panel and search for “Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce”.
-* Multibanco: Go to WooCoomerce > Settings > Checkout > Pagamento de Serviços no Multibanco and fill in the data provided by IfthenPay (Entity and Subentity or MB Key) in order to use this payment method.
-* MB WAY: Go to WooCoomerce > Settings > Checkout > Pagamento MB WAY no telemóvel and fill in the data provided by IfthenPay (MB WAY Key) in order to use this payment method.
-* Credit or debit card: Go to WooCoomerce > Settings > Checkout > Credit or debit card and fill in the data provided by IfthenPay (Credit card Key) in order to use this payment method.
-* Payshop: Go to WooCoomerce > Settings > Checkout > Pagamento na rede de agentes Payshop and fill in the data provided by IfthenPay (Payshop Key) in order to use this payment method.
+* Multibanco: Go to WooCommerce > Settings > Checkout > Pagamento de Serviços no Multibanco and fill in the data provided by IfthenPay (Entity and Subentity or MB Key) in order to use this payment method.
+* MB WAY: Go to WooCommerce > Settings > Checkout > Pagamento MB WAY no telemóvel and fill in the data provided by IfthenPay (MB WAY Key) in order to use this payment method.
+* Credit or debit card: Go to WooCommerce > Settings > Checkout > Credit or debit card and fill in the data provided by IfthenPay (Credit card Key) in order to use this payment method.
+* Payshop: Go to WooCommerce > Settings > Checkout > Pagamento na rede de agentes Payshop and fill in the data provided by IfthenPay (Payshop Key) in order to use this payment method.
 * Make sure you ask IfthenPay to activate the “Callback” on their side with the URL and Anti-phishing key provided in the settings screen. There is a feature in each payment method screen that allows you to make this request via a webservice, except on Credit card where this is not needed.
 * Start receiving payments :-)
 
@@ -198,7 +198,7 @@ IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termosCondic
 
 = Is this plugin compatible with the new WooCommerce High-Performance Order Storage? =
 
-Yes, in beta, from version 7.1 onwards.
+Yes, in beta, from WooCommerce version 7.1 onwards.
 
 = I need technical support. Who should I contact, IfthenPay or Webdados? =
 
@@ -217,6 +217,11 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 8.5.0 - 2023-08-31 =
+* Fix a PHP notice
+* Rearrange premium plugins information on the settings screen
+* Tested with WordPress 6.4-alpha-56479 and WooCommerce 8.1.0-beta.1
 
 = 8.4.0 - 2023-08-04 =
 * Better compatibility with newer versions of WooCommerce Deposits by webtomizer (Thanks Instituto Macrobiótico de Portugal)

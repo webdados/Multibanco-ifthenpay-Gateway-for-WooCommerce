@@ -4,9 +4,9 @@ Tags: woocommerce, multibanco, mbway, payshop, credit card, payment, pagamentos,
 Author URI: https://ptwooplugins.com
 Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
 Requires at least: 5.0
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 8.6.0
+Stable tag: 8.7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,6 +21,8 @@ The MB WAY (using the customer mobile phone number), Credit or debit card and CT
 
 This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [Webdados](https://www.webdados.pt).
 
+**Fully compatible with the new [High-Performance Order Storage](https://woocommerce.com/posts/platform-update-high-performance-order-storage-for-woocommerce/) and [WooCommerce Checkout Blocks](https://woocommerce.com/checkout-blocks/).**
+
 = Features: =
 
 * Generates a Multibanco Reference for simple payment on the Portuguese ATM network or homebanking service;
@@ -34,7 +36,7 @@ This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract w
 * Shop owner can set minimum and maximum order totals for each payment gateway to be available;
 * Ability to reduce stock when the order is created or paid;
 * Allows searching orders (in the admin area) by Multibanco or Payshop reference;
-* WooCommerce 7.1 and above High-Performance Order Storage compatible (in beta);
+* WooCommerce 7.1 and above High-Performance Order Storage compatible;
 * Integration for 3rd party SMS notification plugins (only Multibanco and Payshop):
 	* [WooCommerce - APG SMS Notifications](https://wordpress.org/plugins/woocommerce-apg-sms-notifications/)
 	* [Twilio SMS Notifications](https://woocommerce.com/products/twilio-sms-notifications/);
@@ -45,7 +47,7 @@ This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract w
 * Polylang tested;
 * [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco);
 * [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration;
-* [WooCommerce Blocks](https://wordpress.org/plugins/woo-gutenberg-products-block/) checkout block integration (in beta);
+* [WooCommerce Blocks](https://woocommerce.com/checkout-blocks/) checkout block integration;
 * PHP7 tested and compatible;
 
 = PRO add-on =
@@ -198,7 +200,7 @@ IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termosCondic
 
 = Is this plugin compatible with the new WooCommerce High-Performance Order Storage? =
 
-Yes, in beta, from WooCommerce version 7.1 onwards.
+Yes, from WooCommerce version 7.1 onwards.
 
 = I need technical support. Who should I contact, IfthenPay or Webdados? =
 
@@ -218,10 +220,14 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 8.7.0 - 2023-10-30 =
+* Remove beta status from the HPOS and Blocks Checkout compatibility
+* Tested with WordPress 6.5-alpha-57027, WooCommerce 8.2.1 and WooCommerce Blocks 11.4.1
+
 = 8.6.0 - 2023-08-31 =
 * Pass $_GET to the `*_ifthen_callback_payment_complete` hooks
 * Update hooks-examples.php with an example on how to use the payment complete hook with the new parameter
-* Tested wit WordPress 6.4-beta2-56771 and WooCommerce 8.2.0-rc.2
+* Tested with WordPress 6.4-beta2-56771 and WooCommerce 8.2.0-rc.2
 
 = 8.5.0 - 2023-08-31 =
 * Fix a PHP notice

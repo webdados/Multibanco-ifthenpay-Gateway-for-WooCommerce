@@ -333,11 +333,13 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			<div id="wc_ifthen">
 				<?php
 				if ( ! apply_filters( 'multibanco_ifthen_hide_settings_right_bar', false ) ) {
-					WC_IfthenPay_Webdados()->admin_pro_banner();}
+					WC_IfthenPay_Webdados()->admin_pro_banner();
+				}
 				?>
 				<?php
 				if ( ! apply_filters( 'multibanco_ifthen_hide_settings_right_bar', false ) ) {
-					WC_IfthenPay_Webdados()->admin_right_bar();}
+					WC_IfthenPay_Webdados()->admin_right_bar();
+				}
 				?>
 				<div id="wc_ifthen_settings">
 					<h2>

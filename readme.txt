@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.0
-Stable tag: 8.8.0
+Stable tag: 8.9.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,7 +19,7 @@ This plugin will allow you to generate a payment Reference the customer can then
 
 The MB WAY (using the customer mobile phone number), Credit or debit card and CTT Payshop payment methods are also available.
 
-This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [Webdados](https://www.webdados.pt).
+This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [Webdados](https://www.webdados.pt) on the [support forums, here at WordPress.org](https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/).
 
 **Fully compatible with the new [High-Performance Order Storage](https://woocommerce.com/posts/platform-update-high-performance-order-storage-for-woocommerce/) and [WooCommerce Checkout Blocks](https://woocommerce.com/checkout-blocks/).**
 
@@ -37,18 +37,17 @@ This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract w
 * Ability to reduce stock when the order is created or paid;
 * Allows searching orders (in the admin area) by Multibanco or Payshop reference;
 * WooCommerce 7.1 and above High-Performance Order Storage compatible;
+* Block-Based Checkout compatible;
+* WPML tested and compatible (for multilingual shops);
+* Polylang tested;
+* [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco);
+* [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration;
 * Integration for 3rd party SMS notification plugins (only Multibanco and Payshop):
 	* [WooCommerce - APG SMS Notifications](https://wordpress.org/plugins/woocommerce-apg-sms-notifications/)
 	* [Twilio SMS Notifications](https://woocommerce.com/products/twilio-sms-notifications/);
 	* [YITH WooCommerce SMS Notification](https://yithemes.com/themes/plugins/yith-woocommerce-sms-notifications/);
 	* [E-goi SMS Orders Alert/Notifications for WooCommerce](https://pt.wordpress.org/plugins/sms-orders-alertnotifications-for-woocommerce/) (integration implemented on their plugin)
 	* Other providers can be added upon request (under quotation);
-* WPML tested and compatible (for multilingual shops);
-* Polylang tested;
-* [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco);
-* [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration;
-* [WooCommerce Blocks](https://woocommerce.com/checkout-blocks/) checkout block integration;
-* PHP7 tested and compatible;
 
 = PRO add-on =
 
@@ -71,7 +70,7 @@ Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-ca
 	* Automatic updates;
 	* Good karma;
 
-Attention: The PRO add-on is a product of PT Woo Plugins / Webdados, and IfthenPay has no responsibility for it.
+Attention: The PRO add-on is a product of [PT Woo Plugins](https://ptwooplugins.com) / Webdados, and IfthenPay has no responsibility for it.
 
 = Other (premium) plugins =
 
@@ -206,7 +205,7 @@ Yes, from WooCommerce version 7.1 onwards.
 = I need technical support. Who should I contact, IfthenPay or Webdados? =
 
 Although this is the official IfthenPay WooCommerce plugin, development and support is provided by [Webdados](https://www.webdados.pt).
-For free/standard support you should use the support forums here at WordPress.org
+For free/standard support you should use the [support forums here at WordPress.org](https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/)
 For premium, urgent and experimental integrations support or custom developments you should contact [Webdados](https://www.webdados.pt/contactos/). Charges will apply.
 
 Any support related to failed payments or credit card authorizations should be directed to [IfthenPay](https://ifthenpay.com/#contactos).
@@ -220,6 +219,11 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 8.9.0 - 2023-12-05 =
+* `wc_get_orders` wrapper to remove Polylang language filters and apply conversions for HPOS
+* Better explanation of value limits on each gateway
+* Tested with WordPress 6.5-alpha-57150, WooCommerce 8.4.0-beta.1
 
 = 8.8.0 - 2023-11-15 =
 * [PRO add-on 1.6](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Countdown timer on the thank you page for MB WAY payments

@@ -394,8 +394,8 @@ final class WC_IfthenPay_Webdados {
 		return $available_gateways;
 	}
 
-	/* Just above/bellow certain amounts */
-	public function disable_only_above_or_bellow( $available_gateways, $gateway_id, $default_only_above = null, $default_only_bellow = null ) {
+	/* Just above/below certain amounts */
+	public function disable_only_above_or_below( $available_gateways, $gateway_id, $default_only_above = null, $default_only_below = null ) {
 		$value_to_pay = null;
 		//Order total or cart total?
 		$pay_slug = get_option( 'woocommerce_checkout_pay_endpoint', 'order-pay' );
@@ -427,15 +427,15 @@ final class WC_IfthenPay_Webdados {
 				unset( $available_gateways[$gateway_id] );
 			}
 			//Only below
-			$only_bellow = $default_only_bellow ? $default_only_bellow : 0;
-			if ( isset( $available_gateways[$gateway_id]->only_bellow ) ) {
+			$only_below = $default_only_below ? $default_only_below : 0;
+			if ( isset( $available_gateways[$gateway_id]->only_below ) ) {
 				if (
-					floatval( $available_gateways[$gateway_id]->only_bellow ) > 0
+					floatval( $available_gateways[$gateway_id]->only_below ) > 0
 					&&
-					floatval( $available_gateways[$gateway_id]->only_bellow ) < $only_bellow
-				) $only_bellow = floatval( $available_gateways[$gateway_id]->only_bellow );
+					floatval( $available_gateways[$gateway_id]->only_below ) < $only_below
+				) $only_below = floatval( $available_gateways[$gateway_id]->only_below );
 			}
-			if ( $only_bellow > 0 && $value_to_pay > floatval( $only_bellow ) ) {
+			if ( $only_below > 0 && $value_to_pay > floatval( $only_below ) ) {
 				unset( $available_gateways[$gateway_id] );
 			}
 		}
@@ -1317,25 +1317,25 @@ final class WC_IfthenPay_Webdados {
 		//Does it exists already? Let's browse the database!
 		if ( ! $just_create_no_check ) {
 			$exists = false;
-			$orders = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( array(
+			$orders = WC_IfthenPay_Webdados()->wc_get_orders( array(
 				'type'	=> array( 'shop_order' ),
 				'limit'	=> 1, //If there's one, it's enough
 				'_'.$this->multibanco_id.'_ent' => $ent,
 				'_'.$this->multibanco_id.'_ref' => $ref,
 				'status' => array( 'wc-on-hold', 'wc-pending' ), //Should we be checking for our valid statuses?
-			) ) );
+			) );
 			if ( count($orders) > 0 ) {
 				$exists = true;
 			} else {
 				//No open orders but also check for special entities that do not allow references to be repeated on x days
 				if ( intval( $no_repeat_days ) > 0 ) {
-					$orders = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( array(
+					$orders = WC_IfthenPay_Webdados()->wc_get_orders( array(
 						'type'	=> array( 'shop_order' ),
 						'limit'	=> 1, //If there's one, it's enough
 						'_'.$this->multibanco_id.'_ent' => $ent,
 						'_'.$this->multibanco_id.'_ref' => $ref,
 						'date_after' => date_i18n( 'Y-m-d', strtotime( '-'.intval( $no_repeat_days ).' days ') ),
-					) ) );
+					) );
 					if ( count($orders) > 0 ) $exists = true;
 				}
 			}
@@ -1833,13 +1833,13 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 			if ( $held_duration < 1 || 'yes' !== get_option( 'woocommerce_manage_stock' ) ) return;
 			$date_before = '-' . absint( $held_duration ) . ' MINUTES';
 			foreach ( $methods as $method ) {
-				$unpaid_orders = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( array(
+				$unpaid_orders = WC_IfthenPay_Webdados()->wc_get_orders( array(
 					'status'			=> array( 'on-hold', 'pending' ), //Aqui não usamos os unpaid statuses porque podemos entrar num loop se alguém adicionar o estado cancelada e também porque não faz sentido para parcialmente pagas
 					'type'				=> array( 'shop_order' ),
 					'limit'				=> -1,
 					'date_modified'		=> '<' . strtotime( $date_before ),
 					'payment_method'	=> $method,
-				) ) );
+				) );
 				if ( $unpaid_orders ) {
 					foreach ( $unpaid_orders as $unpaid_order ) {
 						if ( apply_filters( 'woocommerce_cancel_unpaid_order', 'checkout' === $unpaid_order->get_created_via(), $unpaid_order ) ) {
@@ -1883,9 +1883,9 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 			'type'                => array( 'shop_order' ),
 			'limit'               => -1,
 			'payment_method'      => $method_id,
-			'_'.$method_id.'_exp' => date_i18n( 'Y-m-d H:i:s' ), //HPOS not compatible yet - https://github.com/woocommerce/woocommerce/issues/33879
+			'_'.$method_id.'_exp' => date_i18n( 'Y-m-d H:i:s' ),
 		);
-		$expired_orders = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( $args ) );
+		$expired_orders = WC_IfthenPay_Webdados()->wc_get_orders( $args );
 		if ( $expired_orders ) {
 			foreach ( $expired_orders as $expired_order ) {
 				$expired_order->update_status( 'cancelled', __( 'Unpaid order cancelled - Payment reference expired.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
@@ -2486,6 +2486,27 @@ wc_price( $order_total_to_pay, array( 'currency' => $order->get_currency() ) )
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Wrapper for wc_get_orders
+	 * Maybe translate args for HPOS
+	 * Disable Polylang filter and may be others in the future
+	 *
+	 * @since 8.9.0
+	 */
+	public function wc_get_orders( $args ) {
+		// Remove Polylang filter - https://wordpress.org/support/topic/encomenda-cancelada-mas-cobrada/
+		if ( function_exists( 'PLL' ) ) {
+			remove_action( 'parse_query', array( PLL(), 'parse_query' ), 6 );
+		}
+		// Get the orders
+		$orders = wc_get_orders( $this->maybe_translate_order_query_args( $args ) );
+		// Re-instate Polylang filter - https://wordpress.org/support/topic/encomenda-cancelada-mas-cobrada/
+		if ( function_exists( 'PLL' ) ) {
+			add_action( 'parse_query', array( PLL(), 'parse_query' ), 6 );
+		}
+		return $orders;
 	}
 
 	/**

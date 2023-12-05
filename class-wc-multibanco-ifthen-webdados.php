@@ -76,7 +76,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 			$this->send_to_admin      = ( $this->get_option( 'send_to_admin' ) == 'yes' ? true : false );
 			$this->only_portugal      = ( $this->get_option( 'only_portugal' ) == 'yes' ? true : false );
 			$this->only_above         = $this->get_option( 'only_above' );
-			$this->only_bellow        = $this->get_option( 'only_bellow' );
+			$this->only_below         = $this->get_option( 'only_bellow' );
 			$this->stock_when         = $this->get_option( 'stock_when' );
 	 	
 			// Actions and filters
@@ -89,7 +89,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_if_settings_missing' ) );
 				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_if_currency_not_euro' ) );
 				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_unless_portugal' ) );
-				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_only_above_or_bellow' ) );
+				add_filter( 'woocommerce_available_payment_gateways', array( $this, 'disable_only_above_or_below' ) );
 		
 				// APG SMS Notifications Integration
 				// https://wordpress.org/plugins/woocommerce-apg-sms-notifications/
@@ -354,10 +354,10 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 								'default' => 'no'
 							),
 				'only_above' => array(
-								'title' => __( 'Only for orders above', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+								'title' => __( 'Only for orders from', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'type' => 'number', 
-								'description' => __( 'Enable only for orders above x &euro;. Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' <br/> '.sprintf(
-									__( 'By design, %1$s only allows payments from %2$s to %3$s (inclusive). You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								'description' => __( 'Enable only for orders with a value from x &euro;. Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' <br/> '.sprintf(
+									__( 'By design, %1$s only allows payments from %2$s to %3$s. You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 									'Multibanco',
 									wc_price( WC_IfthenPay_Webdados()->multibanco_min_value, array( 'currency' => 'EUR' ) ),
 									wc_price( WC_IfthenPay_Webdados()->multibanco_max_value, array( 'currency' => 'EUR' ) )
@@ -365,10 +365,10 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 								'default' => ''
 							),
 				'only_bellow' => array(
-								'title' => __( 'Only for orders below', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
+								'title' => __( 'Only for orders up tp', 'multibanco-ifthen-software-gateway-for-woocommerce' ), 
 								'type' => 'number', 
-								'description' => __( 'Enable only for orders below x &euro; (exclusive). Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' <br/> '.sprintf(
-									__( 'By design, %1$s only allows payments from %2$s to %3$s (inclusive). You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								'description' => __( 'Enable only for orders with a value up to x &euro;. Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ).' <br/> '.sprintf(
+									__( 'By design, %1$s only allows payments from %2$s to %3$s. You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 									'Multibanco',
 									wc_price( WC_IfthenPay_Webdados()->multibanco_min_value, array( 'currency' => 'EUR' ) ),
 									wc_price( WC_IfthenPay_Webdados()->multibanco_max_value, array( 'currency' => 'EUR' ) )
@@ -1133,10 +1133,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		}
 
 		/**
-		 * Just above/bellow certain amounts
+		 * Just above/below certain amounts
 		 */
-		function disable_only_above_or_bellow( $available_gateways ) {
-			return WC_IfthenPay_Webdados()->disable_only_above_or_bellow( $available_gateways, $this->id, WC_IfthenPay_Webdados()->multibanco_min_value, WC_IfthenPay_Webdados()->multibanco_max_value );
+		function disable_only_above_or_below( $available_gateways ) {
+			return WC_IfthenPay_Webdados()->disable_only_above_or_below( $available_gateways, $this->id, WC_IfthenPay_Webdados()->multibanco_min_value, WC_IfthenPay_Webdados()->multibanco_max_value );
 		}
 
 
@@ -1213,7 +1213,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						'_'.$this->id.'_ref' => $ref,
 					);
 					$this->debug_log_extra( '-- Searching for orders with args: '.serialize( $args ) );
-					$orders = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( $args ) );
+					$orders = WC_IfthenPay_Webdados()->wc_get_orders( $args );
 					$this->debug_log_extra( '-- Searching for orders with args (after maybe_translate_order_query_args): '.serialize( $args ) );
 					if ( count( $orders ) > 0 ) {
 						$orders_exist = true;

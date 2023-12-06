@@ -762,7 +762,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							$this->debug_log_extra( 'Order found: ' . $order->get_id() . ' - Status: ' . $order->get_status() );
 							$order_id      = $order->get_id();
 							$order_details = WC_IfthenPay_Webdados()->get_creditcard_order_details( $order->get_id() );
-							$sk            = trim( sanitize_text_field( $_GET['sk'] ) );
+							$sk            = isset( $_GET['sk'] ) ? trim( sanitize_text_field( $_GET['sk'] ) ) : '';
 							$hash          = hash_hmac( 'sha256', $id . $val . $request_id, $order_details['creditcardkey'] );
 							if ( $sk == $hash ) {
 								$this->debug_log_extra( 'Order found: ' . $order->get_id() . ' - Hash ok' );
@@ -883,7 +883,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				$args[ '_' . $this->id . '_wd_secret' ] = $wd_secret;
 			}
 			$orders_exist = false;
-			$orders       = WC_IfthenPay_Webdados()->wc_get_orders( $args );
+			$orders       = WC_IfthenPay_Webdados()->wc_get_orders( $args, $this->id );
 			if ( count( $orders ) > 0 ) {
 				$orders_exist = true;
 				$orders_count = count( $orders );

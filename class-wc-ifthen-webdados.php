@@ -870,11 +870,13 @@ final class WC_IfthenPay_Webdados {
 							)
 						);*/ // Returns duplicate payment, maybe because it expires on the first hit
 						if ( $show_debug && WP_DEBUG ) {
+							$val          = number_format( $order_mb_details['val'], 2, '.', '' );
 							$callback_url = add_query_arg( 'status', 'success', $this->creditcard_notify_url );
-							$callback_url = add_query_arg( 'id', $order_mb_details['id'], $callback_url );
-							$callback_url = add_query_arg( 'amount', $order_mb_details['val'], $callback_url );
-							$callback_url = add_query_arg( 'requestId', $order_mb_details['request_id'], $callback_url );
 							$callback_url = add_query_arg( 'wd_secret', $order_mb_details['wd_secret'], $callback_url );
+							$callback_url = add_query_arg( 'id', $order_mb_details['id'], $callback_url );
+							$callback_url = add_query_arg( 'amount', $val, $callback_url );
+							$callback_url = add_query_arg( 'requestId', $order_mb_details['request_id'], $callback_url );
+							$callback_url = add_query_arg( 'sk', hash_hmac( 'sha256', $order_mb_details['id'] . $val . $order_mb_details['request_id'], $order_mb_details['creditcardkey'] ), $callback_url );
 							?>
 							<hr/>
 							<p>
@@ -1366,7 +1368,8 @@ final class WC_IfthenPay_Webdados {
 					'_' . $this->multibanco_id . '_ent' => $ent,
 					'_' . $this->multibanco_id . '_ref' => $ref,
 					'status'                            => array( 'wc-on-hold', 'wc-pending' ), // Should we be checking for our valid statuses?
-				)
+				),
+				$this->multibanco_id
 			);
 			if ( count( $orders ) > 0 ) {
 				$exists = true;
@@ -1380,7 +1383,8 @@ final class WC_IfthenPay_Webdados {
 							'_' . $this->multibanco_id . '_ent' => $ent,
 							'_' . $this->multibanco_id . '_ref' => $ref,
 							'date_after' => date_i18n( 'Y-m-d', strtotime( '-' . intval( $no_repeat_days ) . ' days ' ) ),
-						)
+						),
+						$this->multibanco_id
 					);
 					if ( count( $orders ) > 0 ) {
 						$exists = true;
@@ -1800,22 +1804,23 @@ final class WC_IfthenPay_Webdados {
 				return;
 			}
 			$date_before = '-' . absint( $held_duration ) . ' MINUTES';
-			foreach ( $methods as $method ) {
+			foreach ( $methods as $method_id ) {
 				$unpaid_orders = WC_IfthenPay_Webdados()->wc_get_orders(
 					array(
 						'status'         => array( 'on-hold', 'pending' ), // Aqui não usamos os unpaid statuses porque podemos entrar num loop se alguém adicionar o estado cancelada e também porque não faz sentido para parcialmente pagas
 						'type'           => array( 'shop_order' ),
 						'limit'          => -1,
 						'date_modified'  => '<' . strtotime( $date_before ),
-						'payment_method' => $method,
-					)
+						'payment_method' => $method_id,
+					),
+					$method_id
 				);
 				if ( $unpaid_orders ) {
 					foreach ( $unpaid_orders as $unpaid_order ) {
 						if ( apply_filters( 'woocommerce_cancel_unpaid_order', 'checkout' === $unpaid_order->get_created_via(), $unpaid_order ) ) {
 							$unpaid_order->update_status( 'cancelled', __( 'Unpaid order cancelled - time limit exceeded.', 'woocommerce' ) );
 							// Restore stock levels
-							switch ( $method ) {
+							switch ( $method_id ) {
 								case $this->multibanco_id:
 									$filter_stock = 'multibanco_ifthen_cancel_unpaid_orders_restore_stock';
 									$action       = 'multibanco_ifthen_unpaid_order_cancelled';
@@ -1855,7 +1860,7 @@ final class WC_IfthenPay_Webdados {
 			'payment_method'          => $method_id,
 			'_' . $method_id . '_exp' => date_i18n( 'Y-m-d H:i:s' ),
 		);
-		$expired_orders = WC_IfthenPay_Webdados()->wc_get_orders( $args );
+		$expired_orders = WC_IfthenPay_Webdados()->wc_get_orders( $args, $method_id );
 		if ( $expired_orders ) {
 			foreach ( $expired_orders as $expired_order ) {
 				$expired_order->update_status( 'cancelled', __( 'Unpaid order cancelled - Payment reference expired.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
@@ -2488,15 +2493,20 @@ final class WC_IfthenPay_Webdados {
 	 *
 	 * @since 8.9.0
 	 */
-	public function wc_get_orders( $args ) {
+	public function wc_get_orders( $args, $gateway_id ) {
 		// Remove Polylang filter - https://wordpress.org/support/topic/encomenda-cancelada-mas-cobrada/
 		if ( function_exists( 'PLL' ) ) {
+			$this->debug_log_extra( $gateway_id, 'wc_get_orders - Disabling Polylang filter' );
 			remove_action( 'parse_query', array( PLL(), 'parse_query' ), 6 );
 		}
 		// Get the orders
 		$orders = wc_get_orders( $this->maybe_translate_order_query_args( $args ) );
+		// Log last query
+		global $wpdb;
+		$this->debug_log_extra( $gateway_id, 'wc_get_orders - Last query: ' . $wpdb->last_query );
 		// Re-instate Polylang filter - https://wordpress.org/support/topic/encomenda-cancelada-mas-cobrada/
 		if ( function_exists( 'PLL' ) ) {
+			$this->debug_log_extra( $gateway_id, 'wc_get_orders - Re-enabling Polylang filter' );
 			add_action( 'parse_query', array( PLL(), 'parse_query' ), 6 );
 		}
 		return $orders;

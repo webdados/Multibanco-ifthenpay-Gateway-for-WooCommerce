@@ -6,7 +6,7 @@ Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.0
-Stable tag: 8.9.0
+Stable tag: 8.9.1-beta.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -220,12 +220,17 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 8.9.1 - 2023-12-06 =
+* Fix Credit Card Callback testing when WP_DEBUG = true
+* Better debug on the new `wc_get_orders` wrapper
+* Tested with WordPress 6.5-alpha-57150 and WooCommerce 8.4.0-rc.1
+
 = 8.9.0 - 2023-12-05 =
-* `wc_get_orders` wrapper to remove Polylang language filters and apply conversions for HPOS
+* `wc_get_orders` wrapper to remove Polylang language filters when seraching for orders, for example on callback calls, and apply meta conversions for HPOS in the wrapper instead of all over the place
 * Better explanation of value limits on each gateway
 * Fix credit card API refund URL from HTTP to HTTPS
 * Start applying WordPress Coding Standards
-* Tested with WordPress 6.5-alpha-57150, WooCommerce 8.4.0-beta.1
+* Tested with WordPress 6.5-alpha-57150 and WooCommerce 8.4.0-beta.1
 
 = 8.8.0 - 2023-11-15 =
 * [PRO add-on 1.6](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Countdown timer on the thank you page for MB WAY payments

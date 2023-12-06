@@ -1119,7 +1119,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							'_' . $this->id . '_ref' => $referencia,
 							'_' . $this->id . '_id'  => $id_cliente,
 						);
-						$orders         = WC_IfthenPay_Webdados()->wc_get_orders( $args );
+						$orders         = WC_IfthenPay_Webdados()->wc_get_orders( $args, $this->id );
 						if ( count( $orders ) > 0 ) {
 							$orders_exist = true;
 							$orders_count = count( $orders );

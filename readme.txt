@@ -227,6 +227,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 8.9.3 - 2023-12-12 =
 * Declare WooCommerce block-based Cart and Checkout compatibility
+* Fix jQuery deprecation warning on the Multibanco settings screen
 
 = 8.9.2 - 2023-12-07 =
 * [PRO add-on 2.0](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Trigger Multibanco and MB WAY payments when creating orders via the REST API

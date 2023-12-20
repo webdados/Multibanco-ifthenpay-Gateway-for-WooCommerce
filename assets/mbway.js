@@ -44,6 +44,8 @@ jQuery(
 								},
 								interval
 							);
+						} else {
+							console.log( 'Stopped checking MB WAY payment status, after ' + total_interval + 'ms' );
 						}
 					}
 				}

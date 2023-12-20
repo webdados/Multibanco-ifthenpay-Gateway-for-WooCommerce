@@ -1342,7 +1342,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				} else {
 					// header("Status: 400");
 					$err = 'Argument errors';
-					$this->debug_log( '-- ' . $err, 'warning', true, 'Callback (' . $_SERVER['HTTP_HOST'] . ' ' . $_SERVER['REQUEST_URI'] . ') with argument errors from ' . $_SERVER['REMOTE_ADDR'] . $arguments_error );
+					$this->debug_log( '-- ' . $err . $arguments_error, 'warning', true, 'Callback (' . $_SERVER['HTTP_HOST'] . ' ' . $_SERVER['REQUEST_URI'] . ') with argument errors from ' . $_SERVER['REMOTE_ADDR'] . $arguments_error );
 					do_action( 'multibanco_ifthen_callback_payment_failed', 0, $err, $_GET );
 					wp_die( $err, 'WC_Multibanco_IfThen_Webdados', array( 'response' => 500 ) ); // Sends 500
 				}

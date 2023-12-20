@@ -1,7 +1,7 @@
 === Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce ===
 Contributors: webdados, ptwooplugins, ifthenpay
-Tags: woocommerce, multibanco, mbway, payshop, credit card, payment, pagamentos, mb way, debit card, credit card, ifthenpay, unicre, sibs, easypay, eupago
-Requires at least: 5.0
+Tags: woocommerce, multibanco, mbway, payshop, credit card, cofidis, payment, pagamentos, mb way, debit card, credit card, ifthenpay, unicre, sibs, easypay, eupago
+Requires at least: 5.4
 Tested up to: 6.4
 Requires PHP: 7.0
 Stable tag: 8.9.3
@@ -15,31 +15,32 @@ This plugin allows customers with a Portuguese bank account to pay WooCommerce o
 “Pagamento de Serviços” (payment of services) on Multibanco (Portuguese ATM network), or homebanking services, is the most popular way to pay for services and (online) purchases in Portugal. Portuguese consumers trust the “Multibanco” system more than any other.
 This plugin will allow you to generate a payment Reference the customer can then use to pay for his WooCommerce order, through an ATM or homebanking service.
 
-The MB WAY (using the customer mobile phone number), Credit or debit card and CTT Payshop payment methods are also available.
+The MB WAY (using the customer mobile phone number), Credit or debit card, CTT Payshop and Cofidis Pay payment methods are also available.
 
-This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [Webdados](https://www.webdados.pt) on the [support forums, here at WordPress.org](https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/).
+This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [PT Woo Plugins](https://ptwooplugins.com) (by [Webdados](https://www.webdados.pt)) on the [WordPress.org support forums](https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/).
 
 **Fully compatible with the new [High-Performance Order Storage](https://woocommerce.com/posts/platform-update-high-performance-order-storage-for-woocommerce/) and [WooCommerce Checkout Blocks](https://woocommerce.com/checkout-blocks/).**
 
 = Features: =
 
 * Generates a Multibanco Reference for simple payment on the Portuguese ATM network or homebanking service;
-* Multibanco references with expiration date if the “MB Key” configuration method is used;
 * Allows the customer to pay using MB WAY using his mobile phone;
-* Allows the customer to pay using his Credit or debit card (WooCommerce >= 4.0);
+* Allows the customer to pay using his Credit or debit card;
 * Generates a Payshop Reference for simple payment on the [Payshop agents network](https://www.payshop.pt/fepsapl/app/open/showSearchAgent.jspx), CTT stores or post offices available all over Portugal;
+* Allows the customer to pay in up to 12 interest-free installments via Cofidis Pay;
+* Multibanco references with expiration date if the “MB Key” configuration method is used;
 * Automatically changes the order status to “Processing” (or “Completed” if the order only contains virtual downloadable products) and notifies both the customer and the store owner, if the automatic “Callback” upon payment is activated;
 * Automatic “Callback” can be activated upon request to IfthenPay, via the plugin settings screen for each payment method;
-* Refunds for MB WAY and Credit or debit card - [read this carefully](https://helpdesk.ifthenpay.com/pt-PT/support/solutions/articles/79000130517-devoluc%C3%B5es-de-pagamentos-aos-ordenantes);
+* Refunds for MB WAY and Credit or debit card - [read this](https://helpdesk.ifthenpay.com/pt-PT/support/solutions/articles/79000130517-devoluc%C3%B5es-de-pagamentos-aos-ordenantes);
 * Shop owner can set minimum and maximum order totals for each payment gateway to be available;
 * Ability to reduce stock when the order is created or paid;
 * Allows searching orders (in the admin area) by Multibanco or Payshop reference;
-* WooCommerce 7.1 and above High-Performance Order Storage compatible;
+* High-Performance Order Storage compatible;
 * Block-Based Checkout compatible;
-* WPML tested and compatible (for multilingual shops);
+* WPML compatible (for multilingual shops);
 * Polylang tested;
-* [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (experimental) integration (only Multibanco);
-* [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) (experimental) integration;
+* [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) integration (only Multibanco);
+* [WooCommerce Deposits by webtomizer](https://woocommerce-deposits.com/) integration (except Cofidis Pay);
 * Integration for 3rd party SMS notification plugins (only Multibanco and Payshop):
 	* [WooCommerce - APG SMS Notifications](https://wordpress.org/plugins/woocommerce-apg-sms-notifications/);
 	* [Twilio SMS Notifications](https://woocommerce.com/products/twilio-sms-notifications/);
@@ -224,6 +225,11 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 9.0.0 - ? =
+* New payment method: Cofidis Pay - Pay in up to 12 interest-free installments
+* Better quality payment method banners on emails
+* Requires WordPress 5.4
 
 = 8.9.3 - 2023-12-12 =
 * Declare WooCommerce block-based Cart and Checkout compatibility

@@ -8,7 +8,7 @@
  * Author URI: https://ptwooplugins.com
  * Text Domain: multibanco-ifthen-software-gateway-for-woocommerce
  * Domain Path: /lang
- * Requires at least: 5.0
+ * Requires at least: 5.4
  * Tested up to: 6.4
  * Requires PHP: 7.0
  * WC requires at least: 5.0
@@ -31,6 +31,7 @@ function mbifthen_init() {
 		require_once dirname( __FILE__ ) . '/class-wc-mbway-ifthen-webdados.php';
 		require_once dirname( __FILE__ ) . '/class-wc-creditcard-ifthen-webdados.php';
 		require_once dirname( __FILE__ ) . '/class-wc-payshop-ifthen-webdados.php';
+		require_once dirname( __FILE__ ) . '/class-wc-cofidispay-ifthen-webdados.php';
 		$GLOBALS['WC_IfthenPay_Webdados'] = WC_IfthenPay_Webdados();
 		/* Add settings links - This is here because inside the main class we cannot call the correct plugin_basename( __FILE__ ) */
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( WC_IfthenPay_Webdados(), 'add_settings_link' ) );

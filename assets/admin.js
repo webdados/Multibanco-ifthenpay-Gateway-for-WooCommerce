@@ -72,6 +72,15 @@
 					hide_extra_fields = false;
 				}
 				break;
+			case 'cofidispay':
+				if (
+					$( '#woocommerce_cofidispay_ifthen_for_woocommerce_cofidispaykey' ).val().trim().length == 10
+					&&
+					$( '#woocommerce_cofidispay_ifthen_for_woocommerce_cofidispaykey' ).val().trim() != ''
+				) {
+					hide_extra_fields = false;
+				}
+				break;
 			default:
 				// code block
 				break;
@@ -91,6 +100,7 @@
 				case 'mbway':
 				case 'creditcard':
 				case 'payshop':
+				case 'cofidispay':
 					$( '#wc_ifthen_settings table.form-table tr:nth-child(n+3)' ).hide();
 					$( '#wc_ifthen_settings .mb_hide_extra_fields' ).hide();
 					break;

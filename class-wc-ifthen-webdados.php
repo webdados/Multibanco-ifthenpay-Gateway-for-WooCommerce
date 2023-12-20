@@ -365,6 +365,14 @@ final class WC_IfthenPay_Webdados {
 					$payment_method_registry->register( new \Automattic\WooCommerce\Blocks\Payments\Integrations\PayshopIfthenPay() );
 				}
 			);
+			// Cofidis Pay
+			require_once 'woocommerce-blocks/cofidispay/CofidisPayIfthenPay.php';
+			add_action(
+				'woocommerce_blocks_payment_method_type_registration',
+				function( Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+					$payment_method_registry->register( new \Automattic\WooCommerce\Blocks\Payments\Integrations\CofidisPayIfthenPay() );
+				}
+			);
 		}
 	}
 

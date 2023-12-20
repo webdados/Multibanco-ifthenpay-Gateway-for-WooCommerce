@@ -1,0 +1,5 @@
+- Copy the src/index.js file from the payment gateway over this folder src/index.js file
+- Copy all contents of this folder into the payment gateway folder
+- Run "npm run build" on the console on the payment gateway folder
+- The build/index.js fils should be updated
+- Delete node_modules, package-lock.json, package.json, webpack.configs.js, src/_index.js and build/index.asset.php from the plugin folder

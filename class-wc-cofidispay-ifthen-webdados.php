@@ -349,6 +349,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 					<ul class="wc_ifthen_list">
 						<li><?php printf( __( 'Set WooCommerce currency to <strong>Euros (&euro;)</strong> %1$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<a href="admin.php?page=wc-settings&amp;tab=general">&gt;&gt;</a>.' ); ?></li>
 						<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a></strong>', '<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://ifthenpay.com</a>' ); ?></li>
+						<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://www.cofidis.pt/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">Cofidis</a></strong>', '<a href="https://www.cofidis.pt/cofidispay/ecommerce' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://www.cofidis.pt/cofidispay/ecommerce</a>' ); ?></li>
 						<li><?php _e( 'Fill out all the details (Cofidis Pay Key) provided by <strong>IfthenPay</strong> in the fields below.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						<li>
 						<?php
@@ -722,7 +723,6 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		}
 		function email_instructions_table_html( $order_id, $order_total ) {
 			$alt                      = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
-			$extra_instructions       = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id . '_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
 			// We actually do not use $ent, $ref or $order_total - We'll just get the details
 			$cofidispay_order_details = WC_IfthenPay_Webdados()->get_cofidispay_order_details( $order_id );
 			$order                    = wc_get_order( $order_id );
@@ -784,8 +784,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$url               = $this->api_url . $cofidispaykey;
 			$return_url        = WC_IfthenPay_Webdados()->cofidispay_return_url;
 			$return_url        = add_query_arg( 'id', $id_for_backoffice, $return_url );
-			$return_url        = add_query_arg( 'wd_secret', $id_for_backoffice, $wd_secret );
-			$return_url        = add_query_arg( 'amount', $id_for_backoffice, $valor );
+			$return_url        = add_query_arg( 'wd_secret', $wd_secret, $return_url );
+			$return_url        = add_query_arg( 'amount', $valor, $return_url );
 			$args              = array(
 				'method'   => 'POST',
 				'timeout'  => apply_filters( 'cofidispay_ifthen_api_timeout', 30 ),
@@ -794,7 +794,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					'orderId'         => (string) $id_for_backoffice,
 					'amount'          => $valor,
 					'description'     => WC_IfthenPay_Webdados()->mb_webservice_filter_descricao( apply_filters( 'cofidispay_ifthen_webservice_desc', $desc, $order->get_id() ) ),
-					'returnUrl'       => add_query_arg( 'wd_secret', $wd_secret,  ),
+					'returnUrl'       => $return_url,
 					'customerName'    => trim( $order->get_formatted_billing_full_name() ),
 					'customerVat'     => apply_filters( 'cofidispay_ifthen_customer_vat', '' ), // Add to PRO add-on
 					'customerEmail'   => trim( $order->get_billing_email() ),

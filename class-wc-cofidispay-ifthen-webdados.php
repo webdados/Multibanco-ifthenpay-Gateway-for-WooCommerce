@@ -43,8 +43,8 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 			$this->has_fields = false;
 
 			$this->method_title       = __( 'Cofidis Pay (IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-			$this->method_description = __( 'Pay from 3 to 12 installments (depending on the order value) interest-free through Cofidis Pay.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-			//PT: Pague em 3 a 12 vezes (dependendo do valor da encomenda) sem juros através da Cofidis Pay
+			$this->method_description = __( 'Pay for your order in 3 to 12 interest-free and fee-free installments using your debit or credit card.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			//PT: Pague a sua encomenda em 3 a 12 prestações sem juros nem encargos através do seu cartão de débito ou crédito.
 			/*
 			if ( $this->get_option( 'support_woocommerce_subscriptions' ) == 'yes' ) {
 				$this->supports = array(
@@ -123,10 +123,10 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 
 				// Sandbox mode for known keys
 				add_filter( 'cofidispay_ifthen_sandbox', function( $bool ) {
-					$know_sandbox_keys = array(
+					$known_sandbox_keys = array(
 						'AAA-000001'
 					);
-					if ( in_array( $this->cofidispaykey , $know_sandbox_keys )) {
+					if ( in_array( $this->cofidispaykey , $known_sandbox_keys )) {
 						return true;
 					}
 					return $bool;
@@ -136,6 +136,17 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 				if ( apply_filters( 'cofidispay_ifthen_sandbox', false ) ) {
 					$this->title .= ' - SANDBOX (TEST MODE)';
 				}
+
+				// Add info to description
+				$this->description = sprintf(
+					'%1$s<br/><small>%2$s<br/>%3$s</small>',
+					$this->description,
+					__( 'You will be redirected to a secure page to make the payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					//PT: Será redireccionado para uma página segura a fim de efectuar o pagamento.
+					__( 'Payment of installments will be made to the customer’s debit or credit card through a payment solution based on a factoring contract between Cofidis and the Merchant. Find out more at Cofidis, registered with Banco de Portugal under number 921.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					//PT: O pagamento das prestações será efectuado no cartão de débito ou crédito do cliente através de solução de pagamento assente em contrato de factoring entre a Cofidis e o Comerciante. Informe-se na Cofidis, registada no Banco de Portugal com o nº 921.
+
+				);
 			}
 
 			// Ensures only one instance of our plugin is loaded or can be loaded - works if WooCommerce loads the payment gateways before we do
@@ -562,8 +573,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						if ( apply_filters( 'cofidispay_ifthen_enable_check_order_status_thankyou', true, $order->get_id() ) ) { // return false to cofidispay_ifthen_enable_check_order_status_thankyou in order to stop the ajax checking
 							// Check order status
 							?>
-							<input type="text" id="cofidispay-order-id" value="<?php echo intval( $order->get_id() ); ?>"/>
-							<input type="text" id="cofidispay-order-key" value="<?php echo esc_attr( $order->get_order_key() ); ?>"/>
+							<input type="hidden" id="cofidispay-order-id" value="<?php echo intval( $order->get_id() ); ?>"/>
+							<input type="hidden" id="cofidispay-order-key" value="<?php echo esc_attr( $order->get_order_key() ); ?>"/>
 							<?php
 							wp_enqueue_script( 'cofidispay-ifthenpay', plugins_url( 'assets/cofidispay.js', __FILE__ ), array( 'jquery' ), $this->version . ( WP_DEBUG ? '.' . wp_rand( 0, 99999 ) : '' ), true );
 							wp_localize_script(

@@ -569,7 +569,7 @@ Chave anti-phishing (Payshop):
 URL:
 ' . WC_IfthenPay_Webdados()->payshop_notify_url . '
 
-Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce” para ' . $to . ' com CC para ' . $cc;
+Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce” para ' . $to . ' com CC para ' . $cc;
 				$headers = array(
 					'From: ' . get_option( 'admin_email' ) . ' <' . get_option( 'admin_email' ) . '>',
 					'Cc: ' . $cc,

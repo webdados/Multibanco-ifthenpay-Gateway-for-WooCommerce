@@ -1,8 +1,8 @@
-=== Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce ===
+=== Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce ===
 Contributors: webdados, ptwooplugins, ifthenpay
 Tags: woocommerce, multibanco, mbway, payshop, credit card, cofidis, payment, pagamentos, mb way, debit card, credit card, ifthenpay, unicre, sibs, easypay, eupago
-Requires at least: 5.4
-Tested up to: 6.4
+Requires at least: 5.6
+Tested up to: 6.5
 Requires PHP: 7.0
 Stable tag: 8.9.3
 License: GPLv3
@@ -89,11 +89,12 @@ Already know our other WooCommerce (premium) plugins?
 == Installation ==
 
 * Make sure you already have a contract with [IfthenPay](https://ifthenpay.com)
-* Use the included automatic install feature on your WordPress admin panel and search for “Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce”.
+* Use the included automatic install feature on your WordPress admin panel and search for “IfthenPay”.
 * Multibanco: Go to WooCommerce > Settings > Checkout > Pagamento de Serviços no Multibanco and fill in the data provided by IfthenPay (Entity and Subentity or MB Key) in order to use this payment method.
 * MB WAY: Go to WooCommerce > Settings > Checkout > Pagamento MB WAY no telemóvel and fill in the data provided by IfthenPay (MB WAY Key) in order to use this payment method.
 * Credit or debit card: Go to WooCommerce > Settings > Checkout > Credit or debit card and fill in the data provided by IfthenPay (Credit card Key) in order to use this payment method.
 * Payshop: Go to WooCommerce > Settings > Checkout > Pagamento na rede de agentes Payshop and fill in the data provided by IfthenPay (Payshop Key) in order to use this payment method.
+* Cofidis Pay: Go to WooCommerce > Settings > Checkout > Cofidis Pay and fill in the data provided by IfthenPay (Cofidis Pay Key) in order to use this payment method.
 * Make sure you ask IfthenPay to activate the “Callback” on their side with the URL and Anti-phishing key provided in the settings screen. There is a feature in each payment method screen that allows you to make this request via a webservice, except on Credit card where this is not needed.
 * Start receiving payments :-)
 
@@ -229,9 +230,11 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 = 9.0.0 - ? =
 * New payment method: Cofidis Pay - Pay in up to 12 interest-free installments
 * Better quality payment method banners on emails
-* Requires WordPress 5.4
+* Requires WordPress 5.6 and WooCommerce 6.0
+* Tested with WordPress 6.5-alpha-57258 and WooCommerce 8.5
 
 = 8.9.3 - 2023-12-12 =
+* You can safely update to this version if you’re running WooCommerce 5.0 or newer **but we’ll very drop support for WooCommerce previous to 6.0 on the next update**
 * Declare WooCommerce block-based Cart and Checkout compatibility
 * Fix jQuery deprecation warning on the Multibanco settings screen
 

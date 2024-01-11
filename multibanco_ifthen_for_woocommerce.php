@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce
+ * Plugin Name: Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce
  * Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
  * Description: This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using Multibanco (Pag. Serviços), MB WAY, Credit card and Payshop through IfthenPay’s payment gateway.
  * Version: 8.9.3
@@ -8,11 +8,11 @@
  * Author URI: https://ptwooplugins.com
  * Text Domain: multibanco-ifthen-software-gateway-for-woocommerce
  * Domain Path: /lang
- * Requires at least: 5.4
- * Tested up to: 6.4
+ * Requires at least: 5.6
+ * Tested up to: 6.5
  * Requires PHP: 7.0
- * WC requires at least: 5.0
- * WC tested up to: 8.4
+ * WC requires at least: 6.0
+ * WC tested up to: 8.5
  **/
 
 /* WooCommerce CRUD ready */
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-define( 'WC_IFTHENPAY_WEBDADOS_REQUIRED_WC_VERSION', '5.0' );
+define( 'WC_IFTHENPAY_WEBDADOS_REQUIRED_WC_VERSION', '6.0' );
 
 /* Our own order class and the main classes */
 function mbifthen_init() {
@@ -66,7 +66,7 @@ function mbifthen_woocommerce_not_active_admin_notices() {
 			<?php
 			printf(
 				/* translators: %s: required WooCommerce version */
-				__( '<strong>Multibanco, MB WAY, Credit card and Payshop (IfthenPay) for WooCommerce</strong> is installed and active but <strong>WooCommerce (%s or above)</strong> is not.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+				__( '<strong>Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce</strong> is installed and active but <strong>WooCommerce (%s or above)</strong> is not.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 				esc_html( WC_IFTHENPAY_WEBDADOS_REQUIRED_WC_VERSION )
 			);
 			?>

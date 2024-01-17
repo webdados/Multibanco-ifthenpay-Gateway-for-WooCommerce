@@ -4,7 +4,7 @@ Tags: woocommerce, multibanco, mbway, payshop, credit card, cofidis, payment, pa
 Requires at least: 5.6
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 8.9.3
+Stable tag: 9.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -56,10 +56,11 @@ Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-ca
 * Automatic cancellation of orders when Multibanco, Payshop or MB WAY references expire;
 * Countdown timer on the “thank you” page for MB WAY payments;
 * Trigger Multibanco and MB WAY payments when creating orders via the REST API;
-* Set a payment entity for Multibanco, MB WAY, Payshop and Credit Card, at the product category level, so that you can receive payment in different accounts based on the order products (replaces previously available specific extension);
+* Set a payment entity for Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay at the product category level, so that you can receive payment in different accounts based on the order products (replaces previously available specific extension);
 	* Simplified marketplace;
 	* Lock the cart so you can only have products from a single account in the same order;
 * Remove payment instructions from specific emails, for example “order completed”, to avoid customer confusion when they are no longer necessary;
+* Autofill the VAT number on the Cofidis Pay gateway from several VAT number plugins (more can be addded on request);
 * Change the default timeout for calls to IfthenPay webservices if your website is experiencing communication difficulties;
 * Hide notices of new available payment methods;
 * Hide notices of pending callback activation requests;
@@ -227,7 +228,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 9.0.0 - ? =
+= 9.0.0 - 2024-01-17 =
 * New payment method: Cofidis Pay - Pay in up to 12 interest-free installments
 * Better quality payment method banners on emails
 * Requires WordPress 5.6 and WooCommerce 6.0

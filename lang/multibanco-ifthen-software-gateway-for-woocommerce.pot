@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Multibanco and MBWAY (IfthenPay gateway) for WooCommerce 3.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce\n"
-"POT-Creation-Date: 2024-01-11 14:24+0000\n"
+"POT-Creation-Date: 2024-01-17 16:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Webdados <info@webdados.pt>\n"
 "Language-Team: \n"
@@ -55,7 +55,7 @@ msgid "Requires a separate contract with Cofidis."
 msgstr ""
 
 #: class-wc-cofidispay-ifthen-webdados.php:224
-#: class-wc-cofidispay-ifthen-webdados.php:369
+#: class-wc-cofidispay-ifthen-webdados.php:370
 #: class-wc-ifthen-webdados.php:1008
 msgid "Cofidis Pay Key"
 msgstr ""
@@ -65,7 +65,7 @@ msgid "Cofidis Pay Key provided by IfthenPay when signing the contract."
 msgstr ""
 
 #: class-wc-cofidispay-ifthen-webdados.php:241
-#: class-wc-cofidispay-ifthen-webdados.php:411
+#: class-wc-cofidispay-ifthen-webdados.php:412
 #: class-wc-ifthen-webdados.php:1425 class-wc-ifthen-webdados.php:1507
 #: class-wc-mbway-ifthen-webdados.php:225
 #: class-wc-mbway-ifthen-webdados.php:458
@@ -236,7 +236,7 @@ msgid "In order to use this plugin you <u>must</u>:"
 msgstr ""
 
 #: class-wc-cofidispay-ifthen-webdados.php:361
-#: class-wc-cofidispay-ifthen-webdados.php:463
+#: class-wc-cofidispay-ifthen-webdados.php:464
 #: class-wc-creditcard-ifthen-webdados.php:358
 #: class-wc-creditcard-ifthen-webdados.php:402
 #: class-wc-mbway-ifthen-webdados.php:409
@@ -260,10 +260,15 @@ msgid "Sign a contract with %1$s. To know more about this service, please go to 
 msgstr ""
 
 #: class-wc-cofidispay-ifthen-webdados.php:364
+#, php-format
+msgid "Sign a contract with %s."
+msgstr ""
+
+#: class-wc-cofidispay-ifthen-webdados.php:365
 msgid "Fill out all the details (Cofidis Pay Key) provided by <strong>IfthenPay</strong> in the fields below."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:368
+#: class-wc-cofidispay-ifthen-webdados.php:369
 #: class-wc-creditcard-ifthen-webdados.php:364
 #: class-wc-mbway-ifthen-webdados.php:415
 #: class-wc-payshop-ifthen-webdados.php:431
@@ -271,13 +276,13 @@ msgstr ""
 msgid "Never use the same %1$s on more than one website or any other system, online or offline. Ask %2$s for new ones for each single platform."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:374
+#: class-wc-cofidispay-ifthen-webdados.php:375
 #, php-format
 msgid "Ask IfthenPay to activate “Cofidis Pay Callback” on your account using this exact URL: %1$s and this Anti-phishing key: %2$s"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:387
-#: class-wc-cofidispay-ifthen-webdados.php:1204
+#: class-wc-cofidispay-ifthen-webdados.php:388
+#: class-wc-cofidispay-ifthen-webdados.php:1205
 #: class-wc-mbway-ifthen-webdados.php:434
 #: class-wc-mbway-ifthen-webdados.php:1320
 #: class-wc-multibanco-ifthen-webdados.php:572
@@ -287,28 +292,28 @@ msgstr ""
 msgid "You haven’t yet asked IfthenPay for the “Callback” activation. The orders will NOT be automatically updated upon payment."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:394
+#: class-wc-cofidispay-ifthen-webdados.php:395
 #: class-wc-mbway-ifthen-webdados.php:441
 #: class-wc-multibanco-ifthen-webdados.php:579
 #: class-wc-payshop-ifthen-webdados.php:457
 msgid "Click here to ask IfthenPay to activate the “Callback”"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:396
+#: class-wc-cofidispay-ifthen-webdados.php:397
 #: class-wc-mbway-ifthen-webdados.php:443
 #: class-wc-multibanco-ifthen-webdados.php:581
 #: class-wc-payshop-ifthen-webdados.php:459
 msgid "This will submit a request to IfthenPay, asking them to activate the “Callback” on your account. The following details will be sent to IfthenPay:"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:399
+#: class-wc-cofidispay-ifthen-webdados.php:400
 #: class-wc-mbway-ifthen-webdados.php:446
 #: class-wc-multibanco-ifthen-webdados.php:584
 #: class-wc-payshop-ifthen-webdados.php:462
 msgid "Email"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:417 class-wc-ifthen-webdados.php:715
+#: class-wc-cofidispay-ifthen-webdados.php:418 class-wc-ifthen-webdados.php:715
 #: class-wc-ifthen-webdados.php:825 class-wc-ifthen-webdados.php:893
 #: class-wc-ifthen-webdados.php:968 class-wc-ifthen-webdados.php:1042
 #: class-wc-mbway-ifthen-webdados.php:464
@@ -317,15 +322,15 @@ msgstr ""
 msgid "Callback URL"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:424
+#: class-wc-cofidispay-ifthen-webdados.php:425
 #: class-wc-mbway-ifthen-webdados.php:471
 #: class-wc-multibanco-ifthen-webdados.php:609
 #: class-wc-payshop-ifthen-webdados.php:487
 msgid "Attention: if you ever change from HTTP to HTTPS or vice versa, or the permalinks structure,<br/>you may have to ask IfthenPay to update the callback URL."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:429
-#: class-wc-cofidispay-ifthen-webdados.php:431
+#: class-wc-cofidispay-ifthen-webdados.php:430
+#: class-wc-cofidispay-ifthen-webdados.php:432
 #: class-wc-mbway-ifthen-webdados.php:476
 #: class-wc-mbway-ifthen-webdados.php:478
 #: class-wc-multibanco-ifthen-webdados.php:614
@@ -335,36 +340,36 @@ msgstr ""
 msgid "Ask for Callback activation"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:429
+#: class-wc-cofidispay-ifthen-webdados.php:430
 #: class-wc-mbway-ifthen-webdados.php:476
 #: class-wc-multibanco-ifthen-webdados.php:614
 #: class-wc-payshop-ifthen-webdados.php:492
 msgid "Via webservice (recommended)"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:431
+#: class-wc-cofidispay-ifthen-webdados.php:432
 #: class-wc-mbway-ifthen-webdados.php:478
 #: class-wc-multibanco-ifthen-webdados.php:616
 #: class-wc-payshop-ifthen-webdados.php:494
 msgid "Via email (old method)"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:432
+#: class-wc-cofidispay-ifthen-webdados.php:433
 #: class-wc-mbway-ifthen-webdados.php:479
 #: class-wc-multibanco-ifthen-webdados.php:617
 #: class-wc-payshop-ifthen-webdados.php:495
 msgid "Cancel"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:441
+#: class-wc-cofidispay-ifthen-webdados.php:442
 msgid "Invalid Cofidis Pay Key (exactly 10 characters)."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:447
+#: class-wc-cofidispay-ifthen-webdados.php:448
 msgid "Set the Cofidis Pay Key and Save changes to set other plugin options."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:463
+#: class-wc-cofidispay-ifthen-webdados.php:464
 #: class-wc-creditcard-ifthen-webdados.php:402
 #: class-wc-mbway-ifthen-webdados.php:510
 #: class-wc-multibanco-ifthen-webdados.php:672
@@ -372,7 +377,7 @@ msgstr ""
 msgid "ERROR!"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:463
+#: class-wc-cofidispay-ifthen-webdados.php:464
 #: class-wc-creditcard-ifthen-webdados.php:402
 #: class-wc-mbway-ifthen-webdados.php:510
 #: class-wc-multibanco-ifthen-webdados.php:672
@@ -380,40 +385,40 @@ msgstr ""
 msgid "here"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:508
+#: class-wc-cofidispay-ifthen-webdados.php:509
 #: class-wc-mbway-ifthen-webdados.php:532
 #: class-wc-multibanco-ifthen-webdados.php:700
 #: class-wc-payshop-ifthen-webdados.php:548
 msgid "The “Callback” activation request has been submited to IfthenPay via webservice and is now active."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:511
+#: class-wc-cofidispay-ifthen-webdados.php:512
 #: class-wc-mbway-ifthen-webdados.php:535
 #: class-wc-multibanco-ifthen-webdados.php:703
 #: class-wc-payshop-ifthen-webdados.php:551
 msgid "The “Callback” activation request via webservice has failed."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:539
+#: class-wc-cofidispay-ifthen-webdados.php:540
 #: class-wc-mbway-ifthen-webdados.php:563
 #: class-wc-multibanco-ifthen-webdados.php:734
 #: class-wc-payshop-ifthen-webdados.php:579
 msgid "The “Callback” activation request has been submited to IfthenPay. Wait for their feedback."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:541
+#: class-wc-cofidispay-ifthen-webdados.php:542
 #: class-wc-mbway-ifthen-webdados.php:565
 #: class-wc-multibanco-ifthen-webdados.php:736
 #: class-wc-payshop-ifthen-webdados.php:581
 msgid "The “Callback” activation request could not be sent. Check if your WordPress install can send emails."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:654
+#: class-wc-cofidispay-ifthen-webdados.php:655
 msgid "Payment information"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:660
-#: class-wc-cofidispay-ifthen-webdados.php:755 class-wc-ifthen-webdados.php:688
+#: class-wc-cofidispay-ifthen-webdados.php:661
+#: class-wc-cofidispay-ifthen-webdados.php:756 class-wc-ifthen-webdados.php:688
 #: class-wc-ifthen-webdados.php:757 class-wc-ifthen-webdados.php:865
 #: class-wc-ifthen-webdados.php:934 class-wc-ifthen-webdados.php:1010
 #: class-wc-ifthen-webdados.php:2176 class-wc-ifthen-webdados.php:2214
@@ -426,12 +431,12 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:665
-#: class-wc-cofidispay-ifthen-webdados.php:760
+#: class-wc-cofidispay-ifthen-webdados.php:666
+#: class-wc-cofidispay-ifthen-webdados.php:761
 msgid "Waiting for confirmation from Cofidis Pay"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:745
+#: class-wc-cofidispay-ifthen-webdados.php:746
 #: class-wc-mbway-ifthen-webdados.php:711
 #: class-wc-mbway-ifthen-webdados.php:758
 #: class-wc-mbway-ifthen-webdados.php:867
@@ -443,18 +448,18 @@ msgstr ""
 msgid "Payment instructions"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:751
+#: class-wc-cofidispay-ifthen-webdados.php:752
 #: class-wc-mbway-ifthen-webdados.php:717
 #: class-wc-mbway-ifthen-webdados.php:764
 #: class-wc-mbway-ifthen-webdados.php:873
 msgid "Information"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:774
+#: class-wc-cofidispay-ifthen-webdados.php:775
 msgid "Cofidis Pay payment approved."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:776
+#: class-wc-cofidispay-ifthen-webdados.php:777
 #: class-wc-creditcard-ifthen-webdados.php:573
 #: class-wc-mbway-ifthen-webdados.php:913
 #: class-wc-multibanco-ifthen-webdados.php:1009
@@ -462,44 +467,44 @@ msgstr ""
 msgid "We will now process your order."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:876
+#: class-wc-cofidispay-ifthen-webdados.php:877
 msgid "Awaiting Cofidis Pay payment."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:878
+#: class-wc-cofidispay-ifthen-webdados.php:879
 msgid "Error contacting IfthenPay servers to create Cofidis Pay Payment"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:977
+#: class-wc-cofidispay-ifthen-webdados.php:978
 msgid "Cofidis Pay payment pre-approval received."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:997
-#: class-wc-cofidispay-ifthen-webdados.php:1000
+#: class-wc-cofidispay-ifthen-webdados.php:998
+#: class-wc-cofidispay-ifthen-webdados.php:1001
 #: class-wc-creditcard-ifthen-webdados.php:809
 #: class-wc-creditcard-ifthen-webdados.php:812
 msgid "Payment failed on the gateway. Please try again."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:1084
+#: class-wc-cofidispay-ifthen-webdados.php:1085
 msgid "Cofidis Pay payment approval received."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:1206
+#: class-wc-cofidispay-ifthen-webdados.php:1207
 #: class-wc-mbway-ifthen-webdados.php:1322
 #: class-wc-multibanco-ifthen-webdados.php:1406
 #: class-wc-payshop-ifthen-webdados.php:1240
 msgid "This is important"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:1206
+#: class-wc-cofidispay-ifthen-webdados.php:1207
 #: class-wc-mbway-ifthen-webdados.php:1322
 #: class-wc-multibanco-ifthen-webdados.php:1406
 #: class-wc-payshop-ifthen-webdados.php:1240
 msgid "Do it here"
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:1231
+#: class-wc-cofidispay-ifthen-webdados.php:1232
 #: class-wc-creditcard-ifthen-webdados.php:944
 #: class-wc-mbway-ifthen-webdados.php:1347
 #: class-wc-payshop-ifthen-webdados.php:1265
@@ -507,7 +512,7 @@ msgstr ""
 msgid "There’s a new payment method available: %s."
 msgstr ""
 
-#: class-wc-cofidispay-ifthen-webdados.php:1238
+#: class-wc-cofidispay-ifthen-webdados.php:1239
 #: class-wc-creditcard-ifthen-webdados.php:951
 #: class-wc-mbway-ifthen-webdados.php:1354
 #: class-wc-payshop-ifthen-webdados.php:1272

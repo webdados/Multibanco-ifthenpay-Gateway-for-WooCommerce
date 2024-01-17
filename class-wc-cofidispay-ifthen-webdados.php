@@ -360,7 +360,8 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 					<ul class="wc_ifthen_list">
 						<li><?php printf( __( 'Set WooCommerce currency to <strong>Euros (&euro;)</strong> %1$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<a href="admin.php?page=wc-settings&amp;tab=general">&gt;&gt;</a>.' ); ?></li>
 						<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a></strong>', '<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://ifthenpay.com</a>' ); ?></li>
-						<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://www.cofidis.pt/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">Cofidis</a></strong>', '<a href="https://www.cofidis.pt/cofidispay/ecommerce' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://www.cofidis.pt/cofidispay/ecommerce</a>' ); ?></li>
+						<!--<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://www.cofidis.pt/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">Cofidis</a></strong>', '<a href="https://www.cofidis.pt/cofidispay/ecommerce' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://www.cofidis.pt/cofidispay/ecommerce</a>' ); ?></li>-->
+						<li><?php printf( __( 'Sign a contract with %s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://www.cofidis.pt/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">Cofidis</a></strong>' ); ?></li>
 						<li><?php _e( 'Fill out all the details (Cofidis Pay Key) provided by <strong>IfthenPay</strong> in the fields below.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						<li>
 						<?php
@@ -807,7 +808,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					'description'     => WC_IfthenPay_Webdados()->mb_webservice_filter_descricao( apply_filters( 'cofidispay_ifthen_webservice_desc', $desc, $order->get_id() ) ),
 					'returnUrl'       => $return_url,
 					'customerName'    => trim( $order->get_formatted_billing_full_name() ),
-					'customerVat'     => apply_filters( 'cofidispay_ifthen_customer_vat', '' ), // Add to PRO add-on
+					'customerVat'     => apply_filters( 'cofidispay_ifthen_customer_vat', '', $order ), // Add to PRO add-on
 					'customerEmail'   => trim( $order->get_billing_email() ),
 					'customerPhone'   => trim( $order->get_billing_phone() ),
 					'billingAddress'  => trim( trim( $order->get_billing_address_1() ) . ' ' . trim( $order->get_billing_address_2() ) ),

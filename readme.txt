@@ -231,6 +231,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 = 9.0.0 - 2024-01-17 =
 * New payment method: Cofidis Pay - Pay in up to 12 interest-free installments
 * Better quality payment method banners on emails
+* Apply additional WordPress Coding Standards
 * Requires WordPress 5.6 and WooCommerce 6.0
 * Tested with WordPress 6.5-alpha-57258 and WooCommerce 8.5
 

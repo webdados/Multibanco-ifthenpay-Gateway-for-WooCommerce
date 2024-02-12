@@ -228,6 +228,9 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= ? =
+* [FIX] Fatal error when installing the plugin in HPOS mode
+
 = 9.0.0 - 2024-01-17 =
 * New payment method: Cofidis Pay - Pay in up to 12 interest-free installments
 * Better quality payment method banners on emails

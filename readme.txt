@@ -4,7 +4,7 @@ Tags: woocommerce, multibanco, mbway, payshop, credit card, cofidis, payment, pa
 Requires at least: 5.6
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 9.0.0
+Stable tag: 9.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -228,8 +228,10 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= ? =
+= 9.0.1 =
+* [FIX] Deprecated notices for `wc_get_log_file_path` for WooCommerce 8.6 and above
 * [FIX] Fatal error when installing the plugin in HPOS mode
+* [DEV] Tested with WordPress 6.5-alpha-57571 and WooCommerce 8.6
 
 = 9.0.0 - 2024-01-17 =
 * New payment method: Cofidis Pay - Pay in up to 12 interest-free installments

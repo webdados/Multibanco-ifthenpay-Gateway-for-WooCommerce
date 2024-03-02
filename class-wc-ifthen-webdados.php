@@ -267,6 +267,8 @@ final class WC_IfthenPay_Webdados {
 		add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'woocommerce_my_account_my_orders_actions' ), 10, 2 );
 		// REST API - Not needed: https://wordpress.org/support/topic/obter-referencia-multibanco-atraves-da-api/#post-15815758
 		// add_filter( 'woocommerce_api_order_response', array( $this, 'woocommerce_api_order_response', 11, 2 );
+		// Allow filtering of notify URLs
+		add_action( 'plugins_loaded', array( $this, 'filter_notify_urls' ), 20 );
 	}
 
 	/* Get version */
@@ -2579,10 +2581,17 @@ final class WC_IfthenPay_Webdados {
 	 * @since 4.4.0
 	 */
 	public function woocommerce_valid_order_statuses_for_payment( $statuses, $order ) {
-		if ( in_array( $order->get_payment_method(), array( $this->multibanco_id, $this->mbway_id, $this->creditcard_id, $this->payshop_id, $this->cofidispay_id ) ) ) {
+		if ( $this->order_has_ifthenpay_method( $order ) ) {
 			$statuses = array_unique( array_merge( $statuses, $this->unpaid_statuses ) );
 		}
 		return $statuses;
+	}
+
+	/**
+	 * Valid IfthenPay method
+	 */
+	public function order_has_ifthenpay_method( $order ) {
+		return in_array( $order->get_payment_method(), array( $this->multibanco_id, $this->mbway_id, $this->creditcard_id, $this->payshop_id, $this->cofidispay_id ) );
 	}
 
 
@@ -2816,6 +2825,17 @@ final class WC_IfthenPay_Webdados {
 			add_action( 'parse_query', array( PLL(), 'parse_query' ), 6 );
 		}
 		return $orders;
+	}
+
+	/**
+	 * Filter notify URLs
+	 */
+	public function filter_notify_urls() {
+		$this->multibanco_notify_url = apply_filters( 'multibanco_ifthen_notify_url', $this->multibanco_notify_url );
+		$this->mbway_notify_url      = apply_filters( 'mbway_ifthen_notify_url', $this->mbway_notify_url );
+		$this->payshop_notify_url    = apply_filters( 'payshop_ifthen_notify_url', $this->payshop_notify_url );
+		$this->creditcard_notify_url = apply_filters( 'credicard_ifthen_notify_url', $this->creditcard_notify_url );
+		$this->cofidispay_notify_url = apply_filters( 'cofidispay_ifthen_notify_url', $this->cofidispay_notify_url );
 	}
 
 	/**

@@ -4,7 +4,7 @@ Tags: woocommerce, multibanco, mbway, payshop, credit card, cofidis, payment, pa
 Requires at least: 5.6
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 9.0.1
+Stable tag: 9.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -228,7 +228,13 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 9.0.1 =
+= 9.1.0 - 2024-03-02 =
+* [NEW] [PRO add-on 3.2](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Store and show IfthenPay fees on order (Multibanco, MB WAY and Payshop)
+* [DEV] Allow filtering callback URLs
+* [DEV] New `order_has_ifthenpay_method` method
+* [DEV] Tested with WordPress 6.5-beta3-57747 and WooCommerce 8.7.0-beta.2
+
+= 9.0.1 - 2024-02-17 =
 * [FIX] Deprecated notices for `wc_get_log_file_path` for WooCommerce 8.6 and above
 * [FIX] Fatal error when installing the plugin in HPOS mode
 * [DEV] Tested with WordPress 6.5-alpha-57571 and WooCommerce 8.6

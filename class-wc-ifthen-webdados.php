@@ -536,17 +536,21 @@ final class WC_IfthenPay_Webdados {
 
 	/* Get Multibanco order details */
 	public function get_multibanco_order_details( $order_id ) {
-		$order = wc_get_order( $order_id );
-		$ent   = $order->get_meta( '_' . $this->multibanco_id . '_ent' );
-		$ref   = $order->get_meta( '_' . $this->multibanco_id . '_ref' );
-		$val   = $order->get_meta( '_' . $this->multibanco_id . '_val' );
-		$exp   = $order->get_meta( '_' . $this->multibanco_id . '_exp' );
+		$order      = wc_get_order( $order_id );
+		$mbkey      = $order->get_meta( '_' . $this->multibanco_id . '_mbkey' );
+		$request_id = $order->get_meta( '_' . $this->multibanco_id . '_RequestId' );
+		$ent        = $order->get_meta( '_' . $this->multibanco_id . '_ent' );
+		$ref        = $order->get_meta( '_' . $this->multibanco_id . '_ref' );
+		$val        = $order->get_meta( '_' . $this->multibanco_id . '_val' );
+		$exp        = $order->get_meta( '_' . $this->multibanco_id . '_exp' );
 		if ( ! empty( $ent ) && ! empty( $ref ) && ! empty( $val ) ) {
 			return array(
-				'ent' => $ent,
-				'ref' => $ref,
-				'val' => $val,
-				'exp' => $exp,
+				'mbkey'     => $mbkey,
+				'RequestId' => $request_id,
+				'ent'       => $ent,
+				'ref'       => $ref,
+				'val'       => $val,
+				'exp'       => $exp,
 			);
 		}
 		return false;
@@ -1369,9 +1373,10 @@ final class WC_IfthenPay_Webdados {
 										if ( $body = json_decode( $response['body'] ) ) {
 											if ( trim( $body->Status ) == '0' ) {
 												$details = array(
-													'ent' => $body->Entity,
-													'ref' => $body->Reference,
-													'val' => $this->get_order_total_to_pay( $order ),
+													'mbkey'     => $mbkey,
+													'ent'       => $body->Entity,
+													'ref'       => $body->Reference,
+													'val'       => $this->get_order_total_to_pay( $order ),
 													'RequestId' => $body->RequestId,
 												);
 												if ( trim( $body->ExpiryDate ) != '' ) {

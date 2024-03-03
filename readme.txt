@@ -56,6 +56,7 @@ Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-ca
 * Automatic cancellation of orders when Multibanco, Payshop or MB WAY references expire;
 * Countdown timer on the “thank you” page for MB WAY payments;
 * Trigger Multibanco and MB WAY payments when creating orders via the REST API;
+* Store and show IfthenPay fee on each order;
 * Set a payment entity for Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay at the product category level, so that you can receive payment in different accounts based on the order products (replaces previously available specific extension);
 	* Simplified marketplace;
 	* Lock the cart so you can only have products from a single account in the same order;

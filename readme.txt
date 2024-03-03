@@ -4,7 +4,7 @@ Tags: woocommerce, multibanco, mbway, payshop, credit card, cofidis, payment, pa
 Requires at least: 5.6
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 9.1.0
+Stable tag: 9.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -228,6 +228,9 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 9.1.1 - 2024-03-022 =
+* [DEV] Allow filtering backoffice key
 
 = 9.1.0 - 2024-03-02 =
 * [NEW] [PRO add-on 3.2](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Store and show IfthenPay fees on order (Multibanco, MB WAY and Payshop)

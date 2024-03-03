@@ -146,7 +146,7 @@
 		$( '#wc_ifthen_callback_submit_webservice' ).on(
 			'click',
 			function() {
-				var bo_key = prompt( ifthenpay.callback_bo_key, '' );
+				var bo_key = prompt( ifthenpay.callback_bo_key, ifthenpay.backoffice_key );
 				if ( bo_key ) {
 					$( '#wc_ifthen_callback_bo_key' ).val( $.trim( bo_key ) );
 					$( '#wc_ifthen_callback_send' ).val( 2 );

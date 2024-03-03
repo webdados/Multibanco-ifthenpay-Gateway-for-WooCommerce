@@ -2874,6 +2874,7 @@ final class WC_IfthenPay_Webdados {
 				'callback_bo_key'     => strip_tags( __( 'Please provide the IfthenPay backoffice key you got after signing the contract', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ),
 				'callback_email_sent' => $callback_email_sent,
 				'callback_auto_open'  => $callback_auto_open,
+				'backoffice_key'      => apply_filters( 'ifthen_backoffice_key', '' ),
 			)
 		);
 	}

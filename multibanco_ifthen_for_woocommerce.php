@@ -22,19 +22,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'WC_IFTHENPAY_WEBDADOS_REQUIRED_WC_VERSION', '6.0' );
+define( 'WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE', __FILE__ );
 
 /* Our own order class and the main classes */
 function mbifthen_init() {
 	if ( class_exists( 'WooCommerce' ) && defined( 'WC_VERSION' ) && version_compare( WC_VERSION, WC_IFTHENPAY_WEBDADOS_REQUIRED_WC_VERSION, '>=' ) ) {
-		require_once dirname( __FILE__ ) . '/class-wc-ifthen-webdados.php';
-		require_once dirname( __FILE__ ) . '/class-wc-multibanco-ifthen-webdados.php';
-		require_once dirname( __FILE__ ) . '/class-wc-mbway-ifthen-webdados.php';
-		require_once dirname( __FILE__ ) . '/class-wc-creditcard-ifthen-webdados.php';
-		require_once dirname( __FILE__ ) . '/class-wc-payshop-ifthen-webdados.php';
-		require_once dirname( __FILE__ ) . '/class-wc-cofidispay-ifthen-webdados.php';
+		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-ifthen-webdados.php';
+		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-multibanco-ifthen-webdados.php';
+		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-mbway-ifthen-webdados.php';
+		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-creditcard-ifthen-webdados.php';
+		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-payshop-ifthen-webdados.php';
+		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-cofidispay-ifthen-webdados.php';
 		$GLOBALS['WC_IfthenPay_Webdados'] = WC_IfthenPay_Webdados();
-		/* Add settings links - This is here because inside the main class we cannot call the correct plugin_basename( __FILE__ ) */
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( WC_IfthenPay_Webdados(), 'add_settings_link' ) );
+		/* Add settings links - This is here because inside the main class we cannot call the correct plugin_basename( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) */
+		add_filter( 'plugin_action_links_' . plugin_basename( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ), array( WC_IfthenPay_Webdados(), 'add_settings_link' ) );
 	} else {
 		add_action( 'admin_notices', 'mbifthen_woocommerce_not_active_admin_notices' );
 	}
@@ -47,7 +48,7 @@ function WC_IfthenPay_Webdados() { // phpcs:ignore WordPress.NamingConventions.V
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php'; // Should not be necessary, but we never know...
 		}
-		$data = get_plugin_data( dirname( __FILE__ ) . '/multibanco_ifthen_for_woocommerce.php' );
+		$data = get_plugin_data( dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/multibanco_ifthen_for_woocommerce.php' );
 		define( 'WC_IFTHENPAY_WEBDADOS_VERSION', $data['Version'] );
 	}
 	return WC_IfthenPay_Webdados::instance( WC_IFTHENPAY_WEBDADOS_VERSION );
@@ -80,8 +81,8 @@ add_action(
 	'before_woocommerce_init',
 	function() {
 		if ( version_compare( WC_VERSION, '7.1', '>=' ) && class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE, true );
 		}
 	}
 );

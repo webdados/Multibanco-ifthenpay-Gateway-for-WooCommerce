@@ -273,7 +273,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 							'default'     => '',
 						),
 						'only_bellow'   => array(
-							'title'       => __( 'Only for orders up tp', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'title'       => __( 'Only for orders up to', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'type'        => 'number',
 							'description' =>
 								__( 'Enable only for orders with a value up to x &euro;. Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' )

@@ -39,6 +39,7 @@ final class WC_IfthenPay_Webdados {
 	public $unpaid_statuses         = array( 'on-hold', 'pending', 'partially-paid' );
 	public $hpos_enabled            = false;
 	public $refunds_url             = 'https://ifthenpay.com/api/endpoint/payments/refund';
+	private $gateways_loaded        = false;
 
 	/* Internal variables - For Multibanco */
 	public $multibanco_settings                    = null;
@@ -319,16 +320,20 @@ final class WC_IfthenPay_Webdados {
 
 	/* Add to WooCommerce */
 	public function woocommerce_add_payment_gateways( $methods ) {
-		// Multibanco
-		$methods[] = 'WC_Multibanco_IfThen_Webdados';
-		// MB WAY
-		$methods[] = 'WC_MBWAY_IfThen_Webdados';
-		// Credit card
-		$methods[] = 'WC_CreditCard_IfThen_Webdados';
-		// Payshop
-		$methods[] = 'WC_Payshop_IfThen_Webdados';
-		// Cofidis Pay
-		$methods[] = 'WC_CofidisPay_IfThen_Webdados';
+		// Avoid loading gateways more than once
+		if ( ! $this->gateways_loaded ) {
+			$this->gateways_loaded = true;
+			// Multibanco
+			$methods[] = 'WC_Multibanco_IfThen_Webdados';
+			// MB WAY
+			$methods[] = 'WC_MBWAY_IfThen_Webdados';
+			// Credit card
+			$methods[] = 'WC_CreditCard_IfThen_Webdados';
+			// Payshop
+			$methods[] = 'WC_Payshop_IfThen_Webdados';
+			// Cofidis Pay
+			$methods[] = 'WC_CofidisPay_IfThen_Webdados';
+		}
 		return $methods;
 	}
 

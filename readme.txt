@@ -229,6 +229,9 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= ? =
+* [FIX] Deprecation notices "Creation of dynamic property" on PHP 8.2 and above
+
 = 9.2.0 - 2024-03-18 =
 * [FIX] Avoid loading payment gateways more than once
 * [FIX] Typo on the Cofidis Pay settings

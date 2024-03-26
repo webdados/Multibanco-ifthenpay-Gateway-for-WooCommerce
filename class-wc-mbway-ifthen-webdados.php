@@ -20,6 +20,23 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 		protected static $_instance = null;
 		public static $instances    = 0;
 
+		/* Properties */
+		public $debug;
+		public $debug_email;
+		public $version;
+		public $secret_key;
+		public $order_initial_status_pending;
+		public $extra_instructions;
+		public $mbwaykey;
+		public $settings_saved;
+		public $send_to_admin;
+		public $only_portugal;
+		public $only_above;
+		public $only_below;
+		public $stock_when;
+		public $do_refunds;
+		public $do_refunds_backoffice_key;
+
 		/**
 		 * Constructor for your payment class
 		 *

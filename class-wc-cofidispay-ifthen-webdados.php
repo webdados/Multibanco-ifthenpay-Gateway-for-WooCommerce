@@ -20,6 +20,20 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 		protected static $_instance = null;
 		public static $instances    = 0;
 
+		/* Properties */
+		public $debug;
+		public $debug_email;
+		public $version;
+		public $secret_key;
+		public $api_url;
+		public $limits_api_url;
+		public $cofidispaykey;
+		public $settings_saved;
+		public $send_to_admin;
+		public $only_portugal;
+		public $only_above;
+		public $only_below;
+
 		/**
 		 * Constructor for your payment class
 		 *
@@ -83,7 +97,6 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 			$this->only_portugal             = ( $this->get_option( 'only_portugal' ) == 'yes' ? true : false );
 			$this->only_above                = $this->get_option( 'only_above' );
 			$this->only_below                = $this->get_option( 'only_bellow' );
-			$this->do_refunds = false;
 
 			// Actions and filters
 			if ( self::$instances == 1 ) { // Avoid duplicate actions and filters if it's initiated more than once (if WooCommerce loads after us)

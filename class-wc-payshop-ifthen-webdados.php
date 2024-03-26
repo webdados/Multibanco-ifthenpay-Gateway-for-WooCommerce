@@ -18,6 +18,22 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 		protected static $_instance = null;
 		public static $instances    = 0;
 
+		/* Properties */
+		public $debug;
+		public $debug_email;
+		public $version;
+		public $secret_key;
+		public $webservice_url;
+		public $extra_instructions;
+		public $payshopkey;
+		public $settings_saved;
+		public $send_to_admin;
+		public $only_portugal;
+		public $only_above;
+		public $only_below;
+		public $stock_when;
+		public $validity;
+
 		/**
 		 * Constructor for your payment class
 		 *

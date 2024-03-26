@@ -2427,6 +2427,7 @@ final class WC_IfthenPay_Webdados {
 			<h4><?php _e( 'Other premium plugins', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 			<ul id="wc_ifthen_premium_plugins">
 				<?php
+				// Custom fields
 				$premium_plugins = array(
 					array(
 						'url'         => 'https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/',
@@ -2441,10 +2442,16 @@ final class WC_IfthenPay_Webdados {
 						'image'       => 'invoicexpress-woocommerce.png',
 					),
 					array(
-						'url'         => 'https://www.webdados.pt/wordpress/plugins/dpd-portugal-para-woocommerce-wordpress/',
+						'url'         => 'https://ptwooplugins.com/product/dpd-portugal-for-woocommerce/',
 						'title'       => __( 'DPD (Chronopost/SEUR) Portugal for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'DPD Portugal', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'dpd-portugal.png',
+					),
+					array(
+						'url'         => 'https://ptwooplugins.com/product/dpd-seur-geopost-pickup-and-lockers-network-for-woocommerce/',
+						'title'       => __( 'DPD / SEUR / Geopost Pickup and Lockers network for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'short_title' => __( 'DPD Pickup', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'image'       => 'dpd-pickup.png',
 					),
 					array(
 						'url'         => 'https://ptwooplugins.com/product/portuguese-postcodes-for-woocommerce-technical-support/',
@@ -2459,19 +2466,25 @@ final class WC_IfthenPay_Webdados {
 						'image'       => 'kuantokusta.png',
 					),
 					array(
+						'url'         => 'https://ptwooplugins.com/product/simple-custom-fields-for-woocommerce-blocks-checkout/',
+						'title'       => __( 'Simple Custom Fields for WooCommerce Blocks Checkout', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'short_title' => __( 'Blocks Checkout Custom Fields', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'image'       => 'woo-custom-fields.png',
+					),
+					array(
 						'url'         => 'https://ptwooplugins.com/product/simple-woocommerce-order-approval/',
 						'title'       => __( 'Simple WooCommerce Order Approval', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'Order Approval', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'simple-woocommerce-order-approval-logo.png',
 					),
 					array(
-						'url'         => 'https://www.webdados.pt/wordpress/plugins/shop-as-client-for-woocommerce/',
+						'url'         => 'https://ptwooplugins.com/product/shop-as-client-for-woocommerce-pro-add-on/',
 						'title'       => __( 'Shop as Client for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'Shop as Client', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'shop-as-client.png',
 					),
 					array(
-						'url'         => 'https://www.webdados.pt/wordpress/plugins/taxonomy-term-based-discounts-for-woocommerce/',
+						'url'         => 'https://ptwooplugins.com/product/taxonomy-term-and-role-based-discounts-for-woocommerce-pro-add-on/',
 						'title'       => __( 'Taxonomy/Term and Role based Discounts for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'Taxonomy based Discounts', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'taxonomy-discounts.png',

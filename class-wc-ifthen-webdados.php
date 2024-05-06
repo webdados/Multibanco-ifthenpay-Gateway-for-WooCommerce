@@ -28,6 +28,7 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables */
 	public $pro_add_on_active       = false;
 	public $wpml_active             = false;
+	public $wpml_translation_info   = '';
 	public $wc_deposits_active      = false;
 	public $wc_subscriptions_active = false;
 	public $wc_blocks_active        = false;

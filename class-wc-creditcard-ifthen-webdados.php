@@ -96,7 +96,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			}
 
 			// Actions and filters
-			if ( self::$instances == 1 ) { // Avoid duplicate actions and filters if it's initiated more than once (if WooCommerce loads after us)
+			if ( self::$instances === 1 ) { // Avoid duplicate actions and filters if it's initiated more than once (if WooCommerce loads after us)
 
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 				if ( WC_IfthenPay_Webdados()->wpml_active ) {

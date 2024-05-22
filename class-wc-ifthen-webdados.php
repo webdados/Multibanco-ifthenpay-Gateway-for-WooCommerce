@@ -321,20 +321,26 @@ final class WC_IfthenPay_Webdados {
 
 	/* Add to WooCommerce */
 	public function woocommerce_add_payment_gateways( $methods ) {
+		$our_gateways = array(
+			'WC_Multibanco_IfThen_Webdados',
+			'WC_MBWAY_IfThen_Webdados',
+			'WC_CreditCard_IfThen_Webdados',
+			'WC_Payshop_IfThen_Webdados',
+			'WC_CofidisPay_IfThen_Webdados',
+		);
 		// Avoid loading gateways more than once
-		if ( ! $this->gateways_loaded ) {
-			$this->gateways_loaded = true;
-			// Multibanco
-			$methods[] = 'WC_Multibanco_IfThen_Webdados';
-			// MB WAY
-			$methods[] = 'WC_MBWAY_IfThen_Webdados';
-			// Credit card
-			$methods[] = 'WC_CreditCard_IfThen_Webdados';
-			// Payshop
-			$methods[] = 'WC_Payshop_IfThen_Webdados';
-			// Cofidis Pay
-			$methods[] = 'WC_CofidisPay_IfThen_Webdados';
+		foreach( $our_gateways as $our_gateway ) {
+			if ( ! in_array( $our_gateway, $methods ) ) {
+				$methods[] = $our_gateway;
+			}
 		}
+		// Avoid loading gateways more than once - Breaks plugins that call new \WC_Payment_Gateways()
+		/*if ( ! $this->gateways_loaded ) {
+			$this->gateways_loaded = true;
+			foreach( $our_gateways as $our_gateway ) {
+				$methods[] = $our_gateway;
+			}
+		}*/
 		return $methods;
 	}
 

@@ -993,8 +993,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$orders_exist = false;
 
 			if (
-				isset( $_GET['Success'] )
-				&&
+				//isset( $_GET['Success'] )
+				//&&
 				isset( $_GET['id'] )
 				&&
 				isset( $_GET['amount'] )
@@ -1005,17 +1005,18 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				$id         = trim( sanitize_text_field( $_GET['id'] ) );
 				$val        = trim( sanitize_text_field( $_GET['amount'] ) ); // Não fazemos float porque 7.40 passaria a 7.4 e depois não validava a hash
 				$wd_secret  = trim( sanitize_text_field( $_GET['wd_secret'] ) );
-				switch ( trim( $_GET['Success'] ) ) {
+				$get_order  = $this->callback_helper_get_pending_order( $id, $val, $wd_secret );
+				$success    = isset( $_GET['Success'] ) ? trim( $_GET['Success'] ) : '';
+				switch ( $success ) {
 
 					case 'True':
-						$get_order = $this->callback_helper_get_pending_order( $id, $val, $wd_secret );
 						if ( $get_order['success'] && $get_order['order'] ) {
 							$order = $get_order['order'];
 							$this->debug_log_extra( 'Order found: ' . $order->get_id() . ' - Status: ' . $order->get_status() );
 							$order_id      = $order->get_id();
 							$order_details = WC_IfthenPay_Webdados()->get_cofidispay_order_details( $order->get_id() );
-							$note = __( 'Cofidis Pay payment pre-approval received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-							$url = $this->get_return_url( $order );
+							$note          = __( 'Cofidis Pay payment pre-approval received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+							$url           = $this->get_return_url( $order );
 							do_action( 'cofidispay_ifthen_return_payment_gateway_complete', $order->get_id(), $_GET );
 							$debug_order = wc_get_order( $order->get_id() );
 							$this->debug_log( '-- Cofidis Pay payment pre-approval received - Order ' . $order->get_id(), 'notice' );
@@ -1030,7 +1031,6 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 
 					default:
 						// No additional $_GET field with the error code or message?
-						$get_order = $this->callback_helper_get_pending_order( $id, $val, $wd_secret );
 						if ( $get_order['success'] && $get_order['order'] ) {
 							$order    = $get_order['order'];
 							$order_id = $order->get_id();
@@ -1040,7 +1040,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							$error = __( 'Payment failed on the gateway. Please try again.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - ' . $get_order['error'];
 						}
 						wc_add_notice( $error, 'error' );
-						$redirect_url = wc_get_checkout_url();
+						$redirect_url = add_query_arg( 'cofidispay_ifthen_failed', '1', wc_get_checkout_url() );
 						break;
 
 				}

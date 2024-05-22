@@ -2,9 +2,9 @@
 Contributors: webdados, ptwooplugins, ifthenpay
 Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.6
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 9.2.4
+Stable tag: 9.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -232,9 +232,13 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 9.2.5 - ... =
+= 9.3.0 - 2024-05-22 =
+* [NEW] `ifthen_allow_settings_woocommerce_not_euro` filter to allow setting up the payment gateways even if the shop currency is not set to Euro - For multi-currency shops
 * [FIX] Deprecation notices "Creation of dynamic property" on PHP 8.2 and above
+* [FIX] Cofidis Pay return without Success attribute on the callback URL
+* [TWEAK] Refactor the way the payment gateways are loaded so that plugins that call new \WC_Payment_Gateways(); will get our payment methods
 * [TWEAK] Cofidis Pay icon in SVG format
+* [DEV] Tested with WordPress 6.6-alpha-58182 and WooCommerce 8.9.1
 
 = 9.2.4 - 2024-04-09 =
 * [TWEAK] Show [PRO add-on 3.5](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/) blurred options 

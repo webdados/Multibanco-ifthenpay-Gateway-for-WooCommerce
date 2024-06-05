@@ -15,7 +15,7 @@ Allows customers to pay WooCommerce orders using using Multibanco, MB WAY, Credi
 “Pagamento de Serviços” (payment of services) on Multibanco (Portuguese ATM network), or homebanking services, is the most popular way to pay for services and (online) purchases in Portugal. Portuguese consumers trust the “Multibanco” system more than any other.
 This plugin will allow you to generate a payment Reference the customer can then use to pay for his WooCommerce order, through an ATM or homebanking service.
 
-The MB WAY (using the customer mobile phone number), Credit or debit card, CTT Payshop and Cofidis Pay payment methods are also available, for anya customer with a Portuguese bank account.
+The MB WAY (using the customer mobile phone number), Credit or debit card, CTT Payshop and Cofidis Pay payment methods are also available, for any customer with a Portuguese bank account.
 
 This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [PT Woo Plugins](https://ptwooplugins.com) (by [Webdados](https://www.webdados.pt)) on the [WordPress.org support forums](https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/).
 

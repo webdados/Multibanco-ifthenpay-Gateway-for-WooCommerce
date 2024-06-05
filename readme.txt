@@ -4,18 +4,18 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.6
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 9.3.0
+Stable tag: 9.4.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-This plugin allows customers with a Portuguese bank account to pay WooCommerce orders using using Multibanco (Pag. Serviços), MB WAY, Credit card and Payshop through IfthenPay’s payment gateway.
+Allows customers to pay WooCommerce orders using using Multibanco, MB WAY, Credit card, Payshop or Cofidis Pay through IfthenPay’s payment gateway.
 
 == Description ==
 
 “Pagamento de Serviços” (payment of services) on Multibanco (Portuguese ATM network), or homebanking services, is the most popular way to pay for services and (online) purchases in Portugal. Portuguese consumers trust the “Multibanco” system more than any other.
 This plugin will allow you to generate a payment Reference the customer can then use to pay for his WooCommerce order, through an ATM or homebanking service.
 
-The MB WAY (using the customer mobile phone number), Credit or debit card, CTT Payshop and Cofidis Pay payment methods are also available.
+The MB WAY (using the customer mobile phone number), Credit or debit card, CTT Payshop and Cofidis Pay payment methods are also available, for anya customer with a Portuguese bank account.
 
 This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [PT Woo Plugins](https://ptwooplugins.com) (by [Webdados](https://www.webdados.pt)) on the [WordPress.org support forums](https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/).
 
@@ -231,6 +231,12 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 9.4.0 - 2024-06-05 =
+* [FIX] Error notice on the block-based checkout when returning from the Cofidis Pay gateway without success
+* [TWEAK] Remove .pot file from the repository
+* [TWEAK] Include source files for payment gateway blocks
+* [DEV] Tested with WordPress 6.6-beta1	and WooCommerce 9.0.0-rc.1
 
 = 9.3.0 - 2024-05-22 =
 * [NEW] `ifthen_allow_settings_woocommerce_not_euro` filter to allow setting up the payment gateways even if the shop currency is not set to Euro - For multi-currency shops

@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.6
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 9.4.0
+Stable tag: 9.4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,11 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 9.4.1 - 2024-06-26 =
+* [TWEAK] The order is now not canceled when hitting “Back” on the credit card gateway, and the user is redirected to the checkout. The old behavior can be activated by returning `true` to `creditcard_ifthen_cancel_order_on_back`.
+* [TWEAK] Change Cofidis Pay “payment received” text to better explain the payment was pre-approved and that the shop owner still needs to submit documentation to Cofidis before processing the order.
+* [DEV] Tested with WordPress 6.6-RC1-58573	and WooCommerce 9.1.0-beta.1
 
 = 9.4.0 - 2024-06-05 =
 * [FIX] Error notice on the block-based checkout when returning from the Cofidis Pay gateway without success
@@ -734,7 +739,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 = 3.4 =
 * WooCommerce Deposits by webtomizer (experimental) integration on WooCommerce >= 3.0 (sponsored by mojobrands.net)
 * Bugfix: MB WAY details not showing up on wp-admin
-* Bugfix: Reduce stock correctly according to settings since [WooCommerce changed it’s behaviour in 3.4.0](https://github.com/woocommerce/woocommerce/commit/70c9cff608761fcd48b57f709059e00b1ffeee38#diff-27a48ce67fa604181c90b4bb464164ac)
+* Bugfix: Reduce stock correctly according to settings since [WooCommerce changed it’s behavior in 3.4.0](https://github.com/woocommerce/woocommerce/commit/70c9cff608761fcd48b57f709059e00b1ffeee38#diff-27a48ce67fa604181c90b4bb464164ac)
 
 = 3.3.1 =
 * Improved the `multibanco_ifthen_thankyou_instructions_table_html`, `multibanco_ifthen_set_on_hold`, `multibanco_ifthen_email_instructions_pending_send`, `multibanco_ifthen_email_instructions_table_html`, `multibanco_ifthen_sms_instructions`, `multibanco_ifthen_email_instructions_payment_received_send`, `multibanco_ifthen_email_instructions_payment_received`, `mbway_ifthen_thankyou_instructions_table_html`, `mbway_ifthen_enable_check_order_status_thankyou`, `mbway_ifthen_email_instructions_pending_send`, `mbway_ifthen_email_instructions_table_html`, `mbway_ifthen_email_instructions_payment_received_send`, `mbway_ifthen_email_instructions_payment_received`, `multibanco_ifthen_cancel_unpaid_orders_restore_stock` and `mbway_ifthen_cancel_unpaid_orders_restore_stock` filters by passing the order id to them
@@ -760,7 +765,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Small coding standards fixes
 
 = 3.2 =
-* New behaviour for special entities that don’t allow repeated payments in a specific time frame (only for WooCommerce 3.0 and above)
+* New behavior for special entities that don’t allow repeated payments in a specific time frame (only for WooCommerce 3.0 and above)
 * New `multibanco_ifthen_base_mbwaykey` filter to be able to change the base MB WAY Key used to generate the payment details, based on the order, which may be useful for marketplaces
 * Bumped `WC tested up to` tag
 
@@ -800,7 +805,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Removed the `mbway_ifthen_set_on_hold` filter that no longer makes sense since 3.0.2
 
 = 3.0.2 =
-* Changed the default MB WAY order status to "pending", because there’s a time limit to pay for the order. Orders will be automatically canceled if you use the "Manage stock" and "Hold stock" settings on WooCommerce. You can use the "on-hold" behaviour like in Multibanco if you return false to `mbway_ifthen_order_initial_status_pending`. (Thanks for the mentoring @chrislema)
+* Changed the default MB WAY order status to "pending", because there’s a time limit to pay for the order. Orders will be automatically canceled if you use the "Manage stock" and "Hold stock" settings on WooCommerce. You can use the "on-hold" behavior like in Multibanco if you return false to `mbway_ifthen_order_initial_status_pending`. (Thanks for the mentoring @chrislema)
 * Fix: Multibanco logo was not showing up on the email notifications after 3.0
 * Fix: MB WAY Callback testing when WP_DEBUG = true
 * Fix: Checking for "pending" order status if applicable

@@ -839,17 +839,25 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						// Maybe we can make this an option to cancel or just go back to the checkout.
 						$get_order = $this->callback_helper_get_pending_order( $request_id, $id, $val );
 						if ( $get_order['success'] && $get_order['order'] ) {
-							$order    = $get_order['order'];
-							$order_id = $order->get_id();
-							$error    = __( 'Payment cancelled by the customer at the gateway.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-							$order->update_status( 'failed', $error );
-							$redirect_url = $order->get_cancel_order_url_raw();
+							if ( apply_filters( 'creditcard_ifthen_cancel_order_on_back', false ) ) {
+								$order    = $get_order['order'];
+								$order_id = $order->get_id();
+								$error    = __( 'Payment cancelled by the customer at the gateway.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+								$order->update_status( 'failed', $error );
+								$redirect_url = $order->get_cancel_order_url_raw();
+								wc_add_notice( $error, 'error' ); // Notice OK, not block based page
+							} else {
+								// We got the order but are not going to cancel it - Deafult behaviour since 9.4.1
+								$error = __( 'Payment cancelled by the customer at the gateway. Please try again.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - ' . $get_order['error'];
+								$redirect_url = wc_get_checkout_url();
+								wc_add_notice( $error, 'error' ); // Not working on the blocks checkout, we need to check how we did it on the Cofidis gateway
+							}
 						} else {
-							$error = __( 'Payment cancelled by the customer at the gateway.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - ' . $get_order['error'];
 							// We can't get the order so we just redirect the customer to the checkout
+							$error = __( 'Payment cancelled by the customer at the gateway. Please try again.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - ' . $get_order['error'];
 							$redirect_url = wc_get_checkout_url();
+							wc_add_notice( $error, 'error' ); // Not working on the blocks checkout, we need to check how we did it on the Cofidis gateway
 						}
-						wc_add_notice( $error, 'error' );
 						break;
 
 					default:

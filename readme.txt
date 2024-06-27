@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.6
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 9.4.1
+Stable tag: 9.4.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -231,6 +231,10 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 9.4.2 - 2024-06-26 =
+* [FIX] Tag the last changes correcly
+* [TWEAK] Add the order as second argument for the `creditcard_ifthen_cancel_order_on_back` filter
 
 = 9.4.1 - 2024-06-26 =
 * [TWEAK] The order is now not canceled when hitting “Back” on the credit card gateway, and the user is redirected to the checkout. The old behavior can be activated by returning `true` to `creditcard_ifthen_cancel_order_on_back`.

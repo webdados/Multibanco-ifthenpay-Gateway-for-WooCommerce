@@ -474,6 +474,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 						<li class="mb_hide_extra_fields"><?php printf( __( 'Ask IfthenPay to activate “MB WAY Callback” on your account using this exact URL: %1$s and this Anti-phishing key: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<br/><code><strong>' . WC_IfthenPay_Webdados()->mbway_notify_url . '</strong></code><br/>', '<br/><code><strong>' . $this->secret_key . '</strong></code>' ); ?></li>
 					</ul>
 					<?php
+					do_action( 'mbway_ifthen_after_settings_intro' );
 					if (
 						strlen( trim( $this->mbwaykey ) ) == 10
 						&&

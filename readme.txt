@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.6
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 9.4.2
+Stable tag: 9.4.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -232,13 +232,17 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 9.4.3 - 2024-07-16 =
+* [TWEAK] Implement hook on the MB WAY settings screen needed by the [PRO add-on 4.0](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/)
+* [DEV] Tested with WordPress 6.6-RC4-58723 and WooCommerce 9.1.2
+
 = 9.4.2 - 2024-06-27 =
 * [TWEAK] Add the order as second argument for the `creditcard_ifthen_cancel_order_on_back` filter
 
 = 9.4.1 - 2024-06-26 =
 * [TWEAK] The order is now not canceled when hitting “Back” on the credit card gateway, and the user is redirected to the checkout. The old behavior can be activated by returning `true` to `creditcard_ifthen_cancel_order_on_back`.
 * [TWEAK] Change Cofidis Pay “payment received” text to better explain the payment was pre-approved and that the shop owner still needs to submit documentation to Cofidis before processing the order.
-* [DEV] Tested with WordPress 6.6-RC1-58573	and WooCommerce 9.1.0-beta.1
+* [DEV] Tested with WordPress 6.6-RC1-58573 and WooCommerce 9.1.0-beta.1
 
 = 9.4.0 - 2024-06-05 =
 * [FIX] Error notice on the block-based checkout when returning from the Cofidis Pay gateway without success

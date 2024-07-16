@@ -13,4 +13,5 @@ zip -r "multibanco-ifthen-software-gateway-for-woocommerce.zip" "multibanco-ifth
     -x *__MACOSX* \
     -x *roadmap.txt* \
     -x *_build* \
+    -x *node_modules* \
     -x *createzip.command*

@@ -915,9 +915,15 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			if ( $order->get_total() > 0 ) {
 				if ( $redirect_url = $this->api_init_payment( $order->get_id() ) ) {
 					// Mark pending
-					$order->update_status( 'pending', __( 'Awaiting Cofidis Pay payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+					WC_IfthenPay_Webdados()->set_initial_order_status( $order, 'pending', 'Cofidis Pay' );
 				} else {
-					throw new Exception( __( 'Error contacting IfthenPay servers to create Cofidis Pay Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+					throw new Exception(
+						sprintf(
+							/* translators: %s: payment method */
+							__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'Cofidis Pay'
+						)
+					);
 				}
 			} else {
 				// Value = 0

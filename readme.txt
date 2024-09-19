@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.6
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 9.4.4
+Stable tag: 9.5.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -234,8 +234,12 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= ? =
+= 9.5.0 - 2024-09-19 =
+* [FIX] Get the Multibanco reference earlier on the blocks checkout so that we can throw the error before hitting the thank you page
+* [TWEAK] Try to get MB WAY phone number from `$_REQUEST` if not found in `$_POST` for edge scenarios
+* [TWEAK] Refactor code to set initial order status, order note and payment request errors
 * [TWEAK] Update readme.txt FAQ information about 404 callback error because of specific permalink settings
+* [DEV] Tested with WordPress 6.7-alpha-59064 and WooCommerce 9.3.2
 
 = 9.4.4 - 2024-07-16 =
 * [TWEAK] Implement hook on the MB WAY payment gateway needed by [PRO add-on 4.1](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/)

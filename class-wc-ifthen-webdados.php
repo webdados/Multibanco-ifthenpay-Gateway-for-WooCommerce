@@ -1297,7 +1297,7 @@ final class WC_IfthenPay_Webdados {
 		$desc = substr( $desc, 0, MBWAY_IFTHEN_DESC_LEN );
 		return $desc;
 	}
-	public function multibanco_get_ref( $order_id, $force_change = false ) {
+	public function multibanco_get_ref( $order_id, $force_change = false, $throw_exception = false ) {
 		$order = wc_get_order( $order_id );
 		$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Force change: ' . ( $force_change ? 'true' : 'false' ) . ' - Order ' . $order->get_id() );
 		if ( $this->wc_deposits_active ) {
@@ -1420,18 +1420,45 @@ final class WC_IfthenPay_Webdados {
 												$debug_msg       = '- Error: ' . trim( $body->Message ) . ' - Order ' . $order->get_id();
 												$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 												$this->debug_log( $this->multibanco_id, $debug_msg, 'error', true, $debug_msg_email );
+												if ( $throw_exception ) {
+													throw new Exception(
+														sprintf(
+															/* translators: %s: payment method */
+															__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+															'Multibanco'
+														)
+													);
+												}
 												return false;
 											}
 										} else {
 											$debug_msg       = '- Response body is not JSON - Order ' . $order->get_id();
 											$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 											$this->debug_log( $this->multibanco_id, $debug_msg, 'error', true, $debug_msg_email );
+											if ( $throw_exception ) {
+												throw new Exception(
+													sprintf(
+														/* translators: %s: payment method */
+														__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+														'Multibanco'
+													)
+												);
+											}
 											return false;
 										}
 									} else {
 										$debug_msg       = '- Error contacting the IfthenPay servers - Order ' . $order->get_id() . ' - Incorrect response code: ' . $response['response']['code'];
 										$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 										$this->debug_log( $this->multibanco_id, $debug_msg, 'error', true, $debug_msg_email );
+										if ( $throw_exception ) {
+											throw new Exception(
+												sprintf(
+													/* translators: %s: payment method */
+													__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+													'Multibanco'
+												)
+											);
+										}
 										return false;
 									}
 								}
@@ -1443,6 +1470,11 @@ final class WC_IfthenPay_Webdados {
 									if ( trim( $this->multibanco_settings['secret_key'] ) == '' ) {
 										$error_details = __( 'Anti-phishing key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 									}
+								}
+								if ( $throw_exception ) {
+									throw new Exception(
+										__( 'Configuration error. This payment method is disabled because required information was not set.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' ' . $error_details . '.'
+									);
 								}
 								return __( 'Configuration error. This payment method is disabled because required information was not set.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' ' . $error_details . '.';
 							}
@@ -1743,13 +1775,13 @@ final class WC_IfthenPay_Webdados {
 		return false;
 	}
 
-	/* Force Reference creation on New Order (not the British Synthpop band) */
+	/* Force Reference creation on New Order (not the British Synthpop band) - Classic checkout by the woocommerce_checkout_update_order_meta action and forced on the blocks checkout */
 	public function multibanco_woocommerce_checkout_update_order_meta( $order_id ) {
 		$order = wc_get_order( $order_id );
 		// Avoid duplicate instructions on the email...
-		if ( $order->get_payment_method() == $this->multibanco_id ) {
+		if ( $order->get_payment_method() === $this->multibanco_id ) {
 			$this->debug_log_extra( $this->multibanco_id, 'multibanco_woocommerce_checkout_update_order_meta - Force ref generation before anything - Order ' . $order->get_id() );
-			$ref = $this->multibanco_get_ref( $order->get_id() );
+			$ref = $this->multibanco_get_ref( $order->get_id(), false, true );
 			// That should do it...
 			$this->debug_log_extra( $this->multibanco_id, 'multibanco_woocommerce_checkout_update_order_meta - Ref: ' . wp_json_encode( $ref ) . ' - Order ' . $order->get_id() );
 		}
@@ -2304,7 +2336,7 @@ final class WC_IfthenPay_Webdados {
 					$ref              = $this->multibanco_get_ref( $renewal_order_id, true );
 					if ( is_array( $ref ) ) {
 						// Changes to "on hold" - Forces email sending
-						$renewal_order->update_status( 'on-hold', __( 'Awaiting Multibanco payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' (WooCommerce Subscriptions)' );
+						$this->set_initial_order_status( $renewal_order, 'on-hold', 'Multibanco', '(WooCommerce Subscriptions)' );
 					}
 				}
 			}
@@ -2829,6 +2861,32 @@ final class WC_IfthenPay_Webdados {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Helper to set initial order status for all the payment methods
+	 *
+	 * @since 9.5.0
+	 */
+	public function set_initial_order_status( $order, $status, $payment_method, $additional_message = '' ) {
+		$note = sprintf(
+			/* translators: %s: payment method */
+			__( 'Awaiting %s payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+			$payment_method
+		);
+		if ( ! empty( trim( $additional_message ) ) ) {
+			$note .= ' - ' . trim( $additional_message );
+		}
+		if ( $order->has_status( $status ) ) {
+			// Just set a note
+			$order->add_order_note( $note );
+		} else {
+			// Update status with note
+			$order->update_status(
+				$status,
+				$note
+			);
+		}
 	}
 
 	/**

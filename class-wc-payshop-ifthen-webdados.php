@@ -1023,7 +1023,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				// Mark as on-hold
 				if ( $order->get_total() > 0 ) {
 					if ( apply_filters( 'payshop_ifthen_set_on_hold', true, $order->get_id() ) ) {
-						$order->update_status( 'on-hold', __( 'Awaiting Payshop payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+						WC_IfthenPay_Webdados()->set_initial_order_status( $order, 'on-hold', 'Payshop' );
 					}
 				} else {
 					$order->payment_complete();
@@ -1040,8 +1040,13 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					'redirect' => $this->get_return_url( $order ),
 				);
 			} else {
-				// wc_add_notice( __( 'Error contacting IfthenPay servers to create Payshop Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) , 'error' );
-				throw new Exception( __( 'Error contacting IfthenPay servers to create Payshop Payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+				throw new Exception(
+					sprintf(
+						/* translators: %s: payment method */
+						__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'Payshop'
+					)
+				);
 			}
 			return;
 		}

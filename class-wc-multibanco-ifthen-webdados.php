@@ -1185,8 +1185,12 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 
 			// Mark as on-hold
 			if ( $order->get_total() > 0 ) {
+				// If it's the blocks checkout, we should create the reference before changing the status
+				if ( isset( $_SERVER['REQUEST_URI'] ) && stristr( $_SERVER['REQUEST_URI'], 'wp-json/wc/store' ) ) {
+					WC_IfthenPay_Webdados()->multibanco_woocommerce_checkout_update_order_meta( $order->get_id() );
+				}
 				if ( apply_filters( 'multibanco_ifthen_set_on_hold', true, $order->get_id() ) ) {
-					$order->update_status( 'on-hold', __( 'Awaiting Multibanco payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
+					WC_IfthenPay_Webdados()->set_initial_order_status( $order, 'on-hold', 'Multibanco' );
 				}
 			} else {
 				$order->payment_complete();

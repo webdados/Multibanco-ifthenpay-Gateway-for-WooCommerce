@@ -235,7 +235,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 == Changelog ==
 
 = ? =
-* [DEV] Change default webservices timeout to 5 seconds instead of 30
+* [DEV] Change default webservices timeout to 15 seconds instead of 30
 
 = 9.6.0 - 2024-10-08 =
 * [FIX] Load text domain at the right time to avoid PHP notices on WordPress 6.7 and above

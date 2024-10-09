@@ -841,7 +841,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$return_url        = add_query_arg( 'amount', $valor, $return_url );
 			$args              = array(
 				'method'   => 'POST',
-				'timeout'  => apply_filters( 'cofidispay_ifthen_api_timeout', 5 ),
+				'timeout'  => apply_filters( 'cofidispay_ifthen_api_timeout', 15 ),
 				'blocking' => true,
 				'body'     => array(
 					'orderId'         => (string) $id_for_backoffice,

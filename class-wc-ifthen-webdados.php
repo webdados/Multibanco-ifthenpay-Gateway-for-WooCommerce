@@ -1360,7 +1360,7 @@ final class WC_IfthenPay_Webdados {
 								$desc        = trim( get_bloginfo( 'name' ) );
 								$args        = array(
 									'method'   => 'POST',
-									'timeout'  => apply_filters( 'multibanco_ifthen_webservice_timeout', 5 ),
+									'timeout'  => apply_filters( 'multibanco_ifthen_webservice_timeout', 15 ),
 									'blocking' => true,
 									'headers'  => array( 'Content-Type' => 'application/json; charset=utf-8' ),
 									'body'     => array(
@@ -1702,7 +1702,7 @@ final class WC_IfthenPay_Webdados {
 		$desc             .= ' #' . $order->get_order_number();
 		$args              = array(
 			'method'   => 'POST',
-			'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 5 ),
+			'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 15 ),
 			'blocking' => true,
 			'body'     => array(
 				'MbWayKey'   => $mbwaykey,
@@ -2709,7 +2709,7 @@ final class WC_IfthenPay_Webdados {
 		);
 		$args     = array(
 			'method'   => 'POST',
-			'timeout'  => apply_filters( 'ifthen_callback_webservice_timeout', 5 ),
+			'timeout'  => apply_filters( 'ifthen_callback_webservice_timeout', 15 ),
 			'blocking' => true,
 			'headers'  => array(
 				'content-type' => 'application/json',
@@ -2780,7 +2780,7 @@ final class WC_IfthenPay_Webdados {
 		}
 		$args         = array(
 			'method'   => 'POST',
-			'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 5 ),
+			'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 15 ),
 			'blocking' => true,
 			'headers'  => array( 'Content-Type' => 'application/json; charset=utf-8' ),
 			'body'     => array(

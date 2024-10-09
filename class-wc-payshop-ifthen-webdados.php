@@ -931,7 +931,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			$id_for_backoffice = apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id();
 			$args              = array(
 				'method'   => 'POST',
-				'timeout'  => apply_filters( 'payshop_ifthen_webservice_timeout', 5 ),
+				'timeout'  => apply_filters( 'payshop_ifthen_webservice_timeout', 15 ),
 				'blocking' => true,
 				'body'     => array(
 					'payshopkey' => $payshopkey,

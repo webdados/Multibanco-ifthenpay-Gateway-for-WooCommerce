@@ -607,7 +607,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			$url           = $this->api_url . $creditcardkey;
 			$args          = array(
 				'method'   => 'POST',
-				'timeout'  => apply_filters( 'creditcard_ifthen_api_timeout', 5 ),
+				'timeout'  => apply_filters( 'creditcard_ifthen_api_timeout', 15 ),
 				'blocking' => true,
 				'body'     => array(
 					'orderId'    => (string) apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id(),

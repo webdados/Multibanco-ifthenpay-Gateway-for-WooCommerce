@@ -16,11 +16,12 @@ final class WC_IfthenPay_Webdados {
 	public $version = false;
 
 	/* IDs */
-	public $multibanco_id = 'multibanco_ifthen_for_woocommerce';
-	public $mbway_id      = 'mbway_ifthen_for_woocommerce';
-	public $payshop_id    = 'payshop_ifthen_for_woocommerce';
-	public $creditcard_id = 'creditcard_ifthen_for_woocommerce';
-	public $cofidispay_id = 'cofidispay_ifthen_for_woocommerce';
+	public $multibanco_id   = 'multibanco_ifthen_for_woocommerce';
+	public $mbway_id        = 'mbway_ifthen_for_woocommerce';
+	public $payshop_id      = 'payshop_ifthen_for_woocommerce';
+	public $creditcard_id   = 'creditcard_ifthen_for_woocommerce';
+	public $cofidispay_id   = 'cofidispay_ifthen_for_woocommerce';
+	public $apple_google_id = 'apple_google_ifthen_for_woocommerce';
 
 	/* Debug */
 	public $log = null;
@@ -110,6 +111,16 @@ final class WC_IfthenPay_Webdados {
 	public $cofidispay_banner       = ''; /* Needed ? */
 	public $cofidispay_icon         = '';
 
+
+	/* Internal variables - For Apple and Google Pay */
+	public $apple_google_settings     = null;
+	public $apple_google_notify_url   = '';
+	public $apple_google_min_value    = 0; /* No limit in theory */
+	public $apple_google_max_value    = 99999.99; /* No limit in theory */
+	public $apple_google_banner_email = ''; /* Needed ? */
+	public $apple_google_banner       = ''; /* Needed ? */
+	public $apple_google_icon         = '';
+
 	/* Single instance */
 	protected static $_instance = null;
 
@@ -193,6 +204,15 @@ final class WC_IfthenPay_Webdados {
 			:
 			home_url( '/wc-api/WC_CofidisPayReturn_IfThen_Webdados/' )
 		);
+		// Apple and Google Pay
+		$this->apple_google_settings   = get_option( 'woocommerce_apple_google_ifthen_for_woocommerce_settings', '' );
+		$this->apple_google_notify_url = (
+			get_option( 'permalink_structure' ) === ''
+			?
+			home_url( '/?wc-api=WC_Apple_Google_IfThen_Webdados' )
+			:
+			home_url( '/wc-api/WC_Apple_Google_IfThen_Webdados/' )
+		);
 		// Hooks
 		$this->init_hooks();
 	}
@@ -273,6 +293,12 @@ final class WC_IfthenPay_Webdados {
 		// add_filter( 'woocommerce_api_order_response', array( $this, 'woocommerce_api_order_response', 11, 2 );
 		// Allow filtering of notify URLs
 		add_action( 'plugins_loaded', array( $this, 'filter_notify_urls' ), 20 );
+		// TEMP Apple Pay & Google Pay
+		/*add_action( 'wp_enqueue_scripts', function() {
+			if ( is_checkout() ) {
+				wp_enqueue_script( 'apple-google-ifthenpay', plugins_url( 'assets/apple_google.js', __FILE__ ), array( 'jquery' ), $this->version . ( WP_DEBUG ? '.' . wp_rand( 0, 99999 ) : '' ), true );
+			}
+		} );*/
 	}
 
 	/* Get version */
@@ -301,6 +327,10 @@ final class WC_IfthenPay_Webdados {
 		$this->cofidispay_banner_email = plugins_url( 'images/cofidispay_banner.png', __FILE__ );
 		$this->cofidispay_banner       = plugins_url( 'images/cofidispay_banner.svg', __FILE__ );
 		$this->cofidispay_icon         = plugins_url( 'images/cofidispay_icon.svg', __FILE__ );
+
+		$this->apple_google_banner_email = plugins_url( 'images/creditcard_banner_and_icon.png', __FILE__ );
+		$this->apple_google_banner       = plugins_url( 'images/creditcard_banner_and_icon.svg', __FILE__ );
+		$this->apple_google_icon         = plugins_url( 'images/creditcard_banner_and_icon.svg', __FILE__ );
 	}
 
 	/* Add settings link to plugin actions */
@@ -314,6 +344,7 @@ final class WC_IfthenPay_Webdados {
 		$settings_links          .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section=' . $this->mbway_id . '">MB WAY</a>';
 		$settings_links          .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section=' . $this->creditcard_id . '">' . __( 'Credit card', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>';
 		$settings_links          .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section=' . $this->payshop_id . '">Payshop</a>';
+		$settings_links          .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section=' . $this->apple_google_id . '">Apple Pay &amp; Google Pay</a>';
 		$settings_links          .= ' - <a href="admin.php?page=wc-settings&amp;tab=checkout&amp;section=' . $this->cofidispay_id . '">Cofidis Pay</a>';
 		$action_links['settings'] = $settings_links;
 		$action_links['support']  = '<a href="https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/" target="_blank">' . __( 'Technical support', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>';
@@ -329,6 +360,7 @@ final class WC_IfthenPay_Webdados {
 			'WC_CreditCard_IfThen_Webdados',
 			'WC_Payshop_IfThen_Webdados',
 			'WC_CofidisPay_IfThen_Webdados',
+			'WC_Apple_Google_IfThen_Webdados',
 		);
 		// Avoid loading gateways more than once
 		foreach( $our_gateways as $our_gateway ) {
@@ -389,6 +421,8 @@ final class WC_IfthenPay_Webdados {
 					$payment_method_registry->register( new \Automattic\WooCommerce\Blocks\Payments\Integrations\CofidisPayIfthenPay() );
 				}
 			);
+			// Apple and Google Pay
+			// ...
 		}
 	}
 
@@ -1094,6 +1128,10 @@ final class WC_IfthenPay_Webdados {
 					) . '.</p>';
 
 				}
+				break;
+			// Credit card
+			case $this->apple_google_id:
+				echo '<p>POR IMPLEMENTAR</p>';
 				break;
 			// None
 			default:

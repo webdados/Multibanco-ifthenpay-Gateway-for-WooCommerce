@@ -68,8 +68,8 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables - For MB WAY */
 	public $mbway_settings               = null;
 	public $mbway_notify_url             = '';
-	public $mbway_minutes                = 5;
-	public $mbway_multiplier_new_payment = 1.2;
+	public $mbway_minutes                = 4;
+	public $mbway_multiplier_new_payment = 1.3;
 	public $mbway_min_value              = 0;
 	public $mbway_max_value              = 99999.99;
 	public $mbway_banner_email           = '';

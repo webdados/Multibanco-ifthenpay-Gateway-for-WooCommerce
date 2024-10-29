@@ -148,7 +148,7 @@ If you don’t care about legislation, plugins are available that allow you to s
 
 = How much time does the customer have to pay with MB WAY? =
 
-The MB WAY payment requests expire after 5 minutes.
+The MB WAY payment requests expire after 4 minutes.
 
 = Why doesn’t the customer receive an email when paying with MB WAY? =
 
@@ -235,7 +235,9 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 == Changelog ==
 
 = ? =
-* [TWEAK] Change default webservices timeout to 15 seconds instead of 30
+* [TWEAK] Change MB WAY timeout from 5 to 4 minutes (which is the true interval set by SIBS)
+* [DEV] Change default webservices timeout to 15 seconds instead of 30
+* [DEV] Check order object before saving Multibanco details on the classic checkout
 
 = 9.6.0 - 2024-10-08 =
 * [FIX] Load text domain at the right time to avoid PHP notices on WordPress 6.7 and above

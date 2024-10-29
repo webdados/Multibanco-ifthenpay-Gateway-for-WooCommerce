@@ -293,12 +293,6 @@ final class WC_IfthenPay_Webdados {
 		// add_filter( 'woocommerce_api_order_response', array( $this, 'woocommerce_api_order_response', 11, 2 );
 		// Allow filtering of notify URLs
 		add_action( 'plugins_loaded', array( $this, 'filter_notify_urls' ), 20 );
-		// TEMP Apple Pay & Google Pay
-		/*add_action( 'wp_enqueue_scripts', function() {
-			if ( is_checkout() ) {
-				wp_enqueue_script( 'apple-google-ifthenpay', plugins_url( 'assets/apple_google.js', __FILE__ ), array( 'jquery' ), $this->version . ( WP_DEBUG ? '.' . wp_rand( 0, 99999 ) : '' ), true );
-			}
-		} );*/
 	}
 
 	/* Get version */
@@ -328,7 +322,7 @@ final class WC_IfthenPay_Webdados {
 		$this->cofidispay_banner       = plugins_url( 'images/cofidispay_banner.svg', __FILE__ );
 		$this->cofidispay_icon         = plugins_url( 'images/cofidispay_icon.svg', __FILE__ );
 
-		$this->apple_google_banner_email = plugins_url( 'images/creditcard_banner_and_icon.png', __FILE__ );
+		$this->apple_google_banner_email = plugins_url( 'images/creditcard_banner_and_icon.png', __FILE__ ); // Same as credit card for now
 		$this->apple_google_banner       = plugins_url( 'images/creditcard_banner_and_icon.svg', __FILE__ );
 		$this->apple_google_icon         = plugins_url( 'images/creditcard_banner_and_icon.svg', __FILE__ );
 	}
@@ -368,13 +362,6 @@ final class WC_IfthenPay_Webdados {
 				$methods[] = $our_gateway;
 			}
 		}
-		// Avoid loading gateways more than once - Breaks plugins that call new \WC_Payment_Gateways()
-		/*if ( ! $this->gateways_loaded ) {
-			$this->gateways_loaded = true;
-			foreach( $our_gateways as $our_gateway ) {
-				$methods[] = $our_gateway;
-			}
-		}*/
 		return $methods;
 	}
 

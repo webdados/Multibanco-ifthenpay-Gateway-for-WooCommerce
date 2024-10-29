@@ -34,6 +34,7 @@ function mbifthen_init() {
 		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-creditcard-ifthen-webdados.php';
 		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-payshop-ifthen-webdados.php';
 		require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-cofidispay-ifthen-webdados.php';
+		//require_once dirname( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) . '/class-wc-apple-google-ifthen-webdados.php';
 		$GLOBALS['WC_IfthenPay_Webdados'] = WC_IfthenPay_Webdados();
 		/* Add settings links - This is here because inside the main class we cannot call the correct plugin_basename( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ) */
 		add_filter( 'plugin_action_links_' . plugin_basename( WC_IFTHENPAY_WEBDADOS_PLUGIN_FILE ), array( WC_IfthenPay_Webdados(), 'add_settings_link' ) );

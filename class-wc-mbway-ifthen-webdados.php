@@ -1093,7 +1093,6 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			return WC_IfthenPay_Webdados()->disable_only_above_or_below( $available_gateways, $this->id, WC_IfthenPay_Webdados()->mbway_min_value, WC_IfthenPay_Webdados()->mbway_max_value );
 		}
 
-
 		/* Payment fields */
 		function payment_fields() {
 			echo wpautop( $this->description );

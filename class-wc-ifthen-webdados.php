@@ -204,7 +204,7 @@ final class WC_IfthenPay_Webdados {
 			:
 			home_url( '/wc-api/WC_CofidisPayReturn_IfThen_Webdados/' )
 		);
-		// Apple and Google Pay
+		// Gateway
 		$this->gateway_ifthen_settings   = get_option( 'woocommerce_gateway_ifthen_ifthen_for_woocommerce_settings', '' );
 		$this->gateway_ifthen_notify_url = (
 			get_option( 'permalink_structure' ) === ''
@@ -1116,7 +1116,7 @@ final class WC_IfthenPay_Webdados {
 
 				}
 				break;
-			// Gateway IfthenPay
+			// IfthenPay Gateway
 			case $this->gateway_ifthen_id:
 				echo '<p>POR IMPLEMENTAR</p>';
 				break;

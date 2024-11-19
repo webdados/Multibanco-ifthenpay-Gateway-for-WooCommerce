@@ -25,6 +25,9 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 		public $api_url_production;
 		public $api_url_sandbox;
 		public $api_url;
+		public $gateways_api_url;
+		public $gateways_methods_api_url;
+		public $backoffice_key;
 		public $gatewaykey;
 		public $settings_saved;
 		public $send_to_admin;
@@ -55,13 +58,15 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 
 			$this->has_fields = false;
 
-			$this->method_title       = __( 'Gateway IfthenPay', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			$this->method_title       = __( 'IfthenPay Gateway', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			$this->method_description = __( 'Easy and simple payment using Apple Pay, Google Pay, or Pix. (Payment service provided by IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 
 			// Webservice
-			$this->api_url_production = 'https://api.ifthenpay.com/gateway/pinpay/'; // production mode
-			$this->api_url_sandbox    = ''; // test mode
-			$this->api_url            = '';
+			$this->api_url_production       = 'https://api.ifthenpay.com/gateway/pinpay/'; // production mode
+			$this->api_url_sandbox          = ''; // test mode
+			$this->api_url                  = '';
+			$this->gateways_api_url         = 'https://www.ifthenpay.com/IfmbWS/ifthenpaymobile.asmx/GetGatewayKeys';
+			$this->gateways_methods_api_url = 'https://www.ifthenpay.com/IfmbWS/ifthenpaymobile.asmx/GetAccountsByGatewayKey';
 
 			// Plugin options and settings
 			$this->init_form_fields();
@@ -70,6 +75,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 			// User settings
 			$this->title          = $this->get_option( 'title' );
 			$this->description    = $this->get_option( 'description' );
+			$this->backoffice_key = $this->get_option( 'backoffice_key' );
 			$this->gatewaykey     = $this->get_option( 'gatewaykey' );
 			$this->settings_saved = $this->get_option( 'settings_saved' );
 			$this->send_to_admin  = ( $this->get_option( 'send_to_admin' ) == 'yes' ? true : false );
@@ -81,6 +87,8 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 			if ( self::$instances === 1 ) { // Avoid duplicate actions and filters if it's initiated more than once (if WooCommerce loads after us)
 
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+				//add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'send_callback_email' ) );
+				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'maybe_get_gateways' ) );
 				if ( WC_IfthenPay_Webdados()->wpml_active ) {
 					add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'register_wpml_strings' ) );
 				}
@@ -187,8 +195,19 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				'enabled'       => array(
 					'title'   => __( 'Enable/Disable', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable “Gateway IfthenPay” (using IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'label'   => __( 'Enable “IfthenPay Gateway” (using IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'default' => 'no',
+				),
+				'backoffice_key' => array(
+					'title'       => __( 'Backoffice key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'type'        => 'text',
+					'default'     => '',
+					'description' => __( 'The IfthenPay backoffice key you got after signing the contract', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ( apply_filters( 'gateway_ifthen_sandbox', false ) ? '<br><span style="color: red;">Sandbox</span>' : '' ),
+					'placeholder'       => '0000-0000-0000-0000',
+					'custom_attributes' => array(
+						'maxlength' => 19,
+						'size'      => 22,
+					),
 				),
 				'gatewaykey' => array(
 					'title'             => __( 'Gateway Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
@@ -202,7 +221,60 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						'size'      => 14,
 					),
 				),
+				'gateway_methods' => array(
+					'title'       => __( 'Payment method Keys', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'type'        => 'multiselect',
+					'description' => __( 'The payment methods to be made available on this gateway. Use CTRL/CMD to select several.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ( apply_filters( 'gateway_ifthen_sandbox', false ) ? '<br><span style="color: red;">Sandbox</span>' : '' ),
+					'options'     => array(),
+				),
 			);
+			if ( $gateways = get_option( $this->id . '_gateways' ) ) {
+				if ( ! empty( $gateways ) ) {
+					if ( is_array( $gateways ) && count( $gateways ) > 0 ) {
+						$this->form_fields['gatewaykey'] = array(
+							'title'       => __( 'Gateway Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'type'        => 'select',
+							'description' => __( 'Gateway Key provided by IfthenPay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ( apply_filters( 'gateway_ifthen_sandbox', false ) ? '<br><span style="color: red;">Sandbox</span>' : '' ),
+							'default'     => '',
+							'options'     => array(
+								'' => '- ' . __( 'Select', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' -',
+							),
+						);
+						foreach( $gateways as $gateway ) {
+							if ( $gateway->Tipo === 'Estáticas' ) {
+								$this->form_fields['gatewaykey']['options'][ $gateway->GatewayKey ] = $gateway->Alias;
+							}
+						}
+						if ( count( $this->form_fields['gatewaykey']['options'] ) > 1 ) {
+							if ( $methods = get_option( $this->id . '_gateway_methods' ) ) {
+								if ( ! empty( $methods ) ) {
+									if ( is_array( $methods ) && count( $methods ) > 0 ) {
+										foreach( $methods as $method ) {
+											if ( ! is_numeric( $method->Entidade ) ) { // Multibanco legacy is not available
+												switch( $method->Entidade ) {
+													case 'MB':
+													case 'MBWAY':
+													case 'PAYSHOP':
+													case 'CCARD':
+													case 'COFIDIS':
+														// Core plugin methods are not available
+														break;
+													default:
+														$this->form_fields['gateway_methods']['options'][ $method->Conta ] = $method->Alias;
+														break;
+												}
+											}
+										}
+										$this->form_fields['gateway_methods']['custom_attributes'] = array(
+											'size' => max( 4, count( $this->form_fields['gateway_methods']['options'] ) + 1 ),
+										); 
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 			// if ( strlen( trim( $this->get_option( 'gatewaykey' ) ) ) == 11 && trim( $this->secret_key ) != '' ) {
 				$this->form_fields = array_merge(
 					$this->form_fields,
@@ -338,12 +410,14 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					<ul class="wc_ifthen_list">
 						<li><?php printf( __( 'Set WooCommerce currency to <strong>Euros (&euro;)</strong> %1$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<a href="admin.php?page=wc-settings&amp;tab=general">&gt;&gt;</a>.' ); ?></li>
 						<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a></strong>', '<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://ifthenpay.com</a>' ); ?></li>
-						<li><?php _e( 'Fill out all the details (XXXXXX Key) provided by <strong>IfthenPay</strong> in the fields below.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+						<!--<li><?php _e( 'Fill out all the details (XXXXXX Key) provided by <strong>IfthenPay</strong> in the fields below.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>-->
+						<li><?php _e( 'Enter your backoffice key and select a gateway.<br/>If no gateways are available, you need to request IfthenPay to create a static gateway for you with the payment methods you want (Apple Pay, GooglePay, or Pix).', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
+						<li><?php _e( 'Select the payment methods you want to make available.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li>
 						<?php
 						printf(
 							__( 'Never use the same %1$s on more than one website or any other system, online or offline. Ask %2$s for new ones for each single platform.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-							__( 'XXXX Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							__( 'payment method keys', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a>'
 						);
 						?>
@@ -351,7 +425,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					</ul>
 					<?php
 					if (
-						strlen( trim( $this->gatewaykey ) ) == 11
+						strlen( trim( $this->gatewaykey ) ) === 11
 					) {
 						// OK
 					} else {
@@ -394,6 +468,68 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 			</div>
 			<div class="clear"></div>
 			<?php
+		}
+		
+		/**
+		 * Maybe get gateways
+		 */
+		public function maybe_get_gateways() {
+			if ( isset( $_POST[ 'woocommerce_' . $this->id . '_backoffice_key' ] ) && strlen( trim( $_POST[ 'woocommerce_' . $this->id . '_backoffice_key' ] ) ) === 19 ) {
+				if ( trim( $_POST[ 'woocommerce_' . $this->id . '_backoffice_key' ] ) !== $this->backoffice_key ) {
+					// Update gateways
+					$response = wp_remote_get( $this->gateways_api_url . '?backofficekey=' . trim( $_POST[ 'woocommerce_' . $this->id . '_backoffice_key' ] ) );
+					if ( ! is_wp_error( $response ) ) {
+						if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
+							if ( $body = json_decode( trim( $response['body'], true ) ) ) {
+								update_option( $this->id . '_gateways', $body );
+								if ( wp_safe_redirect( 'admin.php?page=wc-settings&tab=checkout&section=' . $this->id ) ) {
+									exit();
+								}
+							} else {
+								// Error handling missing
+								delete_option( $this->id . '_gateways' );
+								delete_option( $this->id . '_gateway_methods' );
+							}
+						} else {
+							// Error handling missing
+							delete_option( $this->id . '_gateways' );
+							delete_option( $this->id . '_gateway_methods' );
+						}
+					} else {
+						// Error handling missing
+						delete_option( $this->id . '_gateways' );
+						delete_option( $this->id . '_gateway_methods' );
+					}
+				} elseif ( isset( $_POST[ 'woocommerce_' . $this->id . '_gatewaykey' ] ) && strlen( trim( $_POST[ 'woocommerce_' . $this->id . '_gatewaykey' ] ) ) === 11 ) {
+					if ( trim( $_POST[ 'woocommerce_' . $this->id . '_gatewaykey' ] ) !== $this->gatewaykey ) {
+						$response = wp_remote_get( $this->gateways_methods_api_url . '?backofficekey=' . trim( $_POST[ 'woocommerce_' . $this->id . '_backoffice_key' ] ) . '&gatewayKey=' . trim( $_POST[ 'woocommerce_' . $this->id . '_gatewaykey' ] ) );
+						if ( ! is_wp_error( $response ) ) {
+							if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
+								if ( $body = json_decode( trim( $response['body'], true ) ) ) {
+									update_option( $this->id . '_gateway_methods', $body );
+									if ( wp_safe_redirect( 'admin.php?page=wc-settings&tab=checkout&section=' . $this->id ) ) {
+										exit();
+									}
+								} else {
+									// Error handling missing
+									delete_option( $this->id . '_gateway_methods' );
+								}
+							} else {
+								// Error handling missing
+								delete_option( $this->id . '_gateway_methods' );
+							}
+						} else {
+							// Error handling missing
+							delete_option( $this->id . '_gateway_methods' );
+						}
+					}
+				} elseif ( isset( $_POST[ 'woocommerce_' . $this->id . '_gatewaykey' ] ) && strlen( trim( $_POST[ 'woocommerce_' . $this->id . '_gatewaykey' ] ) ) === 0 ) {
+					delete_option( $this->id . '_gateway_methods' );
+				}
+			} elseif ( isset( $_POST[ 'woocommerce_' . $this->id . '_backoffice_key' ] ) && strlen( trim( $_POST[ 'woocommerce_' . $this->id . '_backoffice_key' ] ) ) === 0 ) {
+				delete_option( $this->id . '_gateways' );
+				delete_option( $this->id . '_gateway_methods' );
+			}
 		}
 
 		/**

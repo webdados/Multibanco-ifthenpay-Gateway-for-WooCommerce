@@ -4,8 +4,6 @@
 
 		var hide_extra_fields = true;
 
-		alert( ifthenpay.gateway );
-
 		switch ( ifthenpay.gateway ) {
 			case 'multibanco':
 				ifthen_toogle_mb_api_mode();
@@ -85,11 +83,27 @@
 				break;
 			case 'gateway_ifthen':
 				if (
-					$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_gatewaykey' ).val().trim().length == 11
+					$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_backoffice_key' ).val().trim().length == 19
 					&&
-					$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_gatewaykey' ).val().trim() != ''
+					$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_backoffice_key' ).val().trim() != ''
 				) {
-					hide_extra_fields = false;
+					if (
+						$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_gatewaykey' ).val().trim().length == 11
+						&&
+						$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_gatewaykey' ).val().trim() != ''
+					) {
+						hide_extra_fields = false;
+					} else {
+						var number_fields = 4;
+					}
+					//$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_gatewaykey' ).on( 'change',
+					//	function() {
+					//		alert('aaaa');
+					//		$( '#mainform' ).submit();
+					//	}
+					//);
+				} else {
+					var number_fields = 3;
 				}
 				break;
 			default:
@@ -113,7 +127,7 @@
 				case 'payshop':
 				case 'cofidispay':
 				case 'gateway_ifthen':
-					$( '#wc_ifthen_settings table.form-table tr:nth-child(n+3)' ).hide();
+					$( '#wc_ifthen_settings table.form-table tr:nth-child(n+' + number_fields + ')' ).hide();
 					$( '#wc_ifthen_settings .mb_hide_extra_fields' ).hide();
 					break;
 				default:

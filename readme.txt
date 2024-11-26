@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.6
 Tested up to: 6.7
 Requires PHP: 7.0
-Stable tag: 9.6.0
+Stable tag: 9.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -234,10 +234,12 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= ? =
+= 9.7 - 2024-11-26 =
 * [TWEAK] Change MB WAY timeout from 5 to 4 minutes (which is the true interval set by SIBS)
+* [TWEAK] Better "refund not issued" message
+* [FIX] Check order object before saving Multibanco details on the classic checkout
 * [DEV] Change default webservices timeout to 15 seconds instead of 30
-* [DEV] Check order object before saving Multibanco details on the classic checkout
+* [DEV] Tested with WordPress 6.8-alpha-59459 and WooCommerce 9.5.0-beta.1
 
 = 9.6.0 - 2024-10-08 =
 * [FIX] Load text domain at the right time to avoid PHP notices on WordPress 6.7 and above

@@ -92,7 +92,11 @@
 						&&
 						$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_gatewaykey' ).val().trim() != ''
 					) {
-						hide_extra_fields = false;
+						if ( $( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_no_methods' ).length ) {
+							var number_fields = 5;
+						} else {
+							hide_extra_fields = false;
+						}
 					} else {
 						var number_fields = 4;
 					}

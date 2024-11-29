@@ -213,6 +213,13 @@ final class WC_IfthenPay_Webdados {
 			:
 			home_url( '/wc-api/WC_Gateway_IfThen_Webdados/' )
 		);
+		$this->gateway_ifthenreturn_url = (
+			get_option( 'permalink_structure' ) === ''
+			?
+			home_url( '/?wc-api=WC_Gateway_PayReturn_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&payment_method=[PAYMENT_METHOD]&ifthenpayfee=[FEE]' )
+			:
+			home_url( '/wc-api/WC_Gateway__PayReturn_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&payment_method=[PAYMENT_METHOD]&ifthenpayfee=[FEE]' )
+		);
 		// Hooks
 		$this->init_hooks();
 	}
@@ -352,9 +359,9 @@ final class WC_IfthenPay_Webdados {
 			'WC_Multibanco_IfThen_Webdados',
 			'WC_MBWAY_IfThen_Webdados',
 			'WC_CreditCard_IfThen_Webdados',
+			'WC_Gateway_IfThen_Webdados',
 			'WC_Payshop_IfThen_Webdados',
 			'WC_CofidisPay_IfThen_Webdados',
-			'WC_Gateway_IfThen_Webdados',
 		);
 		// Avoid loading gateways more than once
 		foreach( $our_gateways as $our_gateway ) {

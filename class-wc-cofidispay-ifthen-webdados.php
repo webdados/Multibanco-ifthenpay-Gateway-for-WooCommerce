@@ -395,17 +395,17 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 						?>
 					</h2>
 					<?php echo wp_kses_post( wpautop( $this->get_method_description() ) ); ?>
-					<p><strong><?php _e( 'In order to use this plugin you <u>must</u>:', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
+					<p><strong><?php _e( 'In order to use this plugin you need to:', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
 					<ul class="wc_ifthen_list">
 						<li><?php printf( __( 'Set WooCommerce currency to <strong>Euros (&euro;)</strong> %1$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<a href="admin.php?page=wc-settings&amp;tab=general">&gt;&gt;</a>.' ); ?></li>
-						<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a></strong>', '<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://ifthenpay.com</a>' ); ?></li>
-						<!--<li><?php printf( __( 'Sign a contract with %1$s. To know more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://www.cofidis.pt/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">Cofidis</a></strong>', '<a href="https://www.cofidis.pt/cofidispay/ecommerce' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://www.cofidis.pt/cofidispay/ecommerce</a>' ); ?></li>-->
+						<li><?php printf( __( 'Sign a contract with %1$s. To learn more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a></strong>', '<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://ifthenpay.com</a>' ); ?></li>
+						<!--<li><?php printf( __( 'Sign a contract with %1$s. To learn more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://www.cofidis.pt/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">Cofidis</a></strong>', '<a href="https://www.cofidis.pt/cofidispay/ecommerce' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://www.cofidis.pt/cofidispay/ecommerce</a>' ); ?></li>-->
 						<li><?php printf( __( 'Sign a contract with %s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://www.cofidis.pt/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">Cofidis</a></strong>' ); ?></li>
 						<li><?php _e( 'Fill out all the details (Cofidis Pay Key) provided by <strong>IfthenPay</strong> in the fields below.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						<li>
 						<?php
 						printf(
-							__( 'Never use the same %1$s on more than one website or any other system, online or offline. Ask %2$s for new ones for each single platform.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							__( 'Do not use the same %1$s on multiple websites or any other system, online or offline. Ask %2$s for new ones for every single platform.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							__( 'Cofidis Pay Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a>'
 						);

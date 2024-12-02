@@ -368,14 +368,33 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						<small>v.<?php echo $this->version; ?></small>
 						<?php
 						if ( function_exists( 'wc_back_link' ) ) {
-							echo wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) );}
+							echo wp_kses_post( wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ) );
+						}
 						?>
 					</h2>
 					<?php echo wp_kses_post( wpautop( $this->get_method_description() ) ); ?>
 					<p><strong><?php _e( 'In order to use this plugin you need to:', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
 					<ul class="wc_ifthen_list">
-						<li><?php printf( __( 'Set WooCommerce currency to <strong>Euros (&euro;)</strong> %1$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<a href="admin.php?page=wc-settings&amp;tab=general">&gt;&gt;</a>.' ); ?></li>
-						<li><?php printf( __( 'Sign a contract with %1$s. To learn more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<strong><a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a></strong>', '<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://ifthenpay.com</a>' ); ?></li>
+						<li>
+							<?php
+							printf(
+								/* translators: %1$s: Euro, %2$s: link to WooCommerce settings */
+								esc_html__( 'Set WooCommerce currency to %1$s %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								'<strong>Euro (&euro;)</strong>',
+								'<a href="admin.php?page=wc-settings&amp;tab=general">' . esc_html__( 'here', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>.'
+							);
+							?>
+						</li>
+						<li>
+							<?php
+							printf(
+								/* translators: %1$s: link to Ifthenpay, %2$s: link to IfthenPay */
+								esc_html__( 'Sign a contract with %1$s. To learn more about this service, please go to %2$s.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								'<strong><a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">IfthenPay</a></strong>',
+								'<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">https://ifthenpay.com</a>'
+							);
+							?>
+						</li>
 						<li><?php _e( 'Fill out all the details (Credit card Key) provided by <strong>IfthenPay</strong> in the fields below.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 						<li>
 						<?php
@@ -418,7 +437,19 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						<?php
 					} else {
 						?>
-						<p><strong><?php _e( 'ERROR!', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?> <?php printf( __( 'Set WooCommerce currency to <strong>Euros (&euro;)</strong> %1$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ), '<a href="admin.php?page=wc-settings&amp;tab=general">' . __( 'here', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>.' ); ?></strong></p>
+						<p>
+							<strong>
+								<?php esc_html_e( 'ERROR!', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+								<?php
+								printf(
+									/* translators: %1$s: Euro, %2$s: link to WooCommerce settings */
+									esc_html__( 'Set WooCommerce currency to %1$s %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									'<strong>Euro (&euro;)</strong>',
+									'<a href="admin.php?page=wc-settings&amp;tab=general">' . esc_html__( 'here', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>.'
+								);
+								?>
+							</strong>
+						</p>
 						<style type="text/css">
 							#mainform .submit,
 							.wp-core-ui .button-primary.woocommerce-save-button {
@@ -445,8 +476,10 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 
 		/**
 		 * Thank you page
+		 *
+		 * @param mixed $order_id The order.
 		 */
-		function thankyou( $order_id ) {
+		public function thankyou( $order_id ) {
 			if ( is_object( $order_id ) ) {
 				$order = $order_id;
 			} else {
@@ -465,44 +498,48 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				}
 			}
 		}
-		function thankyou_instructions_table_html_css() {
+
+		/**
+		 * Thank you page instructions table CSS
+		 */
+		private function thankyou_instructions_table_html_css() {
 			ob_start();
 			?>
 			<style type="text/css">
-				table.<?php echo $this->id; ?>_table {
+				table.<?php echo esc_html( $this->id ); ?>_table {
 					width: auto !important;
 					margin: auto;
 					margin-top: 2em;
 					margin-bottom: 2em;
 					max-width: 325px !important;
 				}
-				table.<?php echo $this->id; ?>_table td,
-				table.<?php echo $this->id; ?>_table th {
+				table.<?php echo esc_html( $this->id ); ?>_table td,
+				table.<?php echo esc_html( $this->id ); ?>_table th {
 					background-color: #FFFFFF;
 					color: #000000;
 					padding: 10px;
 					vertical-align: middle;
 					white-space: nowrap;
 				}
-				table.<?php echo $this->id; ?>_table td.mb_value {
+				table.<?php echo esc_html( $this->id ); ?>_table td.mb_value {
 					text-align: right;
 				}
 				@media only screen and (max-width: 450px)  {
-					table.<?php echo $this->id; ?>_table td,
-					table.<?php echo $this->id; ?>_table th {
+					table.<?php echo esc_html( $this->id ); ?>_table td,
+					table.<?php echo esc_html( $this->id ); ?>_table th {
 						white-space: normal;
 					}
 				}
-				table.<?php echo $this->id; ?>_table th {
+				table.<?php echo esc_html( $this->id ); ?>_table th {
 					text-align: center;
 					font-weight: bold;
 				}
-				table.<?php echo $this->id; ?>_table th img {
+				table.<?php echo esc_html( $this->id ); ?>_table th img {
 					margin: auto;
 					margin-top: 10px;
 					max-height: 48px;
 				}
-				table.<?php echo $this->id; ?>_table td.barcode_img {
+				table.<?php echo esc_html( $this->id ); ?>_table td.barcode_img {
 					text-align: center;
 				}
 			</style>
@@ -510,7 +547,12 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			return ob_get_clean();
 		}
 
-		function order_details_after_order_table( $order ) {
+		/**
+		 * Thank you page instructions table HTML
+		 *
+		 * @param WC_Order $order The order.
+		 */
+		public function order_details_after_order_table( $order ) {
 			if ( is_wc_endpoint_url( 'view-order' ) ) {
 				$this->thankyou( $order );
 			}
@@ -518,12 +560,26 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 
 		/**
 		 * Email instructions
+		 *
+		 * @param WC_Order $order         The order.
+		 * @param bool     $sent_to_admin If it's sent to admin.
+		 * @param bool     $plain_text    If it's plain text format.
+		 * @param WC_Email $email         The email being sent.
 		 */
-		function email_instructions_1( $order, $sent_to_admin, $plain_text, $email = null ) {
+		public function email_instructions_1( $order, $sent_to_admin, $plain_text, $email = null ) {
 			// "Hyyan WooCommerce Polylang" Integration removes "email_instructions" so we use "email_instructions_1"
 			$this->email_instructions( $order, $sent_to_admin, $plain_text, $email );
 		}
-		function email_instructions( $order, $sent_to_admin, $plain_text, $email = null ) {
+
+		/**
+		 * Email instructions
+		 *
+		 * @param WC_Order $order         The order.
+		 * @param bool     $sent_to_admin If it's sent to admin.
+		 * @param bool     $plain_text    If it's plain text format.
+		 * @param WC_Email $email         The email being sent.
+		 */
+		private function email_instructions( $order, $sent_to_admin, $plain_text, $email = null ) {
 			// Avoid duplicate email instructions on some edge cases
 			$send = false;
 			if ( ( $sent_to_admin ) ) {
@@ -992,11 +1048,11 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				<script type="text/javascript">
 				(function () {
 					notice    = jQuery( '#creditcard_ifthen_newmethod_notice');
-					dismissed = localStorage.getItem( '<?php echo $this->id; ?>_newmethod_notice_dismiss' );
+					dismissed = localStorage.getItem( '<?php echo esc_attr( $this->id ); ?>_newmethod_notice_dismiss' );
 					if ( !dismissed ) {
 						jQuery( notice ).show();
 						jQuery( notice ).on( 'click', 'button.notice-dismiss', function() {
-							localStorage.setItem( '<?php echo $this->id; ?>_newmethod_notice_dismiss', 1 );
+							localStorage.setItem( '<?php echo esc_attr( $this->id ); ?>_newmethod_notice_dismiss', 1 );
 						});
 					}
 				}());

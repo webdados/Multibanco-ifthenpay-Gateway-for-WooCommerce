@@ -167,7 +167,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 		/**
 		 * Upgrades (if needed)
 		 */
-		function upgrade() {
+		private function upgrade() {
 			if ( $this->get_option( 'version' ) < $this->version ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
@@ -212,7 +212,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 		 *      'default' => 'default value'
 		 *  ),
 		 */
-		function init_form_fields() {
+		public function init_form_fields() {
 
 			$this->form_fields = array(
 				'enabled'  => array(
@@ -1194,7 +1194,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				}
 				if ( $arguments_ok ) { // Isto deve ser separado em vários IFs para melhor se identificar o erro
 					// Payments
-					if ( trim( $estado ) == 'PAGO' ) {
+					if ( trim( $estado ) === 'PAGO' ) {
 						$orders_exist   = false;
 						$pending_status = apply_filters( 'mbway_ifthen_valid_callback_pending_status', WC_IfthenPay_Webdados()->unpaid_statuses ); // Double filter - Should we deprectate this one?
 						$args           = array(
@@ -1230,7 +1230,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							}
 						}
 						if ( $orders_exist ) {
-							if ( $orders_count == 1 ) {
+							if ( $orders_count === 1 ) {
 								if (
 									$order->get_id() == $referencia
 									||
@@ -1290,7 +1290,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 							do_action( 'mbway_ifthen_callback_payment_failed', 0, $err, $_GET );
 						}
 						// Refunds
-					} elseif ( trim( $estado ) == 'DEVOLVIDO' && $this->do_refunds ) {
+					} elseif ( trim( $estado ) === 'DEVOLVIDO' && $this->do_refunds ) {
 						// Porque não é compatível com o novo filtro ifthen_webservice_send_order_number_instead_id temos de ir buscar primeiro a order através do idPedido que é o mesmo e depois ir buscar os refunds que são childs dessa order
 						$order_exist   = false;
 						$refunds_exist = false;

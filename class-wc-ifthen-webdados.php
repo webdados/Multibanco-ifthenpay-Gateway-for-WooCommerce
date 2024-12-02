@@ -38,7 +38,7 @@ final class WC_IfthenPay_Webdados {
 	public $is_pay_form             = false;
 	public $callback_email          = 'callback@ifthenpay.com';
 	public $callback_webservice     = 'https://www.ifthenpay.com/api/endpoint/callback/activation';
-	public $unpaid_statuses         = array( 'on-hold', 'pending', 'partially-paid' );
+	public $unpaid_statuses         = array( 'on-hold', 'pending', 'partially-paid', 'failed' );
 	public $hpos_enabled            = false;
 	public $refunds_url             = 'https://ifthenpay.com/api/endpoint/payments/refund';
 	private $gateways_loaded        = false;
@@ -115,7 +115,7 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables - For Apple and Google Pay */
 	public $gateway_ifthen_settings     = null;
 	public $gateway_ifthen_notify_url   = '';
-	public $gateway_ifthenreturn_url    = '';
+	public $gateway_ifthen_return_url    = '';
 	public $gateway_ifthen_min_value    = 0; /* No limit in theory */
 	public $gateway_ifthen_max_value    = 99999.99; /* No limit in theory */
 	public $gateway_ifthen_banner_email = ''; /* Needed ? */
@@ -210,16 +210,16 @@ final class WC_IfthenPay_Webdados {
 		$this->gateway_ifthen_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Gateway_IfThen_Webdados' )
+			home_url( '/?wc-api=WC_Gateway_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_Gateway_IfThen_Webdados/' )
+			home_url( '/wc-api/WC_Gateway_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&ifthenpayfee=[FEE]' )
 		);
-		$this->gateway_ifthenreturn_url = (
+		$this->gateway_ifthen_return_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Gateway_PayReturn_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&payment_method=[PAYMENT_METHOD]&ifthenpayfee=[FEE]' )
+			home_url( '/?wc-api=WC_GatewayReturn_IfThen_Webdados' )
 			:
-			home_url( '/wc-api/WC_Gateway__PayReturn_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&payment_method=[PAYMENT_METHOD]&ifthenpayfee=[FEE]' )
+			home_url( '/wc-api/WC_GatewayReturn_IfThen_Webdados/' )
 		);
 		// Hooks
 		$this->init_hooks();
@@ -255,6 +255,7 @@ final class WC_IfthenPay_Webdados {
 		// Order status listener/Ajax hook
 		add_action( 'wp_ajax_wc_mbway_ifthen_order_status', array( $this, 'mbway_ajax_order_status' ) );
 		add_action( 'wp_ajax_wc_cofidispay_ifthenpay_order_status', array( $this, 'cofidispay_ajax_order_status' ) );
+		add_action( 'wp_ajax_wc_gateway_ifthenpay_order_status', array( $this, 'gatewayifthenpay_ajax_order_status' ) );
 		// Request MB WAY payment again
 		add_action( 'wp_ajax_mbway_ifthen_request_payment_again', array( $this, 'wp_ajax_mbway_ifthen_request_payment_again' ) );
 		// Order value changed?
@@ -330,7 +331,7 @@ final class WC_IfthenPay_Webdados {
 		$this->cofidispay_banner       = plugins_url( 'images/cofidispay_banner.svg', __FILE__ );
 		$this->cofidispay_icon         = plugins_url( 'images/cofidispay_icon.svg', __FILE__ );
 
-		$this->gateway_ifthen_banner_email = plugins_url( 'images/creditcard_banner_and_icon.png', __FILE__ ); // Same as credit card for now
+		$this->gateway_ifthen_banner_email = plugins_url( 'images/gateway_ifthen_banner.png', __FILE__ );
 		$this->gateway_ifthen_banner       = plugins_url( 'images/gateway_ifthen_banner.svg', __FILE__ );
 		$this->gateway_ifthen_icon         = plugins_url( 'images/gateway_ifthen_icon.svg', __FILE__ );
 	}
@@ -688,6 +689,32 @@ final class WC_IfthenPay_Webdados {
 				'time'          => $time,
 				'payment_url'   => $payment_url,
 				'wd_secret'     => $wd_secret,
+			);
+		}
+		return false;
+	}
+
+	/* Get IfthenPay Gateway order details */
+	public function get_gatewayifthenpay_order_details( $order_id ) {
+		$order          = wc_get_order( $order_id );
+		$gatewaykey     = $order->get_meta( '_' . $this->gateway_ifthen_id . '_gatewaykey' );
+		$pincode        = $order->get_meta( '_' . $this->gateway_ifthen_id . '_pincode' );
+		$id             = $order->get_meta( '_' . $this->gateway_ifthen_id . '_id' );
+		$val            = $order->get_meta( '_' . $this->gateway_ifthen_id . '_val' );
+		$time           = $order->get_meta( '_' . $this->gateway_ifthen_id . '_time' );
+		$payment_url    = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_url' );
+		$wd_secret      = $order->get_meta( '_' . $this->gateway_ifthen_id . '_wd_secret' );
+		$payment_method = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_method' );
+		if ( ! empty( $gatewaykey ) && ! empty( $id ) && ! empty( $pincode ) && ! empty( $val ) ) {
+			return array(
+				'gatewaykey'     => $gatewaykey,
+				'pincode'        => $pincode,
+				'id'             => $id,
+				'val'            => $val,
+				'time'           => $time,
+				'payment_url'    => $payment_url,
+				'wd_secret'      => $wd_secret,
+				'payment_method' => $payment_method,
 			);
 		}
 		return false;
@@ -1126,7 +1153,80 @@ final class WC_IfthenPay_Webdados {
 				break;
 			// IfthenPay Gateway
 			case $this->gateway_ifthen_id:
-				echo '<p>POR IMPLEMENTAR</p>';
+				if ( $order_mb_details = $this->get_gatewayifthenpay_order_details( $order->get_id() ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
+					echo '<p><img src="' . esc_url( $this->gateway_ifthen_banner ) . '" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="IfthenPay Gateway" title="IfthenPay Gateway"/></p>';
+					echo '<p>' . __( 'Gateway Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . trim( $order_mb_details['gatewaykey'] ) . '<br/>';
+					echo __( 'Pincode', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . trim( $order_mb_details['pincode'] ) . '<br/>';
+					echo __( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ) . '</p>';
+					if ( $this->order_needs_payment( $order ) ) {
+						$show_debug = true;
+						if ( $this->wc_deposits_active && $order->get_status() == 'partially-paid' ) {
+							echo '<p><strong>' . __( 'Partially paid.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</strong></p>';
+							if ( $order->get_meta( '_wc_deposits_second_payment_paid' ) != 'yes' && floatval( $order->get_meta( '_wc_deposits_second_payment' ) ) == floatval( $order_mb_details['val'] ) ) {
+								echo '<p><strong>' . __( 'Awaiting second IfthenPay Gateway payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</strong></p>';
+							} else {
+								$show_debug = false;
+							}
+						} else {
+							echo '<p><strong>' . __( 'Awaiting IfthenPay Gateway confirmation.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</strong></p>';
+						}
+						/*
+						echo sprintf(
+							'<p>%1$s: %2$s</p>',
+							__( 'Payment link', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							sprintf(
+								'<a href="%1$s" target="_blank">%2$s</a>',
+								esc_attr( $order_mb_details['payment_url'] ),
+								__( 'Open', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+							)
+						);*/ // Returns duplicate payment, maybe because it expires on the first hit
+						if ( $show_debug && WP_DEBUG ) {
+							$callback_url = $this->gateway_ifthen_notify_url;
+							$callback_url = str_replace( '[ANTI_PHISHING_KEY]', $this->gateway_ifthen_settings['secret_key'], $callback_url );
+							$callback_url = str_replace( '[ID]', trim( $order_mb_details['id'] ), $callback_url );
+							$callback_url = str_replace( '[AMOUNT]', $order_mb_details['val'], $callback_url );
+							$callback_url = str_replace( '[PAYMENT_DATETIME]', urlencode( date_i18n( 'Y-m-d H:i:s' ) ), $callback_url );
+							$callback_url = str_replace( '[STATUS]', 'PAGO', $callback_url );
+							$callback_url = str_replace( '[PAYMENT_METHOD]', 'TESTING', $callback_url );
+							$callback_url = str_replace( '[FEE]', 0, $callback_url );
+							?>
+							<hr/>
+							<p>
+								<?php _e( 'Callback URL', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:<br/>
+								<textarea readonly type="text" class="input-text" cols="20" rows="5" style="width: 100%; height: 50%; font-size: 10px;"><?php echo $callback_url; ?></textarea>
+							</p>
+							<script type="text/javascript">
+							jQuery( document ).ready( function() {
+								jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
+									if ( confirm( '<?php _e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
+										jQuery.get( '<?php echo $callback_url; ?>', '', function( response ) {
+											alert( '<?php _e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+											window.location.reload();
+										}).fail( function() {
+											alert( '<?php _e( 'Error: Could not set the order as paid', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+										});
+									}
+								});
+							});
+							</script>
+							<p align="center">
+								<input type="button" class="button" id="multibanco_ifthen_for_woocommerce_simulate_callback" value="<?php echo esc_attr( __( 'Simulate callback payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); ?>"/>
+							</p>
+							<?php
+						}
+					} else {
+						// PAID?
+						if ( $date_paid ) {
+							echo '<p><strong>' . __( 'Paid', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - ' . $order_mb_details['payment_method'] . ': ' . $date_paid . '</strong></p>';
+						}
+					}
+				} else {
+					echo '<p>' . __( 'No details available', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '.</p><p>' . sprintf(
+						__( 'This must be an error because the payment method of this order is %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'IfthenPay Gateway'
+					) . '.</p>';
+
+				}
 				break;
 			// None
 			default:
@@ -1184,7 +1284,7 @@ final class WC_IfthenPay_Webdados {
 	}
 
 	/* Set new order Multibanco Entity/Reference/Value on meta */
-	public function multibanco_set_order_mb_details( $order_id, $order_mb_details ) {
+	public function set_order_multibanco_details( $order_id, $order_mb_details ) {
 		$order = wc_get_order( $order_id );
 		$order->update_meta_data( '_' . $this->multibanco_id . '_ent', $order_mb_details['ent'] );
 		$order->update_meta_data( '_' . $this->multibanco_id . '_ref', $order_mb_details['ref'] );
@@ -1203,7 +1303,7 @@ final class WC_IfthenPay_Webdados {
 			$order->update_meta_data( '_' . $this->multibanco_id . '_RequestId', $order_mb_details['RequestId'] );
 		}
 		$order->save();
-		$this->debug_log_extra( $this->multibanco_id, 'multibanco_set_order_mb_details - Details updated on the database: ' . wp_json_encode( $order_mb_details ) . ' - Order: ' . $order->get_id() );
+		$this->debug_log_extra( $this->multibanco_id, 'set_order_multibanco_details - Details updated on the database: ' . wp_json_encode( $order_mb_details ) . ' - Order: ' . $order->get_id() );
 	}
 
 	/* Clear Multibanco Entity/Reference/Value on meta */
@@ -1260,7 +1360,7 @@ final class WC_IfthenPay_Webdados {
 	}
 
 	/* Set new order MB WAY details on meta */
-	public function multibanco_set_order_mbway_details( $order_id, $order_mbway_details ) {
+	public function set_order_mbway_details( $order_id, $order_mbway_details ) {
 		$order = wc_get_order( $order_id );
 		$order->update_meta_data( '_' . $this->mbway_id . '_mbwaykey', $order_mbway_details['mbwaykey'] );
 		$order->update_meta_data( '_' . $this->mbway_id . '_id_pedido', $order_mbway_details['id_pedido'] );
@@ -1279,7 +1379,7 @@ final class WC_IfthenPay_Webdados {
 	}
 
 	/* Set new order Payshop Reference details on meta */
-	public function multibanco_set_order_payshop_details( $order_id, $order_payshop_details ) {
+	public function set_order_payshop_details( $order_id, $order_payshop_details ) {
 		$order = wc_get_order( $order_id );
 		$order->update_meta_data( '_' . $this->payshop_id . '_payshopkey', $order_payshop_details['payshopkey'] );
 		$order->update_meta_data( '_' . $this->payshop_id . '_ref', $order_payshop_details['ref'] );
@@ -1294,7 +1394,7 @@ final class WC_IfthenPay_Webdados {
 	}
 
 	/* Set new order Credit card details on meta */
-	public function multibanco_set_order_creditcard_details( $order_id, $order_creditcard_details ) {
+	public function set_order_creditcard_details( $order_id, $order_creditcard_details ) {
 		$order = wc_get_order( $order_id );
 		$order->update_meta_data( '_' . $this->creditcard_id . '_creditcardkey', $order_creditcard_details['creditcardkey'] );
 		$order->update_meta_data( '_' . $this->creditcard_id . '_request_id', $order_creditcard_details['request_id'] );
@@ -1306,8 +1406,8 @@ final class WC_IfthenPay_Webdados {
 		$order->save();
 	}
 
-	/* Set new order Credit card details on meta */
-	public function multibanco_set_order_cofidispay_details( $order_id, $order_cofidispay_details ) {
+	/* Set new order Cofidis Pay details on meta */
+	public function set_order_cofidispay_details( $order_id, $order_cofidispay_details ) {
 		$order = wc_get_order( $order_id );
 		$order->update_meta_data( '_' . $this->cofidispay_id . '_cofidispaykey', $order_cofidispay_details['cofidispaykey'] );
 		$order->update_meta_data( '_' . $this->cofidispay_id . '_request_id', $order_cofidispay_details['request_id'] );
@@ -1316,6 +1416,19 @@ final class WC_IfthenPay_Webdados {
 		$order->update_meta_data( '_' . $this->cofidispay_id . '_payment_url', $order_cofidispay_details['payment_url'] );
 		$order->update_meta_data( '_' . $this->cofidispay_id . '_wd_secret', $order_cofidispay_details['wd_secret'] );
 		$order->update_meta_data( '_' . $this->cofidispay_id . '_time', date_i18n( 'Y-m-d H:i:s' ) );
+		$order->save();
+	}
+
+	/* Set new order IfthenPay Gateway details on meta */
+	public function set_order_gatewayifthenpay_details( $order_id, $order_gateway_details ) {
+		$order = wc_get_order( $order_id );
+		$order->update_meta_data( '_' . $this->gateway_ifthen_id . '_gatewaykey', $order_gateway_details['gatewaykey'] );
+		$order->update_meta_data( '_' . $this->gateway_ifthen_id . '_pincode', $order_gateway_details['pincode'] );
+		$order->update_meta_data( '_' . $this->gateway_ifthen_id . '_id', $order_gateway_details['id'] );
+		$order->update_meta_data( '_' . $this->gateway_ifthen_id . '_val', $order_gateway_details['val'] );
+		$order->update_meta_data( '_' . $this->gateway_ifthen_id . '_payment_url', $order_gateway_details['payment_url'] );
+		$order->update_meta_data( '_' . $this->gateway_ifthen_id . '_wd_secret', $order_gateway_details['wd_secret'] );
+		$order->update_meta_data( '_' . $this->gateway_ifthen_id . '_time', date_i18n( 'Y-m-d H:i:s' ) );
 		$order->save();
 	}
 
@@ -1432,7 +1545,7 @@ final class WC_IfthenPay_Webdados {
 													$details['exp'] = $date;
 												}
 												// Store on the order for later use (like the email)
-												$this->multibanco_set_order_mb_details( $order->get_id(), $details );
+												$this->set_order_multibanco_details( $order->get_id(), $details );
 												$this->debug_log( $this->multibanco_id, 'Multibanco payment details (' . $details['ent'] . ' / ' . $details['ref'] . ' / ' . $details['val'] . ') generated for Order ' . $order->get_id() );
 												// Return it!
 												do_action(
@@ -1551,7 +1664,7 @@ final class WC_IfthenPay_Webdados {
 									}
 								}
 								// Store on the order for later use (like the email)
-								$this->multibanco_set_order_mb_details(
+								$this->set_order_multibanco_details(
 									$order->get_id(),
 									array(
 										'ent' => $base['ent'],
@@ -1765,7 +1878,7 @@ final class WC_IfthenPay_Webdados {
 							$id_pedido = trim( $xmlData->IdPedido );
 							$valor     = floatval( $xmlData->Valor );
 							if ( $valor == round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 ) ) {
-								WC_IfthenPay_Webdados()->multibanco_set_order_mbway_details(
+								WC_IfthenPay_Webdados()->set_order_mbway_details(
 									$order->get_id(),
 									array(
 										'mbwaykey'  => $mbwaykey,
@@ -1984,13 +2097,13 @@ final class WC_IfthenPay_Webdados {
 											__( 'The %s payment details have changed', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 											'Payshop'
 										) . ':
-– – – – – – – – – – – – – – – – – - - - -
+- - - - - - - - - - - - - - - - - - - - -
 ' . __( 'Previous reference', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': %s
 ' . __( 'Previous value', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': %s
-– – – – – – – – – – – – – – – – – - - - -
+- - - - - - - - - - - - - - - - - - - - -
 ' . __( 'New reference', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': %s
 ' . __( 'New value', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': %s
-– – – – – – – – – – – – – – – – – - - - -
+- - - - - - - - - - - - - - - - - - - - -
 ' . sprintf(
 										__( 'If the customer pays using the previous details, the payment will be accepted by the %s system, but the order will not be updated via callback.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 										'Payshop'
@@ -2068,6 +2181,8 @@ final class WC_IfthenPay_Webdados {
 					case '_' . $this->cofidispay_id . '_id':
 					case '_' . $this->cofidispay_id . '_request_id':
 					case '_' . $this->cofidispay_id . '_wd_secret':
+					case '_' . $this->gateway_ifthen_id . '_id':
+					case '_' . $this->gateway_ifthen_id . '_wd_secret':
 						$query['meta_query'][] = array(
 							'key'   => $key,
 							'value' => esc_attr( $value ), // WHY esc_attr?
@@ -2122,7 +2237,7 @@ final class WC_IfthenPay_Webdados {
 				// After 3.4.0
 				if ( $this->order_needs_payment( $order ) ) {
 					// Pending payment
-					if ( $stock_when == 'order' ) {
+					if ( $stock_when === 'order' ) {
 						// Yes, because we want to reduce on the order
 						return true;
 					} else {
@@ -2130,7 +2245,7 @@ final class WC_IfthenPay_Webdados {
 					}
 				} else {
 					// Payment done
-					if ( $stock_when == '' ) {
+					if ( $stock_when === '' ) {
 						// Yes, because we want to reduce on payment
 						return true;
 					} else {
@@ -2509,13 +2624,13 @@ final class WC_IfthenPay_Webdados {
 				$premium_plugins = array(
 					array(
 						'url'         => 'https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/',
-						'title'       => __( 'Multibanco, MBWAY, Credit card and Payshop for WooCommerce – PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'title'       => __( 'Multibanco, MBWAY, Credit card and Payshop for WooCommerce - PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'multibanco.png',
 					),
 					array(
 						'url'         => 'https://invoicewoo.com/',
-						'title'       => __( 'Invoicing with InvoiceXpress for WooCommerce – Pro', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'title'       => __( 'Invoicing with InvoiceXpress for WooCommerce - Pro', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => __( 'InvoiceXpress', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'invoicexpress-woocommerce.png',
 					),
@@ -2632,6 +2747,22 @@ final class WC_IfthenPay_Webdados {
 
 	/* Cofidis Pay Ajax order status */
 	public function cofidispay_ajax_order_status() {
+		$order_id = wc_get_order_id_by_order_key( trim( $_POST['order_key'] ) );
+		if ( intval( $order_id ) > 0 && intval( $_POST['order_id'] ) == intval( $order_id ) ) {
+			$order = wc_get_order( intval( $order_id ) );
+			echo json_encode(
+				array( 'order_status' => $order->get_status() )
+			);
+		} else {
+			echo json_encode(
+				array( 'order_status' => '' )
+			);
+		}
+		die();
+	}
+
+	/* IfthenPay Gateway Ajax order status */
+	public function gatewayifthenpay_ajax_order_status() {
 		$order_id = wc_get_order_id_by_order_key( trim( $_POST['order_key'] ) );
 		if ( intval( $order_id ) > 0 && intval( $_POST['order_id'] ) == intval( $order_id ) ) {
 			$order = wc_get_order( intval( $order_id ) );

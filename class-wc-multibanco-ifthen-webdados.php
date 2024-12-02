@@ -165,7 +165,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 		/**
 		 * Upgrades (if needed)
 		 */
-		function upgrade() {
+		private function upgrade() {
 			if ( $this->get_option( 'version' ) < $this->version ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
@@ -246,7 +246,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 		 *      'default' => 'default value'
 		 *  ),
 		 */
-		function init_form_fields() {
+		public function init_form_fields() {
 			// Fix bug when the plugin is in Entity/Sub-entity mode but settings haven't been saved at least once
 			$api_mode_default = '';
 			if (

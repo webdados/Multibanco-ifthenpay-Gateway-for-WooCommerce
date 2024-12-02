@@ -160,7 +160,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		/**
 		 * Upgrades (if needed)
 		 */
-		function upgrade() {
+		private function upgrade() {
 			if ( $this->get_option( 'version' ) < $this->version ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
@@ -203,7 +203,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		 *      'default' => 'default value'
 		 *  ),
 		 */
-		function init_form_fields() {
+		public function init_form_fields() {
 
 			$this->form_fields = array(
 				'enabled'       => array(
@@ -629,7 +629,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
 					if ( $body = json_decode( trim( $response['body'] ) ) ) {
 						if ( intval( $body->Status ) == 0 ) {
-							WC_IfthenPay_Webdados()->multibanco_set_order_creditcard_details(
+							WC_IfthenPay_Webdados()->set_order_creditcard_details(
 								$order->get_id(),
 								array(
 									'creditcardkey' => $creditcardkey,
@@ -788,7 +788,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							$order_details = WC_IfthenPay_Webdados()->get_creditcard_order_details( $order->get_id() );
 							$sk            = isset( $_GET['sk'] ) ? trim( sanitize_text_field( $_GET['sk'] ) ) : '';
 							$hash          = hash_hmac( 'sha256', $id . $val . $request_id, $order_details['creditcardkey'] );
-							if ( $sk == $hash ) {
+							if ( $sk === $hash ) {
 								$this->debug_log_extra( 'Order found: ' . $order->get_id() . ' - Hash ok' );
 								$note = __( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 								// WooCommerce Deposits second payment?

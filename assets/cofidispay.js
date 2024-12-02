@@ -33,8 +33,8 @@ jQuery(
 					var response = JSON.parse( response );
 					console.log( 'Status: ' + response.order_status );
 					if ( response.order_status && ( response.order_status == 'processing' || response.order_status == 'completed' ) ) {
-						  // DONE
-						  location.reload();
+						// DONE
+						location.reload();
 					} else {
 						interval = Math.round( interval * 1.2 );
 						if ( total_interval <= cofidispay_expire ) {

@@ -177,7 +177,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 		/**
 		 * Upgrades (if needed)
 		 */
-		function upgrade() {
+		private function upgrade() {
 			if ( $this->get_option( 'version' ) < $this->version ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
@@ -220,7 +220,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 		 *      'default' => 'default value'
 		 *  ),
 		 */
-		function init_form_fields() {
+		public function init_form_fields() {
 
 			$this->form_fields = array(
 				'enabled'       => array(
@@ -871,7 +871,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
 					if ( $body = json_decode( trim( $response['body'] ) ) ) {
 						if ( intval( $body->status ) == 0 ) {
-							WC_IfthenPay_Webdados()->multibanco_set_order_cofidispay_details(
+							WC_IfthenPay_Webdados()->set_order_cofidispay_details(
 								$order->get_id(),
 								array(
 									'cofidispaykey' => $cofidispaykey,

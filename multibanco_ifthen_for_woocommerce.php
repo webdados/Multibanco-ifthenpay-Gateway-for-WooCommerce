@@ -1,19 +1,19 @@
 <?php
 /**
- * Plugin Name: Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce
- * Plugin URI: https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
- * Description: Allows customers to pay WooCommerce orders using using Multibanco, MB WAY, Credit card, Payshop or Cofidis Pay through IfthenPay’s payment gateway.
- * Version: 9.6.0
- * Author: PT Woo Plugins (by Webdados)
- * Author URI: https://ptwooplugins.com
- * Text Domain: multibanco-ifthen-software-gateway-for-woocommerce
- * Requires at least: 5.6
- * Tested up to: 6.7
- * Requires PHP: 7.0
- * WC requires at least: 6.0
- * WC tested up to: 9.4
- * Requires Plugins: woocommerce
- * License: GPLv3
+ * Plugin Name:          Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce
+ * Plugin URI:           https://www.webdados.pt/wordpress/plugins/multibanco-ifthen-software-gateway-woocommerce-wordpress/
+ * Description:          Allows customers to pay WooCommerce orders using using Multibanco, MB WAY, Credit card, Payshop or Cofidis Pay through IfthenPay’s payment gateway.
+ * Version:              10.0.0-beta.1
+ * Author:               PT Woo Plugins (by Webdados)
+ * Author URI:           https://ptwooplugins.com
+ * Text Domain:          multibanco-ifthen-software-gateway-for-woocommerce
+ * Requires at least:    5.8
+ * Tested up to:         6.7
+ * Requires PHP:         7.2
+ * WC requires at least: 7.0
+ * WC tested up to:      9.5
+ * Requires Plugins:     woocommerce
+ * License:              GPLv3
  **/
 
 /* WooCommerce CRUD ready */

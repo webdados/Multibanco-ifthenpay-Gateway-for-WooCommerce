@@ -115,7 +115,7 @@ final class WC_IfthenPay_Webdados {
 	/* Internal variables - For Apple and Google Pay */
 	public $gateway_ifthen_settings     = null;
 	public $gateway_ifthen_notify_url   = '';
-	public $gateway_ifthen_return_url    = '';
+	public $gateway_ifthen_return_url   = '';
 	public $gateway_ifthen_min_value    = 0; /* No limit in theory */
 	public $gateway_ifthen_max_value    = 99999.99; /* No limit in theory */
 	public $gateway_ifthen_banner_email = ''; /* Needed ? */
@@ -125,20 +125,28 @@ final class WC_IfthenPay_Webdados {
 	/* Single instance */
 	protected static $_instance = null;
 
-	/* Constructor */
+	/**
+	 * Constructor
+	 *
+	 * @param string $version The plugin version.
+	 */
 	public function __construct( $version ) {
 		$this->version           = $version;
 		$this->pro_add_on_active = function_exists( 'WC_IfthenPay_Pro' );
 		$this->wpml_active       = function_exists( 'icl_object_id' ) && function_exists( 'icl_register_string' );
 		if ( $this->wpml_active ) {
-			add_action( 'init', function() { // Since WordPress 6.7 avoid textdomain warnings
-				$this->wpml_translation_info = sprintf(
-					/* translators: %1$s: link opening tag, %2$s: link closing tag */
-					__( 'You should translate this string in %1$sWPML - String Translation%2$s after saving the settings', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-					'<a href="admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php">',
-					'</a>'
-				);
-			} );
+			// Since WordPress 6.7 avoid textdomain warnings
+			add_action(
+				'init',
+				function () {
+					$this->wpml_translation_info = sprintf(
+						/* translators: %1$s: link opening tag, %2$s: link closing tag */
+						__( 'You should translate this string in %1$sWPML - String Translation%2$s after saving the settings', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'<a href="admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php">',
+						'</a>'
+					);
+				}
+			);
 		}
 		$this->wc_deposits_active      = function_exists( 'wc_deposits_woocommerce_is_active' ) || function_exists( '\Webtomizer\WCDP\wc_deposits_woocommerce_is_active' );
 		$this->wc_subscriptions_active = function_exists( 'wcs_get_subscription' );
@@ -417,8 +425,14 @@ final class WC_IfthenPay_Webdados {
 					$payment_method_registry->register( new \Automattic\WooCommerce\Blocks\Payments\Integrations\CofidisPayIfthenPay() );
 				}
 			);
-			// Apple and Google Pay
-			// ...
+			// IfthenPay Gateway
+			require_once 'woocommerce-blocks/GatewayIfthenPay.php';
+			add_action(
+				'woocommerce_blocks_payment_method_type_registration',
+				function( Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+					$payment_method_registry->register( new \Automattic\WooCommerce\Blocks\Payments\Integrations\GatewayIfthenPay() );
+				}
+			);
 		}
 	}
 
@@ -3147,6 +3161,17 @@ final class WC_IfthenPay_Webdados {
 				'backoffice_key'      => apply_filters( 'ifthen_backoffice_key', '' ),
 			)
 		);
+	}
+
+	/**
+	 * Helper for outputing payment methods names from gateways
+	 */
+	public function helper_format_method( $method ) {
+		$method = trim( $method );
+		if ( strlen( $method ) > 3 ) {
+			$method = ucwords( strtolower( $method ) );
+		}
+		return $method;
 	}
 
 	/**

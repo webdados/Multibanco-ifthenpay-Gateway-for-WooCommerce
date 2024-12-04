@@ -75,7 +75,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 
 			// Webservice
 			$this->api_url_production       = 'https://api.ifthenpay.com/gateway/pinpay/'; // production mode
-			$this->api_url_sandbox          = ''; // test mode
+			$this->api_url_sandbox          = ''; // test mode?
 			$this->api_url                  = '';
 			$this->gateways_api_url         = 'https://www.ifthenpay.com/IfmbWS/ifthenpaymobile.asmx/GetGatewayKeys';
 			$this->gateways_methods_api_url = 'https://www.ifthenpay.com/IfmbWS/ifthenpaymobile.asmx/GetAccountsByGatewayKey';
@@ -130,7 +130,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				// Payment listener - Return from payment gateway
 				add_action( 'woocommerce_api_wc_gatewayreturn_ifthen_webdados', array( $this, 'return_payment_gateway' ) );
 
-				// Payment listener - Return from payment gateway
+				// Payment listener - Callback
 				add_action( 'woocommerce_api_wc_gateway_ifthen_webdados', array( $this, 'callback' ) );
 
 				// Admin notices
@@ -147,7 +147,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					$this->title .= ' - SANDBOX (TEST MODE)';
 				}
 
-				// Availability checker - Maybe later
+				// Frontend availability checker for Apple and Google Pay - Maybe later
 				// add_action( 'wp_enqueue_scripts', array( $this, 'frontend_classic_checkout_availability_check' ) );
 			}
 
@@ -298,7 +298,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					);
 					foreach ( $gateways as $gateway ) {
 						if ( $gateway->Tipo === 'Estáticas' || apply_filters( 'gateway_ifthen_allow_dynamic_gateways', false ) ) {
-							$this->form_fields['gatewaykey']['options'][ $gateway->GatewayKey ] = $gateway->Alias;
+							$this->form_fields['gatewaykey']['options'][ $gateway->GatewayKey ] = $gateway->Alias . ( $gateway->Tipo !== 'Estáticas' ? ' (' . trim( $gateway->Tipo ) . ')' : '' );
 						}
 					}
 					$available_methods = array();
@@ -310,13 +310,13 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 									'title'       => sprintf(
 										/* translators: %s: payment method */
 										__( '%s Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-										$method
+										WC_IfthenPay_Webdados()->helper_format_method( $method )
 									),
 									'type'        => 'select',
 									'description' => sprintf(
 										/* translators: %s: payment method */
 										__( '%s Key, that you want to use for this gateway, provided by IfthenPay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-										$method
+										WC_IfthenPay_Webdados()->helper_format_method( $method )
 									) . '<br/>' . __( 'The callback will automatically be set for this key, on this website, so make sure you are not using it anywhere else.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 									'default'     => '',
 									'options'     => array(
@@ -393,6 +393,12 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						),
 						'default'     => '',
 					),
+					// phpcs:disable
+					// Not implemented yet
+					// 'validity'      => array(
+					// 	'title'       => __( 'Validity in days', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					// ),
+					// phpcs:enable
 				)
 			);
 			// Not implemented yet
@@ -470,7 +476,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						<small>v.<?php echo esc_html( $this->version ); ?></small>
 						<?php
 						if ( function_exists( 'wc_back_link' ) ) {
-							echo wp_kses_post( wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ) );
+							wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) );
 						}
 						?>
 					</h2>
@@ -578,15 +584,13 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				if ( strlen( $backoffice_key ) === 19 ) {
 					if ( $backoffice_key !== $this->backoffice_key ) {
 						// Update gateways
-						$response = wp_remote_get( $this->gateways_api_url . '?backofficekey=' . $backoffice_key );
+						$url      = $this->gateways_api_url . '?backofficekey=' . $backoffice_key;
+						$response = wp_remote_get( $url );
 						if ( ! is_wp_error( $response ) ) {
 							if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) === 200 && isset( $response['body'] ) && trim( $response['body'] ) !== '' ) {
 								$body = json_decode( trim( $response['body'], true ) );
 								if ( ! empty( $body ) ) {
 									update_option( $this->id . '_gateways', $body );
-									if ( wp_safe_redirect( 'admin.php?page=wc-settings&tab=checkout&section=' . $this->id ) ) {
-										exit();
-									}
 								} else {
 									// Error handling missing
 									delete_option( $this->id . '_gateways' );
@@ -604,19 +608,17 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						}
 					} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
 						if ( isset( $_POST[ 'woocommerce_' . $this->id . '_gatewaykey' ] ) ) {
-							$gatewaykey = trim( sanitize_text_field( wp_unslash( $_POST[ 'woocommerce_' . $this->id . '_backoffice_key' ] ) ) );
+							$gatewaykey = trim( sanitize_text_field( wp_unslash( $_POST[ 'woocommerce_' . $this->id . '_gatewaykey' ] ) ) );
 							if ( strlen( $gatewaykey ) === 11 ) {
 								if ( trim( $gatewaykey ) !== $this->gatewaykey ) {
 									// Update gateway methods
-									$response = wp_remote_get( $this->gateways_methods_api_url . '?backofficekey=' . $backoffice_key . '&gatewayKey=' . $gatewaykey );
+									$url      = $this->gateways_methods_api_url . '?backofficekey=' . $backoffice_key . '&gatewayKey=' . $gatewaykey;
+									$response = wp_remote_get( $url );
 									if ( ! is_wp_error( $response ) ) {
 										if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) === 200 && isset( $response['body'] ) && trim( $response['body'] ) !== '' ) {
 											$body = json_decode( trim( $response['body'], true ) );
 											if ( ! empty( $body ) ) {
 												update_option( $this->id . '_gateway_methods', $body );
-												if ( wp_safe_redirect( 'admin.php?page=wc-settings&tab=checkout&section=' . $this->id ) ) {
-													exit();
-												}
 											} else {
 												// Error handling missing
 												delete_option( $this->id . '_gateway_methods' );
@@ -629,6 +631,13 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 										// Error handling missing
 										delete_option( $this->id . '_gateway_methods' );
 									}
+									// Delete chosen methods
+									foreach ( $this->settings as $key => $value ) {
+										if ( substr( $key, 0, 7 ) === 'method_' ) {
+											unset( $this->settings[ $key ] );
+										}
+									}
+									update_option( $this->get_option_key(), apply_filters( 'woocommerce_settings_api_sanitized_fields_' . $this->id, $this->settings ), 'yes' );
 								} else {
 									// Set gateway callbacks
 									$available_methods = $this->get_available_gateway_methods();
@@ -649,27 +658,48 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 														! isset( $this->methods_keys[ $method ] )
 													)
 												) {
-													var_dump( 'activate', $method_key );
-												}
-												// Update callback for account
-												/*
-												// Webservice
-												$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'MBWAY', $this->mbwaykey, $this->secret_key, WC_IfthenPay_Webdados()->mbway_notify_url );
-												if ( $result['success'] ) {
-													update_option( $this->id . '_callback_email_sent', 'yes' );
-													WC_Admin_Settings::add_message( __( 'The “Callback” activation request has been submited to IfthenPay via webservice and is now active.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
-												} else {
-													WC_Admin_Settings::add_error(
-														__( 'The “Callback” activation request via webservice has failed.', 'multibanco-ifthen-software-gateway-for-woocommerce' )
-														. ' - ' .
-														$result['message']
+													// Activate callback for this account.
+													$method_key_temp = explode( '|', $method_key );
+													$result          = WC_IfthenPay_Webdados()->callback_webservice(
+														$this->backoffice_key,
+														trim( $method_key_temp[0] ),
+														trim( $method_key_temp[1] ),
+														$this->secret_key,
+														WC_IfthenPay_Webdados()->gateway_ifthen_notify_url
 													);
+													$ok_messages     = array();
+													$error_messages  = array();
+													if ( $result['success'] ) {
+														WC_Admin_Settings::add_message(
+															sprintf(
+																/* translators: %s: payment account */
+																__( 'The “Callback” activation request for account %s has been submited to IfthenPay via webservice and is now active.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+																$method_key
+															)
+														);
+													} else {
+														// phpcs:disable
+														// https://github.com/woocommerce/woocommerce/issues/53397
+														// WC_Admin_Settings::add_error(
+														// phpcs:enabled
+														WC_Admin_Settings::add_message(
+															'ERROR: '
+															.
+															sprintf(
+																/* translators: %s: payment account */
+																__( 'The “Callback” activation request for account %s via webservice has failed.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+																$method_key
+															)
+															.
+															' - '
+															.
+															$result['message']
+														);
+													}
 												}
-												*/
 											}
 										}
 									}
-									wp_die();
 								}
 							} elseif ( strlen( $gatewaykey ) === 0 ) {
 								delete_option( $this->id . '_gateway_methods' );
@@ -882,9 +912,9 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						WC_IfthenPay_Webdados()->maybe_change_locale( $order );
 						// On Hold or pending
 						if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
-							if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->get_status() === 'partially-paid' ) {
+							if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->get_status() === 'partially-paid' ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 								// WooCommerce deposits - No instructions
-							} else {
+							} else { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedElse
 								// We should not be here because there's no email for pending orders
 							}
 						} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
@@ -1042,16 +1072,17 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						)
 					);
 				}
+				// Remove cart - not now, only after paid
 			} else {
 				// Value = 0
 				$order->payment_complete();
+				// Remove cart
+				if ( isset( WC()->cart ) ) {
+					WC()->cart->empty_cart();
+				}
+				// Empty awaiting payment session - not now, only after paid
+				unset( WC()->session->order_awaiting_payment );
 			}
-			// Remove cart - not now, only after paid
-			// if ( isset( WC()->cart ) ) {
-			// WC()->cart->empty_cart();
-			// }
-			// Empty awaiting payment session - not now, only after paid
-			// unset( WC()->session->order_awaiting_payment );
 			// Return payment url redirect
 			return array(
 				'result'   => 'success',

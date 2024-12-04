@@ -100,12 +100,12 @@
 					} else {
 						var number_fields = 4;
 					}
-					//$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_gatewaykey' ).on( 'change',
-					//	function() {
-					//		alert('aaaa');
-					//		$( '#mainform' ).submit();
-					//	}
-					//);
+					// Auto submit when changing gateway key
+					$( '#woocommerce_gateway_ifthen_ifthen_for_woocommerce_gatewaykey' ).on( 'change',
+						function() {
+							$( '#mainform p.submit button' ).removeAttr('disabled').click();
+						}
+					);
 				} else {
 					var number_fields = 3;
 				}

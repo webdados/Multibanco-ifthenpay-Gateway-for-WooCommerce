@@ -750,16 +750,17 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						)
 					);
 				}
+				// Remove cart - not now, only after paid
 			} else {
 				// Value = 0
 				$order->payment_complete();
+				// Remove cart
+				if ( isset( WC()->cart ) ) {
+					WC()->cart->empty_cart();
+				}
+				// Empty awaiting payment session - not now, only after paid
+				unset( WC()->session->order_awaiting_payment );
 			}
-			// Remove cart - not now, only after paid
-			// if ( isset( WC()->cart ) ) {
-			// WC()->cart->empty_cart();
-			// }
-			// Empty awaiting payment session - not now, only after paid
-			// unset( WC()->session->order_awaiting_payment );
 			// Return payment url redirect
 			return array(
 				'result'   => 'success',

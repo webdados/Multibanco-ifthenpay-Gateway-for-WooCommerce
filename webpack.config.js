@@ -10,7 +10,8 @@ module.exports = {
 		'creditcard-block': path.resolve( process.cwd(), 'woocommerce-blocks', 'creditcard', 'src', 'index.js' ),
 		'mbway-block': path.resolve( process.cwd(), 'woocommerce-blocks', 'mbway', 'src', 'index.js' ),
 		'multibanco-block': path.resolve( process.cwd(), 'woocommerce-blocks', 'multibanco', 'src', 'index.js' ),
-		'payshop-block': path.resolve( process.cwd(), 'woocommerce-blocks', 'payshop', 'src', 'index.js' )
+		'payshop-block': path.resolve( process.cwd(), 'woocommerce-blocks', 'payshop', 'src', 'index.js' ),
+		'gateway-block': path.resolve( process.cwd(), 'woocommerce-blocks', 'gateway', 'src', 'index.js' )
 	},
 	output: {
 		path: path.resolve( __dirname, 'woocommerce-blocks/build' ),

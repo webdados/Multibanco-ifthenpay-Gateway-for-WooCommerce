@@ -391,7 +391,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 						<small>v.<?php echo $this->version; ?></small>
 						<?php
 						if ( function_exists( 'wc_back_link' ) ) {
-							echo wp_kses_post( wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ) );
+							wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) );
 						}
 						?>
 					</h2>
@@ -996,16 +996,17 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						)
 					);
 				}
+				// Remove cart - not now, only after paid
 			} else {
 				// Value = 0
 				$order->payment_complete();
+				// Remove cart
+				if ( isset( WC()->cart ) ) {
+					WC()->cart->empty_cart();
+				}
+				// Empty awaiting payment session - not now, only after paid
+				unset( WC()->session->order_awaiting_payment );
 			}
-			// Remove cart - not now, only after paid
-			// if ( isset( WC()->cart ) ) {
-			// WC()->cart->empty_cart();
-			// }
-			// Empty awaiting payment session - not now, only after paid
-			// unset( WC()->session->order_awaiting_payment );
 			// Return payment url redirect
 			return array(
 				'result'   => 'success',

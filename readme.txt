@@ -1,4 +1,4 @@
-=== Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce ===
+=== Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis Pay, and PIX (IfthenPay) for WooCommerce ===
 Contributors: webdados, ptwooplugins, ifthenpay
 Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.8
@@ -8,14 +8,18 @@ Stable tag: 9.6.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Allows customers to pay WooCommerce orders using using Multibanco, MB WAY, Credit card, Payshop or Cofidis Pay through IfthenPay’s payment gateway.
+Secure WooCommerce payments with Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis, and PIX via IfthenPay’s payment gateway.
 
 == Description ==
 
-“Pagamento de Serviços” (payment of services) on Multibanco (Portuguese ATM network), or homebanking services, is the most popular way to pay for services and (online) purchases in Portugal. Portuguese consumers trust the “Multibanco” system more than any other.
-This plugin will allow you to generate a payment Reference the customer can then use to pay for his WooCommerce order, through an ATM or homebanking service.
+“Pagamento de Serviços” (payment of services) on Multibanco (Portuguese ATM network), and MB WAY (using the customer’s mobile phone number), are the most popular way to pay for services and (online) purchases in Portugal.
+Portuguese consumers trust the “Multibanco” and “MB WAY” payment methods more than any other.
 
-The MB WAY (using the customer mobile phone number), Credit or debit card, CTT Payshop and Cofidis Pay payment methods are also available, for any customer with a Portuguese bank account.
+This plugin will generate a “Multibanco” payment Reference the customer can then use to pay for his WooCommerce order, through an ATM or homebanking service, or an “MB WAY” payment request which will send a push notification to the customer’s mobile phone for payment approval.
+
+Credit or debit cards, including Apple Pay and Google Pay, CTT Payshop, and Cofidis Pay payment methods are also available, for any customer with a Portuguese bank account.
+
+Holders of a Brazilian bank account can conveniently pay for WooCommerce orders in Euros, with automatic currency conversion to Brazilian Real, using PIX.
 
 This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract with this company is required. Technical support is provided by [PT Woo Plugins](https://ptwooplugins.com) (by [Webdados](https://www.webdados.pt)) on the [WordPress.org support forums](https://wordpress.org/support/plugin/multibanco-ifthen-software-gateway-for-woocommerce/).
 
@@ -25,9 +29,10 @@ This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract w
 
 * Generates a Multibanco Reference for simple payment on the Portuguese ATM network or homebanking service;
 * Allows the customer to pay using MB WAY using his mobile phone;
-* Allows the customer to pay using his Credit or debit card;
+* Allows the customer to pay using his Credit or debit card, including Apple Pay and Google Pay;
 * Generates a Payshop Reference for simple payment on the [Payshop agents network](https://www.payshop.pt/fepsapl/app/open/showSearchAgent.jspx), CTT stores or post offices available all over Portugal;
 * Allows the customer to pay in up to 12 interest-free installments via Cofidis Pay;
+* Customers with Brazilian bank accounts can use PIX;
 * Multibanco references with expiration date if the “MB Key” configuration method is used;
 * Automatically changes the order status to “Processing” (or “Completed” if the order only contains virtual downloadable products) and notifies both the customer and the store owner, if the automatic “Callback” upon payment is activated;
 * Automatic “Callback” can be activated upon request to IfthenPay, via the plugin settings screen for each payment method;
@@ -53,30 +58,30 @@ This is the official [IfthenPay](https://ifthenpay.com) plugin, and a contract w
 Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/) and unlock extra features:
 
 * Recover unpaid MB WAY orders by converting them to Multibanco and notify the customer via email;
-* Automatic cancellation of orders when Multibanco, Payshop or MB WAY references expire;
+* Automatic cancellation of orders when Multibanco, Payshop, or MB WAY references expire;
 * Countdown timer on the “thank you” page for MB WAY payments;
 * Save the MB WAY mobile number to the user profile for future purchases;
 * Trigger Multibanco and MB WAY payments when creating orders via the REST API;
-* Store and show IfthenPay fee on each order;
-* Codifis payment information banner, with the price to pay month, on the product page (simple product for now);
-* Set a payment entity for Multibanco, MB WAY, Credit card, Payshop and Cofidis Pay at the product category level, so that you can receive payment in different accounts based on the order products (replaces previously available specific extension);
+* Store and show the IfthenPay fee on each order;
+* Codifis payment information banner, with the price to pay monthly, on the product page (simple product for now);
+* Set a payment entity for Multibanco, MB WAY, Credit card, Payshop, and Cofidis Pay at the product category level, so that you can receive payment in different accounts based on the order products (replaces previously available specific extension);
 	* Simplified marketplace;
 	* Lock the cart so you can only have products from a single account in the same order;
-* Remove payment instructions from specific emails, for example “order completed”, to avoid customer confusion when they are no longer necessary;
-* Autofill the VAT number on the Cofidis Pay gateway from several VAT number plugins (more can be addded on request);
-* Change the default timeout for calls to IfthenPay webservices if your website is experiencing communication difficulties;
+* Remove payment instructions from specific emails, for example, “order completed”, to avoid customer confusion when they are no longer necessary;
+* Autofill the VAT number on the Cofidis Pay gateway from several VAT number plugins (more can be added on request);
+* Change the default timeout for calls to the IfthenPay APIs if your website is experiencing communication difficulties;
 * Hide notices of new available payment methods;
 * Hide notices of pending callback activation requests;
 * Hide sidebar in payment method settings screen;
 * More features coming soon;
-* By purchasing the PRO add-on you get:
-	* Technical support (conditions apply);
+* By purchasing the PRO add-on you get the following:
 	* All the features described above;
+	* Premium technical support (conditions apply);
 	* Contribution to the continued development of the solution;
 	* Automatic updates;
 	* Good karma;
 
-Attention: The PRO add-on is a product of [PT Woo Plugins](https://ptwooplugins.com) / Webdados, and IfthenPay has no responsibility for it.
+The PRO add-on is a product of [PT Woo Plugins](https://ptwooplugins.com) (by [Webdados](https://www.webdados.pt)), and is not provided by IfthenPay.
 
 = Other (premium) plugins =
 
@@ -84,7 +89,7 @@ Already know our other WooCommerce (premium) plugins?
 
 * [Portuguese Postcodes for WooCommerce](https://ptwooplugins.com/product/portuguese-postcodes-for-woocommerce-technical-support/) - Automatic filling of the address details at the checkout, including street name and neighbourhood, based on the postal code
 * [Invoicing with InvoiceXpress for WooCommerce](https://invoicewoo.com/) - Automatically issue invoices directly from the WooCommerce order
-* [DPD Portugal for WooCommerce](https://ptwooplugins.com/product/dpd-portugal-for-woocommerce/) - Create shipping and return guide in the DPD webservice directly from the WooCommerce order
+* [DPD Portugal for WooCommerce](https://ptwooplugins.com/product/dpd-portugal-for-woocommerce/) - Create shipping and return guide in the DPD API directly from the WooCommerce order
 * [Feed KuantoKusta for WooCommerce](https://ptwooplugins.com/product/feed-kuantokusta-for-woocommerce-pro/) - Publish your products on Kuanto Kusta with this easy to use feed generator
 * [Simple Custom Fields for WooCommerce Blocks Checkout](https://ptwooplugins.com/product/simple-custom-fields-for-woocommerce-blocks-checkout/) - Add custom fields to the new WooCommerce Block-based Checkout
 * [Simple WooCommerce Order Approval](https://ptwooplugins.com/product/simple-woocommerce-order-approval/) - The hassle-free solution for WooCommerce order approval before payment
@@ -96,72 +101,82 @@ Already know our other WooCommerce (premium) plugins?
 
 * Make sure you already have a contract with [IfthenPay](https://ifthenpay.com)
 * Use the included automatic install feature on your WordPress admin panel and search for “IfthenPay”.
-* Multibanco: Go to WooCommerce > Settings > Checkout > Pagamento de Serviços no Multibanco and fill in the data provided by IfthenPay (Entity and Subentity or MB Key) in order to use this payment method.
-* MB WAY: Go to WooCommerce > Settings > Checkout > Pagamento MB WAY no telemóvel and fill in the data provided by IfthenPay (MB WAY Key) in order to use this payment method.
-* Credit or debit card: Go to WooCommerce > Settings > Checkout > Credit or debit card and fill in the data provided by IfthenPay (Credit card Key) in order to use this payment method.
-* Payshop: Go to WooCommerce > Settings > Checkout > Pagamento na rede de agentes Payshop and fill in the data provided by IfthenPay (Payshop Key) in order to use this payment method.
-* Cofidis Pay: Go to WooCommerce > Settings > Checkout > Cofidis Pay and fill in the data provided by IfthenPay (Cofidis Pay Key) in order to use this payment method.
-* Make sure you ask IfthenPay to activate the “Callback” on their side with the URL and Anti-phishing key provided in the settings screen. There is a feature in each payment method screen that allows you to make this request via a webservice, except on Credit card where this is not needed.
+* Multibanco: Go to WooCommerce > Settings > Checkout > Pagamento de Serviços no Multibanco and fill in the data provided by IfthenPay: MB Key (or legacy Entity and Subentity).
+* MB WAY: Go to WooCommerce > Settings > Checkout > Pagamento MB WAY no telemóvel and fill in the data provided by IfthenPay: MB WAY Key.
+* Credit or debit card: Go to WooCommerce > Settings > Checkout > Credit or debit card and fill in the data provided by IfthenPay: Credit card Key.
+* Payshop: Go to WooCommerce > Settings > Checkout > Pagamento na rede de agentes Payshop and fill in the data provided by IfthenPay: Payshop Key.
+* Cofidis Pay: Go to WooCommerce > Settings > Checkout > Cofidis Pay and fill in the data provided by IfthenPay: Cofidis Pay Key.
+* Apple Pay, Google Pay, and PIX: Go to WooCommerce > Settings > Checkout > IfthenPay Gateway and fill in the data provided by IfthenPay: Backoffice Key, then choose the Gateway Key (request a new “Static gateway” if you don’t have one already), and finally, the Payment methods you want to activate.
+* Make sure you ask IfthenPay to activate the “Callback” on their side with the URL and Anti-phishing key provided in the settings screen. There is a feature in each payment method screen that allows you to make this request via an API, except on Credit card where this is not needed, and payment methods via “IfthenPay Gateway” (Apple Pay, Google Pay, and PIX) where the callback activation is automatically set.
 * Start receiving payments :-)
 
 == Frequently Asked Questions ==
 
 = Can I start receiving payments right away? Show me the money! =
 
-Nop! You have to sign a contract with IfthenPay in order to activate this service. Go to [https://ifthenpay.com](https://ifthenpay.com) for more information.
+You have to sign a contract with IfthenPay in order to activate this service. Go to [https://ifthenpay.com](https://ifthenpay.com) for more information.
 
-= I’m a individual and not a registered business. Can I use this plugin? =
+= I’m an individual and not a registered business. Can I use this plugin? =
 
-No. IfthenPay only provides this service to registered businesses and equivalent (like tax registered freelancers, for example). You should [contact them](https://ifthenpay.com/#contactos) if you need additional details on this matter.
+IfthenPay only provides this service to registered businesses and equivalents (like tax-registered freelancers, for example).
+You should [contact IfthenPay](https://ifthenpay.com/#contactos) if you need additional details on this matter.
 
 = The generated Multibanco reference does not contain the order number. How do I know which order was paid? =
 
-IfthenPay will send you an email each time a reference is paid, but the reference does not contain the order number. By design, our plugin does not include the order number in the reference due to the way WooCommerce/WordPress set orders/posts IDs.
+IfthenPay will send you an email each time a reference is paid, but the reference does not contain the order number. By design, our plugin does not include the order number in the reference due to the way WooCommerce/WordPress sets orders/posts IDs.
 Anyway, you do not need the order number in the reference, because our plugin uses a callback mechanism. IfthenPay automatically notifies WooCommerce when a specific Multibanco reference is used for payment. The order is linked to the reference in the database and, also automatically, will be set as paid.
 If you still need to know to which order a reference is linked to, use the search box in the WooCommerce Orders administration screen.
 
-= Can I test the callback call to simulate a payment and foresee what happens when a real payment is made by a customer? =
+= How do I test the callback call to simulate a payment and foresee what happens when a real payment is made by a customer? =
 
-Yes, you can. Edit your wp-config.php file and set WP_DEBUG to true. Then, place a test order in the frontend using Multibanco, MB WAY or PayShop. Go to the order edit screen and click the “Simulate callback payment” button.
+Edit your wp-config.php file and set `WP_DEBUG` to `true`.
+Then, place a test order in the frontend using any of the plugin’s payment methods.
+Go to the order edit screen and click the “Simulate callback payment” button.
+Don’t forget to set `WP_DEBUG` to `false` again, as it should not be active on a production website.
 
 = How to issue an MB WAY or Credit or debit card refund within WooCommerce? =
 
 Just like in any other WooCommerce payment gateway that supports refunds.
 Check out the instructions carefully [here (Automatic refunds, step 4)](https://woocommerce.com/document/woocommerce-refunds/) and [here (WooCommerce specific instructions)](https://helpdesk.ifthenpay.com/pt-PT/support/solutions/articles/79000130517-devoluc%C3%B5es-de-pagamentos-aos-ordenantes).
 
-= Can I use this plugin / IfthenPay service on more than one website? =
+= Can I use this plugin, and the IfthenPay service, on more than one website? =
 
-Yes, but not with the same Multibanco entity and subentity, MB WAY, Credit card or Payshop Keys. Ask IfthenPay for different credentials for each website you need the service to be available. There is no extra costs involved, and you can even route payments to distinct bank accounts.
+Yes, but not with the same payment method keys.
+Ask IfthenPay for different credentials for each website, and payment method, you need the service to be available.
+There is no extra costs involved, and you can even route payments to distinct bank accounts.
 
 = Can I change the payment instructions look and feel in the “Thank you” page and/or the new order email, as well as the SMS message format? =
 
-Yes you can! But you should know your way around WordPress filters. There are filters to do this and you can find examples within `hooks-examples.php`.
+Yes, you can, but you should know your way around WordPress filters.
+There are filters to do this and you can find examples within `hooks-examples.php`.
 
-= Can I change the payment gateway icon in the checkout page? =
+= Can I change the payment gateway icon on the checkout page? =
 
 There are also filters for this. See `hooks-examples.php`.
 
-= I want to charge an additional fee for Multibanco, MB WAY, Credit card or Payshop payments. How should I do it? =
+= I want to charge an additional fee for these payment methods. How should I do it? =
 
 You shouldn’t! To our knowledge, it’s illegal under [Portuguese law](https://www.bportugal.pt/sites/default/files/anexos/legislacoes/dl3ano2010.PDF) and a [European directive](https://europa.eu/youreurope/business/finance-funding/making-receiving-payments/electronic-cash-payments/index_en.htm) to charge an extra fee based on the payment method chosen by the customer.
 If you don’t care about legislation, plugins are available that allow you to set extra fees per payment method. Please, don’t ask us for support on this.
 
 = How much time does the customer have to pay with MB WAY? =
 
-The MB WAY payment requests expire after 5 minutes.
+The MB WAY payment requests expire after 4 minutes.
 
-= Why doesn’t the customer receive an email when paying with MB WAY? =
+= Why doesn’t the customer receive an email when paying with MB WAY, Credit card, Apple Pay, Google Pay, or PIX? =
 
-The MB WAY payment needs to be approved immediately after checking out, just like when using a credit card or PayPal.
-WooCommerce only sends payment instruction emails for payment methods that require later, and not immediate payment, like Multibanco, Payshop and bank transfer for example.
+These payments need to be approved immediately after checking out.
+WooCommerce only sends payment instruction emails for payment methods that require later, and not immediate payment, like Multibanco, Payshop, and Bank transfer, for example.
+The customer will still get an email, if properly configured on WooCommerce, upon payment (just not before).
 
 = [WPML] My website is multilingual. Will I be able to use this plugin? =
 
-Yes. This plugin is officially WPML compatible. You will need the WPML and WPML String Translation Plugins (alongside WooCommerce Multilingual, which is mandatory for any WooCommerce + WPML install). 
+Yes. This plugin is officially WPML compatible.
+You will need the WPML and WPML String Translation Plugins (alongside WooCommerce Multilingual, which is mandatory for any WooCommerce + WPML install). 
 
-= [WPML] How can I translate the payment method title and description the customer sees in the checkout page to secondary languages? =
+= [WPML] How can I translate the payment method title and description the customer sees on the checkout page to secondary languages? =
 
-Go to WPML > String Translation > Search and translate all the string in the `woocommerce` and `multibanco_ifthen_for_woocommerce` domains containing `ifthen_for_woocommerce` in their name.
+Go to WPML > String Translation > Search and translate all the strings in the `woocommerce` and `multibanco_ifthen_for_woocommerce` domains containing `ifthen_for_woocommerce` in their name.
 
 = [SMS] How to include the Multibanco and/or Payshop payment instructions in the SMS sent by “WooCommerce - APG SMS Notifications”? =
 
@@ -175,13 +190,13 @@ Go to WooCommerce > Settings > SMS and add the `%multibanco_ifthen%` and/or `%pa
 
 Go to YITH Plugins > SMS Notifications > SMS Settings and add the `{multibanco_ifthen}` and/or `{payshop_ifthen}` variables to “On hold”.
 
-= [Advanced] Can I use a specific Multibanco Entity/Subentity or Key, MB WAY, Credit card or Payshop Key based on order details? =
+= [Advanced] Can I use a specific Multibanco Entity/Subentity or Key, MB WAY, Credit card, or Payshop Key based on order details? =
 
 Yes, you should use the `multibanco_ifthen_base_ent_subent` or `multibanco_ifthen_base_mbkey`, `multibanco_ifthen_base_mbwaykey`, `multibanco_ifthen_base_creditcardkey` or `multibanco_ifthen_base_payshopkey` filters. See `hooks-examples.php`.
 
-= [Advanced] The order is set “On Hold” for Multibanco and Payshop, can I make it “Pending” by default? =
+= [Advanced] The order is set to “On Hold” for Multibanco and Payshop, can I make it “Pending” by default? =
 
-I don’t know why on earth you would want to do this, but… yes, you can. Just return `false` to the `multibanco_ifthen_set_on_hold` and/or `payshop_ifthen_set_on_hold` filter.
+You shouldn’t but… yes, you can. Just return `false` to the `multibanco_ifthen_set_on_hold` and/or `payshop_ifthen_set_on_hold` filter.
 Be advised that no “new order” email, with payment instructions, will be sent to the customer unless you use some plugin or custom code to force it.
 
 = [Advanced] I’ve set up WooCommerce to cancel unpaid orders after x minutes, why are my Multibanco and/or Payshop orders not being canceled? =
@@ -197,15 +212,15 @@ You can use the `multibanco_ifthen_email_instructions_payment_received_send` and
 
 = IfthenPay says my callback URL is returning a 404 error. Is there a solution? =
 
-You probably have weird permalink settings (or permalinks not set at all) in your WordPress installation.
+You probably have weird permalink settings (or permalinks not set at all) in your WordPress install.
 
-If your permalinks are set as "Plain", tell them to change the callback URL from `https://yourwebsite/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]...` to `https://yourwebsite/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]...`.
-If your permalinks are set as "Custom structure": "/index.php/%postname%/" tell them to set the callback to `https://yourwebsite/index.php/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]...`
+If your permalinks are set as “Plain”, tell them to change the callback URL from `https://yourwebsite/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]...` to `https://yourwebsite/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]...`.
+If your permalinks are set as “Custom structure”: `/index.php/%postname%/` tell them to set the callback to `https://yourwebsite/index.php/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]...`
 
 = Is this plugin compliant with the European Union General Data Protection Regulation (GDPR)? =
 
-This plugin does not collect or send to Webdados (the plugin author) or IfthenPay (the payment processor) any private data of the website where it’s installed, it’s customers or the orders themselves.
-In the MB WAY module, the mobile phone number is collected to request the payment authorization and it can be legitimately processed based on article 6 (1) (b) of the GDPR.
+This plugin does not collect or send any private data of the website where it’s installed, its customers, or the orders, to Webdados (the plugin author) or IfthenPay (the payment processor).
+In the MB WAY module, the mobile phone number is collected to request payment authorization and it can be legitimately processed based on Article 6 (1) (b) of the GDPR.
 IfthenPay’s privacy policy can be found at [https://ifthenpay.com/termosCondicoes](https://ifthenpay.com/termosCondicoes)
 
 = Is this plugin compatible with the new WooCommerce High-Performance Order Storage? =
@@ -234,8 +249,23 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= ? =
-* [TWEAK] Change default webservices timeout to 15 seconds instead of 30
+= 10.0.0 - Date to be announced =
+* [NEW] Apple Pay, Google Pay, and PIX payment methods (via IfthenPay Gateway)
+* [TWEAK] Also reload "Thank you" page when the MB WAY payment is expired
+* [TWEAK] Several updates to the readme.txt
+* [DEV] Apply additional WordPress Coding Standards
+* [DEV] Requires PHP 7.2, WordPress 5.8, and WooCommerce 7.0
+* [DEV] Tested with WordPress 6.8-alpha-59485 and WooCommerce 9.5.0-rc.1
+
+= 9.7.1 - 2024-11-29 =
+* [FIX] Fix MB WAY and Cofidis order status check on the “Thank you” for non-logged in customers
+
+= 9.7 - 2024-11-26 =
+* [TWEAK] Change MB WAY timeout from 5 to 4 minutes (which is the real interval set by SIBS)
+* [TWEAK] Better “refund not issued” message
+* [FIX] Check order object before saving Multibanco details on the classic checkout
+* [DEV] Change default webservices timeout to 15 seconds instead of 30
+* [DEV] Tested with WordPress 6.8-alpha-59459 and WooCommerce 9.5.0-beta.1
 
 = 9.6.0 - 2024-10-08 =
 * [FIX] Load text domain at the right time to avoid PHP notices on WordPress 6.7 and above

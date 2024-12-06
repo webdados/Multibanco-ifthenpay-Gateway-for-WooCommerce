@@ -1,4 +1,8 @@
 <?php
+/**
+ * Cofidis Pay blocks class
+ */
+
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Automattic\WooCommerce\Blocks\Assets\Api;
@@ -57,9 +61,10 @@ final class CofidisPayIfthenPay extends AbstractPaymentMethodType {
 			'wc-payment-method-cofidispay-ifthenpay',
 			plugins_url( 'build/cofidispay-block.js', __FILE__ ),
 			array(),
-			WC_IfthenPay_Webdados()->get_version().( WP_DEBUG ? '.' . wp_rand( 0, 9999 ) : '' ), true
+			WC_IfthenPay_Webdados()->get_version() . ( WP_DEBUG ? '.' . wp_rand( 0, 9999 ) : '' ),
+			true
 		);
-		return [ 'wc-payment-method-cofidispay-ifthenpay' ];
+		return array( 'wc-payment-method-cofidispay-ifthenpay' );
 	}
 
 	/**
@@ -68,16 +73,17 @@ final class CofidisPayIfthenPay extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
-		return [
-			'title'                             => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description'                       => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
-			'icon'                              => WC_IfthenPay_Webdados()->cofidispay_icon,
-			'only_portugal'                     => $this->settings['only_portugal'] == 'yes',
-			'only_above'                        => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
-			'only_bellow'                       => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
-			//'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ), //Not on credit card
-			//More settings needed?
-		];
+		return array(
+			'title'         => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+			'description'   => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+			'icon'          => WC_IfthenPay_Webdados()->cofidispay_icon,
+			'only_portugal' => $this->settings['only_portugal'] === 'yes',
+			'only_above'    => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
+			'only_bellow'   => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
+			// We do not declare subscriptions support on Cofidis
+			// 'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ), // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+			// More settings needed?
+		);
 	}
 
 	/**
@@ -102,11 +108,11 @@ final class CofidisPayIfthenPay extends AbstractPaymentMethodType {
 	 */
 	public function store_api_data_callback() {
 		$failed_payment = false;
-		$order_id = absint( WC()->session->get( 'store_api_draft_order' ) );
+		$order_id       = absint( WC()->session->get( 'store_api_draft_order' ) );
 		if ( ! empty( $order_id ) ) {
 			$order = wc_get_order( $order_id );
 			if ( ! empty( $order ) ) {
-				$meta = '_' . $this->name . '_checkouterror';
+				$meta  = '_' . $this->name . '_checkouterror';
 				$error = $order->get_meta( '_' . $this->name . '_checkouterror' );
 				if ( ! empty( $error ) ) {
 					$failed_payment = $error;

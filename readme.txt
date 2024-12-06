@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 9.6.0
+Stable tag: 9.7.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Portuguese consumers trust the “Multibanco” and “MB WAY” payment methods
 
 This plugin will generate a “Multibanco” payment Reference the customer can then use to pay for his WooCommerce order, through an ATM or homebanking service, or an “MB WAY” payment request which will send a push notification to the customer’s mobile phone for payment approval.
 
-Credit or debit cards, including Apple Pay and Google Pay, CTT Payshop, and Cofidis Pay payment methods are also available, for any customer with a Portuguese bank account.
+Credit or debit cards, including Apple Pay and Google Pay, CTT Payshop, and Cofidis Pay payment methods are also available.
 
 Holders of a Brazilian bank account can conveniently pay for WooCommerce orders in Euros, with automatic currency conversion to Brazilian Real, using PIX.
 
@@ -63,7 +63,7 @@ Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-ca
 * Save the MB WAY mobile number to the user profile for future purchases;
 * Trigger Multibanco and MB WAY payments when creating orders via the REST API;
 * Store and show the IfthenPay fee on each order;
-* Codifis payment information banner, with the price to pay monthly, on the product page (simple product for now);
+* Codifis payment information banner, with the price to pay monthly, on the product page (simple and variable products);
 * Set a payment entity for Multibanco, MB WAY, Credit card, Payshop, and Cofidis Pay at the product category level, so that you can receive payment in different accounts based on the order products (replaces previously available specific extension);
 	* Simplified marketplace;
 	* Lock the cart so you can only have products from a single account in the same order;

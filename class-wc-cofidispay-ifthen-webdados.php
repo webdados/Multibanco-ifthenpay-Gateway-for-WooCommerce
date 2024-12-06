@@ -9,11 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'COFIDISPAY_IFTHEN_DESC_LEN', 200 );
 
-/**
- * CofidisPay IfThen Class.
- */
 if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 
+	/**
+	 * CofidisPay IfThen Class.
+	 */
 	class WC_CofidisPay_IfThen_Webdados extends WC_Payment_Gateway {
 
 		/* Single instance */
@@ -42,12 +42,12 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 		 */
 		public function __construct() {
 
-			self::$instances++;
+			++self::$instances;
 
 			$this->id = WC_IfthenPay_Webdados()->cofidispay_id;
 
 			// Logs
-			$this->debug       = ( $this->get_option( 'debug' ) == 'yes' ? true : false );
+			$this->debug       = ( $this->get_option( 'debug' ) === 'yes' ? true : false );
 			$this->debug_email = $this->get_option( 'debug_email' );
 
 			// Check version and upgrade
@@ -59,7 +59,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 			$this->method_title       = __( 'Cofidis Pay (IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			$this->method_description = __( 'Pay for your order in 3 to 12 interest-free and fee-free installments using your debit or credit card.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			/*
-			if ( $this->get_option( 'support_woocommerce_subscriptions' ) == 'yes' ) {
+			if ( $this->get_option( 'support_woocommerce_subscriptions' ) === 'yes' ) {
 				$this->supports = array(
 					'products',
 					'subscription_suspension',
@@ -70,7 +70,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 				); //products is by default
 			}*/
 			$this->secret_key = $this->get_option( 'secret_key' );
-			if ( trim( $this->secret_key ) == '' ) {
+			if ( trim( $this->secret_key ) === '' ) {
 				// First load?
 				$this->secret_key = md5( home_url() . time() . wp_rand( 0, 999 ) );
 				// Save
@@ -93,8 +93,8 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 			$this->description               = $this->get_option( 'description' );
 			$this->cofidispaykey             = $this->get_option( 'cofidispaykey' );
 			$this->settings_saved            = $this->get_option( 'settings_saved' );
-			$this->send_to_admin             = ( $this->get_option( 'send_to_admin' ) == 'yes' ? true : false );
-			$this->only_portugal             = ( $this->get_option( 'only_portugal' ) == 'yes' ? true : false );
+			$this->send_to_admin             = ( $this->get_option( 'send_to_admin' ) === 'yes' ? true : false );
+			$this->only_portugal             = ( $this->get_option( 'only_portugal' ) === 'yes' ? true : false );
 			$this->only_above                = $this->get_option( 'only_above' );
 			$this->only_below                = $this->get_option( 'only_bellow' );
 
@@ -243,7 +243,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 					),
 				),
 			);
-			// if ( strlen( trim( $this->get_option( 'cofidispaykey' ) ) ) == 10 && trim( $this->secret_key ) != '' ) {
+			// if ( strlen( trim( $this->get_option( 'cofidispaykey' ) ) ) === 10 && trim( $this->secret_key ) !== '' ) {
 				$this->form_fields = array_merge(
 					$this->form_fields,
 					array(
@@ -433,12 +433,12 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 					</ul>
 					<?php
 					if (
-						strlen( trim( $this->cofidispaykey ) ) == 10
+						strlen( trim( $this->cofidispaykey ) ) === 10
 						&&
-						trim( $this->secret_key ) != ''
+						trim( $this->secret_key ) !== ''
 					) {
 						if ( $callback_email_sent = get_option( $this->id . '_callback_email_sent' ) ) { // No notice for older versions
-							if ( $callback_email_sent == 'no' ) {
+							if ( $callback_email_sent === 'no' ) {
 								if ( ! isset( $_GET['callback_warning'] ) ) {
 									?>
 									<div id="message" class="error">
@@ -493,7 +493,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 						</div>
 						<?php
 					} else {
-						if ( $this->settings_saved == 1 ) {
+						if ( intval( $this->settings_saved ) === 1 ) {
 							?>
 							<div id="message" class="error">
 								<p><strong><?php _e( 'Invalid Cofidis Pay Key (exactly 10 characters).', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
@@ -550,11 +550,11 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 		public function process_admin_options() {
 			if ( isset( $_POST[ 'woocommerce_' . $this->id . '_cofidispaykey' ] ) ) {
 				$new_key = trim( $_POST[ 'woocommerce_' . $this->id . '_cofidispaykey' ] );
-				if ( strlen( $new_key ) == 10 && trim( $_POST[ 'woocommerce_' . $this->id . '_cofidispaykey' ] ) != trim( $this->get_option( 'cofidispaykey' ) ) ) {
+				if ( strlen( $new_key ) === 10 && trim( $_POST[ 'woocommerce_' . $this->id . '_cofidispaykey' ] ) !== trim( $this->get_option( 'cofidispaykey' ) ) ) {
 					$url = $this->limits_api_url . $new_key;
 					$response = wp_remote_get( $url );
 					if ( ! is_wp_error( $response ) ) {
-						if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
+						if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) === 200 && isset( $response['body'] ) && trim( $response['body'] ) !== '' ) {
 							if ( $body = json_decode( trim( $response['body'] ) ) ) {
 								if ( isset( $body->message ) && $body->message === 'success' && isset( $body->limits->maxAmount ) && intval( $body->limits->maxAmount ) > 0 && isset( $body->limits->minAmount ) && intval( $body->limits->minAmount ) > 0 ) {
 									// Override min and max values
@@ -570,7 +570,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 		}
 
 		public function send_callback_email() {
-			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) != '' ) {
+			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
 				// Webservice
 				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'COFIDIS', $this->cofidispaykey, $this->secret_key, WC_IfthenPay_Webdados()->cofidispay_notify_url );
 				if ( $result['success'] ) {
@@ -583,7 +583,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 						$result['message']
 					);
 				}
-			} elseif ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 1 ) {
+			} elseif ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 1 ) {
 				// Email
 				$to      = WC_IfthenPay_Webdados()->callback_email;
 				$cc      = get_option( 'admin_email' );
@@ -936,9 +936,9 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				$this->debug_log( $debug_msg, 'error', true, $debug_msg_email );
 				return false;
 			} else {
-				if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
+				if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) === 200 && isset( $response['body'] ) && trim( $response['body'] ) !== '' ) {
 					if ( $body = json_decode( trim( $response['body'] ) ) ) {
-						if ( intval( $body->status ) == 0 ) {
+						if ( intval( $body->status ) === 0 ) {
 							WC_IfthenPay_Webdados()->set_order_cofidispay_details(
 								$order->get_id(),
 								array(
@@ -1021,9 +1021,9 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		 */
 		public function disable_if_settings_missing( $available_gateways ) {
 			if (
-				strlen( trim( $this->cofidispaykey ) ) != 10
+				strlen( trim( $this->cofidispaykey ) ) !== 10
 				||
-				trim( $this->enabled ) != 'yes'
+				trim( $this->enabled ) !== 'yes'
 			) {
 				unset( $available_gateways[ $this->id ] );
 			}
@@ -1189,11 +1189,11 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				$val             = floatval( $_GET['amount'] );
 				$arguments_ok    = true;
 				$arguments_error = '';
-				if ( trim( $_GET['key'] ) != trim( $this->secret_key ) ) {
+				if ( trim( $_GET['key'] ) !== trim( $this->secret_key ) ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - Key';
 				}
-				if ( trim( $request_id ) == '' ) {
+				if ( trim( $request_id ) === '' ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - IdPedido';
 				}
@@ -1224,10 +1224,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						$this->debug_log( '-- ' . $err, 'warning', true, 'Callback (' . $_SERVER['HTTP_HOST'] . ' ' . $_SERVER['REQUEST_URI'] . ') from ' . $_SERVER['REMOTE_ADDR'] );
 					}
 					if ( $orders_exist ) {
-						if ( $orders_count == 1 ) {
-							if ( floatval( $val ) == floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
+						if ( $orders_count === 1 ) {
+							if ( floatval( $val ) === floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
 								$note = __( 'Cofidis Pay payment approval received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-								if ( isset( $_GET['datahorapag'] ) && trim( $_GET['datahorapag'] ) != '' ) {
+								if ( isset( $_GET['datahorapag'] ) && trim( $_GET['datahorapag'] ) !== '' ) {
 									$note .= ' ' . trim( $_GET['datahorapag'] );
 								}
 								$this->payment_complete( $order, '', $note );
@@ -1302,8 +1302,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				}
 			}
 			if ( $orders_exist ) {
-				if ( $orders_count == 1 ) {
-					if ( floatval( $val ) == floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
+				if ( $orders_count === 1 ) {
+					if ( floatval( $val ) === floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
 						$return['success'] = true;
 						$return['order']   = $order;
 						return $return;
@@ -1355,14 +1355,14 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		public function admin_notices() {
 			// Callback email
 			if (
-				trim( $this->enabled ) == 'yes'
+				trim( $this->enabled ) === 'yes'
 				&&
-				strlen( trim( $this->cofidispaykey ) ) == 10
+				strlen( trim( $this->cofidispaykey ) ) === 10
 				&&
-				trim( $this->secret_key ) != ''
+				trim( $this->secret_key ) !== ''
 			) {
 				if ( $callback_email_sent = get_option( $this->id . '_callback_email_sent' ) ) { // No notice for older versions
-					if ( $callback_email_sent == 'no' ) {
+					if ( $callback_email_sent === 'no' ) {
 						if ( ! isset( $_GET['callback_warning'] ) ) {
 							if ( apply_filters( 'cofidispay_ifthen_show_callback_notice', true ) ) {
 								?>
@@ -1384,9 +1384,9 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			// New method
 			if (
 				(
-					strlen( trim( $this->cofidispaykey ) ) != 10
+					strlen( trim( $this->cofidispaykey ) ) !== 10
 					||
-					trim( $this->enabled ) != 'yes'
+					trim( $this->enabled ) !== 'yes'
 				)
 				&&
 				( ! apply_filters( 'multibanco_ifthen_hide_newmethod_notifications', false ) )

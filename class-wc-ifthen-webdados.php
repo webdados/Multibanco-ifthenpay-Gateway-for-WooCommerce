@@ -2985,7 +2985,7 @@ final class WC_IfthenPay_Webdados {
 				$premium_plugins = array(
 					array(
 						'url'         => 'https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/',
-						'title'       => esc_html__( 'Multibanco, MBWAY, Credit card and Payshop for WooCommerce - PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'title'       => esc_html__( 'Multibanco, MBWAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce - PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'short_title' => esc_html__( 'PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'image'       => 'multibanco.png',
 					),
@@ -3072,7 +3072,7 @@ final class WC_IfthenPay_Webdados {
 				<h4><?php esc_html_e( 'Want more features?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 				<p>
 					<a href="https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm ); ?>" target="_blank" style="font-weight: bold;">
-						<?php esc_html_e( 'Get the PRO add-on of Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, and Cofidis Pay (IfthenPay) for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Get the PRO add-on of Multibanco, MBWAY, Credit card, Payshop and Cofidis Pay (IfthenPay) for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 					</a>
 				</p>
 			</div>

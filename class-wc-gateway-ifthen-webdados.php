@@ -332,7 +332,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					if ( count( $available_methods ) === 0 ) {
 						$this->form_fields['no_methods'] = array(
 							'title'       => __( 'No methods available', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-							'description' => __( 'There are no payment methods available on this Gateway. Please choose another one or request IfthenPay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, GooglePay, or Pix)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'description' => __( 'There are no payment methods available on this Gateway. Please choose another one or request IfthenPay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or Pix)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'type'        => 'hidden',
 							'value'       => '1',
 						);
@@ -504,7 +504,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 							?>
 						</li>
 						<li><?php esc_html_e( 'Enter your backoffice key and select a gateway.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
-						<li><?php esc_html_e( 'If no gateways are available, or the available gateways do not have payment methods available, you need to request IfthenPay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, GooglePay, or Pix).', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
+						<li><?php esc_html_e( 'If no gateways are available, or the available gateways do not have payment methods available, you need to request IfthenPay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or Pix).', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li><?php esc_html_e( 'Select the payment methods you want to make available.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li><?php esc_html_e( 'The callback for each of the chosen payment methods will automatically be activated once you save the options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li>

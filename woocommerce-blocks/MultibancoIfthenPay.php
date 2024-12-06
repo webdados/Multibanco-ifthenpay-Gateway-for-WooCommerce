@@ -1,4 +1,8 @@
 <?php
+/**
+ * Multibanco blocks class
+ */
+
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Automattic\WooCommerce\Blocks\Assets\Api;
@@ -62,7 +66,7 @@ final class MultibancoIfthenPay extends AbstractPaymentMethodType {
 			'title'                             => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
 			'description'                       => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
 			'icon'                              => WC_IfthenPay_Webdados()->multibanco_icon,
-			'only_portugal'                     => $this->settings['only_portugal'] == 'yes',
+			'only_portugal'                     => $this->settings['only_portugal'] === 'yes',
 			'only_above'                        => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
 			'only_bellow'                       => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
 			'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ),

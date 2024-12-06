@@ -7,11 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Payshop IfThen Class.
- */
 if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 
+	/**
+	 * Payshop IfThen Class.
+	 */
 	class WC_Payshop_IfThen_Webdados extends WC_Payment_Gateway {
 
 		/* Single instance */
@@ -42,12 +42,12 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 		 */
 		public function __construct() {
 
-			self::$instances++;
+			++self::$instances;
 
 			$this->id = WC_IfthenPay_Webdados()->payshop_id;
 
 			// Logs
-			$this->debug       = ( $this->get_option( 'debug' ) == 'yes' ? true : false );
+			$this->debug       = ( $this->get_option( 'debug' ) === 'yes' ? true : false );
 			$this->debug_email = $this->get_option( 'debug_email' );
 
 			// Check version and upgrade
@@ -59,7 +59,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 			$this->method_title       = __( 'Pagamento na rede de agentes Payshop (IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			$this->method_description = __( 'Easy and simple payment on the “Payshop” agents network, CTT stores or post offices. (Payment service provided by IfthenPay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			/*
-			if ( $this->get_option( 'support_woocommerce_subscriptions' ) == 'yes' ) {
+			if ( $this->get_option( 'support_woocommerce_subscriptions' ) === 'yes' ) {
 				$this->supports = array(
 					'products',
 					'subscription_suspension',
@@ -70,7 +70,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 				); //products is by default
 			}*/
 			$this->secret_key = $this->get_option( 'secret_key' );
-			if ( trim( $this->secret_key ) == '' ) {
+			if ( trim( $this->secret_key ) === '' ) {
 				// First load?
 				$this->secret_key = md5( home_url() . time() . wp_rand( 0, 999 ) );
 				// Save
@@ -93,8 +93,8 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 			$this->extra_instructions = $this->get_option( 'extra_instructions' );
 			$this->payshopkey         = $this->get_option( 'payshopkey' );
 			$this->settings_saved     = $this->get_option( 'settings_saved' );
-			$this->send_to_admin      = ( $this->get_option( 'send_to_admin' ) == 'yes' ? true : false );
-			$this->only_portugal      = ( $this->get_option( 'only_portugal' ) == 'yes' ? true : false );
+			$this->send_to_admin      = ( $this->get_option( 'send_to_admin' ) === 'yes' ? true : false );
+			$this->only_portugal      = ( $this->get_option( 'only_portugal' ) === 'yes' ? true : false );
 			$this->only_above         = $this->get_option( 'only_above' );
 			$this->only_below         = $this->get_option( 'only_bellow' );
 			$this->stock_when         = $this->get_option( 'stock_when' );
@@ -240,7 +240,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 					),
 				),
 			);
-			// if ( strlen( trim( $this->get_option( 'payshopkey' ) ) ) == 10 && trim( $this->secret_key ) != '' ) {
+			// if ( strlen( trim( $this->get_option( 'payshopkey' ) ) ) === 10 && trim( $this->secret_key ) != '' ) {
 				$this->form_fields = array_merge(
 					$this->form_fields,
 					array(
@@ -502,12 +502,12 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 					</ul>
 					<?php
 					if (
-						strlen( trim( $this->payshopkey ) ) == 10
+						strlen( trim( $this->payshopkey ) ) === 10
 						&&
 						trim( $this->secret_key ) != ''
 					) {
 						if ( $callback_email_sent = get_option( $this->id . '_callback_email_sent' ) ) { // No notice for older versions
-							if ( $callback_email_sent == 'no' ) {
+							if ( $callback_email_sent === 'no' ) {
 								if ( ! isset( $_GET['callback_warning'] ) ) {
 									?>
 									<div id="message" class="error">
@@ -562,7 +562,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 						</div>
 						<?php
 					} else {
-						if ( $this->settings_saved == 1 ) {
+						if ( intval( $this->settings_saved ) === 1 ) {
 							?>
 							<div id="message" class="error">
 								<p><strong><?php _e( 'Invalid Payshop Key (exactly 10 characters).', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
@@ -616,7 +616,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 		}
 
 		public function send_callback_email() {
-			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) != '' ) {
+			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) != '' ) {
 				// Webservice
 				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'PAYSHOP', $this->payshopkey, $this->secret_key, WC_IfthenPay_Webdados()->payshop_notify_url );
 				if ( $result['success'] ) {
@@ -629,7 +629,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 						$result['message']
 					);
 				}
-			} elseif ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) == 1 ) {
+			} elseif ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 1 ) {
 				// Email
 				$to      = WC_IfthenPay_Webdados()->callback_email;
 				$cc      = get_option( 'admin_email' );
@@ -902,7 +902,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						WC_IfthenPay_Webdados()->maybe_change_locale( $order );
 						// On Hold or pending
 						if ( WC_IfthenPay_Webdados()->order_needs_payment( $order ) ) {
-							if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->get_status() == 'partially-paid' ) {
+							if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->get_status() === 'partially-paid' ) {
 								// WooCommerce deposits - No instructions
 							} else {
 								if ( apply_filters( 'payshop_ifthen_email_instructions_pending_send', true, $order->get_id() ) ) {
@@ -1022,7 +1022,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				$this->debug_log( $debug_msg, 'error', true, $debug_msg_email );
 				return false;
 			} else {
-				if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
+				if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) === 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
 
 					if ( $response_data = json_decode( $response['body'] ) ) {
 						if ( trim( $response_data->Reference ) != '' && trim( $response_data->RequestId ) != '' ) {
@@ -1090,7 +1090,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			do_action( 'payshop_ifthen_before_process_payment', $order );
 			if ( $this->webservice_set_pedido( $order->get_id() ) ) {
 				// WooCommerce Deposits - When generating second payment reference the order goes from partially paid to on hold, and that has an email (??!)
-				if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->get_status() == 'partially-paid' ) {
+				if ( WC_IfthenPay_Webdados()->wc_deposits_active && $order->get_status() === 'partially-paid' ) {
 					add_filter( 'woocommerce_email_enabled_customer_processing_order', '__return_false' );
 					add_filter( 'woocommerce_email_enabled_full_payment', '__return_false' );
 				}
@@ -1183,7 +1183,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		/* Reduce stock on 'wc_maybe_reduce_stock_levels'? */
 		function woocommerce_payment_complete_reduce_order_stock( $bool, $order_id ) {
 			$order = wc_get_order( $order_id );
-			if ( $order->get_payment_method() == $this->id ) {
+			if ( $order->get_payment_method() === $this->id ) {
 				return ( WC_IfthenPay_Webdados()->woocommerce_payment_complete_reduce_order_stock( $bool, $order->get_id(), $this->id, $this->stock_when ) );
 			} else {
 				return $bool;
@@ -1226,11 +1226,11 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					$arguments_ok     = false;
 					$arguments_error .= ' - Referencia (numeric)';
 				}
-				if ( trim( $id_cliente ) == '' ) {
+				if ( trim( $id_cliente ) === '' ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - id_cliente';
 				}
-				if ( trim( $id_transacao ) == '' ) {
+				if ( trim( $id_transacao ) === '' ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - id_transacao';
 				}
@@ -1244,7 +1244,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					$arguments_error .= ' - Estado';
 				}*/
 				if ( $arguments_ok ) { // Isto deve ser separado em vários IFs para melhor se identificar o erro
-					if ( trim( $estado ) == 'PAGO' ) {
+					if ( trim( $estado ) === 'PAGO' ) {
 						$orders_exist = false;
 
 						/* Aguardamos resposta do significado dos parâmetros para sabermos o que temos de guardar e como pesquisar depois */
@@ -1267,18 +1267,18 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 						}
 
 						if ( $orders_exist ) {
-							if ( $orders_count == 1 ) {
-								if ( floatval( $val ) == floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
+							if ( $orders_count === 1 ) {
+								if ( floatval( $val ) === floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
 									$note = __( 'Payshop payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 									if ( isset( $_GET['datahorapag'] ) && trim( $_GET['datahorapag'] ) != '' ) {
 										$note .= ' ' . trim( $_GET['datahorapag'] );
 									}
 									// WooCommerce Deposits second payment?
 									if ( WC_IfthenPay_Webdados()->wc_deposits_active ) {
-										if ( $order->get_meta( '_wc_deposits_order_has_deposit' ) == 'yes' ) { // Has deposit
-											if ( $order->get_meta( '_wc_deposits_deposit_paid' ) == 'yes' ) { // First payment - OK!
+										if ( $order->get_meta( '_wc_deposits_order_has_deposit' ) === 'yes' ) { // Has deposit
+											if ( $order->get_meta( '_wc_deposits_deposit_paid' ) === 'yes' ) { // First payment - OK!
 												if ( $order->get_meta( '_wc_deposits_second_payment_paid' ) != 'yes' ) { // Second payment - not ok
-													if ( floatval( $order->get_meta( '_wc_deposits_second_payment' ) ) == floatval( $val ) ) { // This really seems like the second payment
+													if ( floatval( $order->get_meta( '_wc_deposits_second_payment' ) ) === floatval( $val ) ) { // This really seems like the second payment
 														// Set the current order status temporarly back to partially-paid, but first stop the emails
 														add_filter( 'woocommerce_email_enabled_customer_partially_paid', '__return_false' );
 														add_filter( 'woocommerce_email_enabled_partial_payment', '__return_false' );
@@ -1291,7 +1291,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 									$this->payment_complete( $order, '', $note );
 									// Force resending "New Order" email to the store owner (before 3.4.2 we had a "bug" that made this email duplicate - and people are used to it)
 									if ( apply_filters( 'payshop_ifthen_set_on_hold', true, $order->get_id() ) ) { // Only if we set it on hold in the first place
-										if ( $this->get_option( 'resend_new_order_when_paid' ) == 'yes' ) { // And the option is activated
+										if ( $this->get_option( 'resend_new_order_when_paid' ) === 'yes' ) { // And the option is activated
 											// From WooCommerce 5.0 we need to force it
 											add_filter( 'woocommerce_new_order_email_allows_resend', '__return_true' );
 											WC()->mailer()->emails['WC_Email_New_Order']->trigger( $order->get_id(), $order );
@@ -1381,14 +1381,14 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		public function admin_notices() {
 			// Callback email
 			if (
-				trim( $this->enabled ) == 'yes'
+				trim( $this->enabled ) === 'yes'
 				&&
-				strlen( trim( $this->payshopkey ) ) == 10
+				strlen( trim( $this->payshopkey ) ) === 10
 				&&
 				trim( $this->secret_key ) != ''
 			) {
 				if ( $callback_email_sent = get_option( $this->id . '_callback_email_sent' ) ) { // No notice for older versions
-					if ( $callback_email_sent == 'no' ) {
+					if ( $callback_email_sent === 'no' ) {
 						if ( ! isset( $_GET['callback_warning'] ) ) {
 							if ( apply_filters( 'payshop_ifthen_show_callback_notice', true ) ) {
 								?>

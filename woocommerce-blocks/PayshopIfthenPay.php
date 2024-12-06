@@ -1,4 +1,8 @@
 <?php
+/**
+ * Payshop blocks class
+ */
+
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Automattic\WooCommerce\Blocks\Assets\Api;
@@ -46,10 +50,10 @@ final class PayshopIfthenPay extends AbstractPaymentMethodType {
 			'wc-payment-method-payshop-ifthenpay',
 			plugins_url( 'build/payshop-block.js', __FILE__ ),
 			array(),
-			WC_IfthenPay_Webdados()->get_version().( WP_DEBUG ? '.' . wp_rand( 0, 9999 ) : '' ),
+			WC_IfthenPay_Webdados()->get_version() . ( WP_DEBUG ? '.' . wp_rand( 0, 9999 ) : '' ),
 			true
 		);
-		return [ 'wc-payment-method-payshop-ifthenpay' ];
+		return array( 'wc-payment-method-payshop-ifthenpay' );
 	}
 
 	/**
@@ -58,15 +62,16 @@ final class PayshopIfthenPay extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
-		return [
-			'title'                             => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description'                       => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
-			'icon'                              => WC_IfthenPay_Webdados()->payshop_icon,
-			'only_portugal'                     => $this->settings['only_portugal'] == 'yes',
-			'only_above'                        => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
-			'only_bellow'                       => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
-			//'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ), //Not on payshop
-			//More settings needed?
-		];
+		return array(
+			'title'         => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+			'description'   => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+			'icon'          => WC_IfthenPay_Webdados()->payshop_icon,
+			'only_portugal' => $this->settings['only_portugal'] === 'yes',
+			'only_above'    => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
+			'only_bellow'   => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
+			// We do not declare subscriptions support on Payshop
+			// 'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ), // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+			// More settings needed?
+		);
 	}
 }

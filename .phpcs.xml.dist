@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <ruleset name="IfthenPay">
 	<config name="testVersion" value="7.0-"/>
-	<exclude-pattern type="relative">^/woocommerce-blocks/_build/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/woocommerce-blocks/build/*</exclude-pattern>
+	<exclude-pattern>/woocommerce-blocks/*/src/*</exclude-pattern>
 	<rule ref="PHPCompatibilityWP"/>
 	<rule ref="WordPress">
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>

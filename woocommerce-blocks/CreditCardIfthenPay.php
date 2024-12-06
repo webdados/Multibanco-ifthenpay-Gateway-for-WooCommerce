@@ -1,4 +1,8 @@
 <?php
+/**
+ * Credit card blocks class
+ */
+
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Automattic\WooCommerce\Blocks\Assets\Api;
@@ -46,10 +50,10 @@ final class CreditCardIfthenPay extends AbstractPaymentMethodType {
 			'wc-payment-method-creditcard-ifthenpay',
 			plugins_url( 'build/creditcard-block.js', __FILE__ ),
 			array(),
-			WC_IfthenPay_Webdados()->get_version().( WP_DEBUG ? '.' . wp_rand( 0, 9999 ) : '' ),
+			WC_IfthenPay_Webdados()->get_version() . ( WP_DEBUG ? '.' . wp_rand( 0, 9999 ) : '' ),
 			true
 		);
-		return [ 'wc-payment-method-creditcard-ifthenpay' ];
+		return array( 'wc-payment-method-creditcard-ifthenpay' );
 	}
 
 	/**
@@ -58,15 +62,16 @@ final class CreditCardIfthenPay extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
-		return [
-			'title'                             => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description'                       => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
-			'icon'                              => WC_IfthenPay_Webdados()->creditcard_icon,
-			'only_portugal'                     => $this->settings['only_portugal'] == 'yes',
-			'only_above'                        => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
-			'only_bellow'                       => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
-			//'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ), //Not on credit card
-			//More settings needed?
-		];
+		return array(
+			'title'         => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+			'description'   => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+			'icon'          => WC_IfthenPay_Webdados()->creditcard_icon,
+			'only_portugal' => $this->settings['only_portugal'] === 'yes',
+			'only_above'    => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
+			'only_bellow'   => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
+			// We do not declare subscriptions support on Credit card
+			// 'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ), // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+			// More settings needed?
+		);
 	}
 }

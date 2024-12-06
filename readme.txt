@@ -169,6 +169,11 @@ These payments need to be approved immediately after checking out.
 WooCommerce only sends payment instruction emails for payment methods that require later, and not immediate payment, like Multibanco, Payshop, and Bank transfer, for example.
 The customer will still get an email, if properly configured on WooCommerce, upon payment (just not before).
 
+= Do Apple Pay and Google Pay support Express Checkout? =
+
+Not at this time. Apple Pay and Google Pay are processed via the IfthenPay Gateway. Everything related to payment happens there, and the customer is redirected back to the website afterward.
+This means the checkout addresses are the ones the user entered on the website checkout page, not the ones provided by Apple or Google, which also means any custom field will be collected, which doesn’t happen on Express Checkout.
+
 = [WPML] My website is multilingual. Will I be able to use this plugin? =
 
 Yes. This plugin is officially WPML compatible.

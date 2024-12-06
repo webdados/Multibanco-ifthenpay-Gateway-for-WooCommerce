@@ -1,6 +1,6 @@
 <?php
 /**
- * Apple and Google Play class
+ * IfthenPay Gateway class
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

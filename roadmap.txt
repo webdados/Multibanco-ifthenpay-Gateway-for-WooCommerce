@@ -22,6 +22,7 @@ FREE:
 	- Aceitar nºs estrangeiros
 - Gateway:
 	- Passar PIX para método isolado e migrar configurações
+	- Opção de icones de cada método em vez do Ifthenpay, e o mesmo no banner
 	- Definir validade do pagamento
 - Passar strings repetidas a únicas com placeholders:
 	- Fill out all the details (Cofidis Pay Key) provided by <strong>IfthenPay</strong> in the fields below.

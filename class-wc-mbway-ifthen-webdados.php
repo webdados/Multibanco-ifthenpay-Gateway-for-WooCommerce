@@ -460,7 +460,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 						<small>v.<?php echo $this->version; ?></small>
 						<?php
 						if ( function_exists( 'wc_back_link' ) ) {
-							echo wp_kses_post( wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ) );
+							wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) );
 						}
 						?>
 					</h2>

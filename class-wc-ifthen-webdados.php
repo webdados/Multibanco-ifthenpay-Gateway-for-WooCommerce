@@ -269,8 +269,11 @@ final class WC_IfthenPay_Webdados {
 		add_action( 'after_setup_theme', array( $this, 'set_images' ) );
 		// Order status listener/Ajax hook
 		add_action( 'wp_ajax_wc_mbway_ifthen_order_status', array( $this, 'mbway_ajax_order_status' ) );
+		add_action( 'wp_ajax_nopriv_wc_mbway_ifthen_order_status', array( $this, 'mbway_ajax_order_status' ) );
 		add_action( 'wp_ajax_wc_cofidispay_ifthenpay_order_status', array( $this, 'cofidispay_ajax_order_status' ) );
+		add_action( 'wp_ajax_nopriv_wc_cofidispay_ifthenpay_order_status', array( $this, 'cofidispay_ajax_order_status' ) );
 		add_action( 'wp_ajax_wc_gateway_ifthenpay_order_status', array( $this, 'gatewayifthenpay_ajax_order_status' ) );
+		add_action( 'wp_ajax_nopriv_wc_gateway_ifthenpay_order_status', array( $this, 'gatewayifthenpay_ajax_order_status' ) );
 		// Request MB WAY payment again
 		add_action( 'wp_ajax_mbway_ifthen_request_payment_again', array( $this, 'wp_ajax_mbway_ifthen_request_payment_again' ) );
 		// Order value changed?
@@ -311,7 +314,7 @@ final class WC_IfthenPay_Webdados {
 				$this->is_pay_form = true;
 			}
 		);
-		// Remove pay button for Multibanco, MB WAY or Payshop
+		// Remove pay button for our payment methods
 		add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'woocommerce_my_account_my_orders_actions' ), 10, 2 );
 		// REST API - Not needed: https://wordpress.org/support/topic/obter-referencia-multibanco-atraves-da-api/#post-15815758
 		// add_filter( 'woocommerce_api_order_response', array( $this, 'woocommerce_api_order_response', 11, 2 );
@@ -2926,42 +2929,40 @@ final class WC_IfthenPay_Webdados {
 		<div id="wc_ifthen_rightbar">
 			<h4><?php esc_html_e( 'Commercial information', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 			<p>
-				<a href="https://ifthenpay.com/<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php
-					echo esc_attr(
-						sprintf(
-							/* translators: %s: company name */
-							esc_html__( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-							'IfthenPay'
-						)
-					); ?>" target="_blank">
+				<?php
+				$title = sprintf(
+					/* translators: %s: company name */
+					esc_html__( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'IfthenPay'
+				);
+				?>
+				<a href="https://ifthenpay.com/<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php echo esc_attr( $title ); ?>" target="_blank">
 					<img src="<?php echo esc_url( plugins_url( 'images/ifthenpay.svg', __FILE__ ) ); ?>" width="200"/>
 				</a>
 			</p>
 			<h4><?php esc_html_e( 'Development and premium technical support', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 			<p>
-				<a href="https://ptwooplugins.com<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php
-					echo esc_attr(
-						sprintf(
-							/* translators: %s: company name */
-							esc_html__( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-							'PT Woo Plugins'
-						)
-					);
-				?>" target="_blank">
+				<?php
+				$title = sprintf(
+					/* translators: %s: company name */
+					esc_html__( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'PT Woo Plugins'
+				);
+				?>
+				<a href="https://ptwooplugins.com<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php echo esc_attr( $title ); ?>" target="_blank">
 					<img src="<?php echo esc_url( plugins_url( 'images/ptwooplugins.svg', __FILE__ ) ); ?>" width="200"/>
 				</a>
 			</p>
+			<h4><?php esc_html_e( 'Custom WordPress/WooCommerce development', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 			<p>
-				<h4><?php esc_html_e( 'Custom WordPress/WooCommerce development', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
-				<a href="https://www.webdados.pt/contactos/<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php
-					echo esc_attr(
-						sprintf(
-							/* translators: %s: company name */
-							esc_html__( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-							'Webdados'
-						)
-					);
-				?>" target="_blank">
+				<?php
+				$title = sprintf(
+					/* translators: %s: company name */
+					esc_html__( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'Webdados'
+				);
+				?>
+				<a href="https://www.webdados.pt/contactos/<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php echo esc_attr( $title ); ?>" target="_blank">
 					<img src="<?php echo esc_url( plugins_url( 'images/webdados.svg', __FILE__ ) ); ?>" width="200"/>
 				</a>
 			</p>
@@ -3162,12 +3163,12 @@ final class WC_IfthenPay_Webdados {
 	 * MB WAY - Request payment again
 	 */
 	public function wp_ajax_mbway_ifthen_request_payment_again() {
-		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'mbway_ifthen_request_payment_again' ) ) {
+		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'mbway_ifthen_request_payment_again' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if ( isset( $_REQUEST['order_id'] ) && intval( $_REQUEST['order_id'] ) > 0 && isset( $_REQUEST['order_id'] ) ) {
 				$order = wc_get_order( intval( $_REQUEST['order_id'] ) );
 				$mbway = new WC_MBWAY_IfThen_Webdados();
-				$phone = isset( $_REQUEST['phone'] ) ? trim( sanitize_text_field( $_REQUEST['phone'] ) ) : '';
-				if ( $mbway->webservice_set_pedido( $order->get_id(), $phone ) ) {
+				$phone = isset( $_REQUEST['phone'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['phone'] ) ) ) : '';
+				if ( ( ! empty( $phone ) ) && $mbway->webservice_set_pedido( $order->get_id(), $phone ) ) {
 					echo wp_json_encode(
 						array(
 							'status'  => 1,
@@ -3228,6 +3229,7 @@ final class WC_IfthenPay_Webdados {
 
 	/**
 	 * Hide Pay button on orders list
+	 * Actually it's onlye hidden if thesite owner passes true to our filters
 	 *
 	 * @since 4.4.0
 	 * @param array    $actions The current actions.
@@ -3251,6 +3253,7 @@ final class WC_IfthenPay_Webdados {
 					if ( apply_filters( 'creditcard_ifthen_hide_my_account_pay_button', false ) ) {
 						unset( $actions['pay'] );
 					}
+					break;
 				case $this->payshop_id:
 					if ( apply_filters( 'payshop_ifthen_hide_my_account_pay_button', false ) ) {
 						unset( $actions['pay'] );
@@ -3345,11 +3348,7 @@ final class WC_IfthenPay_Webdados {
 		// phpcs:disable WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase, WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$order = wc_get_order( $order_id );
 		$this->debug_log( $method_id, '-- Processing refund - Order ' . $order->get_id(), 'notice' );
-		/*
-		if ( ! $this->can_refund_order( $order ) ) {
-			$this->debug_log( $method_id, '-- Failed refund - Order ' . $order->get_id(), 'error', true, 'Cannot refund order' );
-			return new WP_Error( 'error', esc_html__( 'Refund failed.', 'woocommerce' ) );
-		}*/ // Only works at method level
+		// Only works at method level
 		switch ( $method_id ) {
 			case $this->mbway_id:
 				$order_details  = WC_IfthenPay_Webdados()->get_mbway_order_details( $order->get_id() );
@@ -3381,7 +3380,8 @@ final class WC_IfthenPay_Webdados {
 			$this->debug_log( $method_id, '-- ' . $debug_msg, 'error', true, $debug_msg_email );
 			return new WP_Error( 'error', $response->get_error_message() );
 		} elseif ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) === 200 && isset( $response['body'] ) && trim( $response['body'] ) !== '' ) {
-			if ( $body = json_decode( $response['body'] ) ) {
+			$body = json_decode( $response['body'] );
+			if ( ! empty( $body ) ) {
 				if ( trim( $body->Code ) === '1' ) {
 					return true;
 				} else {
@@ -3419,7 +3419,8 @@ final class WC_IfthenPay_Webdados {
 				$payment_schedule = $order->get_meta( '_wc_deposits_payment_schedule', true );
 				// Deposit
 				if ( is_array( $payment_schedule ) && isset( $payment_schedule['deposit'] ) && isset( $payment_schedule['deposit']['id'] ) && intval( $payment_schedule['deposit']['id'] ) > 0 ) {
-					if ( $order_deposit = wc_get_order( intval( $payment_schedule['deposit']['id'] ) ) ) {
+					$order_deposit = wc_get_order( intval( $payment_schedule['deposit']['id'] ) );
+					if ( $order_deposit ) {
 						if ( $method_id === $order_deposit->get_payment_method() ) {
 							if ( $this->order_needs_payment( $order_deposit ) ) {
 								return $order_deposit;
@@ -3433,7 +3434,8 @@ final class WC_IfthenPay_Webdados {
 					$i    = 0;
 					while ( $stop === false ) {
 						if ( isset( $payment_schedule[ $i ] ) ) {
-							if ( $order_deposit = wc_get_order( intval( $payment_schedule[ $i ]['id'] ) ) ) {
+							$order_deposit = wc_get_order( intval( $payment_schedule[ $i ]['id'] ) );
+							if ( $order_deposit ) {
 								if ( $method_id === $order_deposit->get_payment_method() ) {
 									if ( $this->order_needs_payment( $order_deposit ) ) {
 										return $order_deposit;
@@ -3534,7 +3536,9 @@ final class WC_IfthenPay_Webdados {
 		if ( 'woocommerce_page_wc-settings' !== $screen_id ) {
 			return;
 		}
-		if ( ! isset( $_GET['tab'] ) || ! isset( $_GET['section'] ) || $_GET['tab'] !== 'checkout' || ! strpos( $_GET['section'], 'ifthen_for_woocommerce' ) ) {
+		$tab     = isset( $_GET['tab'] ) ? trim( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$section = isset( $_GET['section'] ) ? trim( sanitize_text_field( wp_unslash( $_GET['section'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( $tab !== 'checkout' || ! strpos( $section, 'ifthen_for_woocommerce' ) ) {
 			return;
 		}
 
@@ -3543,10 +3547,11 @@ final class WC_IfthenPay_Webdados {
 		wp_enqueue_script( 'woocommerce_multibanco_ifthen_admin_js', plugins_url( 'assets/admin.js', __FILE__ ), array( 'jquery' ), $this->get_version() . ( WP_DEBUG ? '.' . wp_rand( 0, 99999 ) : '' ), true );
 
 		// Javascript variables
-		$gateway             = str_replace( '_ifthen_for_woocommerce', '', $_GET['section'] );
+		$gateway             = str_replace( '_ifthen_for_woocommerce', '', $section );
 		$callback_email_sent = get_option( $gateway . '_ifthen_for_woocommerce_callback_email_sent' );
 		$callback_auto_open  = 0;
-		if ( $callback_email_sent === 'no' && isset( $_GET['callback_warning'] ) && intval( $_GET['callback_warning'] ) === 1 ) {
+		$callback_warning    = isset( $_GET['callback_warning'] ) ? intval( $_GET['callback_warning'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( $callback_email_sent === 'no' && $callback_warning === 1 ) {
 			$callback_auto_open = 1;
 		}
 		wp_localize_script(
@@ -3554,8 +3559,8 @@ final class WC_IfthenPay_Webdados {
 			'ifthenpay',
 			array(
 				'gateway'             => $gateway,
-				'callback_confirm'    => strip_tags( esc_html__( 'Are you sure you want to ask IfthenPay to activate the “Callback”?', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ),
-				'callback_bo_key'     => strip_tags( esc_html__( 'Please provide the IfthenPay backoffice key you got after signing the contract', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ),
+				'callback_confirm'    => esc_html__( 'Are you sure you want to ask IfthenPay to activate the “Callback”?', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+				'callback_bo_key'     => esc_html__( 'Please provide the IfthenPay backoffice key you got after signing the contract', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 				'callback_email_sent' => $callback_email_sent,
 				'callback_auto_open'  => $callback_auto_open,
 				'backoffice_key'      => apply_filters( 'ifthen_backoffice_key', '' ),
@@ -3583,11 +3588,12 @@ final class WC_IfthenPay_Webdados {
 	public function admin_notices() {
 		$screen    = get_current_screen();
 		$screen_id = $screen ? $screen->id : '';
+		$page      = isset( $_GET['page'] ) ? trim( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( apply_filters( 'ifthen_show_old_techonology_notice', true ) ) {
 			if (
 				(
-					isset( $_GET['page'] ) && trim( $_GET['page'] ) !== '' && in_array(
-						trim( $_GET['page'] ),
+					( ! empty( $page ) ) && in_array(
+						$page,
 						array(
 							'wc-settings',
 							'wc-status',

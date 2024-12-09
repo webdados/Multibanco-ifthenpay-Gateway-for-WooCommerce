@@ -931,11 +931,10 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		/**
 		 * Thank you page instructions table HTML
 		 *
-		 * @param int    $order_id    The order ID.
-		 * @param float  $order_total The order total.
+		 * @param integer $order_id    The order ID.
+		 * @param float   $order_total The order total.
 		 */
 		private function thankyou_instructions_table_html( $order_id, $order_total ) {
-			var_dump( $order_id );
 			$alt                = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
 			$extra_instructions = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id . '_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
 			// We actually do not use $ent, $ref or $order_total - We'll just get the details

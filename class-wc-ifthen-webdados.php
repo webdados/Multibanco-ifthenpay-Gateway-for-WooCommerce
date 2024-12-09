@@ -218,9 +218,9 @@ final class WC_IfthenPay_Webdados {
 		$this->gateway_ifthen_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Gateway_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&ifthenpayfee=[FEE]' )
+			home_url( '/?wc-api=WC_Gateway_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_Gateway_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&ifthenpayfee=[FEE]' )
+			home_url( '/wc-api/WC_Gateway_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&ifthenpayfee=[FEE]' )
 		);
 		$this->gateway_ifthen_return_url = (
 			get_option( 'permalink_structure' ) === ''
@@ -829,25 +829,27 @@ final class WC_IfthenPay_Webdados {
 	 * @return array or false
 	 */
 	public function get_gatewayifthenpay_order_details( $order_id ) {
-		$order          = wc_get_order( $order_id );
-		$gatewaykey     = $order->get_meta( '_' . $this->gateway_ifthen_id . '_gatewaykey' );
-		$pincode        = $order->get_meta( '_' . $this->gateway_ifthen_id . '_pincode' );
-		$id             = $order->get_meta( '_' . $this->gateway_ifthen_id . '_id' );
-		$val            = $order->get_meta( '_' . $this->gateway_ifthen_id . '_val' );
-		$time           = $order->get_meta( '_' . $this->gateway_ifthen_id . '_time' );
-		$payment_url    = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_url' );
-		$wd_secret      = $order->get_meta( '_' . $this->gateway_ifthen_id . '_wd_secret' );
-		$payment_method = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_method' );
+		$order              = wc_get_order( $order_id );
+		$gatewaykey         = $order->get_meta( '_' . $this->gateway_ifthen_id . '_gatewaykey' );
+		$pincode            = $order->get_meta( '_' . $this->gateway_ifthen_id . '_pincode' );
+		$id                 = $order->get_meta( '_' . $this->gateway_ifthen_id . '_id' );
+		$val                = $order->get_meta( '_' . $this->gateway_ifthen_id . '_val' );
+		$time               = $order->get_meta( '_' . $this->gateway_ifthen_id . '_time' );
+		$payment_url        = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_url' );
+		$wd_secret          = $order->get_meta( '_' . $this->gateway_ifthen_id . '_wd_secret' );
+		$payment_method     = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_method' );
+		$payment_method_key = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_method_key' );
 		if ( ! empty( $gatewaykey ) && ! empty( $id ) && ! empty( $pincode ) && ! empty( $val ) ) {
 			return array(
-				'gatewaykey'     => $gatewaykey,
-				'pincode'        => $pincode,
-				'id'             => $id,
-				'val'            => $val,
-				'time'           => $time,
-				'payment_url'    => $payment_url,
-				'wd_secret'      => $wd_secret,
-				'payment_method' => $payment_method,
+				'gatewaykey'         => $gatewaykey,
+				'pincode'            => $pincode,
+				'id'                 => $id,
+				'val'                => $val,
+				'time'               => $time,
+				'payment_url'        => $payment_url,
+				'wd_secret'          => $wd_secret,
+				'payment_method'     => $payment_method,
+				'payment_method_key' => $payment_method_key,
 			);
 		}
 		return false;
@@ -937,7 +939,7 @@ final class WC_IfthenPay_Webdados {
 							jQuery( document ).ready( function() {
 								jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
 									if ( confirm( '<?php esc_html_e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
-										jQuery.get( '<?php echo esc_attr( $callback_url ); ?>', '', function( response ) {
+										jQuery.get( '<?php echo $callback_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>', '', function( response ) {
 											alert( '<?php esc_html_e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
 											window.location.reload();
 										}).fail( function() {
@@ -1047,7 +1049,7 @@ final class WC_IfthenPay_Webdados {
 								jQuery( document ).ready( function() {
 									jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
 										if ( confirm( '<?php esc_html_e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
-											jQuery.get( '<?php echo esc_attr( $callback_url ); ?>', '', function( response ) {
+											jQuery.get( '<?php echo $callback_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>', '', function( response ) {
 												alert( '<?php esc_html_e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
 												window.location.reload();
 											}).fail( function() {
@@ -1115,7 +1117,7 @@ final class WC_IfthenPay_Webdados {
 							jQuery( document ).ready( function() {
 								jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
 									if ( confirm( '<?php esc_html_e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
-										jQuery.get( '<?php echo esc_attr( $callback_url ); ?>', '', function( response ) {
+										jQuery.get( '<?php echo $callback_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>', '', function( response ) {
 											alert( '<?php esc_html_e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
 											window.location.reload();
 										}).fail( function() {
@@ -1180,7 +1182,7 @@ final class WC_IfthenPay_Webdados {
 							jQuery( document ).ready( function() {
 								jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
 									if ( confirm( '<?php esc_html_e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
-										jQuery.get( '<?php echo esc_attr( $callback_url ); ?>', '', function( response ) {
+										jQuery.get( '<?php echo $callback_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>', '', function( response ) {
 											alert( '<?php esc_html_e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
 											window.location.reload();
 										}).fail( function() {
@@ -1244,7 +1246,7 @@ final class WC_IfthenPay_Webdados {
 							jQuery( document ).ready( function() {
 								jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
 									if ( confirm( '<?php esc_html_e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
-										jQuery.get( '<?php echo esc_attr( $callback_url ); ?>', '', function( response ) {
+										jQuery.get( '<?php echo $callback_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>', '', function( response ) {
 											alert( '<?php esc_html_e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
 											window.location.reload();
 										}).fail( function() {
@@ -1278,8 +1280,12 @@ final class WC_IfthenPay_Webdados {
 				if ( ! empty( $order_mb_details ) ) {
 					echo '<p><img src="' . esc_url( $this->gateway_ifthen_banner ) . '" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="IfthenPay Gateway" title="IfthenPay Gateway"/></p>';
 					echo '<p>' . esc_html__( 'Gateway Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['gatewaykey'] ) ) . '<br/>';
+					if ( trim( $order_mb_details['payment_method_key'] ) !== '' ) {
+						echo esc_html__( 'Payment Method Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['payment_method_key'] ) ) . '<br/>';
+					}
 					echo esc_html__( 'Pincode', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['pincode'] ) ) . '<br/>';
 					echo esc_html__( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ) . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo '</p>';
 					if ( $this->order_needs_payment( $order ) ) {
 						$show_debug = true;
 						if ( $this->wc_deposits_active && $order->get_status() === 'partially-paid' ) {
@@ -1299,7 +1305,8 @@ final class WC_IfthenPay_Webdados {
 							$callback_url = str_replace( '[AMOUNT]', $order_mb_details['val'], $callback_url );
 							$callback_url = str_replace( '[PAYMENT_DATETIME]', rawurlencode( date_i18n( 'Y-m-d H:i:s' ) ), $callback_url );
 							$callback_url = str_replace( '[STATUS]', 'PAGO', $callback_url );
-							$callback_url = str_replace( '[PAYMENT_METHOD]', 'TESTING', $callback_url );
+							$callback_url = str_replace( '[PAYMENT_METHOD]', 'TEST_METHOD', $callback_url );
+							$callback_url = str_replace( '[PAYMENT_METHOD_KEY]', 'TEST_METHOD_KEY', $callback_url );
 							$callback_url = str_replace( '[FEE]', 0, $callback_url );
 							?>
 							<hr/>
@@ -1311,7 +1318,7 @@ final class WC_IfthenPay_Webdados {
 							jQuery( document ).ready( function() {
 								jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
 									if ( confirm( '<?php esc_html_e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
-										jQuery.get( '<?php echo esc_attr( $callback_url ); ?>', '', function( response ) {
+										jQuery.get( '<?php echo $callback_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>', '', function( response ) {
 											alert( '<?php esc_html_e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
 											window.location.reload();
 										}).fail( function() {

@@ -1272,15 +1272,18 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				&&
 				isset( $_GET['payment_method'] )
 				&&
+				isset( $_GET['payment_method_key'] )
+				&&
 				isset( $_GET['status'] )
 			) {
 				$this->debug_log( '- Callback (' . $server_request_uri . ') with all arguments from ' . $server_remote_addr );
-				$id              = trim( sanitize_text_field( wp_unslash( $_GET['id'] ) ) );
-				$val             = floatval( $_GET['amount'] );
-				$status          = trim( sanitize_text_field( wp_unslash( $_GET['status'] ) ) );
-				$payment_method  = trim( sanitize_text_field( wp_unslash( $_GET['payment_method'] ) ) );
-				$arguments_ok    = true;
-				$arguments_error = '';
+				$id                 = trim( sanitize_text_field( wp_unslash( $_GET['id'] ) ) );
+				$val                = floatval( $_GET['amount'] );
+				$status             = trim( sanitize_text_field( wp_unslash( $_GET['status'] ) ) );
+				$payment_method     = trim( sanitize_text_field( wp_unslash( $_GET['payment_method'] ) ) );
+				$payment_method_key = trim( sanitize_text_field( wp_unslash( $_GET['payment_method_key'] ) ) ); // This is what we'll use for refunds later
+				$arguments_ok       = true;
+				$arguments_error    = '';
 				if ( trim( sanitize_text_field( wp_unslash( $_GET['key'] ) ) ) !== trim( $this->secret_key ) ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - Key';
@@ -1343,6 +1346,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 										}
 										// Payment method
 										$order->update_meta_data( '_' . $this->id . '_payment_method', $payment_method );
+										$order->update_meta_data( '_' . $this->id . '_payment_method_key', $payment_method_key );
 										$order->save();
 										$this->payment_complete( $order, '', $note );
 										do_action( 'gateway_ifthen_callback_payment_complete', $order->get_id(), $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended

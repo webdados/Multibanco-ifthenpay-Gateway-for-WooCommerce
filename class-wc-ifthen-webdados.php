@@ -1285,7 +1285,6 @@ final class WC_IfthenPay_Webdados {
 					}
 					echo esc_html__( 'Pincode', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['pincode'] ) ) . '<br/>';
 					echo esc_html__( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ) . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo '</p>';
 					if ( $this->order_needs_payment( $order ) ) {
 						$show_debug = true;
 						if ( $this->wc_deposits_active && $order->get_status() === 'partially-paid' ) {

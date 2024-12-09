@@ -864,7 +864,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					// We might have to deal with deposits...
 					$ref = WC_IfthenPay_Webdados()->multibanco_get_ref( $order->get_id() );
 					if ( is_array( $ref ) ) {
-						echo $this->thankyou_instructions_table_html( $ref['ent'], $ref['ref'], WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), $order->get_id() );
+						echo $this->thankyou_instructions_table_html( $order->get_id(), round( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ), 2 ) );
 					} else {
 						?>
 						<p><strong><?php esc_html_e( 'Error getting Multibanco payment details', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>.</strong></p>
@@ -931,10 +931,11 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 		/**
 		 * Thank you page instructions table HTML
 		 *
-		 * @param int   $order_id    The order ID.
-		 * @param float $order_total The order total.
+		 * @param int    $order_id    The order ID.
+		 * @param float  $order_total The order total.
 		 */
 		private function thankyou_instructions_table_html( $order_id, $order_total ) {
+			var_dump( $order_id );
 			$alt                = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
 			$extra_instructions = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id . '_extra_instructions', $this->extra_instructions ) : $this->extra_instructions );
 			// We actually do not use $ent, $ref or $order_total - We'll just get the details

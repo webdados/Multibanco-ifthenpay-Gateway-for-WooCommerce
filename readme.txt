@@ -59,7 +59,7 @@ Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-ca
 
 * Recover unpaid MB WAY orders by converting them to Multibanco and notify the customer via email;
 * Automatic cancellation of orders when Multibanco, Payshop, or MB WAY references expire;
-* Countdown timer on the “thank you” page for MB WAY payments;
+* Countdown timer on the “Thank you” page for MB WAY payments;
 * Save the MB WAY mobile number to the user profile for future purchases;
 * Trigger Multibanco and MB WAY payments when creating orders via the REST API;
 * Store and show the IfthenPay fee on each order;

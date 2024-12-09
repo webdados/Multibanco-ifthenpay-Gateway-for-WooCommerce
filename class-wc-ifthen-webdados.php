@@ -271,6 +271,9 @@ final class WC_IfthenPay_Webdados {
 		add_action( 'wp_ajax_wc_mbway_ifthen_order_status', array( $this, 'mbway_ajax_order_status' ) );
 		add_action( 'wp_ajax_nopriv_wc_mbway_ifthen_order_status', array( $this, 'mbway_ajax_order_status' ) );
 		add_action( 'wp_ajax_wc_cofidispay_ifthenpay_order_status', array( $this, 'cofidispay_ajax_order_status' ) );
+		add_action( 'wp_ajax_nopriv_wc_cofidispay_ifthenpay_order_status', array( $this, 'cofidispay_ajax_order_status' ) );
+		add_action( 'wp_ajax_wc_gateway_ifthenpay_order_status', array( $this, 'gatewayifthenpay_ajax_order_status' ) );
+		add_action( 'wp_ajax_nopriv_wc_gateway_ifthenpay_order_status', array( $this, 'gatewayifthenpay_ajax_order_status' ) );
 		// Request MB WAY payment again
 		add_action( 'wp_ajax_mbway_ifthen_request_payment_again', array( $this, 'wp_ajax_mbway_ifthen_request_payment_again' ) );
 		// Order value changed?
@@ -3383,30 +3386,33 @@ final class WC_IfthenPay_Webdados {
 			$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 			$this->debug_log( $method_id, '-- ' . $debug_msg, 'error', true, $debug_msg_email );
 			return new WP_Error( 'error', $response->get_error_message() );
-		} else {
-			if ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) == 200 && isset( $response['body'] ) && trim( $response['body'] ) != '' ) {
-				if ( $body = json_decode( $response['body'] ) ) {
-					if ( trim( $body->Code ) == '1' ) {
-						return true;
-					} else {
-						$debug_msg       = '- Error from IfthenPay: ' . trim( $body->Message ) . ' - Order ' . $order->get_id();
-						$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
-						$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
-						return new WP_Error( 'error', $debug_msg . ' - ' . __( 'Do not contact the plugin support. You need to check with IfthenPay why this refund could not be issued.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
-					}
+		} elseif ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) === 200 && isset( $response['body'] ) && trim( $response['body'] ) !== '' ) {
+			$body = json_decode( $response['body'] );
+			if ( ! empty( $body ) ) {
+				if ( trim( $body->Code ) === '1' ) {
+					return true;
 				} else {
-					$debug_msg       = '- Response body is not JSON - Order ' . $order->get_id();
+					$debug_msg       = '- Error from IfthenPay: ' . trim( $body->Message ) . ' - Order ' . $order->get_id();
 					$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 					$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
-					return new WP_Error( 'error', $debug_msg );
+					return new WP_Error(
+						'error',
+						__( 'We are sorry, but it was not possible to issue the refund. Please contact the IfthenPay support.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - (' . trim( $body->Code ) . ')'
+					);
 				}
 			} else {
-				$debug_msg       = '- Error contacting the IfthenPay servers - Order ' . $order->get_id() . ' - Incorrect response code: ' . $response['response']['code'];
+				$debug_msg       = '- Response body is not JSON - Order ' . $order->get_id();
 				$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 				$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
 				return new WP_Error( 'error', $debug_msg );
 			}
+		} else {
+			$debug_msg       = '- Error contacting the IfthenPay servers - Order ' . $order->get_id() . ' - Incorrect response code: ' . $response['response']['code'];
+			$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
+			$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
+			return new WP_Error( 'error', $debug_msg );
 		}
+		// phpcs:enable
 	}
 
 	/**

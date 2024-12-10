@@ -105,7 +105,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 			if ( self::$instances === 1 ) { // Avoid duplicate actions and filters if it's initiated more than once (if WooCommerce loads after us)
 
 				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options_update_gateways_and_methods' ) );
+				add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options_update_gateways_and_methods' ), 20 ); // After saved and after pro
 				if ( WC_IfthenPay_Webdados()->wpml_active ) {
 					add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'register_wpml_strings' ) );
 				}
@@ -656,6 +656,11 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 												(
 													! isset( $this->methods_keys[ $method ] )
 												)
+												||
+												// Forced
+												(
+													apply_filters( 'gateway_ifthen_force_callback_reactivation', false )
+												)
 											) {
 												// Activate callback for this account.
 												$method_key_temp = explode( '|', $method_key );
@@ -695,6 +700,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 														$result['message']
 													);
 												}
+												do_action( 'gateway_ifthen_after_callback_activation', $this );
 											}
 										}
 									}
@@ -1283,7 +1289,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				$val                = floatval( $_GET['amount'] );
 				$status             = trim( sanitize_text_field( wp_unslash( $_GET['status'] ) ) );
 				$payment_method     = trim( sanitize_text_field( wp_unslash( $_GET['payment_method'] ) ) );
-				$payment_method_key = trim( sanitize_text_field( wp_unslash( $_GET['payment_method_key'] ) ) ); // This is what we'll use for refunds later
+				$payment_method_key = trim( sanitize_text_field( wp_unslash( $_GET['payment_method_key'] ) ) );
 				$request_id         = trim( sanitize_text_field( wp_unslash( $_GET['request_id'] ) ) ); // This is what we'll use for refunds later
 				$arguments_ok       = true;
 				$arguments_error    = '';

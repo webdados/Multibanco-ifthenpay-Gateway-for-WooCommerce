@@ -1004,6 +1004,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					'lang'          => $lang,
 				),
 			);
+			$this->debug_log_extra( '- Request payment with args: ' . wp_json_encode( $args ) );
 			$args['body'] = wp_json_encode( $args['body'] ); // Json not post variables
 			$response     = wp_remote_post( $url, $args );
 			if ( is_wp_error( $response ) ) {

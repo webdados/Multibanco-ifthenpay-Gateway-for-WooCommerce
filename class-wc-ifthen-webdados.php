@@ -1750,6 +1750,7 @@ final class WC_IfthenPay_Webdados {
 						$args['body']['expiryDays'] = trim( $expire_days );
 						// Temos de calcular a data e guardar mais lá à frente
 					}
+					$this->debug_log_extra( $this->multibanco_id, '- Request payment with args: ' . wp_json_encode( $args ) );
 					$args['body'] = wp_json_encode( $args['body'] );
 					$response     = wp_remote_post( $url, $args );
 					if ( is_wp_error( $response ) ) {
@@ -3414,6 +3415,7 @@ final class WC_IfthenPay_Webdados {
 				'amount'        => (string) round( floatval( $amount ), 2 ),
 			),
 		);
+		$this->debug_log_extra( $method_id, '- Request refund with args: ' . wp_json_encode( $args ) );
 		$args['body'] = wp_json_encode( $args['body'] );
 		$response     = wp_remote_post( $this->refunds_url, $args );
 		if ( is_wp_error( $response ) ) {

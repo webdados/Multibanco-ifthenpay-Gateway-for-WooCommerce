@@ -1004,8 +1004,8 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 			if ( $date_exp ) {
 				$args['body']['validade'] = $date_exp->format( 'Ymd' );
 			}
+			$this->debug_log_extra( '- Request payment with args: ' . wp_json_encode( $args ) );
 			$args['body'] = wp_json_encode( $args['body'] ); // Json not post variables
-
 			$response = wp_remote_post( $this->webservice_url, $args );
 			if ( is_wp_error( $response ) ) {
 				$debug_msg       = '- Error contacting the ifthenpay servers - Order ' . $order->get_id() . ' - ' . $response->get_error_message();

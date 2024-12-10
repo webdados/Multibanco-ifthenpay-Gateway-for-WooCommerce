@@ -922,6 +922,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					'deliveryCity'    => trim( $order->get_shipping_city() ),
 				),
 			);
+			$this->debug_log_extra( '- Request payment with args: ' . wp_json_encode( $args ) );
 			$args['body']      = wp_json_encode( $args['body'] ); // Json not post variables
 			$response          = wp_remote_post( $url, $args );
 			if ( is_wp_error( $response ) ) {

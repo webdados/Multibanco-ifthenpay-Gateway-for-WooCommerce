@@ -1283,12 +1283,31 @@ final class WC_IfthenPay_Webdados {
 			case $this->gateway_ifthen_id:
 				$order_mb_details = $this->get_gatewayifthenpay_order_details( $order->get_id() );
 				if ( ! empty( $order_mb_details ) ) {
-					echo '<p><img src="' . esc_url( $this->gateway_ifthen_banner ) . '" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="IfthenPay Gateway" title="IfthenPay Gateway"/></p>';
+					// This could be moved to a global part of the code later
+					$payment_method_icons = array(
+						'APPLE'  => '<img src="' . esc_url( plugins_url( 'images/apple_pay_banner.svg', __FILE__ ) ) . '" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="Apple Pay" title="IfthenPay Gateway"/>',
+						'GOOGLE' => '<img src="' . esc_url( plugins_url( 'images/google_pay_banner.svg', __FILE__ ) ) . '" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="Google Pay" title="IfthenPay Gateway"/>',
+						'PIX'    => '<img src="' . esc_url( plugins_url( 'images/pix_banner.svg', __FILE__ ) ) . '" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="PIX" title="IfthenPay Gateway"/>',
+					);
+					if ( trim( $order_mb_details['payment_method'] ) !== '' ) {
+						echo '<p><img src="' . esc_url( $this->gateway_ifthen_banner ) . '" style="display: block; margin: auto; max-width: auto; max-height: 24px;" alt="IfthenPay Gateway" title="IfthenPay Gateway"/></p>';
+						echo '<p style="text-align: center;">';
+						if ( isset( $payment_method_icons[ trim( $order_mb_details['payment_method'] ) ] ) ) {
+							echo wp_kses_post( $payment_method_icons[ trim( $order_mb_details['payment_method'] ) ] );
+						} else {
+							echo '<span style="font-size: 1.75em; font-weight: bold;">' . esc_html( trim( $order_mb_details['payment_method'] ) ) . '</span>';
+						}
+						echo '</p>';
+					} else {
+						echo '<p><img src="' . esc_url( $this->gateway_ifthen_banner ) . '" style="display: block; margin: auto; max-width: auto; max-height: 48px;" alt="IfthenPay Gateway" title="IfthenPay Gateway"/></p>';
+					}
 					echo '<p>' . esc_html__( 'Gateway Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['gatewaykey'] ) ) . '<br/>';
+					echo esc_html__( 'Pincode', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['pincode'] ) ) . '<br/>';
 					if ( trim( $order_mb_details['payment_method_key'] ) !== '' ) {
 						echo esc_html__( 'Payment Method Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['payment_method_key'] ) ) . '<br/>';
+					}if ( trim( $order_mb_details['request_id'] ) !== '' ) {
+						echo esc_html__( 'Request ID', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['request_id'] ) ) . '<br/>';
 					}
-					echo esc_html__( 'Pincode', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . esc_html( trim( $order_mb_details['pincode'] ) ) . '<br/>';
 					echo esc_html__( 'Value', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ': ' . wc_price( $order_mb_details['val'], array( 'currency' => $order->get_currency() ) ) . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					if ( $this->order_needs_payment( $order ) ) {
 						$show_debug = true;
@@ -1311,6 +1330,7 @@ final class WC_IfthenPay_Webdados {
 							$callback_url = str_replace( '[STATUS]', 'PAGO', $callback_url );
 							$callback_url = str_replace( '[PAYMENT_METHOD]', 'TEST_METHOD', $callback_url );
 							$callback_url = str_replace( '[PAYMENT_METHOD_KEY]', 'TEST_METHOD_KEY', $callback_url );
+							$callback_url = str_replace( '[REQUEST_ID]', 'TEST_REQUEST_ID', $callback_url );
 							$callback_url = str_replace( '[FEE]', 0, $callback_url );
 							?>
 							<hr/>
@@ -1339,7 +1359,7 @@ final class WC_IfthenPay_Webdados {
 						}
 					} elseif ( $date_paid ) {
 						// PAID?
-						echo '<p><strong>' . esc_html__( 'Paid', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - ' . esc_html( $order_mb_details['payment_method'] ) . ': ' . esc_html( $date_paid ) . '</strong></p>';
+						echo '<p><strong>' . esc_html__( 'Paid', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - ' . esc_html( $this->helper_format_method( $order_mb_details['payment_method'] ) ) . ': ' . esc_html( $date_paid ) . '</strong></p>';
 					}
 				} else {
 					echo '<p>' . esc_html__( 'No details available', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '.</p><p>' . sprintf(

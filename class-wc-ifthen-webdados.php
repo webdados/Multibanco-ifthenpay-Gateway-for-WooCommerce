@@ -162,9 +162,9 @@ final class WC_IfthenPay_Webdados {
 		$this->multibanco_notify_url       = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]' )
+			home_url( '/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]' )
+			home_url( '/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]&ifthenpayfee=[FEE]' )
 		);
 		$this->multibanco_api_mode_enabled = isset( $this->multibanco_settings['api_mode'] ) && $this->multibanco_settings['api_mode'] === 'yes';
 		if ( $this->multibanco_api_mode_enabled && $this->multibanco_settings['mbkey'] === 'YAK-504589' ) {
@@ -175,18 +175,18 @@ final class WC_IfthenPay_Webdados {
 		$this->mbway_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_MBWAY_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]' )
+			home_url( '/?wc-api=WC_MBWAY_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_MBWAY_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]' )
+			home_url( '/wc-api/WC_MBWAY_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]&ifthenpayfee=[FEE]' )
 		);
 		// Payshop
 		$this->payshop_settings   = get_option( 'woocommerce_payshop_ifthen_for_woocommerce_settings', '' );
 		$this->payshop_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Payshop_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]' )
+			home_url( '/?wc-api=WC_Payshop_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_Payshop_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]' )
+			home_url( '/wc-api/WC_Payshop_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]&ifthenpayfee=[FEE]' )
 		);
 		// Credit card
 		$this->creditcard_settings   = get_option( 'woocommerce_creditcard_ifthen_for_woocommerce_settings', '' );
@@ -929,6 +929,7 @@ final class WC_IfthenPay_Webdados {
 							$callback_url = str_replace( '[VALOR]', $order_mb_details['val'], $callback_url );
 							$callback_url = str_replace( '[DATA_HORA_PAGAMENTO]', '', $callback_url );
 							$callback_url = str_replace( '[TERMINAL]', 'Testing', $callback_url );
+							$callback_url = str_replace( '[FEE]', 0, $callback_url );
 							?>
 							<hr/>
 							<p>
@@ -1039,6 +1040,7 @@ final class WC_IfthenPay_Webdados {
 							$callback_url = str_replace( '[VALOR]', $order_mbway_details['val'], $callback_url );
 							$callback_url = str_replace( '[DATA_HORA_PAGAMENTO]', '', $callback_url );
 							$callback_url = str_replace( '[ESTADO]', 'PAGO', $callback_url );
+							$callback_url = str_replace( '[FEE]', 0, $callback_url );
 							?>
 								<hr/>
 								<p>
@@ -1107,6 +1109,7 @@ final class WC_IfthenPay_Webdados {
 							$callback_url = str_replace( '[VALOR]', $order_mb_details['val'], $callback_url );
 							$callback_url = str_replace( '[ESTADO]', 'PAGO', $callback_url );
 							$callback_url = str_replace( '[DATA_HORA_PAGAMENTO]', '', $callback_url );
+							$callback_url = str_replace( '[FEE]', 0, $callback_url );
 							?>
 							<hr/>
 							<p>

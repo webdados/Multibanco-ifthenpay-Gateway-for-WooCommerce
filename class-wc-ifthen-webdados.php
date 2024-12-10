@@ -2240,7 +2240,7 @@ final class WC_IfthenPay_Webdados {
 		// Floatval and round
 		$value = round( floatval( $value ), 2 );
 		// Number format, just in case some very weird LOCALE is setting "," as decimal separator
-		$value = number_format(	$value, 2, '.', '' );
+		$value = number_format( $value, 2, '.', '' );
 		// Return
 		return $value;
 	}

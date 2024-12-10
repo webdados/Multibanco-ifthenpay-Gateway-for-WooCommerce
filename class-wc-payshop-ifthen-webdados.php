@@ -609,8 +609,11 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 			<?php
 		}
 
+		/**
+		 * Activate callback at ifthenpay
+		 */
 		public function send_callback_email() {
-			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
+			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && isset( $_POST['wc_ifthen_callback_bo_key'] ) && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
 				// Webservice
 				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'PAYSHOP', $this->payshopkey, $this->secret_key, WC_IfthenPay_Webdados()->payshop_notify_url );
 				if ( $result['success'] ) {

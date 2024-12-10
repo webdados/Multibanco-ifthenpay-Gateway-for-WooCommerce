@@ -140,7 +140,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 						$known_sandbox_keys = array(
 							'AAA-000001',
 						);
-						if ( in_array( $this->cofidispaykey, $known_sandbox_keys ) ) {
+						if ( in_array( $this->cofidispaykey, $known_sandbox_keys, true ) ) {
 							return true;
 						}
 						return $bool;
@@ -571,8 +571,11 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 			return parent::process_admin_options();
 		}
 
+		/**
+		 * Activate callback at ifthenpay
+		 */
 		public function send_callback_email() {
-			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
+			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && isset( $_POST['wc_ifthen_callback_bo_key'] ) && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
 				// Webservice
 				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'COFIDIS', $this->cofidispaykey, $this->secret_key, WC_IfthenPay_Webdados()->cofidispay_notify_url );
 				if ( $result['success'] ) {

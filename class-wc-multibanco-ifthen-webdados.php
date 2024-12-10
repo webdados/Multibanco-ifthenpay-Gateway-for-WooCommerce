@@ -278,7 +278,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 					),
 				),
 			);
-			if ( in_array( intval( $this->get_option( 'ent' ) ), WC_IfthenPay_Webdados()->multibanco_ents_no_check_digit ) ) {
+			if ( in_array( intval( $this->get_option( 'ent' ) ), WC_IfthenPay_Webdados()->multibanco_ents_no_check_digit, true ) ) {
 				$this->form_fields = array_merge(
 					$this->form_fields,
 					array(
@@ -761,6 +761,9 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 			<?php
 		}
 
+		/**
+		 * Activate callback at ifthenpay
+		 */
 		public function send_callback_email() {
 			$ent    = $this->ent;
 			$subent = $this->subent;
@@ -768,7 +771,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				$ent    = 'MB';
 				$subent = $this->mbkey;
 			}
-			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
+			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && isset( $_POST['wc_ifthen_callback_bo_key'] ) && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
 				// Webservice
 				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), $ent, $subent, $this->secret_key, WC_IfthenPay_Webdados()->multibanco_notify_url );
 				if ( $result['success'] ) {

@@ -613,8 +613,11 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 			<?php
 		}
 
+		/**
+		 * Activate callback at ifthenpay
+		 */
 		public function send_callback_email() {
-			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
+			if ( isset( $_POST['wc_ifthen_callback_send'] ) && intval( $_POST['wc_ifthen_callback_send'] ) === 2 && isset( $_POST['wc_ifthen_callback_bo_key'] ) && trim( $_POST['wc_ifthen_callback_bo_key'] ) !== '' ) {
 				// Webservice
 				$result = WC_IfthenPay_Webdados()->callback_webservice( trim( $_POST['wc_ifthen_callback_bo_key'] ), 'MBWAY', $this->mbwaykey, $this->secret_key, WC_IfthenPay_Webdados()->mbway_notify_url );
 				if ( $result['success'] ) {
@@ -1300,7 +1303,7 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 					$arguments_ok     = false;
 					$arguments_error .= ' - Value';
 				}
-				if ( ! in_array( $estado, array( 'PAGO', 'DEVOLVIDO' ) ) ) {
+				if ( ! in_array( $estado, array( 'PAGO', 'DEVOLVIDO' ), true ) ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - Estado';
 				}

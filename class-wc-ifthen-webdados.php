@@ -218,9 +218,9 @@ final class WC_IfthenPay_Webdados {
 		$this->gateway_ifthen_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Gateway_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&ifthenpayfee=[FEE]' )
+			home_url( '/?wc-api=WC_Gateway_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&request_id=[REQUEST_ID]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_Gateway_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&ifthenpayfee=[FEE]' )
+			home_url( '/wc-api/WC_Gateway_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&request_id=[REQUEST_ID]&ifthenpayfee=[FEE]' )
 		);
 		$this->gateway_ifthen_return_url = (
 			get_option( 'permalink_structure' ) === ''
@@ -839,6 +839,7 @@ final class WC_IfthenPay_Webdados {
 		$wd_secret          = $order->get_meta( '_' . $this->gateway_ifthen_id . '_wd_secret' );
 		$payment_method     = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_method' );
 		$payment_method_key = $order->get_meta( '_' . $this->gateway_ifthen_id . '_payment_method_key' );
+		$request_id         = $order->get_meta( '_' . $this->gateway_ifthen_id . '_request_id' );
 		if ( ! empty( $gatewaykey ) && ! empty( $id ) && ! empty( $pincode ) && ! empty( $val ) ) {
 			return array(
 				'gatewaykey'         => $gatewaykey,
@@ -850,6 +851,7 @@ final class WC_IfthenPay_Webdados {
 				'wd_secret'          => $wd_secret,
 				'payment_method'     => $payment_method,
 				'payment_method_key' => $payment_method_key,
+				'request_id'         => $request_id,
 			);
 		}
 		return false;
@@ -3232,7 +3234,18 @@ final class WC_IfthenPay_Webdados {
 	 * @param WC_Order $order The order.
 	 */
 	public function order_has_ifthenpay_method( $order ) {
-		return in_array( $order->get_payment_method(), array( $this->multibanco_id, $this->mbway_id, $this->creditcard_id, $this->payshop_id, $this->cofidispay_id, $this->gateway_ifthen_id ), true );
+		return in_array(
+			$order->get_payment_method(),
+			array(
+				$this->multibanco_id,
+				$this->mbway_id,
+				$this->creditcard_id,
+				$this->payshop_id,
+				$this->cofidispay_id,
+				$this->gateway_ifthen_id,
+			),
+			true
+		);
 	}
 
 

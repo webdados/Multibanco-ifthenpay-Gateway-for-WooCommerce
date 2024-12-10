@@ -43,7 +43,7 @@ function my_multibanco_ifthen_email_instructions_table_html( $html, $ent, $ref, 
 	<p>
 		<b>Entity:</b> <?php echo $ent; ?>
 		<br/>
-		<b>Reference:</b> <?php echo WC_IfthenPay_Webdados()->format_multibanco_ref( $ref ); ?>
+		<b>Reference:</b> <?php echo esc_html( WC_IfthenPay_Webdados()->format_multibanco_ref( $ref ) ); ?>
 		<br/>
 		<b>Value:</b> <?php echo $order_total; ?>
 	</p>
@@ -115,7 +115,7 @@ function my_multibanco_ifthen_thankyou_instructions_table_html( $html, $ent, $re
 	<p>
 		<b>Entity:</b> <?php echo $ent; ?>
 		<br/>
-		<b>Reference:</b> <?php echo WC_IfthenPay_Webdados()->format_multibanco_ref( $ref ); ?>
+		<b>Reference:</b> <?php echo esc_html( WC_IfthenPay_Webdados()->format_multibanco_ref( $ref ) ); ?>
 		<br/>
 		<b>Value:</b> <?php echo $order_total; ?>
 	</p>

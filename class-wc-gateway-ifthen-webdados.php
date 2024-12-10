@@ -366,7 +366,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						'title'       => __( 'Only for orders from', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'type'        => 'number',
 						'description' => __( 'Enable only for orders with a value from x &euro;. Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' <br/> ' . sprintf(
-							/* translators: %1$s: payment methods, %2$s: minimum value, %3$s: maximum value */
+							/* translators: %1$s: payment method, %2$s: minimum value, %3$s: maximum value */
 							__( 'By design, %1$s only allows payments from %2$s to %3$s. You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							__( 'Apple Pay, Google Pay, or Pix', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							wc_price( WC_IfthenPay_Webdados()->gateway_ifthen_min_value, array( 'currency' => 'EUR' ) ),
@@ -378,7 +378,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						'title'       => __( 'Only for orders up to', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'type'        => 'number',
 						'description' => __( 'Enable only for orders with a value up to x &euro;. Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' <br/> ' . sprintf(
-							/* translators: %1$s: payment methods, %2$s: minimum value, %3$s: maximum value */
+							/* translators: %1$s: payment method, %2$s: minimum value, %3$s: maximum value */
 							__( 'By design, %1$s only allows payments from %2$s to %3$s. You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							__( 'Apple Pay, Google Pay, or Pix', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							wc_price( WC_IfthenPay_Webdados()->gateway_ifthen_min_value, array( 'currency' => 'EUR' ) ),
@@ -408,8 +408,8 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						'label'       => __( 'Enable logging', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'default'     => 'yes',
 						'description' => sprintf(
-							/* translators: %s: debug filename */
-							__( 'Log plugin events in %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							/* translators: %s: file name or link to logs */
+							__( 'Log payment method events in %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							( ( defined( 'WC_LOG_HANDLER' ) && 'WC_Log_Handler_DB' === WC_LOG_HANDLER ) || version_compare( WC_VERSION, '8.6', '>=' ) )
 							?
 							'<a href="admin.php?page=wc-status&tab=logs&source=' . esc_attr( $this->id ) . '" target="_blank">' . __( 'WooCommerce &gt; Status &gt; Logs', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</a>'
@@ -449,6 +449,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 		 * Admin options screen
 		 */
 		public function admin_options() {
+			$title = $this->get_method_title();
 			?>
 			<div id="wc_ifthen">
 				<?php
@@ -463,9 +464,9 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				?>
 				<div id="wc_ifthen_settings">
 					<h2>
-						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->gateway_ifthen_banner ); ?>" alt="<?php echo esc_attr( $this->get_method_title() ); ?>" width="186" height="48"/>
+						<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->gateway_ifthen_banner ); ?>" alt="<?php echo esc_attr( $title ); ?>" width="186" height="48"/>
 						<br/>
-						<?php echo esc_html( $this->get_method_title() ); ?>
+						<?php echo esc_html( $title ); ?>
 						<small>v.<?php echo esc_html( $this->version ); ?></small>
 						<?php
 						if ( function_exists( 'wc_back_link' ) ) {
@@ -502,11 +503,13 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						<li><?php esc_html_e( 'The callback for each of the chosen payment methods will automatically be activated once you save the options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li>
 							<?php
-							printf(
-								/* translators: %1$s: payment method keys, %2$s: link to ifthenpay */
-								esc_html__( 'Do not use the same %1$s on multiple websites or any other system, online or offline. Ask %2$s for new ones for every single platform.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-								esc_html__( 'payment method keys', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-								'<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">ifthenpay</a>'
+							echo wp_kses_post(
+								sprintf(
+									/* translators: %1$s: payment method keys, %2$s: link to ifthenpay */
+									esc_html__( 'Do not use the same %1$s on multiple websites or any other system, online or offline. Ask %2$s for new ones for every single platform.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									esc_html__( 'payment method keys', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									'<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">ifthenpay</a>'
+								)
 							);
 							?>
 						</li>
@@ -756,8 +759,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 							);
 						}
 					}
-				} elseif ( ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) && ! is_wc_endpoint_url( 'view-order' ) ) {
-					// Processing
+				} elseif ( ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) && ! is_wc_endpoint_url( 'view-order' ) ) { // Processing
 					echo $this->email_instructions_payment_received( $order->get_id() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				}
 			}
@@ -879,15 +881,8 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 		 * @param WC_Email $email         The email being sent.
 		 */
 		private function email_instructions( $order, $sent_to_admin, $plain_text, $email = null ) {
-			// Avoid duplicate email instructions on some edge cases
-			$send = false;
-			if ( ( $sent_to_admin ) ) {
-				$send = true;
-			} elseif ( ( ! $sent_to_admin ) ) {
-					$send = true;
-			}
 			// Apply filter
-			$send = apply_filters( 'gateway_ifthen_send_email_instructions', $send, $order, $sent_to_admin, $plain_text, $email );
+			$send = apply_filters( 'gateway_ifthen_send_email_instructions', true, $order, $sent_to_admin, $plain_text, $email );
 			// Send
 			if ( $send ) {
 				// Go
@@ -912,8 +907,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 							} else { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedElse
 								// We should not be here because there's no email for pending orders
 							}
-						} elseif ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) {
-							// Processing
+						} elseif ( $order->has_status( 'processing' ) || $order->has_status( 'completed' ) ) { // Processing
 							if ( apply_filters( 'gateway_ifthen_email_instructions_payment_received_send', true, $order->get_id() ) ) {
 								echo $this->email_instructions_payment_received( $order->get_id() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							}
@@ -1165,7 +1159,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 			$order_id     = 0;
 			$orders_exist = false;
 
-			$server_request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+			$server_request_uri = WC_IfthenPay_Webdados()->get_request_uri();
 
 			if (
 				isset( $_GET['id'] )
@@ -1260,9 +1254,9 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 			$order_id     = 0;
 			$orders_exist = false;
 
-			$server_http_host   = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
-			$server_request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-			$server_remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+			$server_http_host   = WC_IfthenPay_Webdados()->get_http_host();
+			$server_request_uri = WC_IfthenPay_Webdados()->get_request_uri();
+			$server_remote_addr = WC_IfthenPay_Webdados()->get_remote_addr();
 
 			if (
 				isset( $_GET['key'] )
@@ -1405,7 +1399,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				do_action( 'gateway_ifthen_callback_payment_failed', 0, $err, $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				wp_die( 'Error: Something is missing...', 'WC_Gateway_IfThen_Webdados', array( 'response' => 500 ) ); // Sends 500
 			}
-			// phpcs:enable
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		}
 
 		/**

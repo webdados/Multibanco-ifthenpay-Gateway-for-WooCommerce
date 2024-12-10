@@ -500,7 +500,7 @@ final class WC_IfthenPay_Webdados {
 	 */
 	public function debug_log_extra( $gateway_id, $message, $level = 'debug', $debug_email = '', $email_message = '' ) {
 		if ( apply_filters( 'ifthen_debug_log_extra', false ) ) {
-			$url = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : 'Unknown request URI';
+			$url = WC_IfthenPay_Webdados()->get_request_uri() ? WC_IfthenPay_Webdados()->get_request_uri() : 'Unknown request URI';
 			$this->debug_log( $gateway_id, 'EXTRA (' . $url . ') - ' . $message, $level, $debug_email, $email_message );
 		}
 	}
@@ -3642,6 +3642,33 @@ final class WC_IfthenPay_Webdados {
 			$method = ucwords( strtolower( $method ) );
 		}
 		return $method;
+	}
+
+	/**
+	 * Get $_SERVER['REQUEST_URI'] properly sanitized
+	 *
+	 * @return string
+	 */
+	public function get_request_uri() {
+		return isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	}
+
+	/**
+	 * Get $_SERVER['REMOTE_ADDR'] properly sanitized
+	 *
+	 * @return string
+	 */
+	public function get_remote_addr() {
+		return isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	}
+
+	/**
+	 * Get $_SERVER['HTTP_HOST'] properly sanitized
+	 *
+	 * @return string
+	 */
+	public function get_http_host() {
+		return isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
 	}
 
 	/**

@@ -61,7 +61,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 			$this->has_fields = false;
 
 			$this->method_title       = __( 'ifthenpay Gateway', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-			$this->method_description = __( 'Easy and simple payment using Apple Pay, Google Pay, or Pix. (Via the ifthenpay Gateway)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			$this->method_description = __( 'Easy and simple payment using Apple Pay, Google Pay, or PIX. (Via the ifthenpay Gateway)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 
 			// Anti-phishing key
 			$this->secret_key = $this->get_option( 'secret_key' );
@@ -325,7 +325,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					if ( count( $available_methods ) === 0 ) {
 						$this->form_fields['no_methods'] = array(
 							'title'       => __( 'No methods available', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-							'description' => __( 'There are no payment methods available on this Gateway. Please choose another one or request ifthenpay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or Pix)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'description' => __( 'There are no payment methods available on this Gateway. Please choose another one or request ifthenpay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or PIX)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'type'        => 'hidden',
 							'value'       => '1',
 						);
@@ -347,7 +347,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						'type'        => 'text',
 						'description' => __( 'This controls the title which the user sees during checkout.', 'multibanco-ifthen-software-gateway-for-woocommerce' )
 										. ( WC_IfthenPay_Webdados()->wpml_active ? '<br/>' . WC_IfthenPay_Webdados()->wpml_translation_info : '' ),
-						'default'     => 'Apple Pay, Google Pay, or Pix',
+						'default'     => 'Apple Pay, Google Pay, or PIX',
 					),
 					'description'   => array(
 						'title'       => __( 'Description', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
@@ -368,7 +368,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						'description' => __( 'Enable only for orders with a value from x &euro;. Leave blank (or zero) to allow for any order value.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' <br/> ' . sprintf(
 							/* translators: %1$s: payment method, %2$s: minimum value, %3$s: maximum value */
 							__( 'By design, %1$s only allows payments from %2$s to %3$s. You can use this option to further limit this range.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-							__( 'Apple Pay, Google Pay, or Pix', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							__( 'Apple Pay, Google Pay, or PIX', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							wc_price( WC_IfthenPay_Webdados()->gateway_ifthen_min_value, array( 'currency' => 'EUR' ) ),
 							wc_price( WC_IfthenPay_Webdados()->gateway_ifthen_max_value, array( 'currency' => 'EUR' ) )
 						),
@@ -498,7 +498,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 							?>
 						</li>
 						<li><?php esc_html_e( 'Enter your backoffice key and select a gateway.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
-						<li><?php esc_html_e( 'If no gateways are available, or the available gateways do not have payment methods available, you need to request ifthenpay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or Pix).', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
+						<li><?php esc_html_e( 'If no gateways are available, or the available gateways do not have payment methods available, you need to request ifthenpay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or PIX).', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li><?php esc_html_e( 'Select the payment methods you want to make available.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li><?php esc_html_e( 'The callback for each of the chosen payment methods will automatically be activated once you save the options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li>
@@ -525,7 +525,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						} else {
 							?>
 							<div id="message" class="error">
-								<p><strong><?php esc_html_e( 'Set the Gateway Key and Save changes to set other plugin options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
+								<p><strong><?php esc_html_e( 'Set the Gateway Key and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
 							</div>
 							<?php
 						}
@@ -930,8 +930,6 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->gateway_ifthen_banner_email ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin: auto; margin-top: 10px; max-height: 48px;"/>
 				<br/>
 				<strong><?php esc_html_e( 'ifthenpay Gateway payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
-				<br/>
-				<?php esc_html_e( 'We will now process your order.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 			</p>
 			<?php
 			return apply_filters( 'gateway_ifthen_email_instructions_payment_received', ob_get_clean(), $order_id );

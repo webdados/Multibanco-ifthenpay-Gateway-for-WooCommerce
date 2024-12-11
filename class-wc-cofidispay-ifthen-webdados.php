@@ -512,7 +512,7 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 					} else {
 						?>
 							<div id="message" class="error">
-								<p><strong><?php esc_html_e( 'Set the Cofidis Pay Key and Save changes to set other plugin options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
+								<p><strong><?php esc_html_e( 'Set the Cofidis Pay Key and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
 							</div>
 							<?php
 
@@ -891,7 +891,6 @@ Email enviado automaticamente do plugin WordPress “Multibanco, MB WAY, Credit 
 				<!--<strong><?php esc_html_e( 'Cofidis Pay payment approved.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>-->
 				<strong><?php esc_html_e( 'Cofidis Pay payment pre-approved.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
 				<br/>
-				<!--<?php esc_html_e( 'We will now process your order.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>-->
 				<?php esc_html_e( 'We will process your order after submitting the payment request to Cofidis, and get it definitely approved.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 			</p>
 			<?php

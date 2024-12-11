@@ -1,5 +1,7 @@
 PRO ADD-ON PAGO:
 - Email quando há falhas de callback
+- Separar o módulo de entidades por categorias para uma classe à parte para simplificar o código
+	- Equacionar o mesmo para outros, ou por método de pagamento
 - Olhar para outros hooks disponíveis no plugin e "inventar" funcionalidades
 - Opção de guardar nº MBWAY: -> FEITO
 	- Checkbox junto ao campo de telefone, inactiva por omissão

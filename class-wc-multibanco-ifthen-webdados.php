@@ -597,17 +597,17 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 						</li>
 						<li><?php echo wp_kses_post( __( 'Fill out all the details (MB Key or Entity and Subentity) provided by <strong>ifthenpay</strong> in the fields below.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); ?> <?php esc_html_e( 'We recommend you specifically request for a MB Key, and mention you’re using WooCommerce, as it allows for reference expiration and will allow for further developments in the future.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></li>
 						<li>
-						<?php
-						echo wp_kses_post(
-							sprintf(
-								/* translators: %1$s: MB Key, %2$s: payment method keys %3$s: link to ifthenpay */
-								esc_html__( 'Do not use the same %1$s or %2$s on multiple websites or any other system, online or offline. Ask %3$s for new ones for every single platform.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-								esc_html__( 'MB Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-								esc_html__( 'Entity and Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-								'<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">ifthenpay</a>'
-							)
-						);
-						?>
+							<?php
+							echo wp_kses_post(
+								sprintf(
+									/* translators: %1$s: MB Key, %2$s: payment method keys %3$s: link to ifthenpay */
+									esc_html__( 'Do not use the same %1$s or %2$s on multiple websites or any other system, online or offline. Ask %3$s for new ones for every single platform.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									esc_html__( 'MB Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									esc_html__( 'Entity and Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									'<a href="https://ifthenpay.com/' . esc_attr( WC_IfthenPay_Webdados()->out_link_utm ) . '" target="_blank">ifthenpay</a>'
+								)
+							);
+							?>
 						</li>
 						<li class="mb_hide_extra_fields">
 							<?php

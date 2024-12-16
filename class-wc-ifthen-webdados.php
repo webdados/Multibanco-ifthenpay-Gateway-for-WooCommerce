@@ -2293,7 +2293,7 @@ final class WC_IfthenPay_Webdados {
 						$order_total_to_pay = $this->get_order_total_to_pay( $order );
 						$order_mb_details   = $this->get_multibanco_order_details( $order->get_id() );
 						if (
-							( ! empty( $order_mb_details ) )
+							( empty( $order_mb_details ) )
 							||
 							(
 								floatval( $order_total_to_pay ) !== floatval( $order_mb_details['val'] )
@@ -2382,7 +2382,7 @@ final class WC_IfthenPay_Webdados {
 						$order_total_to_pay = $this->get_order_total_to_pay( $order );
 						$order_mb_details   = $this->get_payshop_order_details( $order->get_id() );
 						if (
-								( ! empty( $order_mb_details ) )
+								( empty( $order_mb_details ) )
 								||
 								(
 									floatval( $order_total_to_pay ) !== floatval( $order_mb_details['val'] )

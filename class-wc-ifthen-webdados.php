@@ -3449,12 +3449,12 @@ final class WC_IfthenPay_Webdados {
 				if ( trim( $body->Code ) === '1' ) {
 					return true;
 				} else {
-					$debug_msg       = '- Error from ifthenpay: ' . trim( $body->Message ) . ' - Order ' . $order->get_id();
+					$debug_msg       = '- Error from ifthenpay: ' . trim( $body->Message ) . ' (' . $body->Code . ') - Order ' . $order->get_id();
 					$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 					$this->debug_log( $method_id, $debug_msg, 'error', true, $debug_msg_email );
 					return new WP_Error(
 						'error',
-						__( 'We are sorry, but it was not possible to issue the refund. Please contact the ifthenpay support.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - (' . trim( $body->Code ) . ')'
+						__( 'We are sorry, but it was not possible to issue the refund. Please contact the ifthenpay support.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' - (' . trim( $body->Message ) . ')'
 					);
 				}
 			} else {

@@ -136,6 +136,7 @@
 					}
 					$( '#wc_ifthen_settings table.form-table tr:nth-child(n+' + number_fields + ')' ).hide();
 					$( '#wc_ifthen_settings .mb_hide_extra_fields' ).hide();
+					$( '#wc_ifthen_rightbar_premium_plugins' ).hide();
 					break;
 				case 'mbway':
 				case 'creditcard':
@@ -144,6 +145,7 @@
 				case 'gateway_ifthen':
 					$( '#wc_ifthen_settings table.form-table tr:nth-child(n+' + number_fields + ')' ).hide();
 					$( '#wc_ifthen_settings .mb_hide_extra_fields' ).hide();
+					$( '#wc_ifthen_rightbar_premium_plugins' ).hide();
 					break;
 				default:
 					// code block

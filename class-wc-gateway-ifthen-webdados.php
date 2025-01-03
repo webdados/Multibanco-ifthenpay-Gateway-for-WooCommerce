@@ -294,10 +294,15 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 							'' => '- ' . __( 'Select', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' -',
 						),
 					);
+					$count_gateways                  = 0;
 					foreach ( $gateways as $gateway ) {
 						if ( $gateway->Tipo === 'Estáticas' || apply_filters( 'gateway_ifthen_allow_dynamic_gateways', false ) ) {
 							$this->form_fields['gatewaykey']['options'][ $gateway->GatewayKey ] = $gateway->Alias . ( $gateway->Tipo !== 'Estáticas' ? ' (' . trim( $gateway->Tipo ) . ')' : '' );
+							++$count_gateways;
 						}
+					}
+					if ( $count_gateways === 0 ) {
+						$this->form_fields['gatewaykey']['description'] .= '<br/>' . __( 'If no gateways are available, or the available gateways do not have payment methods available, you need to request ifthenpay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or PIX).', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 					}
 					$available_methods = array();
 					if ( count( $this->form_fields['gatewaykey']['options'] ) > 1 ) {
@@ -330,7 +335,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					if ( count( $available_methods ) === 0 ) {
 						$this->form_fields['no_methods'] = array(
 							'title'       => __( 'No methods available', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-							'description' => __( 'There are no payment methods available on this Gateway. Please choose another one or request ifthenpay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or PIX)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'description' => __( 'There are no payment methods available on this Gateway. Please choose another one or request ifthenpay to create a static gateway on your account, specifically for WooCommerce, with the payment methods you want to use (Apple Pay, Google Pay, or PIX).', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'type'        => 'hidden',
 							'value'       => '1',
 						);

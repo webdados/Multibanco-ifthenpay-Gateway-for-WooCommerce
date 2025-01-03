@@ -406,8 +406,8 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						</li>
 					</ul>
 					<h1>FALTA ACTIVAÇÃO DE CALLBACK</h1>
-					<h1>FALTA FUNÇÃO DE CALLBACK - E TESTAR OS VÁRIOS CENÁRIOS (QD JÁ FOI MARCADA COMO PAGA ANTES OU DEPOIS DO RETURN)</h1>
-					<h1>FALTA TESTAR VIR DO RETURN E JÁ ESTAR MARCADA COMO PAGA</h1>
+					<h1>FALTA TRATAR REFUNDS COMO NO MBWAY</h1>
+					<h1>FALTA REVER LISTA DE PLUGINS PREMIUM E ADICIONAR OS NOVOS</h1>
 					<?php
 					if ( strlen( trim( $this->creditcardkey ) ) !== 10 ) {
 						if ( intval( $this->settings_saved ) === 1 ) {
@@ -813,11 +813,9 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		 */
 		public function return_payment_gateway() {
 			// phpcs:disable WordPress.Security.NonceVerification.Recommended
-
 			$redirect_url = '';
 			$error        = false;
 			$order_id     = 0;
-			$orders_exist = false;
 
 			if (
 				isset( $_GET['status'] )
@@ -876,8 +874,26 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 								// We should set a $redirect_url
 							}
 						} else {
-							$error = $get_order['error'];
-							// We should set a $redirect_url
+							// Now let's check for already paid for orders, because the callback URL could have set it as paid before - If found, redirect like above
+							$paid_status = apply_filters( 'creditcard_ifthen_valid_callback_paid_status', array( 'processing', 'completed' ) );
+							$args        = array(
+								'type'   => array( 'shop_order', 'wcdp_payment' ), // Regular order or deposit
+								'status' => $paid_status,
+								'limit'  => -1,
+								'_' . $this->id . '_request_id' => $request_id,
+							);
+							$orders      = WC_IfthenPay_Webdados()->wc_get_orders( $args, $this->id );
+							if ( count( $orders ) === 1 ) {
+								$order = $orders[0];
+								// Log and exit silently
+								$this->debug_log( '-- Order found and already set as paid, probably by callback URL', 'debug', false, 'Callback (' . $server_http_host . ' ' . $server_request_uri . ') from ' . $server_remote_addr );
+								$url = $this->get_return_url( $order );
+								wp_safe_redirect( $url );
+								exit;
+							} else {
+								$error = $get_order['error'];
+								// We should set a $redirect_url
+							}
 						}
 						break;
 
@@ -948,8 +964,6 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 		 */
 		public function callback() {
 			// phpcs:disable WordPress.Security.NonceVerification.Recommended
-
-			$orders_exist       = false;
 			$server_http_host   = WC_IfthenPay_Webdados()->get_http_host();
 			$server_request_uri = WC_IfthenPay_Webdados()->get_request_uri();
 			$server_remote_addr = WC_IfthenPay_Webdados()->get_remote_addr();
@@ -983,12 +997,10 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				}
 				if ( $arguments_ok ) { // Isto deve ser separado em vários IFs para melhor se identificar o erro
 					if ( trim( $status ) === 'PAGO' ) {
-						$orders_exist   = false;
-
 						$get_order = $this->callback_helper_get_pending_order( $request_id, $id, $val );
 						if ( $get_order['success'] && $get_order['order'] ) {
 							$order = $get_order['order'];
-							$note = __( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+							$note  = __( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 							if ( isset( $_GET['payment_datetime'] ) ) {
 								$note .= ' ' . trim( sanitize_text_field( wp_unslash( $_GET['payment_datetime'] ) ) );
 							}
@@ -1017,18 +1029,18 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							// Do not send this debug message to email
 							$this->debug_log( '-- ' . $err, 'debug', false, 'Callback (' . $server_http_host . ' ' . $server_request_uri . ') from ' . $server_remote_addr );
 							// Now let's check for already paid for orders, because the return URL probably set it as paid
-							$paid_status = apply_filters( 'creditcard_ifthen_valid_callback_pending_status', array( 'processing', 'completed' ) );
+							$paid_status = apply_filters( 'creditcard_ifthen_valid_callback_paid_status', array( 'processing', 'completed' ) );
 							$args        = array(
-								'type'                          => array( 'shop_order', 'wcdp_payment' ), // Regular order or deposit
-								'status'                        => $paid_status,
-								'limit'                         => -1,
+								'type'   => array( 'shop_order', 'wcdp_payment' ), // Regular order or deposit
+								'status' => $paid_status,
+								'limit'  => -1,
 								'_' . $this->id . '_request_id' => $request_id,
 							);
 							$orders      = WC_IfthenPay_Webdados()->wc_get_orders( $args, $this->id );
 							if ( count( $orders ) === 1 ) {
 								// Log and exit silently
 								$this->debug_log( '-- Order found and already set as paid, probably by return URL', 'debug', false, 'Callback (' . $server_http_host . ' ' . $server_request_uri . ') from ' . $server_remote_addr );
-								return;
+								exit;
 							} else {
 								header( 'HTTP/1.1 200 OK' );
 								$err = $get_order['error'];

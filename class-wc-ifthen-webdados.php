@@ -3033,86 +3033,88 @@ final class WC_IfthenPay_Webdados {
 				<div class="star-rating"><div class="star star-full"></div><div class="star star-full"></div><div class="star star-full"></div><div class="star star-full"></div><div class="star star-full"></div></div>
 			</a>
 			<div class="clear"></div>
-			<hr/>
-			<h4><?php esc_html_e( 'Other premium plugins', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
-			<ul id="wc_ifthen_premium_plugins">
-				<?php
-				// Custom fields
-				$premium_plugins = array(
-					array(
-						'url'         => 'https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/',
-						'title'       => esc_html__( 'Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis Pay, and PIX (ifthenpay) for WooCommerce - PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'multibanco.png',
-					),
-					array(
-						'url'         => 'https://invoicewoo.com/',
-						'title'       => esc_html__( 'Invoicing with InvoiceXpress for WooCommerce - Pro', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'InvoiceXpress', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'invoicexpress-woocommerce.png',
-					),
-					array(
-						'url'         => 'https://ptwooplugins.com/product/dpd-portugal-for-woocommerce/',
-						'title'       => esc_html__( 'DPD (Chronopost/SEUR) Portugal for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'DPD Portugal', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'dpd-portugal.png',
-					),
-					array(
-						'url'         => 'https://ptwooplugins.com/product/dpd-seur-geopost-pickup-and-lockers-network-for-woocommerce/',
-						'title'       => esc_html__( 'DPD / SEUR / Geopost Pickup and Lockers network for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'DPD Pickup', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'dpd-pickup.png',
-					),
-					array(
-						'url'         => 'https://ptwooplugins.com/product/portuguese-postcodes-for-woocommerce-technical-support/',
-						'title'       => esc_html__( 'Portuguese Postcodes for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'Portuguese Postcodes', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'postcodes.png',
-					),
-					array(
-						'url'         => 'https://www.webdados.pt/wordpress/plugins/feed-kuantokusta-para-woocommerce/',
-						'title'       => esc_html__( 'Feed KuantoKusta for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'KuantoKusta', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'kuantokusta.png',
-					),
-					array(
-						'url'         => 'https://ptwooplugins.com/product/simple-custom-fields-for-woocommerce-blocks-checkout/',
-						'title'       => esc_html__( 'Simple Custom Fields for WooCommerce Blocks Checkout', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'Blocks Checkout Custom Fields', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'woo-custom-fields.png',
-					),
-					array(
-						'url'         => 'https://ptwooplugins.com/product/simple-woocommerce-order-approval/',
-						'title'       => esc_html__( 'Simple WooCommerce Order Approval', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'Order Approval', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'simple-woocommerce-order-approval-logo.png',
-					),
-					array(
-						'url'         => 'https://ptwooplugins.com/product/shop-as-client-for-woocommerce-pro-add-on/',
-						'title'       => esc_html__( 'Shop as Client for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'Shop as Client', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'shop-as-client.png',
-					),
-					array(
-						'url'         => 'https://ptwooplugins.com/product/taxonomy-term-and-role-based-discounts-for-woocommerce-pro-add-on/',
-						'title'       => esc_html__( 'Taxonomy/Term and Role based Discounts for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'short_title' => esc_html__( 'Taxonomy based Discounts', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-						'image'       => 'taxonomy-discounts.png',
-					),
-				);
-				foreach ( $premium_plugins as $premium_plugin ) {
-					?>
-					<li>
-						<a href="<?php echo esc_url( $premium_plugin['url'] . $this->out_link_utm ); ?>" target="_blank" title="<?php echo esc_attr( $premium_plugin['title'] ); ?>">
-							<img src="<?php echo esc_url( plugins_url( 'images/premium_plugins/' . $premium_plugin['image'], __FILE__ ) ); ?>" width="200" height="200" alt="<?php echo esc_attr( $premium_plugin['title'] ); ?>"/>
-							<small><?php echo esc_html( $premium_plugin['short_title'] ); ?></small>
-						</a>
-					</li>
+			<div id="wc_ifthen_rightbar_premium_plugins">
+				<hr/>
+				<h4><?php esc_html_e( 'Other premium plugins', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
+				<ul id="wc_ifthen_premium_plugins">
 					<?php
-				}
-				?>
-			</ul>
-			<div class="clear"></div>
+					// Custom fields
+					$premium_plugins = array(
+						array(
+							'url'         => 'https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/',
+							'title'       => esc_html__( 'Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis Pay, and PIX (ifthenpay) for WooCommerce - PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'addonpro.gif',
+						),
+						array(
+							'url'         => 'https://invoicewoo.com/',
+							'title'       => esc_html__( 'Invoicing with InvoiceXpress for WooCommerce - Pro', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'InvoiceXpress', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'invoicexpress-woocommerce.png',
+						),
+						array(
+							'url'         => 'https://ptwooplugins.com/product/dpd-portugal-for-woocommerce/',
+							'title'       => esc_html__( 'DPD (Chronopost/SEUR) Portugal for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'DPD Portugal', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'dpd-portugal.png',
+						),
+						array(
+							'url'         => 'https://ptwooplugins.com/product/dpd-seur-geopost-pickup-and-lockers-network-for-woocommerce/',
+							'title'       => esc_html__( 'DPD / SEUR / Geopost Pickup and Lockers network for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'DPD Pickup', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'dpd-pickup.png',
+						),
+						array(
+							'url'         => 'https://ptwooplugins.com/product/portuguese-postcodes-for-woocommerce-technical-support/',
+							'title'       => esc_html__( 'Portuguese Postcodes for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'Portuguese Postcodes', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'postcodes.png',
+						),
+						array(
+							'url'         => 'https://www.webdados.pt/wordpress/plugins/feed-kuantokusta-para-woocommerce/',
+							'title'       => esc_html__( 'Feed KuantoKusta for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'KuantoKusta', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'kuantokusta.png',
+						),
+						array(
+							'url'         => 'https://ptwooplugins.com/product/simple-custom-fields-for-woocommerce-blocks-checkout/',
+							'title'       => esc_html__( 'Simple Custom Fields for WooCommerce Blocks Checkout', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'Blocks Checkout Custom Fields', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'woo-custom-fields.png',
+						),
+						array(
+							'url'         => 'https://ptwooplugins.com/product/simple-woocommerce-order-approval/',
+							'title'       => esc_html__( 'Simple WooCommerce Order Approval', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'Order Approval', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'simple-woocommerce-order-approval-logo.png',
+						),
+						array(
+							'url'         => 'https://ptwooplugins.com/product/shop-as-client-for-woocommerce-pro-add-on/',
+							'title'       => esc_html__( 'Shop as Client for WooCommerce PRO add-on', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'Shop as Client', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'shop-as-client.png',
+						),
+						array(
+							'url'         => 'https://ptwooplugins.com/product/taxonomy-term-and-role-based-discounts-for-woocommerce-pro-add-on/',
+							'title'       => esc_html__( 'Taxonomy/Term and Role based Discounts for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'short_title' => esc_html__( 'Taxonomy based Discounts', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'image'       => 'taxonomy-discounts.png',
+						),
+					);
+					foreach ( $premium_plugins as $premium_plugin ) {
+						?>
+						<li>
+							<a href="<?php echo esc_url( $premium_plugin['url'] . $this->out_link_utm ); ?>" target="_blank" title="<?php echo esc_attr( $premium_plugin['title'] ); ?>">
+								<img src="<?php echo esc_url( plugins_url( 'images/premium_plugins/' . $premium_plugin['image'], __FILE__ ) ); ?>" width="200" height="200" alt="<?php echo esc_attr( $premium_plugin['title'] ); ?>"/>
+								<small><?php echo esc_html( $premium_plugin['short_title'] ); ?></small>
+							</a>
+						</li>
+						<?php
+					}
+					?>
+				</ul>
+				<div class="clear"></div>
+			</div>
 		</div>
 		<?php
 		// phpcs:enable

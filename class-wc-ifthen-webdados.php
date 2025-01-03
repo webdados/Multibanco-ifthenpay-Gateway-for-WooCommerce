@@ -3632,7 +3632,7 @@ final class WC_IfthenPay_Webdados {
 		}
 		$callback_auto_open = 0;
 		$callback_warning   = isset( $_GET['callback_warning'] ) ? intval( $_GET['callback_warning'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ( $callback_email_sent === 'no' ) && $callback_warning === 1 ) {
+		if ( $callback_email_sent === 'no' && $callback_warning === 1 ) {
 			$callback_auto_open = 1;
 		}
 		wp_localize_script(

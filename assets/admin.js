@@ -135,7 +135,6 @@
 		}
 
 		// Hide extra fields if there are errors on required fields
-		console.log( hide_extra_fields, number_fields );
 		if ( hide_extra_fields ) {
 			switch ( ifthenpay.gateway ) {
 				case 'multibanco':

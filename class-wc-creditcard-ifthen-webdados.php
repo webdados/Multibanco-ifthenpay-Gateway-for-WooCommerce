@@ -420,9 +420,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							?>
 						</li>
 					</ul>
-					<h1>FALTA ACTIVAÇÃO DE CALLBACK</h1>
 					<h1>FALTA TRATAR REFUNDS COMO NO MBWAY</h1>
-					<h1>FALTA REVER LISTA DE PLUGINS PREMIUM E ADICIONAR OS NOVOS</h1>
 					<?php
 					if ( strlen( trim( $this->creditcardkey ) ) !== 10 ) {
 						if ( intval( $this->settings_saved ) === 1 ) {

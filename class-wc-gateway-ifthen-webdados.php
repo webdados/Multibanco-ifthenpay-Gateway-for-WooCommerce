@@ -1315,6 +1315,18 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - ID (numeric)';
 				}
+				if ( trim( $request_id ) === '' ) {
+					$arguments_ok     = false;
+					$arguments_error .= ' - request_id';
+				}
+				if ( abs( $val ) < 1 ) {
+					$arguments_ok     = false;
+					$arguments_error .= ' - Value';
+				}
+				if ( ! in_array( $status, array( 'PAGO', 'DEVOLVIDO' ), true ) ) {
+					$arguments_ok     = false;
+					$arguments_error .= ' - Estado';
+				}
 				if ( $arguments_ok ) { // Isto deve ser separado em vários IFs para melhor se identificar o erro
 					if ( trim( $status ) === 'PAGO' ) {
 						$orders_exist   = false;
@@ -1402,6 +1414,72 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 							echo esc_html( $err );
 							do_action( 'gateway_ifthen_callback_payment_failed', 0, $err, $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 						}
+					} elseif ( trim( $status ) === 'DEVOLVIDO' && $this->do_refunds ) {
+
+						// Porque não é compatível com o novo filtro ifthen_webservice_send_order_number_instead_id temos de ir buscar primeiro a order através do idPedido que é o mesmo e depois ir buscar os refunds que são childs dessa order
+						$order_exist   = false;
+						$refunds_exist = false;
+						// First, find the order, using $request_id as $id may not be a order id because of ifthen_webservice_send_order_number_instead_id
+						$args   = array(
+							'type'  => array( 'shop_order' ),
+							'limit' => -1,
+							'_' . $this->id . '_request_id' => $request_id,
+						);
+						$orders = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( $args ) );
+						if ( ! empty( $orders ) ) {
+							if ( count( $orders ) === 1 ) {
+								$order       = $orders[0];
+								$order_exist = true;
+							} else {
+								$err = 'Error: More than 1 order found with the same request_id';
+							}
+						} else {
+							$err = 'Error: No orders found with this request_id';
+						}
+						if ( $order_exist ) {
+							// Find the exact refund
+							$args    = array(
+								'type'    => array( 'shop_order_refund' ), // Refund
+								'limit'   => -1,
+								'parent'  => intval( $order->get_id() ),
+								'orderby' => 'modified',
+								'order'   => 'ASC',                        // Oldest recent refunds first, so we process them in order if there are several
+							);
+							$refunds = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( $args ) );
+							foreach ( $refunds as $refund ) {
+								if ( $refund->get_meta( '_' . WC_IfthenPay_Webdados()->gateway_ifthen_id . '_callback_received' ) === '' ) {
+									if ( abs( floatval( $val ) ) === abs( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $refund ) ) ) ) {
+										$note = sprintf(
+											/* translators: %s: refund id */
+											__( 'ifthenpay Gateway callback received for successfully processed refund #%s by ifthenpay.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+											$refund->get_id()
+										);
+										$order->add_order_note( $note );
+										// Set as callback received so we do not process it again
+										$refund->update_meta_data( '_' . WC_IfthenPay_Webdados()->gateway_ifthen_id . '_callback_received', date_i18n( 'Y-m-d H:i:s' ) );
+										$refund->save();
+										$refunds_exist = true;
+									}
+								}
+							}
+						}
+						if ( $refunds_exist ) {
+							// We're done!
+							header( 'HTTP/1.1 200 OK' );
+							$this->debug_log( '-- ifthenpay Gateway refund received - Order ' . $order->get_id() . ' - Refund ' . $refund->get_id(), 'notice' );
+							echo 'OK - ifthenpay Gateway refund received';
+							do_action( 'gateway_ifthen_callback_refund_complete', $order->get_id() );
+						} else {
+							header( 'HTTP/1.1 200 OK' );
+							if ( ! isset( $err ) ) {
+								$err = 'Error: No unprocessed refunds found with these details';
+							}
+							$this->debug_log( '-- ' . $err, 'warning', true, 'Callback (' . WC_IfthenPay_Webdados()->get_http_host() . ' ' . WC_IfthenPay_Webdados()->get_request_uri() . ') from ' . WC_IfthenPay_Webdados()->get_remote_addr() . ' - No refunds found with these details' );
+							echo esc_html( $err );
+							do_action( 'gateway_ifthen_callback_refund_failed', 0, $err, $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+						}
+						// ???
+
 					} else {
 						header( 'HTTP/1.1 200 OK' );
 						$err = 'Error: Cannot process ' . trim( $status ) . ' status';

@@ -1411,7 +1411,7 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 					$arguments_ok     = false;
 					$arguments_error .= ' - Ent (length)';
 				}
-				if ( ! $val >= 1 ) {
+				if ( abs( $val ) < 1 ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - Value';
 				}

@@ -642,7 +642,7 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 		 */
 		public function get_icon() {
 			$alt       = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
-			$icon_html = '<img src="' . esc_attr( WC_IfthenPay_Webdados()->cofidispay_icon ) . '" alt="' . esc_attr( $alt ) . '" width="28" height="24"/>';
+			$icon_html = '<img src="' . esc_attr( WC_IfthenPay_Webdados()->cofidispay_icon ) . '" alt="' . esc_attr( $alt ) . '" width="24" height="24"/>';
 			return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
 		}
 

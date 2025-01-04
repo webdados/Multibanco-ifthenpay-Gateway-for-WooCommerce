@@ -1,4 +1,5 @@
 PRO ADD-ON PAGO:
+- gateway: remover "ifthenpay gateway" do título: add_filter( 'gateway_ifthen_add_frontend_title', '__return_false' );
 - Email quando há falhas de callback
 - Separar o módulo de entidades por categorias para uma classe à parte para simplificar o código
 	- Equacionar o mesmo para outros, ou por método de pagamento

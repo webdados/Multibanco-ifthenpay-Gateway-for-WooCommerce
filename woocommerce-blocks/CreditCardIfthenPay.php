@@ -62,16 +62,21 @@ final class CreditCardIfthenPay extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
-		return array(
-			'title'         => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description'   => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
-			'icon'          => WC_IfthenPay_Webdados()->creditcard_icon,
-			'only_portugal' => $this->settings['only_portugal'] === 'yes',
-			'only_above'    => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
-			'only_bellow'   => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
-			// We do not declare subscriptions support on Credit card
-			// 'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ), // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-			// More settings needed?
+		return apply_filters(
+			'creditcard_ifthen_blocks_payment_method_data',
+			array(
+				'title'         => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+				'description'   => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+				'icon'          => WC_IfthenPay_Webdados()->creditcard_icon,
+				'icon_width'    => 28,
+				'icon_height'   => 24,
+				'only_portugal' => $this->settings['only_portugal'] === 'yes',
+				'only_above'    => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,
+				'only_bellow'   => floatval( $this->settings['only_bellow'] ) > 0 ? floatval( $this->settings['only_bellow'] ) : null,
+				// We do not declare subscriptions support on Credit card
+				// 'support_woocommerce_subscriptions' => isset( $this->settings['support_woocommerce_subscriptions'] ) && ( 'yes' === $this->settings['support_woocommerce_subscriptions'] ), // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+				// More settings needed?
+			)
 		);
 	}
 }

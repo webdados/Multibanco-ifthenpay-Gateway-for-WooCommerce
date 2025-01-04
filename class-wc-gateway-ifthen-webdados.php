@@ -145,7 +145,9 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				$this->api_url = apply_filters( 'gateway_ifthen_sandbox', false ) ? $this->api_url_sandbox : $this->api_url_production;
 
 				// Method title in frontend
-				$this->title .= ' - ' . __( 'ifthenpay Gateway', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+				if ( apply_filters( 'gateway_ifthen_add_frontend_title', true ) ) {
+					$this->title .= ' - ' . __( 'ifthenpay Gateway', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+				}
 
 				// Method title in sandbox mode
 				if ( apply_filters( 'gateway_ifthen_sandbox', false ) ) {
@@ -739,7 +741,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 		 */
 		public function get_icon() {
 			$alt       = ( WC_IfthenPay_Webdados()->wpml_active ? icl_t( $this->id, $this->id . '_title', $this->title ) : $this->title );
-			$icon_html = '<img src="' . esc_attr( WC_IfthenPay_Webdados()->gateway_ifthen_icon ) . '" alt="' . esc_attr( $alt ) . '" width="28" height="24"/>';
+			$icon_html = '<img src="' . esc_attr( WC_IfthenPay_Webdados()->gateway_ifthen_icon ) . '" alt="' . esc_attr( $alt ) . '" width="24" height="24"/>';
 			return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
 		}
 

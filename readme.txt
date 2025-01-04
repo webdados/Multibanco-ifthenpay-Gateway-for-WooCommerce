@@ -258,6 +258,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * [NEW] Apple Pay, Google Pay, and PIX payment methods (via ifthenpay Gateway)
 * [NEW] Plugin name: Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis Pay, and PIX (ifthenpay) for WooCommerce
 * [NEW] Credit card callback as a fallback in case something fails when the customer returns from the gateway
+* [NEW] Developer filters to manipulate the payment method data for the each method on the blocks checkout, for [example to change the icon](https://gist.github.com/webdados/6d9808d3c8c099f4a84d4b8eec69dc66)
 * [TWEAK] Also reload the “Thank you” page when the MB WAY payment has expired
 * [TWEAK] Better cache busting when reloading the “Thank you” page
 * [TWEAK] Resize the payment methods banner on the order admin page

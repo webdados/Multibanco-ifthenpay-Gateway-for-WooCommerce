@@ -445,7 +445,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							if ( ! isset( $_GET['callback_warning'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 								?>
 								<div id="message" class="error">
-									<p><strong><?php esc_html_e( 'You haven’t yet asked ifthenpay for the “Callback” activation. This is optional, to ensute the orders are set as paid even if the customer return from the payment gateway fails.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
+									<p><strong><?php esc_html_e( 'You haven’t yet asked ifthenpay for the “Callback” activation. This is optional, to ensure the orders are set as paid even if the customer return from the payment gateway fails.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
 								</div>
 								<?php
 							}

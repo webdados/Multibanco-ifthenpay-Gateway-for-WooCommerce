@@ -1,23 +1,13 @@
 PRO ADD-ON PAGO:
+- gateway & credit card: PRO fake fields on free plugin
 - gateway: remover "ifthenpay gateway" do título: add_filter( 'gateway_ifthen_add_frontend_title', '__return_false' );
+- gateway: mostrar os 1, 2 ou 3 icons conforme os métodos activos (clássico e blocos (como??))
+- gateway: verificar custo por pagamento no backoffice
 - Email quando há falhas de callback
 - Separar o módulo de entidades por categorias para uma classe à parte para simplificar o código
 	- Equacionar o mesmo para outros, ou por método de pagamento
 - Olhar para outros hooks disponíveis no plugin e "inventar" funcionalidades
-- Opção de guardar nº MBWAY: -> FEITO
-	- Checkbox junto ao campo de telefone, inactiva por omissão
-	- Se activada guarda em user meta que pode ser editada na área de cliente
-	- O que fazer se for removido a checkbox e houver um nº guardado? Manter o mesmo em user meta ou remover?
-	- Workflow opção 1:
-		- Primeira vez: campo normal e opção de gravar
-		- Já tem número gravado: aparece select com o nº gravado e opção "outro número"
-			- Se escolher o gravado usa e não faz mais nada
-			- Se escolher outro, aparece campo e dá opção de usar este nº a partir de agora
-	- Workflow opção 2:
-		- Só checkbox "Guardar este número para futuras compras. Será associado à sua conta e substituirá outro, se existir. Pode gerir o número associado à sua conta aqui."
-- Depois de expirar o MBWAY, mudar para Multibanco automaticamente e enviar referência ao cliente -> FEITO
-	- Ou enviar email para escolher outro método
-	- Ou ambos
+- Quando se grava os settings desaparecem as opções do PRO porque estamos a remover a action no plugin free (necessário por causa do loop gateways-envios quando um invoca o outro)
 
 
 FREE:
@@ -25,7 +15,7 @@ FREE:
 	- Aceitar nºs estrangeiros
 - Gateway:
 	- Passar PIX para método isolado e migrar configurações
-	- Opção de icones de cada método em vez do Ifthenpay, e o mesmo no banner
+	- Opção de icones de cada método em vez do Ifthenpay, e o mesmo no banner (ou no PRO?)
 	- Definir validade do pagamento
 - Passar strings repetidas a únicas com placeholders:
 	- Fill out all the details (Cofidis Pay Key) provided by <strong>ifthenpay</strong> in the fields below.
@@ -34,21 +24,6 @@ FREE:
 	- Cofidis Pay Key provided by ifthenpay when signing the contract.
 	- Enable “Cofidis Pay” (using ifthenpay)
 	- 
-
-
-5.0.0:
-
-- Credit Card
-	- Testar os vários cenários de callback:
-		- Cancelamento : Feito
-		- Authentication KO - FAILURE : Volta ao ecrã de pagamento
-		- Technical Problem - ERROR : ERRO -> Vai para o SUCCESS
-		- Authentication OK - SUCCESS : Feito
-		- Authentication not realized - ATTEMPT : ERRO -> Vai para o SUCCESS
-	- Implementar e testar compatibilidade com o Deposits: Feito
-	- Enviar email à ifthenpay a explicar o funcionamento do novo método: Feito
-
-- Remover suporte WC < 3.0 de uma vez por todas (!!!): Feito
 
 - Quando uma encomenda não é encontrada pelo callback, por não estar no estado correcto, mas é encontrada num outro estado (cancelada, em processamento, concluída...) devemos deixar uma nota na encomenda.
 No caso das encomendas canceladas até devíamos gerar um alerta mais importante.
@@ -72,4 +47,4 @@ FEITO PRO:
 - Ter campos em cada método para o cliente inserir o que tem contratado com a ifthenpay, por omissão com os valores que estão no site -> isto pode ser uma extensão premium!
 	- Na verdade isto deveria vir no callback (email enviado a 2020-12-10)
 	- Na encomenda, fazer como no Stripe e mostrar o valor pago em comissões
-	- Ter opção de ordenar os métodos de pagamento pela ordem do que fica mais barato
+	- Ter opção de ordenar os métodos de pagamento pela ordem do que fica mais barato -> Não FEITO!

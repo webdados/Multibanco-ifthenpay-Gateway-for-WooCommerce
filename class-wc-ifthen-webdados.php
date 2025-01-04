@@ -3130,7 +3130,7 @@ final class WC_IfthenPay_Webdados {
 				<h4><?php esc_html_e( 'Want more features?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>
 				<p>
 					<a href="https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/<?php echo esc_attr( $this->out_link_utm ); ?>" target="_blank" style="font-weight: bold;">
-						<?php esc_html_e( 'Get the PRO add-on of Multibanco, MBWAY, Credit card, Payshop and Cofidis Pay (ifthenpay) for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
+						<?php esc_html_e( 'Get the PRO add-on of Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis Pay, and PIX (ifthenpay) for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>
 					</a>
 				</p>
 			</div>

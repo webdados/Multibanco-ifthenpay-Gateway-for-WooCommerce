@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 9.7.1
+Stable tag: 10.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -67,6 +67,7 @@ Get the [PRO add-on](https://ptwooplugins.com/product/multibanco-mbway-credit-ca
 * Set a payment entity for Multibanco, MB WAY, Credit card, Payshop, and Cofidis Pay at the product category level, so that you can receive payment in different accounts based on the order products (replaces previously available specific extension);
 	* Simplified marketplace;
 	* Lock the cart so you can only have products from a single account in the same order;
+* Remove “ifthenpay Gateway” from the payment method title on the frontend for Apple Pay, Google Pay, and PIX
 * Remove payment instructions from specific emails, for example, “order completed”, to avoid customer confusion when they are no longer necessary;
 * Autofill the VAT number on the Cofidis Pay gateway from several VAT number plugins (more can be added on request);
 * Change the default timeout for calls to the ifthenpay APIs if your website is experiencing communication difficulties;
@@ -254,23 +255,23 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= 10.0.0 - Date to be announced =
+= 10.0.0 - 2024-01-06 =
 * [NEW] Apple Pay, Google Pay, and PIX payment methods (via ifthenpay Gateway)
 * [NEW] Plugin name: Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis Pay, and PIX (ifthenpay) for WooCommerce
 * [NEW] Credit card callback as a fallback in case something fails when the customer returns from the gateway
-* [NEW] Developer filters to manipulate the payment method data for the each method on the blocks checkout, for [example to change the icon](https://gist.github.com/webdados/6d9808d3c8c099f4a84d4b8eec69dc66)
+* [NEW] Developer filters to manipulate the payment method data for each method on the blocks checkout, for [example to change the icon](https://gist.github.com/webdados/6d9808d3c8c099f4a84d4b8eec69dc66)
 * [TWEAK] Also reload the “Thank you” page when the MB WAY payment has expired
 * [TWEAK] Better cache busting when reloading the “Thank you” page
 * [TWEAK] Resize the payment methods banner on the order admin page
 * [TWEAK] Replace “IfthenPay” with “ifthenpay” for branding coherence
 * [TWEAK] Better information for refunds not issued
 * [TWEAK] Several updates to the readme.txt
-* [FIX] Make sure all the values are sent to the ifthenpay API with “.” as a decimal separator, even in very weird PHP setups
+* [FIX] Make sure all the values are sent to the ifthenpay API with “.” as a decimal separator, even in bizarre PHP setups
 * [FIX] Hide settings fields on each method when the required keys are not set
 * [DEV] New `refund_ifthen_api_timeout` developer filter
 * [DEV] Apply additional WordPress Coding Standards
 * [DEV] Requires PHP 7.2, WordPress 5.8, and WooCommerce 7.1
-* [DEV] Tested with WordPress 6.8-alpha-59545 and WooCommerce 9.6.0-beta.1
+* [DEV] Tested with WordPress 6.8-alpha-59576 and WooCommerce 9.6.0-beta.1
 
 = 9.7.1 - 2024-11-29 =
 * [FIX] Fix MB WAY and Cofidis order status check on the “Thank you” for non-logged in customers
@@ -317,7 +318,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 9.3.0 - 2024-05-22 =
 * [NEW] `ifthen_allow_settings_woocommerce_not_euro` filter to allow setting up the payment gateways even if the shop currency is not set to Euro - For multi-currency shops
-* [FIX] Deprecation notices "Creation of dynamic property" on PHP 8.2 and above
+* [FIX] Deprecation notices “Creation of dynamic property” on PHP 8.2 and above
 * [FIX] Cofidis Pay return without Success attribute on the callback URL
 * [TWEAK] Refactor the way the payment gateways are loaded so that plugins that call new \WC_Payment_Gateways(); will get our payment methods
 * [TWEAK] Cofidis Pay icon in SVG format
@@ -331,7 +332,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * [DEV] Tested with WordPress 6.6-alpha-57928 and WooCommerce 8.8.0-rc.1
 
 = 9.2.2 - 2024-03-26 =
-* [FIX] Deprecation notices "Creation of dynamic property" on PHP 8.2 and above
+* [FIX] Deprecation notices “Creation of dynamic property” on PHP 8.2 and above
 * [FIX] Typo
 * [DEV] Tested with WordPress 6.5-RC3-57875 and WooCommerce 8.7.0
 
@@ -423,7 +424,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 8.1.0 - 2023-04-04 =
 * [PRO add-on 1.3](https://ptwooplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Recover unpaid MB WAY orders by converting them to Multibanco and notify the customer via email
-* Fix a bug where old installs would incorrectly show the "MB Key or Entity and subentity" setting on the backoffice
+* Fix a bug where old installs would incorrectly show the “MB Key or Entity and subentity” setting on the backoffice
 * Remove debug string from MB WAY settings
 * Add FAQ about why the MB WAY payment instructions are not send by email
 * Tested with PHP 8.1.9, WordPress 6.3-alpha-55618 and WooCommerce 7.6.0-beta.2
@@ -473,7 +474,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 6.4.1 - 2022-11-03 =
 * Fix bug on MB WAY callback when comparing the incoming reference with the order id and/or number which would cause the order not to be identified
-* Debug tweaks - Stop sending "payment received" emails and only send warning or error emails
+* Debug tweaks - Stop sending “payment received” emails and only send warning or error emails
 * Tested with WordPress 6.1 and WooCommerce 7.1.0-rc.1
 
 = 6.4.0 - 2022-10-25 =
@@ -504,19 +505,19 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Requires WordPress 5.0, WooCommerce 4.0 and PHP 7.0
 
 = 6.0.3 - 2022-06-30 =
-* Fix - Multibanco would not be available on checkout when the new "MB Key" configuration method is active in some scenarios
+* Fix - Multibanco would not be available on checkout when the new “MB Key” configuration method is active in some scenarios
 * Fix - Check if the checkout block is installed on the page instead of only checking if we are on the checkout page
 
 = 6.0.2 - 2022-06-27 =
-* Remove "WC-" from the order ID sent to the new Multibanco "MB Key" API, to be more coherent to what we do in MB WAY
+* Remove “WC-” from the order ID sent to the new Multibanco “MB Key” API, to be more coherent to what we do in MB WAY
 
 = 6.0.1 - 2022-06-24 =
-* Fix a bug on the callback activation request with the new "MB Key" configuration method (do not request for callback activation on 6.0.0, intall 6.0.1 and then do it)
+* Fix a bug on the callback activation request with the new “MB Key” configuration method (do not request for callback activation on 6.0.0, intall 6.0.1 and then do it)
 * Fix a PHP warning
 * Under the hood: Change the way the plugin version is called
 
 = 6.0.0 - 2022-06-24 =
-* New configuration method with an "MB Key" instead of an Entity and Subentity, which uses an API and allows for reference expiration (you should ask ifthenpay for configuration details for this method)
+* New configuration method with an “MB Key” instead of an Entity and Subentity, which uses an API and allows for reference expiration (you should ask ifthenpay for configuration details for this method)
 * New filters for the new configuration method: `multibanco_ifthen_base_mbkey`, `multibanco_ifthen_webservice_timeout`, `multibanco_ifthen_webservice_desc` and `multibanco_ifthen_webservice_expire_days`
 * Tested with WordPress 6.1-alpha-53556 and WooCommerce 6.7.0-beta.1
 
@@ -552,7 +553,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 = 5.0.1 - 2021-04-03 =
 * New `multibanco_ifthen_send_email_instructions`, `mbway_ifthen_send_email_instructions`, `creditcard_ifthen_send_email_instructions` and `payshop_ifthen_send_email_instructions` filters to allow removing the payment gateway instructions from emails
 * Fix Credit card settings fields not hiding when the key is not set
-* WooCommerce Blocks (4.7.0 and above) improvements: respect the Multibanco "Only for Portuguese customers" setting and fix icon size
+* WooCommerce Blocks (4.7.0 and above) improvements: respect the Multibanco “Only for Portuguese customers” setting and fix icon size
 * Small copy adjustments
 * Tested with WordPress 5.8-alpha-50650, WooCommerce 5.2.0-rc.1 and WooCommerce Blocks 4.7.0
 
@@ -611,7 +612,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 
 = 4.4.3 - 2020-07-23 =
-* Revert showing the Multibanco "payment received" message on order completed emails (introduced on 4.4.0)
+* Revert showing the Multibanco “payment received” message on order completed emails (introduced on 4.4.0)
 * Only show WooCommerce Subscriptions options if the plugin is active
 * Only enable Multibanco support for the WooCommerce Blocks checkout if WooCommerce Blocks version is 3.0.0. or above and the support is enabled via the payment method options
 
@@ -621,15 +622,15 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Tested with WordPress 5.5-beta3-48556, WooCommerce 4.3.1 and WooCommerce Blocks 3.0.0
 
 = 4.4.1 =
-* Bugfix checking if order is paid when the "WooCommerce Order Status Manager" (by SkyVerge) plugin is active
+* Bugfix checking if order is paid when the “WooCommerce Order Status Manager” (by SkyVerge) plugin is active
 
 = 4.4.0 =
-* New `ifthen_unpaid_statuses` filter to allow developers to set additional valid "unpaid" statuses for Multibanco, MB WAY and Payshop orders, besides the default ones ("on-hold", "pending" and "partially-paid"). The statuses are used for callback validation, SMS message template, show order as unpaid on the backoffice, show "Pay" button on My Account orders list, issue new references if order value changes on the backoffice, reduce order stock rules, “Thank you” page and email payment instructions.
+* New `ifthen_unpaid_statuses` filter to allow developers to set additional valid “unpaid” statuses for Multibanco, MB WAY and Payshop orders, besides the default ones (“on-hold”, “pending” and “partially-paid”). The statuses are used for callback validation, SMS message template, show order as unpaid on the backoffice, show “Pay” button on My Account orders list, issue new references if order value changes on the backoffice, reduce order stock rules, “Thank you” page and email payment instructions.
 * Enforce requirement of WooCommerce 2.6.0 or above and bumped the `WC requires at least` tag accordingly
 * Enforce requirement of WordPress 4.4 or above and bumped the `Requires at least` tag accordingly
 * New filter `ifthen_debug_log_extra` that will allow developers to further debug the Multibanco reference generation (for now)
-* Try to fix a (very odd) behavior where the customer is redirected to the "pay order" page when completing checkout, which will generate a duplicate Multibanco payment reference (as expected).
-* New filters to hide the "Pay" button on "My Account" (which we do not recommend): `multibanco_ifthen_hide_my_account_pay_button`, `mbway_ifthen_hide_my_account_pay_button`, `payshop_ifthen_hide_my_account_pay_button`
+* Try to fix a (very odd) behavior where the customer is redirected to the “pay order” page when completing checkout, which will generate a duplicate Multibanco payment reference (as expected).
+* New filters to hide the “Pay” button on “My Account” (which we do not recommend): `multibanco_ifthen_hide_my_account_pay_button`, `mbway_ifthen_hide_my_account_pay_button`, `payshop_ifthen_hide_my_account_pay_button`
 * (VERY) Experimental Multibanco support for the new [https://woocommerce.wordpress.com/category/blocks/](WooCommerce Blocks) [https://woocommerce.wordpress.com/2020/05/27/available-for-testing-a-block-based-woocommerce-cart-and-checkout/](checkout experience)
 * Tested with WordPress 5.5-beta2-48501 and WooCommerce 4.3.0
 
@@ -643,8 +644,8 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 4.2.3 =
 * Show paid date and time on the order admin metabox
-* Better handling when the customer decides to change payment method in "My Account"
-* Only apply our WooCommerce 4.2.0 fix if "Prices entered with tax" is set to "Yes"
+* Better handling when the customer decides to change payment method in “My Account”
+* Only apply our WooCommerce 4.2.0 fix if “Prices entered with tax” is set to “Yes”
 * Code refactoring to prepare the next phase of supporting only WooCommerce 3.0 and above
 
 = 4.2.2 =
@@ -653,7 +654,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Links to the Payshop agents and CTT stores search on the Payshop method extra instructions default message
 * Fix MB WAY phone number field hidden on some themes
 * Fix MB WAY and Payshop key fields appearance on the payment method settings
-* Show the Pay button on My Account for Multibanco and Payshop "On hold" orders
+* Show the Pay button on My Account for Multibanco and Payshop “On hold” orders
 * Better information when MB WAY order is already paid for
 * Better debug when requesting the MB WAY payment to the ifthenpay webservice
 * readme.txt tweaks
@@ -665,8 +666,8 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Tested with WordPress 5.5-alpha-47547 and WooCommerce 4.0.1
 
 = 4.2.0 =
-* Experimental: Automatically cancel unpaid orders after the Multibanco reference expires, if the "Incremental references with expiration date" mode is active
-* Bugfix when hiding Multibanco settings fields, if the "Incremental references with expiration date" mode is active
+* Experimental: Automatically cancel unpaid orders after the Multibanco reference expires, if the “Incremental references with expiration date” mode is active
+* Bugfix when hiding Multibanco settings fields, if the “Incremental references with expiration date” mode is active
 * New hourly cron event for general plugin use
 * Tested with WooCommerce 4.0.0-rc.1
 * Requires WooCommerce 2.6.0 or above
@@ -795,7 +796,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Tested with WordPress 5.1 and WooCommerce 3.5.5
 
 = 3.4.3 =
-* New option (activated by default) to force the resending of the "New Order" email (not the British Synthpop band), when the Multibanco payment is done via callback (this was happening erroneously before we fixed the stock management issue on 3.4.2, but we understand this is usefull for the Multibanco payment method)
+* New option (activated by default) to force the resending of the “New Order” email (not the British Synthpop band), when the Multibanco payment is done via callback (this was happening erroneously before we fixed the stock management issue on 3.4.2, but we understand this is usefull for the Multibanco payment method)
 
 = 3.4.2 =
 * Fix stock management when it’s set to decrease on order
@@ -833,7 +834,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 3.2.1 =
 * New `multibanco_ifthen_multibanco_settings_fields` and `multibanco_ifthen_mbway_settings_fields` filters to allow 3rd party plugins to add fields to the Multibanco and MB WAY settings screen
-* `index.php` file because "best practices"
+* `index.php` file because “best practices”
 * Small coding standards fixes
 
 = 3.2 =
@@ -877,10 +878,10 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Removed the `mbway_ifthen_set_on_hold` filter that no longer makes sense since 3.0.2
 
 = 3.0.2 =
-* Changed the default MB WAY order status to "pending", because there’s a time limit to pay for the order. Orders will be automatically canceled if you use the "Manage stock" and "Hold stock" settings on WooCommerce. You can use the "on-hold" behavior like in Multibanco if you return false to `mbway_ifthen_order_initial_status_pending`. (Thanks for the mentoring @chrislema)
+* Changed the default MB WAY order status to “pending”, because there’s a time limit to pay for the order. Orders will be automatically canceled if you use the “Manage stock” and “Hold stock” settings on WooCommerce. You can use the “on-hold” behavior like in Multibanco if you return false to `mbway_ifthen_order_initial_status_pending`. (Thanks for the mentoring @chrislema)
 * Fix: Multibanco logo was not showing up on the email notifications after 3.0
 * Fix: MB WAY Callback testing when WP_DEBUG = true
-* Fix: Checking for "pending" order status if applicable
+* Fix: Checking for “pending” order status if applicable
 * Enhancement: hide callback and anti-phishing key if the settings were still not saved at least one time
 
 = 3.0.1 =
@@ -917,7 +918,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * WooCommerce Subscriptions (experimental) integration on WooCommerce >= 3.0: Automatically sets renewal orders to be paid by Multibanco and generates the new payment details;
 * Fix: Deletes payment details from orders that no longer have Multibanco as the payment method;
 * Do not show payment instructions in the “Thank you” page unless the order is on hold or pending (edge cases);
-* Show payment instructions in the order details screen on "My Account"; 
+* Show payment instructions in the order details screen on “My Account”; 
 
 = 2.0.4.1 =
 * Version fix
@@ -926,8 +927,8 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * [YITH WooCommerce SMS Notification](https://yithemes.com/themes/plugins/yith-woocommerce-sms-notifications/) plugin integration: it’s now possible to add Multibanco payment details to the SMS message sent by this plugin by using the {multibanco_ifthen} variable on the message template
 
 = 2.0.3 =
-* New `multibanco_ifthen_email_instructions_pending_send` filter to which you can return false so that the payment instructions are not included in the "new order" email, although we do not recommend doing it
-* New `multibanco_ifthen_email_instructions_payment_received_send` filter to which you can return false so that the payment received message is not included in the "processing" email
+* New `multibanco_ifthen_email_instructions_pending_send` filter to which you can return false so that the payment instructions are not included in the “new order” email, although we do not recommend doing it
+* New `multibanco_ifthen_email_instructions_payment_received_send` filter to which you can return false so that the payment received message is not included in the “processing” email
 * Bumped `Tested up to` tag 
 
 = 2.0.2 =
@@ -936,7 +937,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 = 2.0.1 =
 * New `multibanco_ifthen_set_on_hold` filter to be able to leave the order pending instead of on hold by returning `false` - use at your own risk
-* New `multibanco_ifthen_cancel_unpaid_orders` filter to be able to enable order auto cancelation by WooCommerce, if "Manage stock" and "Hold stock (minutes)" are configured, by returning `true` - use at your own risk
+* New `multibanco_ifthen_cancel_unpaid_orders` filter to be able to enable order auto cancelation by WooCommerce, if “Manage stock” and “Hold stock (minutes)” are configured, by returning `true` - use at your own risk
 * Bumped `Tested up to` and `WC tested up to` tag
 
 = 2.0 =
@@ -995,7 +996,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 * Bumped `Tested up to` tag
 
 = 1.8.8.1 =
-* Small CSS fix so that the payment instructions table on the "Thank You" page is not partially hidden on some mobile devices (Thanks Jorge Fonseca for the report)
+* Small CSS fix so that the payment instructions table on the “Thank You” page is not partially hidden on some mobile devices (Thanks Jorge Fonseca for the report)
 
 = 1.8.8 =
 * WPML Fix: Shows the payment instructions on the correct language on the “Thank You” page and on Order Status and Customer Notes emails
@@ -1010,27 +1011,27 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 = 1.8.6 =
 * Warn the store owner that if he ever changes URL he may have to ask ifthenpay to update the callback URL
 * Admin notice in case this plugin is active and WooCommerce is not
-* Bumped "Requires at least" tag
+* Bumped “Requires at least” tag
 
 = 1.8.5 =
 * Small change to avoid Polylang removing the payment instructions from the client emails (Thanks Tiago Restivo for the report)
-* Bumped "Tested up to" tag
+* Bumped “Tested up to” tag
 
 = 1.8.4 =
 * New `multibanco_ifthen_base_ent_subent` filter to be able to change the base Entity and Subentity used to generate the payment details, based on the order, which may be useful for marketplaces
 * Settings link on the plugins list
-* Bumped "Tested up to" tag
+* Bumped “Tested up to” tag
 
 = 1.8.3 =
 * French translation (Thanks vinha.pt / vinha.co.uk / vinha.fr)
 
 = 1.8.2 =
-* Fix: Fatal error on WooCommerce Subscriptions admin screen if the "Only for Portuguese customers?" option was activated  (Thanks TwistedStudio)
+* Fix: Fatal error on WooCommerce Subscriptions admin screen if the “Only for Portuguese customers?” option was activated  (Thanks TwistedStudio)
 * FAQ update
 
 = 1.8.1 =
 * Fix: The callback url sent to ifthenpay would use http:// even if ssl was active
-* Bumped "Tested up to" tag
+* Bumped “Tested up to” tag
 
 = 1.8 =
 * If the order changes value on the backend, normally by adding or removing products, a new reference is created to replace the old one. The customer can be notified of the new reference if that option is checked on the plugin settings

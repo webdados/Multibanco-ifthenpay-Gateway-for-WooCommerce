@@ -1193,8 +1193,8 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 						$refunds_exist = false;
 						// First, find the order, using $request_id as $id may not be a order id because of ifthen_webservice_send_order_number_instead_id
 						$args   = array(
-							'type'                         => array( 'shop_order' ),
-							'limit'                        => -1,
+							'type'  => array( 'shop_order' ),
+							'limit' => -1,
 							'_' . $this->id . '_request_id' => $request_id,
 						);
 						$orders = wc_get_orders( WC_IfthenPay_Webdados()->maybe_translate_order_query_args( $args ) );

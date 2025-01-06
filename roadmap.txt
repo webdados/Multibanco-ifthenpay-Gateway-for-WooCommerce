@@ -1,8 +1,6 @@
 PRO ADD-ON PAGO:
 - gateway & credit card: PRO fake fields on free plugin
-- gateway: remover "ifthenpay gateway" do título: add_filter( 'gateway_ifthen_add_frontend_title', '__return_false' );
 - gateway: mostrar os 1, 2 ou 3 icons conforme os métodos activos (clássico e blocos (como??))
-- gateway: verificar custo por pagamento no backoffice
 - Email quando há falhas de callback
 - Separar o módulo de entidades por categorias para uma classe à parte para simplificar o código
 	- Equacionar o mesmo para outros, ou por método de pagamento

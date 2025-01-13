@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 10.0.1
+Stable tag: 10.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -254,6 +254,9 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 10.0.2 - 2025-01-13 =
+* [FIX] PHP Notice on the `multibanco_ifthen_thankyou_instructions_table_html` filter
 
 = 10.0.1 - 2025-01-07 =
 * [FIX] New payment method admin notices not showing properly

@@ -979,7 +979,7 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 				</tr>
 			</table>
 			<?php
-			return apply_filters( 'multibanco_ifthen_thankyou_instructions_table_html', ob_get_clean(), $ent, $ref, $order_total, $order_id );
+			return apply_filters( 'multibanco_ifthen_thankyou_instructions_table_html', ob_get_clean(), $multibanco_order_details['ent'], $multibanco_order_details['ref'], $order_total, $order_id );
 		}
 
 		/**

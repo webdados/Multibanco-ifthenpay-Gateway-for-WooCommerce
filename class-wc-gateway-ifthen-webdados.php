@@ -1321,7 +1321,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - request_id';
 				}
-				if ( abs( $val ) < 1 ) {
+				if ( abs( $val ) < WC_IfthenPay_Webdados()->gateway_ifthen_min_value ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - Value';
 				}

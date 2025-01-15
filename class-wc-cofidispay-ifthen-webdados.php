@@ -1211,7 +1211,7 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 					$arguments_ok     = false;
 					$arguments_error .= ' - IdPedido';
 				}
-				if ( abs( $val ) < 1 ) {
+				if ( abs( $val ) < WC_IfthenPay_Webdados()->cofidispay_min_value ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - Value';
 				}

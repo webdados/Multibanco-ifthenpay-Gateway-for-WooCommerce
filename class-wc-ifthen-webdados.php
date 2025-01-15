@@ -56,7 +56,7 @@ final class WC_IfthenPay_Webdados {
 	public $multibanco_deposits_already_forced     = false;
 	public $multibanco_ref_mode                    = 'random';
 	public $multibanco_last_incremental_expire_ref = null;
-	public $multibanco_min_value                   = 0;
+	public $multibanco_min_value                   = 0.01;
 	public $multibanco_max_value                   = 99999.99;
 	public $multibanco_banner_email                = '';
 	public $multibanco_banner                      = '';
@@ -71,7 +71,7 @@ final class WC_IfthenPay_Webdados {
 	public $mbway_notify_url             = '';
 	public $mbway_minutes                = 4;
 	public $mbway_multiplier_new_payment = 1.2;
-	public $mbway_min_value              = 0;
+	public $mbway_min_value              = 0.01;
 	public $mbway_max_value              = 99999.99;
 	public $mbway_banner_email           = '';
 	public $mbway_banner                 = '';
@@ -84,7 +84,7 @@ final class WC_IfthenPay_Webdados {
 	public $payshop_notify_url              = '';
 	public $payshop_action_deposits_set     = false;
 	public $payshop_deposits_already_forced = false;
-	public $payshop_min_value               = 0;
+	public $payshop_min_value               = 0.01;
 	public $payshop_max_value               = 4000;
 	public $payshop_banner_email            = '';
 	public $payshop_banner                  = '';
@@ -95,7 +95,7 @@ final class WC_IfthenPay_Webdados {
 	public $creditcard_settings     = null;
 	public $creditcard_notify_url   = '';
 	public $creditcard_return_url   = '';
-	public $creditcard_min_value    = 0; /* No limit in theory */
+	public $creditcard_min_value    = 0.01; /* No limit in theory */
 	public $creditcard_max_value    = 99999.99; /* No limit in theory */
 	public $creditcard_banner_email = ''; /* Needed ? */
 	public $creditcard_banner       = ''; /* Needed ? */
@@ -106,7 +106,7 @@ final class WC_IfthenPay_Webdados {
 	public $cofidispay_settings     = null;
 	public $cofidispay_notify_url   = '';
 	public $cofidispay_return_url   = '';
-	public $cofidispay_min_value    = 0; /* No limit in theory */
+	public $cofidispay_min_value    = 0.01; /* No limit in theory */
 	public $cofidispay_max_value    = 99999.99; /* No limit in theory */
 	public $cofidispay_banner_email = ''; /* Needed ? */
 	public $cofidispay_banner       = ''; /* Needed ? */
@@ -117,7 +117,7 @@ final class WC_IfthenPay_Webdados {
 	public $gateway_ifthen_settings     = null;
 	public $gateway_ifthen_notify_url   = '';
 	public $gateway_ifthen_return_url   = '';
-	public $gateway_ifthen_min_value    = 0; /* No limit in theory */
+	public $gateway_ifthen_min_value    = 0.01; /* No limit in theory */
 	public $gateway_ifthen_max_value    = 99999.99; /* No limit in theory */
 	public $gateway_ifthen_banner_email = ''; /* Needed ? */
 	public $gateway_ifthen_banner       = ''; /* Needed ? */

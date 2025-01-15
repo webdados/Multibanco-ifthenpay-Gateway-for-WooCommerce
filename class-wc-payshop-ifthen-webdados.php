@@ -1032,7 +1032,7 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 							'val'        => WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ),
 						);
 						if ( $date_exp ) {
-							$details['exp'] = $date_exp->format( 'Y-m-d' );
+							$details['exp'] = $date_exp->format( 'Y-m-d' ) . ' 23:59:59'; // Ticket #33847886 on PTWooPlugins.com
 						}
 						WC_IfthenPay_Webdados()->set_order_payshop_details( $order->get_id(), $details );
 						$this->debug_log( '- Payshop payment request created on ifthenpay servers - Order ' . $order->get_id() );
@@ -1248,7 +1248,7 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 					$arguments_ok     = false;
 					$arguments_error .= ' - id_transacao';
 				}
-				if ( abs( $val ) < 1 ) {
+				if ( abs( $val ) < WC_IfthenPay_Webdados()->payshop_min_value ) {
 					$arguments_ok     = false;
 					$arguments_error .= ' - Value';
 				}

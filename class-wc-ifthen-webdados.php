@@ -42,6 +42,7 @@ final class WC_IfthenPay_Webdados {
 	public $hpos_enabled            = false;
 	public $refunds_url             = 'https://ifthenpay.com/api/endpoint/payments/refund';
 	private $gateways_loaded        = false;
+	private $locale                 = '';
 
 	/* Internal variables - For Multibanco */
 	public $multibanco_settings                    = null;
@@ -2869,32 +2870,35 @@ final class WC_IfthenPay_Webdados {
 	 * @param WC_Order $order The order.
 	 */
 	public function maybe_change_locale( $order ) {
-		if ( $this->wpml_active ) {
-			// Just for WPML
-			global $sitepress;
-			if ( $sitepress ) {
-				$lang = $order->get_meta( 'wpml_language' );
-				if ( ! empty( $lang ) ) {
-					$this->locale = $sitepress->get_locale( $lang );
+		if ( apply_filters( 'multibanco_ifthen_maybe_change_email_locale', false ) ) { // Since 2025-03-14 only try this if forced by filter
+			if ( $this->wpml_active ) {
+				// Just for WPML
+				global $sitepress;
+				if ( $sitepress ) {
+					$lang = $order->get_meta( 'wpml_language' );
+					if ( ! empty( $lang ) ) {
+						$this->locale = $sitepress->get_locale( $lang );
+					}
+				}
+			} elseif ( is_admin() ) {
+				// Store language !== current user/admin language?
+				$current_user_lang = get_user_locale( wp_get_current_user() );
+				if ( $current_user_lang !== get_locale() ) {
+					$this->locale = get_locale();
 				}
 			}
-		} elseif ( is_admin() ) {
-			// Store language !== current user/admin language?
-			$current_user_lang = get_user_locale( wp_get_current_user() );
-			if ( $current_user_lang !== get_locale() ) {
-				$this->locale = get_locale();
+			if ( ! empty( $this->locale ) ) {
+				// Unload
+				unload_textdomain( 'multibanco-ifthen-software-gateway-for-woocommerce' );
+				add_filter( 'plugin_locale', array( $this, 'set_locale_for_emails' ), 10, 2 ); // This is not running, it's probably too late
+				load_plugin_textdomain( 'multibanco-ifthen-software-gateway-for-woocommerce' );
+				remove_filter( 'plugin_locale', array( $this, 'set_locale_for_emails' ), 10, 2 );
 			}
-		}
-		if ( ! empty( $this->locale ) ) {
-			// Unload
-			unload_textdomain( 'multibanco-ifthen-software-gateway-for-woocommerce' );
-			add_filter( 'plugin_locale', array( $this, 'set_locale_for_emails' ), 10, 2 );
-			load_plugin_textdomain( 'multibanco-ifthen-software-gateway-for-woocommerce' );
-			remove_filter( 'plugin_locale', array( $this, 'set_locale_for_emails' ), 10, 2 );
 		}
 	}
 	/**
 	 * Set locale for emails
+	 * Just like WooCommerce Multilingual WCML_Emails
 	 *
 	 * @param string $locale The locale.
 	 * @param string $domain The textdomain.
@@ -3078,7 +3082,7 @@ final class WC_IfthenPay_Webdados {
 						),
 						array(
 							'url'         => 'https://ptwooplugins.com/product/simple-custom-fields-for-woocommerce-blocks-checkout/',
-							'title'       => esc_html__( 'Simple Custom Fields for WooCommerce Blocks Checkout', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'title'       => esc_html__( 'Simple Checkout Fields Manager for WooCommerce', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'short_title' => esc_html__( 'Blocks Checkout Custom Fields', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 							'image'       => 'woo-custom-fields.png',
 						),

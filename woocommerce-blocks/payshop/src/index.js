@@ -8,9 +8,9 @@ import { decodeEntities } from '@wordpress/html-entities';
 
 const settings = getSetting( 'payshop_ifthen_for_woocommerce_data', {} );
 const defaultLabel = __(
-	'Payshop (ifthenpay)',
+	'Payment at the Payshop agent network',
 	'multibanco-ifthen-software-gateway-for-woocommerce'
-);
+) + ' (ifthenpay)';
 const label = decodeEntities( settings.title ) || defaultLabel;
 
 /**

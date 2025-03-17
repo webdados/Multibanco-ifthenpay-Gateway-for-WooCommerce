@@ -2,7 +2,7 @@
 Contributors: webdados, ptwooplugins, ifthenpay
 Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.2
 Stable tag: 10.1.0
 License: GPLv3
@@ -254,6 +254,11 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 10.2.0 - 2025-03-17 =
+* [DEV] Stop trying to fix the email locale with WPML active because it was causing the language to be incorrect (can be reactivated by returning `true` to `multibanco_ifthen_maybe_change_email_locale` filter)
+* [TWEAK] Reuse several i18n strings on all the payment methods with placeholders
+* [DEV] Tested with WordPress 6.8-beta2-59993 and WooCommerce 9.8.0-beta.1
 
 = 10.1.0 - 2025-01-15 =
 * [FIX] Callback calls failing for values under 1.00 Euro

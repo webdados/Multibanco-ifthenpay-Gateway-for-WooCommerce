@@ -59,7 +59,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 
 			$this->has_fields = true;
 
-			$this->method_title       = __( 'Pagamento MB WAY no telemóvel (ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			$this->method_title       = __( 'MB WAY mobile payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' (ifthenpay)';
 			$this->method_description = __( 'Easy and simple payment using “MB WAY” on your mobile phone. (Only available for customers of Portuguese banks with MB WAY app installed - Payment service provided by ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			if ( WC_IfthenPay_Webdados()->wc_subscriptions_active && $this->get_option( 'support_woocommerce_subscriptions' ) === 'yes' ) { // Deprecated on version 6.5
 				$this->supports = array(
@@ -214,13 +214,21 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				'enabled'  => array(
 					'title'   => __( 'Enable/Disable', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable “MB WAY” (using ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'label'   => sprintf(
+						/* translators: %s: Gateway name */
+						__( 'Enable “%s” (using ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'MB WAY', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					),
 					'default' => 'no',
 				),
 				'mbwaykey' => array(
 					'title'             => __( 'MB WAY Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'              => 'text',
-					'description'       => __( 'MB WAY Key provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'description'       => sprintf(
+						/* translators: %s: Gateway key name */
+						__( '%s provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'MB WAY Key', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					),
 					'default'           => '',
 					'css'               => 'width: 130px;',
 					'placeholder'       => 'XXX-000000',
@@ -589,10 +597,22 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 							<?php
 					} else {
 						?>
-							<div id="message" class="error">
-								<p><strong><?php esc_html_e( 'Set the MB WAY Key and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
-							</div>
-							<?php
+						<div id="message" class="error">
+							<p>
+								<strong>
+									<?php
+										echo esc_html(
+											sprintf(
+												/* translators: %s: Gateway key name */
+												__( 'Set the %s and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+												__( 'MB WAY Key', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+											)
+										);
+									?>
+								</strong>
+							</p>
+						</div>
+						<?php
 
 					}
 					?>

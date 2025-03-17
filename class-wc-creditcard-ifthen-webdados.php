@@ -58,7 +58,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 
 			$this->has_fields = false;
 
-			$this->method_title       = __( 'Credit or debit card (ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			$this->method_title       = __( 'Credit or debit card', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' (ifthenpay)';
 			$this->method_description = __( 'Easy and simple payment using a Credit or debit card. (Payment service provided by ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 
 			// Anti-phishing key
@@ -210,13 +210,21 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 				'enabled'       => array(
 					'title'   => __( 'Enable/Disable', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable “Credit or debit card” (using ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'label'   => sprintf(
+						/* translators: %s: Gateway name */
+						__( 'Enable “%s” (using ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'Credit or debit card', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					),
 					'default' => 'no',
 				),
 				'creditcardkey' => array(
 					'title'             => __( 'Credit card Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'              => 'text',
-					'description'       => __( 'Credit card Key provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ( apply_filters( 'creditcard_ifthen_sandbox', false ) ? '<br><span style="color: red;">Sandbox</span>' : '' ),
+					'description'       => sprintf(
+						/* translators: %s: Gateway key name */
+						__( '%s provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'Credit card Key', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					) . ( apply_filters( 'creditcard_ifthen_sandbox', false ) ? '<br><span style="color: red;">Sandbox</span>' : '' ),
 					'default'           => '',
 					'css'               => 'width: 130px;',
 					'placeholder'       => 'XXX-000000',
@@ -441,7 +449,19 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						} else {
 							?>
 							<div id="message" class="error">
-								<p><strong><?php esc_html_e( 'Set the Credit card Key and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
+								<p>
+									<strong>
+										<?php
+											echo esc_html(
+												sprintf(
+													/* translators: %s: Gateway key name */
+													__( 'Set the %s and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+													__( 'Credit card Key', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+												)
+											);
+										?>
+									</strong>
+								</p>
 							</div>
 							<?php
 						}

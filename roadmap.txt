@@ -17,9 +17,7 @@ FREE:
 	- Opção de icones de cada método em vez do Ifthenpay, e o mesmo no banner (ou no PRO?)
 	- Definir validade do pagamento
 - Passar strings repetidas a únicas com placeholders:
-	- Set the Cofidis Pay Key and Save changes to set other plugin options.
 	- Awaiting Cofidis Pay payment.
-	- Cofidis Pay Key provided by ifthenpay when signing the contract.
 	- Enable “Cofidis Pay” (using ifthenpay)
 	- 
 

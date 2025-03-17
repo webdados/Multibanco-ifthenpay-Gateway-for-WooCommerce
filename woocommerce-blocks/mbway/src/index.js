@@ -10,9 +10,9 @@ import { applyFilters } from '@wordpress/hooks';
 
 const settings = getSetting( 'mbway_ifthen_for_woocommerce_data', {} );
 const defaultLabel = __(
-	'MB WAY (ifthenpay)',
+	'MB WAY mobile payment',
 	'multibanco-ifthen-software-gateway-for-woocommerce'
-);
+) + ' (ifthenpay)';
 const label = decodeEntities( settings.title ) || defaultLabel;
 
 //const [mbwayPhoneNumber, setMbwayPhoneNumber] = useState(''); //If I set it here, i get "invalid hook call"

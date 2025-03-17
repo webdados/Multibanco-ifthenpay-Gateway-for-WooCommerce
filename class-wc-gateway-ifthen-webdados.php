@@ -257,7 +257,11 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				'enabled'        => array(
 					'title'   => __( 'Enable/Disable', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable “ifthenpay Gateway”', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'label'   => sprintf(
+						/* translators: %s: Gateway name */
+						__( 'Enable “%s”', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'ifthenpay Gateway', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					),
 					'default' => 'no',
 				),
 				'backoffice_key' => array(
@@ -274,7 +278,11 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				'gatewaykey'     => array(
 					'title'             => __( 'Gateway Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'              => 'text',
-					'description'       => __( 'Gateway Key provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ( apply_filters( 'gateway_ifthen_sandbox', false ) ? '<br><span style="color: red;">Sandbox</span>' : '' ),
+					'description'       => sprintf(
+						/* translators: %s: Gateway key name */
+						__( '%s provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'Gateway Key', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					) . ( apply_filters( 'gateway_ifthen_sandbox', false ) ? '<br><span style="color: red;">Sandbox</span>' : '' ),
 					'default'           => '',
 					'css'               => 'width: 130px;',
 					'placeholder'       => 'XXXX-000000',
@@ -547,7 +555,19 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						} else {
 							?>
 							<div id="message" class="error">
-								<p><strong><?php esc_html_e( 'Set the Gateway Key and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
+								<p>
+									<strong>
+										<?php
+											echo esc_html(
+												sprintf(
+													/* translators: %s: Gateway key name */
+													__( 'Set the %s and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+													__( 'Gateway Key', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+												)
+											);
+										?>
+									</strong>
+								</p>
 							</div>
 							<?php
 						}

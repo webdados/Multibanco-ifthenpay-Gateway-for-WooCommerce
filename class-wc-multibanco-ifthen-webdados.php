@@ -56,8 +56,8 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 
 			$this->has_fields = false;
 
-			$this->method_title       = __( 'Pagamento de Serviços no Multibanco (ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
-			$this->method_description = __( 'Easy and simple payment using “Pagamento de Serviços” at any “Multibanco” ATM terminal or your homebanking service. (Only available to customers of Portuguese banks - Payment service provided by ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			$this->method_title       = __( 'Payment of Services at Multibanco', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' (ifthenpay)';
+			$this->method_description = __( 'Easy and simple payment using “Payment of Servicess” at any “Multibanco” ATM terminal or your homebanking service. (Only available to customers of Portuguese banks - Payment service provided by ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			if ( WC_IfthenPay_Webdados()->wc_subscriptions_active && $this->get_option( 'support_woocommerce_subscriptions' ) === 'yes' ) {
 				$this->supports = array(
 					'products',
@@ -229,7 +229,11 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				'enabled'  => array(
 					'title'   => __( 'Enable/Disable', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable “Pagamento de Serviços no Multibanco” (using ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'label'   => sprintf(
+						/* translators: %s: Gateway name */
+						__( 'Enable “%s” (using ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'Payment of Services at Multibanco', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					),
 					'default' => 'no',
 				),
 				'api_mode' => array(
@@ -245,7 +249,11 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				'ent'      => array(
 					'title'             => __( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'              => 'number',
-					'description'       => __( 'Entity provided by ifthenpay when signing the contract. (E.g.: 10559, 11202, 11473, 11604)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'description'       => sprintf(
+						/* translators: %s: Gateway key name */
+						__( '%s provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					),
 					'default'           => '',
 					'css'               => 'width: 80px;',
 					'custom_attributes' => array(
@@ -257,7 +265,11 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				'subent'   => array(
 					'title'             => __( 'Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'              => 'number',
-					'description'       => __( 'Subentity provided by ifthenpay when signing the contract. (E.g.: 999)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'description'       => sprintf(
+						/* translators: %s: Gateway key name */
+						__( '%s provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					),
 					'default'           => '',
 					'css'               => 'width: 60px;',
 					'custom_attributes' => array(
@@ -269,7 +281,11 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 				'mbkey'    => array(
 					'title'             => __( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' / ' . __( 'MB Key', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'              => 'text',
-					'description'       => __( 'MB Key provided by ifthenpay when signing the contract. (E.g.: AAA-000000) - If you have an entity and subentity and want to change to this new method, you should request ifthenpay for a MB Key.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'description'       => sprintf(
+						/* translators: %s: Gateway key name */
+						__( '%s provided by ifthenpay when signing the contract.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'MB Key', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					) . ' ' . __( 'If you have an entity and subentity and want to change to this new method, you should request ifthenpay for a MB Key.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'default'           => '',
 					'css'               => 'width: 80px;',
 					'custom_attributes' => array(
@@ -729,10 +745,22 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 						}
 					} else {
 						?>
-							<div id="message" class="error">
-								<p><strong><?php esc_html_e( 'Set the Entity/Subentity and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
-							</div>
-							<?php
+						<div id="message" class="error">
+							<p>
+								<strong>
+									<?php
+										echo esc_html(
+											sprintf(
+												/* translators: %s: Gateway key name */
+												__( 'Set the %s and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+												__( 'MB Key or Entity and Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+											)
+										);
+									?>
+								</strong>
+							</p>
+						</div>
+						<?php
 
 					}
 					?>

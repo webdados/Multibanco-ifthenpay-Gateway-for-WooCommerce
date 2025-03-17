@@ -11,9 +11,9 @@ import React, { useEffect } from 'react';
 
 const settings = getSetting( 'cofidispay_ifthen_for_woocommerce_data', {} );
 const defaultLabel = __(
-	'Cofidis Pay (ifthenpay)',
+	'Cofidis Pay',
 	'multibanco-ifthen-software-gateway-for-woocommerce'
-);
+) + ' (ifthenpay)';
 const label = decodeEntities( settings.title ) || defaultLabel;
 
 /**

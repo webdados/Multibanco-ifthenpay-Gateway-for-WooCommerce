@@ -56,7 +56,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 
 			$this->has_fields = false;
 
-			$this->method_title       = __( 'Pagamento na rede de agentes Payshop (ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			$this->method_title       = __( 'Payment at the Payshop agent network', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' (ifthenpay)';
 			$this->method_description = __( 'Easy and simple payment on the “Payshop” agents network, CTT stores or post offices. (Payment service provided by ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			$this->secret_key         = $this->get_option( 'secret_key' );
 			if ( trim( $this->secret_key ) === '' ) {
@@ -205,7 +205,11 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 				'enabled'    => array(
 					'title'   => __( 'Enable/Disable', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Enable “Payshop” (using ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+					'label'   => sprintf(
+						/* translators: %s: Gateway name */
+						__( 'Enable “%s” (using ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						__( 'Payshop', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+					),
 					'default' => 'no',
 				),
 				'payshopkey' => array(
@@ -578,10 +582,22 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 							<?php
 					} else {
 						?>
-							<div id="message" class="error">
-								<p><strong><?php esc_html_e( 'Set the Payshop Key and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong></p>
-							</div>
-							<?php
+						<div id="message" class="error">
+							<p>
+								<strong>
+									<?php
+										echo esc_html(
+											sprintf(
+												/* translators: %s: Gateway key name */
+												__( 'Set the %s and Save changes to set other payment method options.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+												__( 'Payshop Key', 'multibanco-ifthen-software-gateway-for-woocommerce' )
+											)
+										);
+									?>
+								</strong>
+							</p>
+						</div>
+						<?php
 
 					}
 					?>

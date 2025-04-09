@@ -1212,11 +1212,6 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 
 			$server_request_uri = WC_IfthenPay_Webdados()->get_request_uri();
 
-			// Try to fix https://wordpress.org/support/topic/rota-pos-pagamento/
-			foreach( $_GET as $key => $value ) {
-				$_GET[ str_replace( 'amp;', '', $key ) ] = $value;
-			}
-
 			if (
 				isset( $_GET['id'] )
 				&&

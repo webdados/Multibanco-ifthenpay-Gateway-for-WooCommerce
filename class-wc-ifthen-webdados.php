@@ -1524,7 +1524,7 @@ final class WC_IfthenPay_Webdados {
 	/**
 	 * Format MB WAY expiration date/time
 	 *
-	 * @param string  $exp      Expiration date in Y-m- H:i:s format.
+	 * @param string  $exp      Expiration date in Y-m-d H:i:s format.
 	 * @param integer $order_id The Order ID.
 	 * @return string
 	 */

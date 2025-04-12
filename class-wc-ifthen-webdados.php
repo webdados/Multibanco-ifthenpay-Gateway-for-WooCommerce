@@ -3010,7 +3010,7 @@ final class WC_IfthenPay_Webdados {
 				);
 				?>
 				<a href="https://nakedcatplugins.com<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php echo esc_attr( $title ); ?>" target="_blank">
-					<img src="<?php echo esc_url( plugins_url( 'images/ptwooplugins-plugins-for-wordpress.svg', __FILE__ ) ); ?>" width="200"/>
+					<img src="<?php echo esc_url( plugins_url( 'images/nakedcatplugins-plugins-for-wordpress.svg', __FILE__ ) ); ?>" width="200"/>
 				</a>
 			</p>
 			<h4><?php esc_html_e( 'Custom WordPress/WooCommerce development', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:</h4>

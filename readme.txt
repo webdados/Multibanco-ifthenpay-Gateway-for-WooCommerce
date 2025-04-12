@@ -1,10 +1,10 @@
 === Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis Pay, and PIX (ifthenpay) for WooCommerce ===
-Contributors: webdados, ptwooplugins, ifthenpay
+Contributors: webdados, nakedcatplugins, ifthenpay
 Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 10.2.1
+Stable tag: 10.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -255,9 +255,12 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
-= ? =
-* [DEV] Change Cofidis API URL
+= 10.3.0 - 2025-04-12 =
+* [NEW] We are now called Naked Cat Plugins 😻
+* [DEV] Update Multibanco API URL
+* [DEV] Update Cofidis API URL
 * [DEV] New `mbway_ifthen_after_process_payment` hook (action)
+* [DEV] Tested with WordPress 6.8-RC3-60146 and WooCommerce 9.8.1
 
 = 10.2.1 - 2025-03-17 =
 * [DEV] Stop trying to fix the email locale with WPML active because it was causing the language to be incorrect (can be reactivated by returning `true` to `multibanco_ifthen_maybe_change_email_locale` filter)

@@ -1,10 +1,10 @@
 === Multibanco, MB WAY, Credit card, Apple Pay, Google Pay, Payshop, Cofidis Pay, and PIX (ifthenpay) for WooCommerce ===
-Contributors: webdados, nakedcatplugins, ifthenpay
+Contributors: nakedcatplugins, webdados, ifthenpay
 Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 10.3.0
+Stable tag: 10.4.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -255,11 +255,15 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 10.4.0 - TBA =
+* [TWEAK] New payment method notices are now only shown every 90 days for each admin or shop manager user (they can also be dismissed by returning `true` to the `multibanco_ifthen_hide_newmethod_notifications` filter)
+
 = 10.3.0 - 2025-04-12 =
 * [NEW] We are now called Naked Cat Plugins 😻
 * [DEV] Update Multibanco API URL
 * [DEV] Update Cofidis API URL
 * [DEV] New `mbway_ifthen_after_process_payment` hook (action)
+* [TWEAK] [PRO add-on 5.1](https://nakedcatplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/): Only save MBWAY number to user profile if the request payment API call to ifthenpay is successfully
 * [DEV] Tested with WordPress 6.8-RC3-60146 and WooCommerce 9.8.1
 
 = 10.2.1 - 2025-03-17 =

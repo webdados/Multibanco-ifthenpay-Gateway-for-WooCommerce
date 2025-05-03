@@ -1617,16 +1617,24 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 			}
 			// New method
 			if (
+				// Only show to users who can manage the shop
+				current_user_can( 'manage_woocommerce' )
+				&&
+				// Key not set or method not enabled
 				(
 					strlen( trim( $this->mbwaykey ) ) !== 10
 					||
 					trim( $this->enabled ) !== 'yes'
 				)
 				&&
+				// Not prevented by filter
 				( ! apply_filters( 'multibanco_ifthen_hide_newmethod_notifications', false ) )
+				&&
+				// Check if 90-day dismissal is active
+				( ! get_transient( $this->id . '_newmethod_notice_dismiss_' . get_current_user_id() ) )
 			) {
 				?>
-				<div id="mbway_ifthen_newmethod_notice" class="notice notice-info is-dismissible" style="padding-right: 38px; position: relative; display: none;">
+				<div id="<?php echo esc_attr( $this->id ); ?>_newmethod_notice" class="notice notice-info is-dismissible" style="padding-right: 38px; position: relative;">
 					<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->mbway_banner ); ?>" style="float: left; margin-top: 0.5em; margin-bottom: 0.5em; margin-right: 1em; max-height: 48px; max-width: 114px;"/>
 					<p>
 						<?php
@@ -1654,19 +1662,8 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 						?>
 					</p>
 				</div>
-				<script type="text/javascript">
-				(function () {
-					notice    = jQuery( '#mbway_ifthen_newmethod_notice');
-					dismissed = localStorage.getItem( '<?php echo esc_attr( $this->id ); ?>_newmethod_notice_dismiss' );
-					if ( !dismissed ) {
-						jQuery( notice ).show();
-						jQuery( notice ).on( 'click', 'button.notice-dismiss', function() {
-							localStorage.setItem( '<?php echo esc_attr( $this->id ); ?>_newmethod_notice_dismiss', 1 );
-						});
-					}
-				}());
-				</script>
 				<?php
+				WC_IfthenPay_Webdados()->dismiss_newmethod_notice_javascript( $this->id );
 			}
 		}
 	}

@@ -9,6 +9,7 @@ PRO ADD-ON PAGO:
 
 
 FREE:
+
 - PIX:
 	- Passar PIX para método isolado e migrar configurações
 - MB WAY:

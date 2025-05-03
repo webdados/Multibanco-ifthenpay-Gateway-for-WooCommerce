@@ -5,6 +5,16 @@
 	<exclude-pattern>/woocommerce-blocks/build/*</exclude-pattern>
 	<exclude-pattern>/woocommerce-blocks/*/src/*</exclude-pattern>
 	<exclude-pattern>/assets/_*</exclude-pattern>
+
+	<!-- Add custom capabilities -->
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="manage_woocommerce"/>
+			</property>
+		</properties>
+	</rule>
+
 	<rule ref="PHPCompatibilityWP"/>
 	<rule ref="WordPress">
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>

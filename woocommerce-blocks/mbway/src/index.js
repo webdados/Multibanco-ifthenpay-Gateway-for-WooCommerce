@@ -143,7 +143,7 @@ const CanMakePayment = ( checkoutData ) => {
 }
 
 /**
- * Payshop payment method config object.
+ * MBWAY payment method config object.
  */
 const ifthenpayMbWayPaymentMethod = {
 	name: 'mbway_ifthen_for_woocommerce',

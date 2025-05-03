@@ -285,6 +285,8 @@ final class WC_IfthenPay_Webdados {
 		add_action( 'wp_ajax_mbway_ifthen_request_payment_again', array( $this, 'wp_ajax_mbway_ifthen_request_payment_again' ) );
 		// Order value changed?
 		add_action( 'woocommerce_order_item_add_action_buttons', array( $this, 'multibanco_maybe_value_changed' ) );
+		// Dismiss new method notices
+		add_action( 'wp_ajax_ifthenpay_dismiss_newmethod_notice', array( $this, 'dismiss_newmethod_notice_handler' ) );
 		// Admin notices to warn about old technology
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		// Order needs payment for all our methods
@@ -3682,6 +3684,9 @@ final class WC_IfthenPay_Webdados {
 	 * @return string
 	 */
 	public function get_remote_addr() {
+		if ( isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) && filter_var( wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ), FILTER_VALIDATE_IP ) ) {
+			$_SERVER['REMOTE_ADDR'] = filter_var( wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ), FILTER_VALIDATE_IP );
+		}
 		return isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 	}
 
@@ -3692,6 +3697,88 @@ final class WC_IfthenPay_Webdados {
 	 */
 	public function get_http_host() {
 		return isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
+	}
+
+	/**
+	 * Handler for dismissing new payment method notification
+	 *
+	 * This method processes the AJAX request when a user dismisses the notification
+	 * about a new payment method being available. It:
+	 * 1. Verifies the security nonce
+	 * 2. Gets the payment method ID from the request
+	 * 3. Sets a transient with 90-day expiration to prevent showing the notice again
+	 *    to the current user for that period
+	 *
+	 * The transient is user-specific and payment method-specific, allowing different
+	 * users to see or dismiss notices independently.
+	 *
+	 * @since 10.4.0
+	 * @return void Sends JSON response and exits
+	 */
+	public function dismiss_newmethod_notice_handler() {
+		// Verify nonce
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ifthenpay_dismiss_newmethod_notice' ) ) {
+			wp_send_json_error( 'Invalid security token' );
+			exit;
+		}
+		// Get method ID
+		$method_id = isset( $_POST['method_id'] ) ? sanitize_text_field( wp_unslash( $_POST['method_id'] ) ) : '';
+		if ( empty( $method_id ) ) {
+			wp_send_json_error( 'Missing method ID' );
+			exit;
+		}
+		// Set transient with 90-day expiration (90 days * 24 hours * 60 minutes * 60 seconds)
+		$result = set_transient(
+			$method_id . '_newmethod_notice_dismiss_' . get_current_user_id(),
+			true,
+			90 * DAY_IN_SECONDS
+		);
+		wp_send_json_success(
+			array( 'result' => $result )
+		);
+		exit;
+	}
+
+	/**
+	 * Outputs JavaScript code to handle notice dismissals for new payment methods
+	 *
+	 * This method renders inline JavaScript that attaches a click handler to the dismiss
+	 * button of notification banners for new payment methods. When a user clicks the dismiss
+	 * button, it:
+	 * 
+	 * 1. Sends an AJAX request to the server to store the dismissal state
+	 * 2. Passes the payment method ID to identify which notice was dismissed
+	 * 3. Uses a security nonce to validate the request
+	 * 
+	 * The AJAX call triggers the dismiss_newmethod_notice_handler() method, which saves
+	 * a user-specific transient that prevents the notice from showing again for 90 days.
+	 *
+	 * @since 10.4.0
+	 * @param string $id The payment gateway ID used to identify which notice was dismissed
+	 * @return void Outputs inline JavaScript
+	 */
+	public function dismiss_newmethod_notice_javascript( $id ) {
+		?>
+		<script type="text/javascript">
+			jQuery( document ).ready( function( $ ) {
+				$( '#<?php echo esc_attr( $id ); ?>_newmethod_notice' ).on( 'click', 'button.notice-dismiss', function() {
+					var method_id = '<?php echo esc_js( $id ); ?>';
+					var data = {
+						action: 'ifthenpay_dismiss_newmethod_notice',
+						nonce: '<?php echo esc_js( wp_create_nonce( 'ifthenpay_dismiss_newmethod_notice' ) ); ?>',
+						method_id: method_id
+					};
+					$.post( ajaxurl, data, function( response ) {
+						if ( response.success ) {
+							console.log( 'Notice dismissed successfully.' );
+						} else {
+							console.log( 'Error dismissing notice: ' + response.data );
+						}
+					} );
+				} );
+			} );
+		</script>
+		<?php
 	}
 
 	/**

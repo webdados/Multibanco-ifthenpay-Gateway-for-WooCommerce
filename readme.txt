@@ -4,7 +4,7 @@ Tags: multibanco, mbway, payshop, card, cofidis
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 10.4.0
+Stable tag: 10.4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -254,6 +254,10 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 10.4.1 - 2025-05-22 =
+* [FIX] Check for WooCommerce version before declaring HPOS and Blocks checkout compatibility
+* [DEV] Tested with WordPress 6.9-alpha-60243 and WooCommerce 9.9.0-beta.1
 
 = 10.4.0 - 2025-05-03 =
 * [TWEAK] New payment method notices are now only shown every 90 days for each admin or shop manager user (they can also be dismissed by returning `true` to the `multibanco_ifthen_hide_newmethod_notifications` filter)

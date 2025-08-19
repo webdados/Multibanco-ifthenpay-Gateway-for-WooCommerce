@@ -1630,7 +1630,10 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 				// Not prevented by filter
 				( ! apply_filters( 'multibanco_ifthen_hide_newmethod_notifications', false ) )
 				&&
-				// Check if 90-day dismissal is active
+				// Check if dismissed in the last 180 days
+				( intval( get_user_meta( get_current_user_id(), $this->id . '_newmethod_notice_dismiss_until', true ) ) < time() )
+				&&
+				// Check if 90-day dismissal is active - Legacy support
 				( ! get_transient( $this->id . '_newmethod_notice_dismiss_' . get_current_user_id() ) )
 			) {
 				?>

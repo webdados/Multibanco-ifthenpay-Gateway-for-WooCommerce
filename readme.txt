@@ -255,6 +255,9 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= ? =
+* [TWEAK] New payment method notices are now only shown every 180 days for each admin or shop manager user, and this is now handled by user meta and not a transient, because in some setups because transients are cleared when the cache is cleared
+
 = 10.4.1 - 2025-05-22 =
 * [FIX] Check for WooCommerce version before declaring HPOS and Blocks checkout compatibility
 * [DEV] Tested with WordPress 6.9-alpha-60243 and WooCommerce 9.9.0-beta.1

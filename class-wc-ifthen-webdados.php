@@ -3735,14 +3735,14 @@ final class WC_IfthenPay_Webdados {
 			wp_send_json_error( 'Missing method ID' );
 			exit;
 		}
-		// Set transient with 90-day expiration (90 days * 24 hours * 60 minutes * 60 seconds)
-		$result = set_transient(
-			$method_id . '_newmethod_notice_dismiss_' . get_current_user_id(),
-			true,
-			90 * DAY_IN_SECONDS
-		);
+		// Set transient with 90-day expiration (90 days * 24 hours * 60 minutes * 60 seconds) - Now 180 days
+		// Removed in favor of user meta, to avoid showing again when cleaning cache
+		// This needs to be a option per user because transients are cleared when the cache is cleared
+		$days                 = 180;
+		$expiration_timestamp = time() + ( $days * DAY_IN_SECONDS );
+		update_user_meta( get_current_user_id(), $method_id . '_newmethod_notice_dismiss_until', $expiration_timestamp );
 		wp_send_json_success(
-			array( 'result' => $result )
+			array( 'result' => true )
 		);
 		exit;
 	}

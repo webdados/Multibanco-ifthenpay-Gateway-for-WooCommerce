@@ -78,6 +78,7 @@ final class WC_IfthenPay_Webdados {
 	public $mbway_banner                 = '';
 	public $mbway_icon                   = '';
 	public $mbway_webservice_url         = 'https://mbway.ifthenpay.com/IfthenPayMBW.asmx';
+	public $mbway_api_url                = 'https://api.ifthenpay.com/spg/payment/mbway';
 
 
 	/* Internal variables - For Payshop */
@@ -2095,18 +2096,20 @@ final class WC_IfthenPay_Webdados {
 	/**
 	 * Create MB WAY payment on the ifthenpay API
 	 *
-	 * @param integer $order_id The Order ID.
-	 * @param string  $phone    The phone number.
+	 * @param integer $order_id        The Order ID.
+	 * @param string  $phone           The phone number.
+	 * @param boolean $throw_exception If we should throw an exception instead of returning false.
+	 * @throws Exception               Error message.
 	 * @return bool
 	 */
-	public function mbway_webservice_set_pedido( $order_id, $phone ) {
+	public function mbway_webservice_set_pedido( $order_id, $phone, $throw_exception = false ) {
 		// phpcs:disable WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase, WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$debug       = $this->mbway_settings['debug'] === 'yes';
 		$debug_email = false;
 		if ( $debug ) {
 			$debug_email = trim( $this->mbway_settings['debug_email'] ) !== '' ? trim( $this->mbway_settings['debug_email'] ) : false;
 		}
-		$url               = $this->mbway_webservice_url . '/SetPedido';
+		$url               = $this->mbway_api_url;
 		$order             = wc_get_order( $order_id );
 		$mbwaykey          = apply_filters( 'multibanco_ifthen_base_mbwaykey', $this->mbway_settings['mbwaykey'], $order );
 		$id_for_backoffice = apply_filters( 'ifthen_webservice_send_order_number_instead_id', false ) ? $order->get_order_number() : $order->get_id();
@@ -2117,16 +2120,19 @@ final class WC_IfthenPay_Webdados {
 			'method'   => 'POST',
 			'timeout'  => apply_filters( 'mbway_ifthen_webservice_timeout', 15 ),
 			'blocking' => true,
+			'headers'  => array(
+				'Content-Type' => 'application/json; charset=utf-8',
+			),
 			'body'     => array(
-				'MbWayKey'   => $mbwaykey,
-				'canal'      => '03', // Online
-				'referencia' => (string) $id_for_backoffice,
-				'valor'      => (string) WC_IfthenPay_Webdados()->get_order_total_to_pay_for_gateway( $order ),
-				'nrtlm'      => $phone,
-				'email'      => '', // Não usamos
-				'descricao'  => $this->mb_webservice_filter_descricao( apply_filters( 'mbway_ifthen_webservice_desc', $desc, $order->get_id() ) ),
+				'mbWayKey'     => $mbwaykey,
+				'orderId'      => (string) $id_for_backoffice,
+				'amount'       => (string) WC_IfthenPay_Webdados()->get_order_total_to_pay_for_gateway( $order ),
+				'mobileNumber' => $phone,
+				'email'        => '', // Não usamos
+				'description'  => $this->mb_webservice_filter_descricao( apply_filters( 'mbway_ifthen_webservice_desc', $desc, $order->get_id() ) ),
 			),
 		);
+		$args['body']      = wp_json_encode( $args['body'] ); // Json not post variables
 		$this->debug_log_extra( $this->mbway_id, '- Request payment with args: ' . wp_json_encode( $args ) );
 		$debug_start_time = microtime( true );
 		$response         = wp_remote_post( $url, $args );
@@ -2134,69 +2140,98 @@ final class WC_IfthenPay_Webdados {
 			$debug_msg       = '- Error contacting the ifthenpay servers - Order ' . $order->get_id() . ' - ' . $response->get_error_message();
 			$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 			$this->debug_log( $this->mbway_id, $debug_msg, 'error', $debug_email, $debug_msg_email );
+			if ( $throw_exception ) {
+				throw new Exception(
+					sprintf(
+						/* translators: %s: payment method */
+						esc_html__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'MB WAY'
+					)
+				);
+			}
 			return false;
 		} elseif ( isset( $response['response']['code'] ) && intval( $response['response']['code'] ) === 200 && isset( $response['body'] ) && trim( $response['body'] ) !== '' ) {
-			if ( function_exists( 'simplexml_load_string' ) ) {
-				$xmlData = simplexml_load_string( $response['body'] );
-				// if ( $debug ) $this->debug_log( $this->mbway_id, '- MB WAY payment request response - Order '.$order->get_id().' - '.$xmlData->asXML() ); //Desnecessário - vai para o email
-				// Verificar primeiro se temos o Estado correcto ou não
-				if ( trim( $xmlData->Estado ) === '000' ) {
-					if ( trim( $xmlData->IdPedido ) !== '' && floatval( $xmlData->Valor ) > 0 ) {
-						$id_pedido = trim( $xmlData->IdPedido );
-						$valor     = floatval( $xmlData->Valor );
-						if ( $valor === round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 ) ) {
-							WC_IfthenPay_Webdados()->set_order_mbway_details(
-								$order->get_id(),
-								array(
-									'mbwaykey'  => $mbwaykey,
-									'id_pedido' => $id_pedido,
-									'phone'     => $phone,
-									'val'       => $valor,
-								)
-							);
-							if ( $debug ) {
-								$this->debug_log( $this->mbway_id, '- MB WAY payment request created on ifthenpay servers - Order ' . $order->get_id() . ' - id_pedido: ' . $id_pedido );
-							}
-							do_action( 'mbway_ifthen_created_reference', $id_pedido, $order->get_id(), $phone );
-							$debug_elapsed_time = microtime( true ) - $debug_start_time;
-							$this->debug_log_extra( $this->mbway_id, 'wp_remote_post + response handling took: ' . $debug_elapsed_time . ' seconds.' );
-							return true;
-						} else {
-							$debug_msg       = '- Error contacting the ifthenpay servers - Order ' . $order->get_id() . ' - Incorrect "Valor"';
-							$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
-							if ( $debug ) {
-								$this->debug_log( $this->mbway_id, $debug_msg, 'error', $debug_email, $debug_msg_email );
-							}
-							return false;
+			$body = json_decode( $response['body'] );
+			if ( ! empty( $body ) ) {
+				if ( trim( $body->Status ) === '000' ) {
+					$id_pedido = trim( $body->RequestId );
+					$valor     = floatval( $body->Amount );
+					if ( $valor === round( floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ), 2 ) ) {
+						WC_IfthenPay_Webdados()->set_order_mbway_details(
+							$order->get_id(),
+							array(
+								'mbwaykey'  => $mbwaykey,
+								'id_pedido' => $id_pedido,
+								'phone'     => $phone,
+								'val'       => $valor,
+							)
+						);
+						if ( $debug ) {
+							$this->debug_log( $this->mbway_id, '- MB WAY payment request created on ifthenpay servers - Order ' . $order->get_id() . ' - id_pedido: ' . $id_pedido );
 						}
+						do_action( 'mbway_ifthen_created_reference', $id_pedido, $order->get_id(), $phone );
+						$debug_elapsed_time = microtime( true ) - $debug_start_time;
+						$this->debug_log_extra( $this->mbway_id, 'wp_remote_post + response handling took: ' . $debug_elapsed_time . ' seconds.' );
+						return true;
 					} else {
-						$debug_msg       = '- Error contacting the ifthenpay servers - Order ' . $order->get_id() . ' - Missing "IdPedido" or "Valor"';
+						$debug_msg       = '- Error contacting the ifthenpay servers - Order ' . $order->get_id() . ' - Incorrect "Valor"';
 						$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
 						if ( $debug ) {
 							$this->debug_log( $this->mbway_id, $debug_msg, 'error', $debug_email, $debug_msg_email );
 						}
+						if ( $throw_exception ) {
+							throw new Exception(
+								sprintf(
+									/* translators: %s: payment method */
+									esc_html__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+									'MB WAY'
+								)
+							);
+						}
 						return false;
 					}
 				} else {
-					$debug_msg       = '- Error contacting the ifthenpay servers - Order ' . $order->get_id() . ' - ' . trim( $xmlData->Estado ) . ' ' . trim( $xmlData->MsgDescricao );
+					$debug_msg       = '- Error: ' . trim( $body->Status ) . ' ' . trim( $body->Message ) . ' - Order ' . $order->get_id();
 					$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
-					if ( $debug ) {
-						$this->debug_log( $this->mbway_id, $debug_msg, 'error', $debug_email, $debug_msg_email );
+					$this->debug_log( $this->mbway_id, $debug_msg, 'error', true, $debug_msg_email );
+					if ( $throw_exception ) {
+						throw new Exception(
+							sprintf(
+								/* translators: %s: payment method */
+								esc_html__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								'MB WAY'
+							)
+						);
 					}
 					return false;
 				}
 			} else {
-				$debug_msg = '- Error contacting the ifthenpay servers - Order ' . $order->get_id() . ' - "simplexml_load_string" function does not exist';
-				if ( $debug ) {
-					$this->debug_log( $this->mbway_id, $debug_msg, 'error', $debug_email );
+				$debug_msg       = '- Response body is not JSON - Order ' . $order->get_id();
+				$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
+				$this->debug_log( $this->mbway_id, $debug_msg, 'error', true, $debug_msg_email );
+				if ( $throw_exception ) {
+					throw new Exception(
+						sprintf(
+							/* translators: %s: payment method */
+							esc_html__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+							'MB WAY'
+						)
+					);
 				}
 				return false;
 			}
 		} else {
 			$debug_msg       = '- Error contacting the ifthenpay servers - Order ' . $order->get_id() . ' - Incorrect response code: ' . $response['response']['code'];
 			$debug_msg_email = $debug_msg . ' - Args: ' . wp_json_encode( $args ) . ' - Response: ' . wp_json_encode( $response );
-			if ( $debug ) {
-				$this->debug_log( $this->mbway_id, $debug_msg, 'error', $debug_email, $debug_msg_email );
+			$this->debug_log( $this->mbway_id, $debug_msg, 'error', true, $debug_msg_email );
+			if ( $throw_exception ) {
+				throw new Exception(
+					sprintf(
+						/* translators: %s: payment method */
+						esc_html__( 'An error occurred processing the %s Payment request - please try again', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'MB WAY'
+					)
+				);
 			}
 			return false;
 		}
@@ -2245,7 +2280,7 @@ final class WC_IfthenPay_Webdados {
 				}
 			}
 		}
-		return $order_total_to_pay;
+		return round( $order_total_to_pay, 2 );
 	}
 
 	/**
@@ -3453,7 +3488,9 @@ final class WC_IfthenPay_Webdados {
 			'method'   => 'POST',
 			'timeout'  => apply_filters( 'refund_ifthen_api_timeout', 30 ),
 			'blocking' => true,
-			'headers'  => array( 'Content-Type' => 'application/json; charset=utf-8' ),
+			'headers'  => array(
+				'Content-Type' => 'application/json; charset=utf-8',
+			),
 			'body'     => array(
 				'backofficekey' => $backoffice_key,
 				'requestId'     => $request_id,
@@ -3661,6 +3698,337 @@ final class WC_IfthenPay_Webdados {
 				'backoffice_key'      => apply_filters( 'ifthen_backoffice_key', '' ),
 			)
 		);
+	}
+
+	/**
+	 * Util - Get internacional calling codes
+	 *
+	 * @return array
+	 */
+	public static function get_all_international_calling_codes() {
+		$area_codes = array(
+			'AC' => '247',
+			'AD' => '376',
+			'AE' => '971',
+			'AF' => '93',
+			'AG' => '1',
+			'AI' => '1',
+			'AL' => '355',
+			'AM' => '374',
+			'AO' => '244',
+			'AQ' => '672',
+			'AR' => '54',
+			'AS' => '1',
+			'AT' => '43',
+			'AU' => '61',
+			'AW' => '297',
+			'AX' => '358',
+			'AZ' => '994',
+			'BA' => '387',
+			'BB' => '1',
+			'BD' => '880',
+			'BE' => '32',
+			'BF' => '226',
+			'BG' => '359',
+			'BH' => '973',
+			'BI' => '257',
+			'BJ' => '229',
+			'BL' => '590',
+			'BM' => '1',
+			'BN' => '673',
+			'BO' => '591',
+			'BQ' => '599',
+			'BR' => '55',
+			'BS' => '1',
+			'BT' => '975',
+			'BW' => '267',
+			'BY' => '375',
+			'BZ' => '501',
+			'CA' => '1',
+			'CC' => '61',
+			'CD' => '243',
+			'CF' => '236',
+			'CG' => '242',
+			'CH' => '41',
+			'CI' => '225',
+			'CK' => '682',
+			'CL' => '56',
+			'CM' => '237',
+			'CN' => '86',
+			'CO' => '57',
+			'CR' => '506',
+			'CU' => '53',
+			'CV' => '238',
+			'CW' => '599',
+			'CX' => '61',
+			'CY' => '357',
+			'CZ' => '420',
+			'DE' => '49',
+			'DJ' => '253',
+			'DK' => '45',
+			'DM' => '1',
+			'DO' => '1',
+			'DZ' => '213',
+			'EC' => '593',
+			'EE' => '372',
+			'EG' => '20',
+			'EH' => '212',
+			'ER' => '291',
+			'ES' => '34',
+			'ET' => '251',
+			'EU' => '388',
+			'FI' => '358',
+			'FJ' => '679',
+			'FK' => '500',
+			'FM' => '691',
+			'FO' => '298',
+			'FR' => '33',
+			'GA' => '241',
+			'GB' => '44',
+			'GD' => '1',
+			'GE' => '995',
+			'GF' => '594',
+			'GG' => '44',
+			'GH' => '233',
+			'GI' => '350',
+			'GL' => '299',
+			'GM' => '220',
+			'GN' => '224',
+			'GP' => '590',
+			'GQ' => '240',
+			'GR' => '30',
+			'GT' => '502',
+			'GU' => '1',
+			'GW' => '245',
+			'GY' => '592',
+			'HK' => '852',
+			'HN' => '504',
+			'HR' => '385',
+			'HT' => '509',
+			'HU' => '36',
+			'ID' => '62',
+			'IE' => '353',
+			'IL' => '972',
+			'IM' => '44',
+			'IN' => '91',
+			'IO' => '246',
+			'IQ' => '964',
+			'IR' => '98',
+			'IS' => '354',
+			'IT' => '39',
+			'JE' => '44',
+			'JM' => '1',
+			'JO' => '962',
+			'JP' => '81',
+			'KE' => '254',
+			'KG' => '996',
+			'KH' => '855',
+			'KI' => '686',
+			'KM' => '269',
+			'KN' => '1',
+			'KP' => '850',
+			'KR' => '82',
+			'KW' => '965',
+			'KY' => '1',
+			'KZ' => '7',
+			'LA' => '856',
+			'LB' => '961',
+			'LC' => '1',
+			'LI' => '423',
+			'LK' => '94',
+			'LR' => '231',
+			'LS' => '266',
+			'LT' => '370',
+			'LU' => '352',
+			'LV' => '371',
+			'LY' => '218',
+			'MA' => '212',
+			'MC' => '377',
+			'MD' => '373',
+			'ME' => '382',
+			'MF' => '590',
+			'MG' => '261',
+			'MH' => '692',
+			'MK' => '389',
+			'ML' => '223',
+			'MM' => '95',
+			'MN' => '976',
+			'MO' => '853',
+			'MP' => '1',
+			'MQ' => '596',
+			'MR' => '222',
+			'MS' => '1',
+			'MT' => '356',
+			'MU' => '230',
+			'MV' => '960',
+			'MW' => '265',
+			'MX' => '52',
+			'MY' => '60',
+			'MZ' => '258',
+			'NA' => '264',
+			'NC' => '687',
+			'NE' => '227',
+			'NF' => '672',
+			'NG' => '234',
+			'NI' => '505',
+			'NL' => '31',
+			'NO' => '47',
+			'NP' => '977',
+			'NR' => '674',
+			'NU' => '683',
+			'NZ' => '64',
+			'OM' => '968',
+			'PA' => '507',
+			'PE' => '51',
+			'PF' => '689',
+			'PG' => '675',
+			'PH' => '63',
+			'PK' => '92',
+			'PL' => '48',
+			'PM' => '508',
+			'PR' => '1',
+			'PS' => '970',
+			'PT' => '351',
+			'PW' => '680',
+			'PY' => '595',
+			'QA' => '974',
+			'QN' => '374',
+			'QS' => '252',
+			'QY' => '90',
+			'RE' => '262',
+			'RO' => '40',
+			'RS' => '381',
+			'RU' => '7',
+			'RW' => '250',
+			'SA' => '966',
+			'SB' => '677',
+			'SC' => '248',
+			'SD' => '249',
+			'SE' => '46',
+			'SG' => '65',
+			'SH' => '290',
+			'SI' => '386',
+			'SJ' => '47',
+			'SK' => '421',
+			'SL' => '232',
+			'SM' => '378',
+			'SN' => '221',
+			'SO' => '252',
+			'SR' => '597',
+			'SS' => '211',
+			'ST' => '239',
+			'SV' => '503',
+			'SX' => '1',
+			'SY' => '963',
+			'SZ' => '268',
+			'TA' => '290',
+			'TC' => '1',
+			'TD' => '235',
+			'TG' => '228',
+			'TH' => '66',
+			'TJ' => '992',
+			'TK' => '690',
+			'TL' => '670',
+			'TM' => '993',
+			'TN' => '216',
+			'TO' => '676',
+			'TR' => '90',
+			'TT' => '1',
+			'TV' => '688',
+			'TW' => '886',
+			'TZ' => '255',
+			'UA' => '380',
+			'UG' => '256',
+			'UK' => '44',
+			'US' => '1',
+			'UY' => '598',
+			'UZ' => '998',
+			'VA' => '39',
+			'VC' => '1',
+			'VE' => '58',
+			'VG' => '1',
+			'VI' => '1',
+			'VN' => '84',
+			'VU' => '678',
+			'WF' => '681',
+			'WS' => '685',
+			'XC' => '991',
+			'XD' => '888',
+			'XG' => '881',
+			'XL' => '883',
+			'XN' => '870',
+			'XP' => '878',
+			'XR' => '979',
+			'XS' => '808',
+			'XT' => '800',
+			'XV' => '882',
+			'YE' => '967',
+			'YT' => '262',
+			'ZA' => '27',
+			'ZM' => '260',
+			'ZW' => '263',
+		);
+		return $area_codes;
+	}
+
+	/**
+	 * Get countries with their phone prefixes for use in MB WAY phone selection
+	 *
+	 * Merges WooCommerce's allowed countries with international calling codes
+	 * and sorts them alphabetically with the store's base country first.
+	 *
+	 * @return array Array of countries with their phone prefixes
+	 */
+	public static function get_countries_with_phone_prefixes() {
+		// Get WooCommerce allowed countries
+		$wc_countries = WC()->countries->get_allowed_countries();
+
+		// Get international calling codes
+		$calling_codes = self::get_all_international_calling_codes();
+
+		// Store base country - will be placed at the top
+		$base_country = WC()->countries->get_base_country();
+
+		$countries_with_prefixes = array();
+
+		// Merge countries and calling codes
+		foreach ( $wc_countries as $country_code => $country_name ) {
+			if ( isset( $calling_codes[ $country_code ] ) ) {
+				$prefix                                   = '+' . $calling_codes[ $country_code ];
+				$countries_with_prefixes[ $country_code ] = array(
+					'name'    => $country_name,
+					'prefix'  => $prefix,
+					'display' => sprintf( '%s (%s)', $country_name, $prefix ),
+					'code'    => $country_code,
+				);
+			}
+		}
+
+		// Sort countries alphabetically
+		uasort(
+			$countries_with_prefixes,
+			function ( $a, $b ) use ( $base_country ) {
+				// Always put base country first
+				if ( $a['code'] === $base_country ) {
+					return -1;
+				}
+				if ( $b['code'] === $base_country ) {
+					return 1;
+				}
+				// Use Collator if available (better Unicode support)
+				if ( class_exists( 'Collator' ) ) {
+					$collator = new Collator( get_locale() );
+					return $collator->compare( $a['name'], $b['name'] );
+				}
+				// Fallback to case-insensitive comparison with UTF-8 support
+				return strcmp(
+					iconv( 'UTF-8', 'ASCII//TRANSLIT', $a['name'] ),
+					iconv( 'UTF-8', 'ASCII//TRANSLIT', $b['name'] )
+				);
+			}
+		);
+
+		return $countries_with_prefixes;
 	}
 
 	/**

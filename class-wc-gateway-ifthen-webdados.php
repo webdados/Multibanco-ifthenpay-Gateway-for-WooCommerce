@@ -377,7 +377,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						'default'     => $this->get_method_description(),
 					),
 					'only_portugal' => array(
-						'title'   => __( 'Only for Portuguese customers?', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+						'title'   => __( 'Only for Portuguese customers', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'type'    => 'checkbox',
 						'label'   => __( 'Enable only for customers whose billing or shipping address is in Portugal', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 						'default' => 'no',

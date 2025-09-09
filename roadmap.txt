@@ -10,6 +10,8 @@ PRO ADD-ON PAGO:
 
 FREE:
 
+- Accept international MB WAY numbers
+
 - Improve accessibility on icons - Check on classic and blocks checkout (blocks seem to be the problem)
 
 - PIX:

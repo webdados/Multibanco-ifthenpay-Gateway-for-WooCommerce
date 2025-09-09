@@ -2316,7 +2316,7 @@ final class WC_IfthenPay_Webdados {
 							( empty( $order_mb_details ) )
 							||
 							(
-								floatval( $order_total_to_pay ) !== floatval( $order_mb_details['val'] )
+								round( floatval( $order_total_to_pay ), 2 ) !== round( floatval( $order_mb_details['val'] ), 2 )
 								&&
 								$order_status !== 'partially-paid' // If it's partially paid the value will be diferent and we need to ignore it
 							)
@@ -2405,7 +2405,7 @@ final class WC_IfthenPay_Webdados {
 								( empty( $order_mb_details ) )
 								||
 								(
-									floatval( $order_total_to_pay ) !== floatval( $order_mb_details['val'] )
+									round( floatval( $order_total_to_pay ), 2 ) !== round( floatval( $order_mb_details['val'] ), 2 )
 									&&
 									$order_status !== 'partially-paid' // If it's partially paid the value will be diferent and we need to ignore it
 								)

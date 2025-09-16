@@ -80,7 +80,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				$this->update_option( 'secret_key', $this->secret_key );
 				$this->update_option( 'debug', 'yes' );
 				// Let's set the callback activation email as NOT sent
-				update_option( $this->id . '_callback_email_sent', 'no' );
+				update_option( $this->id . '_callback_email_sent', 'no', false );
 			}
 
 			// on hold or pending?
@@ -171,7 +171,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 		 * Upgrades (if needed)
 		 */
 		private function upgrade() {
-			if ( $this->get_option( 'version' ) < $this->version ) {
+			if ( version_compare( $this->get_option( 'version' ), $this->version, '<' ) ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
 					$current_options = array();
@@ -179,7 +179,12 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				// Upgrade
 				$this->debug_log( 'Upgrade to ' . $this->version . ' started' );
 				// Specific versions upgrades should be here
-				// ...
+				// Update routines when upgrading to 11.0.1 or above - Fix some autoloaded options
+				if ( version_compare( $this->get_option( 'version' ), '11.0.1', '<' ) ) {
+					$value = get_option( $this->id . '_callback_email_sent' );
+					delete_option( $this->id . '_callback_email_sent' );
+					update_option( $this->id . '_callback_email_sent', $value, false );
+				}
 				// Upgrade on the database - Risky?
 				$current_options['version'] = $this->version;
 				update_option( 'woocommerce_' . $this->id . '_settings', $current_options );
@@ -675,7 +680,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				// Webservice
 				$result = WC_IfthenPay_Webdados()->callback_webservice( $bo_key, 'MBWAY', $this->mbwaykey, $this->secret_key, WC_IfthenPay_Webdados()->mbway_notify_url );
 				if ( $result['success'] ) {
-					update_option( $this->id . '_callback_email_sent', 'yes' );
+					update_option( $this->id . '_callback_email_sent', 'yes', false );
 					WC_Admin_Settings::add_message( __( 'The “Callback” activation request has been submited to ifthenpay via API and is now active.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
 				} else {
 					WC_Admin_Settings::add_error(
@@ -706,7 +711,7 @@ Email enviado automaticamente do plugin WordPress “ifthenpay for WooCommerce�
 					'Cc: ' . $cc,
 				);
 				if ( wp_mail( $to, $subject, $message, $headers ) ) {
-					update_option( $this->id . '_callback_email_sent', 'yes' );
+					update_option( $this->id . '_callback_email_sent', 'yes', false );
 					WC_Admin_Settings::add_message( __( 'The “Callback” activation request has been submited to ifthenpay. Wait for their feedback.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
 				} else {
 					WC_Admin_Settings::add_error( __( 'The “Callback” activation request could not be sent. Check if your WordPress install can send emails.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );

@@ -178,7 +178,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 		 * Upgrades (if needed)
 		 */
 		private function upgrade() {
-			if ( $this->get_option( 'version' ) < $this->version ) {
+			if ( version_compare( $this->get_option( 'version' ), $this->version, '<' ) ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
 					$current_options = array();
@@ -186,7 +186,6 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				// Upgrade
 				$this->debug_log( 'Upgrade to ' . $this->version . ' started' );
 				// Specific versions upgrades should be here
-				// ...
 				// Upgrade on the database - Risky?
 				$current_options['version'] = $this->version;
 				update_option( 'woocommerce_' . $this->id . '_settings', $current_options );

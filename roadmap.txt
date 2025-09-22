@@ -10,9 +10,6 @@ PRO ADD-ON PAGO:
 
 FREE:
 
-- WooCommerce has functions for calling codes, with cache support.
-Change MBWAY implementation to use it. See get_country_calling_code
-
 - Improve accessibility on icons - Check on classic and blocks checkout (blocks seem to be the problem)
 
 - PIX:

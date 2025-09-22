@@ -255,6 +255,10 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 11.1.0 - ? =
+* [DEV] Change some old `wc_get_orders` calls to our internal wrapper
+* [DEV] Use WooCommerce internal method to get international calling codes for MB WAY numbers
+
 = 11.0.0 - 2025-09-11 =
 * [NEW] It’s now possible to use international phone numbers for MB WAY (can be disabled on the payment method options)
 * [DEV] Use ifthenpay’s MB WAY most recent API endpoint

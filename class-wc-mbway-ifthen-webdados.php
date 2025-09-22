@@ -1154,9 +1154,9 @@ Email enviado automaticamente do plugin WordPress â€œifthenpay for WooCommerceâ€
 					if ( empty( $country_code ) ) {
 						$country_code = 'PT';
 					}
-					$countries = WC_IfthenPay_Webdados()->get_all_international_calling_codes();
-					if ( isset( $countries[ $country_code ] ) && ! empty( $countries[ $country_code ] ) ) {
-						$phone = $countries[ $country_code ] . '#' . $phone;
+					$calling_code = WC()->countries->get_country_calling_code( $country_code );
+					if ( ! empty( $calling_code ) ) {
+						$phone = trim( str_replace( '+', '', $calling_code ) . '#' . $phone );
 					}
 				}
 				if ( ! empty( $phone ) ) {

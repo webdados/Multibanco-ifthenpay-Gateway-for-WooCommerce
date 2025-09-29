@@ -60,6 +60,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 
 			$this->has_fields = true;
 
+			// Title, description and icon
 			$this->method_title       = __( 'MB WAY mobile payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' (ifthenpay)';
 			$this->method_description = __( 'Easy and simple payment using “MB WAY” on your mobile phone. (Only available for customers of Portuguese banks with MB WAY app installed - Payment service provided by ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			if ( WC_IfthenPay_Webdados()->wc_subscriptions_active && $this->get_option( 'support_woocommerce_subscriptions' ) === 'yes' ) { // Deprecated on version 6.5
@@ -72,6 +73,9 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 					'subscription_payment_method_change_admin', // Deprecated?
 				); // products is by default
 			}
+			$this->icon = WC_IfthenPay_Webdados()->mbway_icon;
+
+			// Secret key
 			$this->secret_key = $this->get_option( 'secret_key' );
 			if ( trim( $this->secret_key ) === '' ) {
 				// First load?

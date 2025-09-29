@@ -56,6 +56,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 
 			$this->has_fields = false;
 
+			// Title, description and icon
 			$this->method_title       = __( 'Payment of Services at Multibanco', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' (ifthenpay)';
 			$this->method_description = __( 'Easy and simple payment using “Payment of Services” at any “Multibanco” ATM terminal or your homebanking service. (Only available to customers of Portuguese banks - Payment service provided by ifthenpay)', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 			if ( WC_IfthenPay_Webdados()->wc_subscriptions_active && $this->get_option( 'support_woocommerce_subscriptions' ) === 'yes' ) {
@@ -68,6 +69,9 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 					'subscription_payment_method_change_admin', // Deprecated?
 				); // products is by default
 			}
+			$this->icon = WC_IfthenPay_Webdados()->multibanco_icon;
+
+			// Secret key
 			$this->secret_key = $this->get_option( 'secret_key' );
 			if ( trim( $this->secret_key ) === '' ) {
 				// First load?

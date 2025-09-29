@@ -56,8 +56,12 @@ if ( ! class_exists( 'WC_CofidisPay_IfThen_Webdados' ) ) {
 
 			$this->has_fields = false;
 
+			// Title, description and icon
 			$this->method_title       = __( 'Cofidis Pay', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' (ifthenpay)';
 			$this->method_description = __( 'Pay for your order in 3 to 12 interest-free and fee-free installments using your debit or credit card.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+			$this->icon               = WC_IfthenPay_Webdados()->cofidispay_icon;
+
+			// Secret key
 			$this->secret_key         = $this->get_option( 'secret_key' );
 			if ( trim( $this->secret_key ) === '' ) {
 				// First load?

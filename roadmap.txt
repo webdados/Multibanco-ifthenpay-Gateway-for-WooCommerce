@@ -10,6 +10,10 @@ PRO ADD-ON PAGO:
 
 FREE:
 
+- Icons para nova lista de métodos de pagamento em React - Ver como fez a Eupago
+
+- Corrigir título e descrição dos métodos no checkout de blocos: https://wordpress.org/support/topic/traducao-metodos-de-pagamento-nao-atualiza-wpml/#post-18660455
+
 - Improve accessibility on icons - Check on classic and blocks checkout (blocks seem to be the problem)
 
 - PIX:

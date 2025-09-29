@@ -65,8 +65,8 @@ final class PayshopIfthenPay extends AbstractPaymentMethodType {
 		return apply_filters(
 			'payshop_ifthen_blocks_payment_method_data',
 			array(
-				'title'         => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-				'description'   => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+				'title'         => WC_IfthenPay_Webdados()->get_gateway_title_or_description_for_blocks( $this->name, $this->settings, 'title' ),
+				'description'   => WC_IfthenPay_Webdados()->get_gateway_title_or_description_for_blocks( $this->name, $this->settings, 'description' ),
 				'icon'          => WC_IfthenPay_Webdados()->payshop_icon,
 				'only_portugal' => $this->settings['only_portugal'] === 'yes',
 				'only_above'    => floatval( $this->settings['only_above'] ) > 0 ? floatval( $this->settings['only_above'] ) : null,

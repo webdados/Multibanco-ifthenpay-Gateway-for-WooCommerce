@@ -65,8 +65,8 @@ final class CreditCardIfthenPay extends AbstractPaymentMethodType {
 		return apply_filters(
 			'creditcard_ifthen_blocks_payment_method_data',
 			array(
-				'title'         => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-				'description'   => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+				'title'         => WC_IfthenPay_Webdados()->get_gateway_title_or_description_for_blocks( $this->name, $this->settings, 'title' ),
+				'description'   => WC_IfthenPay_Webdados()->get_gateway_title_or_description_for_blocks( $this->name, $this->settings, 'description' ),
 				'icon'          => WC_IfthenPay_Webdados()->creditcard_icon,
 				'icon_width'    => 28,
 				'icon_height'   => 24,

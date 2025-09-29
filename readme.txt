@@ -255,6 +255,11 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= 11.2.0 - 2025-09-29 =
+* [TWEAK] Display payment method icons on the backend
+* [TWEAK] Better UX on the country code and phone number fields on the blocks checkout
+* [FIX] Display correct translated payment gateway title and description on the blocks checkout if WPML is active
+
 = 11.1.0 - 2025-09-22 =
 * [DEV] Change some remaining `wc_get_orders` calls to our internal wrapper
 * [DEV] Use WooCommerce internal method to get international calling codes for MB WAY numbers

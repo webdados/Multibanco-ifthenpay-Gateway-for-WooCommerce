@@ -62,7 +62,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 			$this->icon               = WC_IfthenPay_Webdados()->payshop_icon;
 
 			// Secret key
-			$this->secret_key         = $this->get_option( 'secret_key' );
+			$this->secret_key = $this->get_option( 'secret_key' );
 			if ( trim( $this->secret_key ) === '' ) {
 				// First load?
 				$this->secret_key = md5( home_url() . time() . wp_rand( 0, 999 ) );

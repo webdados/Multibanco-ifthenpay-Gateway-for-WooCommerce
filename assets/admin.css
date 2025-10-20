@@ -88,6 +88,10 @@
 #wc_ifthen_callback_div.focus {
 	background-color: #FFEFBF;
 }
+#wc_ifthen_callback_div .callbackurl {
+	font-family: monospace;
+	word-break: break-all;
+}
 
 .wc_ifthen_pro_ad {
 	background-color: #fbe5b3;

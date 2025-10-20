@@ -564,7 +564,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 								</tr>
 								<tr valign="top">
 									<th scope="row" class="titledesc"><?php esc_html_e( 'Callback URL', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></th>
-									<td class="forminp">
+									<td class="forminp callbackurl">
 										<?php echo esc_url( WC_IfthenPay_Webdados()->payshop_notify_url ); ?>
 									</td>
 								</tr>
@@ -576,8 +576,6 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 								<input type="hidden" id="wc_ifthen_callback_send" name="wc_ifthen_callback_send" value="0"/>
 								<input type="hidden" id="wc_ifthen_callback_bo_key" name="wc_ifthen_callback_bo_key" value=""/>
 								<button id="wc_ifthen_callback_submit_webservice" class="button-primary" type="button"><?php esc_html_e( 'Ask for Callback activation', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?> - <?php esc_html_e( 'Via API (recommended)', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></button>
-								<br/><br/>
-								<button id="wc_ifthen_callback_submit" class="button" type="button"><?php esc_html_e( 'Ask for Callback activation', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?> - <?php esc_html_e( 'Via email (old method)', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></button>
 								<input id="wc_ifthen_callback_cancel" class="button" type="button" value="<?php esc_html_e( 'Cancel', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>"/>
 								<input type="hidden" name="save" value="<?php esc_attr_e( 'Save changes', 'woocommerce' ); ?>"/> <!-- Force action woocommerce_update_options_payment_gateways_ to run, from WooCommerce 3.5.5 --> <?php //phpcs:ignore WordPress.WP.I18n.TextDomainMismatch ?>
 							</p>
@@ -669,33 +667,6 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 						. ' - ' .
 						$result['message']
 					);
-				}
-			} elseif ( $callback_send === 1 ) {
-				// Email
-				$to      = WC_IfthenPay_Webdados()->callback_email;
-				$cc      = get_option( 'admin_email' );
-				$subject = 'Activação de Callback Payshop (Key: ' . $this->payshopkey . ')';
-				$message = 'Por favor activar Callback Payshop com os seguintes dados:
-
-Payshop Key:
-' . $this->payshopkey . '
-
-Chave anti-phishing (Payshop):
-' . $this->secret_key . '
-
-URL:
-' . WC_IfthenPay_Webdados()->payshop_notify_url . '
-
-Email enviado automaticamente do plugin WordPress “ifthenpay for WooCommerce” ' . $to . ' com CC para ' . $cc;
-				$headers = array(
-					'From: ' . get_option( 'admin_email' ) . ' <' . get_option( 'admin_email' ) . '>',
-					'Cc: ' . $cc,
-				);
-				if ( wp_mail( $to, $subject, $message, $headers ) ) {
-					update_option( $this->id . '_callback_email_sent', 'yes', false );
-					WC_Admin_Settings::add_message( __( 'The “Callback” activation request has been submited to ifthenpay. Wait for their feedback.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
-				} else {
-					WC_Admin_Settings::add_error( __( 'The “Callback” activation request could not be sent. Check if your WordPress install can send emails.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) );
 				}
 			}
 		}

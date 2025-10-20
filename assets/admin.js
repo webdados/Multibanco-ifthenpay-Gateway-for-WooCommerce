@@ -180,20 +180,7 @@
 				return false;
 			}
 		);
-		// Callback send
-		$( '#wc_ifthen_callback_submit' ).on(
-			'click',
-			function () {
-				if ( confirm( ifthenpay.callback_confirm ) ) {
-					$( '#wc_ifthen_callback_send' ).val( 1 );
-					$( '#mainform' ).submit()
-					return true;
-				} else {
-					return false;
-				}
-			}
-		);
-		// Callback webservice
+		// Callback activation via API
 		$( '#wc_ifthen_callback_submit_webservice' ).on(
 			'click',
 			function () {

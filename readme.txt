@@ -256,7 +256,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 == Changelog ==
 
 = 11.3.1 - 2026-01-15 =
-* [DEV] Remove unnecessary development folders from repository
+* [DEV] Remove unnecessary development folders from the repository
 
 = 11.3.0 - 2026-01-14 =
 * [DEV] New `mbway_ifthen_checkout_phone_field_max_width_break_fields` filter to override the container maximum width after which the MB WAY classic checkout fields country code and phone number show up in separate lines, instead of side by side. Default: `400px`

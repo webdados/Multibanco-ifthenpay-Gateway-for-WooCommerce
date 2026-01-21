@@ -256,7 +256,7 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 == Changelog ==
 
 = 11.3.2 - 2026-01-21 =
-* [FIX] Add an empty function to the `wc_ifthen_hourly_cron` scheduled action to avoid loop issues on Action Scheduler, introduced on 11.3.0, and clear its failed logs (Thanks Alternativa Digital for reporting)
+* [FIX] Add an empty function to the `wc_ifthen_hourly_cron` scheduled action to avoid loop issues on Action Scheduler, introduced on 11.3.0, and clear its failed logs (Thanks BestSites.pt for reporting)
 * [DEV] Move global upgrade routines from the Multibanco to the main plugin class
 
 = 11.3.1 - 2026-01-15 =

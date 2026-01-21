@@ -175,16 +175,17 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 		 * Upgrades (if needed)
 		 */
 		private function upgrade() {
-			if ( version_compare( $this->get_option( 'version' ), $this->version, '<' ) ) {
+			$db_version = $this->get_option( 'version' );
+			if ( version_compare( $db_version, $this->version, '<' ) ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
 					$current_options = array();
 				}
 				// Upgrade
-				$this->debug_log( 'Upgrade to ' . $this->version . ' started' );
+				$this->debug_log( 'Upgrade from ' . $db_version . ' to ' . $this->version . ' started' );
 				// Specific versions upgrades should be here
 				// Update routines when upgrading to 11.0.1 or above - Fix some autoloaded options
-				if ( version_compare( $this->get_option( 'version' ), '11.0.1', '<' ) ) {
+				if ( version_compare( $db_version, '11.0.1', '<' ) ) {
 					$value = get_option( $this->id . '_callback_email_sent' );
 					delete_option( $this->id . '_callback_email_sent' );
 					update_option( $this->id . '_callback_email_sent', $value, false );
@@ -192,7 +193,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 				// Upgrade on the database - Risky?
 				$current_options['version'] = $this->version;
 				update_option( 'woocommerce_' . $this->id . '_settings', $current_options );
-				$this->debug_log( 'Upgrade to ' . $this->version . ' finished' );
+				$this->debug_log( 'Upgrade from ' . $db_version . ' to ' . $this->version . ' finished' );
 			}
 		}
 

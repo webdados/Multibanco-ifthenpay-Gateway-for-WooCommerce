@@ -16,6 +16,7 @@ final class WC_IfthenPay_Webdados {
 	public $version = false;
 
 	/* IDs */
+	public $id                = 'ifthen_for_woocommerce'; // Plugin ID
 	public $multibanco_id     = 'multibanco_ifthen_for_woocommerce';
 	public $mbway_id          = 'mbway_ifthen_for_woocommerce';
 	public $payshop_id        = 'payshop_ifthen_for_woocommerce';
@@ -133,6 +134,7 @@ final class WC_IfthenPay_Webdados {
 	 * @param string $version The plugin version.
 	 */
 	public function __construct( $version ) {
+		// Check version
 		$this->version           = $version;
 		$this->pro_add_on_active = function_exists( 'WC_IfthenPay_Pro' );
 		$this->wpml_active       = function_exists( 'icl_object_id' ) && function_exists( 'icl_register_string' );
@@ -236,6 +238,8 @@ final class WC_IfthenPay_Webdados {
 			:
 			home_url( '/wc-api/WC_GatewayReturn_IfThen_Webdados/' )
 		);
+		// Upgrade
+		$this->upgrade();
 		// Hooks
 		$this->init_hooks();
 	}
@@ -251,6 +255,56 @@ final class WC_IfthenPay_Webdados {
 			self::$_instance = new self( $version );
 		}
 		return self::$_instance;
+	}
+
+	/**
+	 * Upgrades (if needed)
+	 */
+	private function upgrade() {
+		$db_version = get_option( $this->id . '_version', '' );
+		if ( version_compare( $db_version, $this->version, '<' ) ) {
+			$this->debug_log( $this->id, 'Upgrade from ' . $db_version . ' to ' . $this->version . ' started' );
+			// Update routines when upgrading to 11.3 or above - Remove old cron
+			if ( version_compare( $db_version, '11.3', '<' ) ) {
+				wp_clear_scheduled_hook( 'wc_ifthen_hourly_cron' );
+			}
+			// Update routines when upgrading to 11.3.2 or above - Clear Action Scheduler errors
+			if ( version_compare( $db_version, '11.3.2', '<' ) ) {
+				global $wpdb;
+				// Get action IDs for wc_ifthen_hourly_cron with failed status
+				$failed_action_ids = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT action_id FROM {$wpdb->prefix}actionscheduler_actions 
+						WHERE hook = %s AND status = 'failed'",
+						'wc_ifthen_hourly_cron'
+					)
+				);
+				if ( ! empty( $failed_action_ids ) ) {
+					// Delete the failed actions
+					$wpdb->query(
+						$wpdb->prepare(
+							"DELETE FROM {$wpdb->prefix}actionscheduler_actions 
+							WHERE hook = %s AND status = 'failed'",
+							'wc_ifthen_hourly_cron'
+						)
+					);
+					// Delete associated logs
+					$ids_placeholder = implode( ',', array_fill( 0, count( $failed_action_ids ), '%d' ) );
+					$wpdb->query(
+						$wpdb->prepare(
+							"DELETE FROM {$wpdb->prefix}actionscheduler_logs 
+							WHERE action_id IN ($ids_placeholder)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+							$failed_action_ids
+						)
+					);
+					$this->debug_log( $this->id, 'Cleared ' . count( $failed_action_ids ) . ' failed Action Scheduler entries for wc_ifthen_hourly_cron' );
+				} else {
+					$this->debug_log( $this->id, 'No failed Action Scheduler entries found for wc_ifthen_hourly_cron' );
+				}
+			}
+			update_option( $this->id . '_version', $this->version );
+			$this->debug_log( $this->id, 'Upgrade from ' . $db_version . ' to ' . $this->version . ' finished' );
+		}
 	}
 
 	/**
@@ -482,7 +536,7 @@ final class WC_IfthenPay_Webdados {
 	/**
 	 * Debug / Log
 	 *
-	 * @param string $gateway_id    The payment gateway ID.
+	 * @param string $gateway_id    The payment gateway ID or the main plugin ID.
 	 * @param string $message       The message to debug.
 	 * @param string $level         The debug level.
 	 * @param bool   $debug_email   Email address, if to send to email.

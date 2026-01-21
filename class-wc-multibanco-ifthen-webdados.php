@@ -171,60 +171,25 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 		 * Upgrades (if needed)
 		 */
 		private function upgrade() {
-			if ( version_compare( $this->get_option( 'version' ), $this->version, '<' ) ) {
+			$db_version = $this->get_option( 'version' );
+			if ( version_compare( $db_version, $this->version, '<' ) ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
 					$current_options = array();
 				}
 				// Upgrade
-				$this->debug_log( 'Upgrade to ' . $this->version . ' started' );
+				$this->debug_log( 'Upgrade from ' . $db_version . ' to ' . $this->version . ' started' );
 				// Specific versions upgrades should be here
 				// Update routines when upgrading to 11.0.1 or above - Fix some autoloaded options
-				if ( version_compare( $this->get_option( 'version' ), '11.0.1', '<' ) ) {
+				if ( version_compare( $db_version, '11.0.1', '<' ) ) {
 					$value = get_option( $this->id . '_callback_email_sent' );
 					delete_option( $this->id . '_callback_email_sent' );
 					update_option( $this->id . '_callback_email_sent', $value, false );
 				}
-				// Update routines when upgrading to 11.3 or above - Remove old cron - This is global to the but we do it here
-				if ( version_compare( $this->get_option( 'version' ), '11.3', '<' ) ) {
-					wp_clear_scheduled_hook( 'wc_ifthen_hourly_cron' );
-				}
-				// Update routines when upgrading to 11.3.2 or above - Clear Action Scheduler errors - This is global to the but we do it here
-				if ( version_compare( $this->get_option( 'version' ), '11.3.2', '<' ) ) {
-					global $wpdb;
-					// Get action IDs for wc_ifthen_hourly_cron with failed status
-					$failed_action_ids = $wpdb->get_col(
-						$wpdb->prepare(
-							"SELECT action_id FROM {$wpdb->prefix}actionscheduler_actions 
-							WHERE hook = %s AND status = 'failed'",
-							'wc_ifthen_hourly_cron'
-						)
-					);
-					if ( ! empty( $failed_action_ids ) ) {
-						// Delete the failed actions
-						$wpdb->query(
-							$wpdb->prepare(
-								"DELETE FROM {$wpdb->prefix}actionscheduler_actions 
-								WHERE hook = %s AND status = 'failed'",
-								'wc_ifthen_hourly_cron'
-							)
-						);
-						// Delete associated logs
-						$ids_placeholder = implode( ',', array_fill( 0, count( $failed_action_ids ), '%d' ) );
-						$wpdb->query(
-							$wpdb->prepare(
-								"DELETE FROM {$wpdb->prefix}actionscheduler_logs 
-								WHERE action_id IN ($ids_placeholder)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-								$failed_action_ids
-							)
-						);
-						$this->debug_log( 'Cleared ' . count( $failed_action_ids ) . ' failed Action Scheduler entries for wc_ifthen_hourly_cron' );
-					}
-				}
 				// Upgrade on the database - Risky?
 				$current_options['version'] = $this->version;
 				update_option( 'woocommerce_' . $this->id . '_settings', $current_options );
-				$this->debug_log( 'Upgrade to ' . $this->version . ' finished' );
+				$this->debug_log( 'Upgrade from ' . $db_version . ' to ' . $this->version . ' finished' );
 			}
 		}
 

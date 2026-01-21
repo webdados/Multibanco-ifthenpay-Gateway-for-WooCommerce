@@ -180,18 +180,19 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 		 * Upgrades (if needed)
 		 */
 		private function upgrade() {
-			if ( version_compare( $this->get_option( 'version' ), $this->version, '<' ) ) {
+			$db_version = $this->get_option( 'version' );
+			if ( version_compare( $db_version, $this->version, '<' ) ) {
 				$current_options = get_option( 'woocommerce_' . $this->id . '_settings', '' );
 				if ( ! is_array( $current_options ) ) {
 					$current_options = array();
 				}
 				// Upgrade
-				$this->debug_log( 'Upgrade to ' . $this->version . ' started' );
+				$this->debug_log( 'Upgrade from ' . $db_version . ' to ' . $this->version . ' started' );
 				// Specific versions upgrades should be here
 				// Upgrade on the database - Risky?
 				$current_options['version'] = $this->version;
 				update_option( 'woocommerce_' . $this->id . '_settings', $current_options );
-				$this->debug_log( 'Upgrade to ' . $this->version . ' finished' );
+				$this->debug_log( 'Upgrade from ' . $db_version . ' to ' . $this->version . ' finished' );
 			}
 		}
 

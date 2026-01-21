@@ -270,6 +270,7 @@ final class WC_IfthenPay_Webdados {
 			}
 			// Update routines when upgrading to 11.3.2 or above - Clear Action Scheduler errors
 			if ( version_compare( $db_version, '11.3.2', '<' ) ) {
+				// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				global $wpdb;
 				// Get action IDs for wc_ifthen_hourly_cron with failed status
 				$failed_action_ids = $wpdb->get_col(
@@ -293,7 +294,7 @@ final class WC_IfthenPay_Webdados {
 					$wpdb->query(
 						$wpdb->prepare(
 							"DELETE FROM {$wpdb->prefix}actionscheduler_logs 
-							WHERE action_id IN ($ids_placeholder)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+							WHERE action_id IN ($ids_placeholder)", // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 							$failed_action_ids
 						)
 					);
@@ -301,6 +302,7 @@ final class WC_IfthenPay_Webdados {
 				} else {
 					$this->debug_log( $this->id, 'No failed Action Scheduler entries found for wc_ifthen_hourly_cron' );
 				}
+				// phpcs:enable
 			}
 			update_option( $this->id . '_version', $this->version );
 			$this->debug_log( $this->id, 'Upgrade from ' . $db_version . ' to ' . $this->version . ' finished' );
@@ -4087,7 +4089,7 @@ final class WC_IfthenPay_Webdados {
 	 *
 	 * Used to keep the Action Scheduler running and not looping
 	 */
-	function action_scheduler_do_nothing() {
+	public function action_scheduler_do_nothing() {
 		// Do nothing - Make sure the task does not fail for lack of a hook
 	}
 }

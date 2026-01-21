@@ -306,6 +306,7 @@ final class WC_IfthenPay_Webdados {
 				}
 			}
 		);
+		add_action( 'wc_ifthen_hourly_cron', array( $this, 'action_scheduler_do_nothing' ) );
 		// Cancel orders with expired references - Multibanco (after_setup_theme so it runs after theme's functions.php file)
 		add_action(
 			'after_setup_theme',
@@ -4025,5 +4026,14 @@ final class WC_IfthenPay_Webdados {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Action scheduler task that does nothing
+	 *
+	 * Used to keep the Action Scheduler running and not looping
+	 */
+	function action_scheduler_do_nothing() {
+		// Do nothing - Make sure the task does not fail for lack of a hook
 	}
 }

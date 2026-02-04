@@ -1150,7 +1150,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 			<p style="text-align: center; margin: auto; margin-top: 1em; margin-bottom: 1em; padding-top: 1em; padding-bottom: 1em;" id="ifthenpay_payment_received">
 				<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->multibanco_banner_email ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin: auto; margin-top: 10px; max-height: 48px;"/>
 				<br/>
-				<strong><?php esc_html_e( 'Multibanco payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
+				<strong><?php esc_html_e( 'ifthenpay Multibanco payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
 			</p>
 			<?php
 			return apply_filters( 'multibanco_ifthen_email_instructions_payment_received', ob_get_clean(), $order_id );
@@ -1455,7 +1455,7 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 					if ( $orders_exist ) {
 						if ( $orders_count === 1 ) {
 							if ( floatval( $val ) === floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
-								$note = __( 'Multibanco payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+								$note = __( 'ifthenpay Multibanco payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 								if ( isset( $_GET['datahorapag'] ) && trim( sanitize_text_field( wp_unslash( $_GET['datahorapag'] ) ) ) !== '' ) {
 									$note .= ' ' . trim( sanitize_text_field( wp_unslash( $_GET['datahorapag'] ) ) );
 								}
@@ -1507,8 +1507,26 @@ if ( ! class_exists( 'WC_Multibanco_IfThen_Webdados' ) ) {
 							do_action( 'multibanco_ifthen_callback_payment_failed', 0, $err, $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 						}
 					} else {
-						header( 'HTTP/1.1 200 OK' );
 						$err = 'Error: No orders found awaiting payment with these details';
+						// We should repeat the search without the status to see if the order is already paid or cancelled and warn the store owner + add order note
+						unset( $args['status'] );
+						$orders = WC_IfthenPay_Webdados()->wc_get_orders( $args, $this->id );
+						if ( count( $orders ) > 0 ) {
+							// Order(s) found but not pending
+							$this->debug_log_extra( '-- Callback search without pending statuses found ' . count( $orders ) . ' order(s)' );
+							foreach ( $orders as $order ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedForeach
+								// Just getting the last one
+							}
+							$err = sprintf(
+								/* translators: 1: Payment method name. 2: Order status. */
+								__( 'ifthenpay %1$s callback received but the order is not pending payment. Order status: %2$s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								'Multibanco',
+								wc_get_order_status_name( $order->get_status() )
+							);
+							$order->add_order_note( $err );
+						}
+						// Output
+						header( 'HTTP/1.1 200 OK' );
 						$this->debug_log( '-- ' . $err, 'warning', true, 'Callback (' . WC_IfthenPay_Webdados()->get_http_host() . ' ' . WC_IfthenPay_Webdados()->get_request_uri() . ') from ' . WC_IfthenPay_Webdados()->get_remote_addr() );
 						echo esc_html( $err );
 						do_action( 'multibanco_ifthen_callback_payment_failed', 0, $err, $_GET ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended

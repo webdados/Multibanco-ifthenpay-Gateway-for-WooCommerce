@@ -755,7 +755,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 			<p style="text-align: center; margin: auto; margin-top: 1em; margin-bottom: 1em; padding-top: 1em; padding-bottom: 1em;" id="ifthenpay_payment_received">
 				<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->creditcard_banner_email ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin: auto; margin-top: 10px; max-height: 48px;"/>
 				<br/>
-				<strong><?php esc_html_e( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
+				<strong><?php esc_html_e( 'ifthenpay Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
 			</p>
 			<?php
 			return apply_filters( 'creditcard_ifthen_email_instructions_payment_received', ob_get_clean(), $order_id );
@@ -982,7 +982,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 							$hash          = hash_hmac( 'sha256', $id . $val . $request_id, $order_details['creditcardkey'] );
 							if ( $sk === $hash ) {
 								$this->debug_log_extra( 'Order found: ' . $order->get_id() . ' - Hash ok' );
-								$note = __( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+								$note = __( 'ifthenpay Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 								// WooCommerce Deposits second payment?
 								if ( WC_IfthenPay_Webdados()->wc_deposits_active ) {
 									if ( $order->get_meta( '_wc_deposits_order_has_deposit' ) === 'yes' ) { // Has deposit
@@ -1149,7 +1149,7 @@ if ( ! class_exists( 'WC_CreditCard_IfThen_Webdados' ) ) {
 						$get_order = $this->callback_helper_get_pending_order( $request_id, $id, $val );
 						if ( $get_order['success'] && $get_order['order'] ) {
 							$order = $get_order['order'];
-							$note  = __( 'Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+							$note  = __( 'ifthenpay Credit or debit card payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 							if ( isset( $_GET['payment_datetime'] ) ) {
 								$note .= ' ' . trim( sanitize_text_field( wp_unslash( $_GET['payment_datetime'] ) ) );
 							}

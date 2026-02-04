@@ -982,7 +982,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 			<p style="text-align: center; margin: auto; margin-top: 1em; margin-bottom: 1em; padding-top: 1em; padding-bottom: 1em;" id="ifthenpay_payment_received">
 				<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->payshop_banner_email ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin: auto; margin-top: 10px; max-height: 48px;"/>
 				<br/>
-				<strong><?php esc_html_e( 'Payshop payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
+				<strong><?php esc_html_e( 'ifthenpay Payshop payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
 			</p>
 			<?php
 			return apply_filters( 'payshop_ifthen_email_instructions_payment_received', ob_get_clean(), $order_id );
@@ -1288,7 +1288,7 @@ if ( ! class_exists( 'WC_Payshop_IfThen_Webdados' ) ) {
 						if ( $orders_exist ) {
 							if ( $orders_count === 1 ) {
 								if ( floatval( $val ) === floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
-									$note = __( 'Payshop payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+									$note = __( 'ifthenpay Payshop payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 									if ( ! empty( $datahorapag ) ) {
 										$note .= ' ' . $datahorapag;
 									}

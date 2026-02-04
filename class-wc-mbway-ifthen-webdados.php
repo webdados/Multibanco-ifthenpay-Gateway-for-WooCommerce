@@ -1087,7 +1087,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 			<p style="text-align: center; margin: auto; margin-top: 1em; margin-bottom: 1em; padding-top: 1em; padding-bottom: 1em;" id="ifthenpay_payment_received">
 				<img src="<?php echo esc_url( WC_IfthenPay_Webdados()->mbway_banner_email ); ?>" alt="<?php echo esc_attr( $alt ); ?>" title="<?php echo esc_attr( $alt ); ?>" style="margin: auto; margin-top: 10px; max-height: 48px;"/>
 				<br/>
-				<strong><?php esc_html_e( 'MB WAY payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
+				<strong><?php esc_html_e( 'ifthenpay MB WAY payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?></strong>
 			</p>
 			<?php
 			return apply_filters( 'mbway_ifthen_email_instructions_payment_received', ob_get_clean(), $order_id );
@@ -1504,7 +1504,7 @@ if ( ! class_exists( 'WC_MBWAY_IfThen_Webdados' ) ) {
 									(string) $order->get_order_number() === (string) $referencia // because ifthen_webservice_send_order_number_instead_id
 								) {
 									if ( floatval( $val ) === floatval( WC_IfthenPay_Webdados()->get_order_total_to_pay( $order ) ) ) {
-										$note = __( 'MB WAY payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+										$note = __( 'ifthenpay MB WAY payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 										if ( ! empty( $datahorapag ) ) {
 											$note .= ' ' . $datahorapag;
 										}

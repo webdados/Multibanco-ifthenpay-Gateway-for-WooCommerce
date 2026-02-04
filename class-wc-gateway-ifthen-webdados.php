@@ -979,7 +979,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 						echo esc_html(
 							sprintf(
 								/* translators: %s: payment method used on the ifthenpay Gateway */
-								__( '%s payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+								__( 'ifthenpay %s payment received.', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 								WC_IfthenPay_Webdados()->helper_format_method( $order_details['payment_method'] )
 							)
 						);

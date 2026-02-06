@@ -548,7 +548,12 @@ final class WC_IfthenPay_Webdados {
 		if ( ! $this->log ) {
 			$this->log = wc_get_logger(); // Init log
 		}
-		$this->log->$level( $message, array( 'source' => $gateway_id ) );
+		$log_message = $message;
+		if ( ! empty( $email_message ) ) {
+			$log_message .= ' - Details:
+' . trim( $email_message );
+		}
+		$this->log->$level( $log_message, array( 'source' => $gateway_id ) );
 		if ( ! empty( $debug_email ) ) {
 			if ( empty( $email_message ) ) {
 				$email_message = $message;

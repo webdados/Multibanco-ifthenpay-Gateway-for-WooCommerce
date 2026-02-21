@@ -28,22 +28,24 @@ final class WC_IfthenPay_Webdados {
 	public $log = null;
 
 	/* Internal variables */
-	public $pro_add_on_active       = false;
-	public $wpml_active             = false;
-	public $wpml_translation_info   = '';
-	public $wc_deposits_active      = false;
-	public $wc_subscriptions_active = false;
-	public $wc_blocks_active        = false;
-	public $mb_ifthen_locale        = null;
-	public $out_link_utm            = '';
-	public $is_pay_form             = false;
-	public $callback_email          = 'callback@ifthenpay.com';
-	public $callback_webservice     = 'https://www.ifthenpay.com/api/endpoint/callback/activation';
-	public $unpaid_statuses         = array( 'on-hold', 'pending', 'partially-paid', 'failed' );
-	public $hpos_enabled            = false;
-	public $refunds_url             = 'https://ifthenpay.com/api/endpoint/payments/refund';
-	private $gateways_loaded        = false;
-	private $locale                 = '';
+	public $pro_add_on_active         = false;
+	public $wpml_active               = false;
+	public $wpml_translation_info     = '';
+	public $polylang_active           = false;
+	public $polylang_current_language = false;
+	public $wc_deposits_active        = false;
+	public $wc_subscriptions_active   = false;
+	public $wc_blocks_active          = false;
+	public $mb_ifthen_locale          = null;
+	public $out_link_utm              = '';
+	public $is_pay_form               = false;
+	public $callback_email            = 'callback@ifthenpay.com';
+	public $callback_webservice       = 'https://www.ifthenpay.com/api/endpoint/callback/activation';
+	public $unpaid_statuses           = array( 'on-hold', 'pending', 'partially-paid', 'failed' );
+	public $hpos_enabled              = false;
+	public $refunds_url               = 'https://ifthenpay.com/api/endpoint/payments/refund';
+	private $gateways_loaded          = false;
+	private $locale                   = '';
 
 	/* Internal variables - For Multibanco */
 	public $multibanco_settings                    = null;
@@ -152,6 +154,14 @@ final class WC_IfthenPay_Webdados {
 				}
 			);
 		}
+		// Polylang?
+		$this->polylang_active = function_exists( 'PLL' );
+		if ( $this->polylang_active ) {
+			$this->polylang_current_language = $this->polylang_active ? pll_current_language() : '';
+			if ( empty( $this->polylang_current_language ) && function_exists( 'pll_default_language' ) ) {
+				$this->polylang_current_language = pll_default_language();
+			}
+		}
 		$this->wc_deposits_active      = function_exists( 'wc_deposits_woocommerce_is_active' ) || function_exists( '\Webtomizer\WCDP\wc_deposits_woocommerce_is_active' );
 		$this->wc_subscriptions_active = function_exists( 'wcs_get_subscription' );
 		$this->wc_blocks_active        = class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' );
@@ -164,9 +174,9 @@ final class WC_IfthenPay_Webdados {
 		$this->multibanco_notify_url       = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]&ifthenpayfee=[FEE]' )
+			$this->home_url( '/?wc-api=WC_Multibanco_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]&ifthenpayfee=[FEE]' )
+			$this->home_url( '/wc-api/WC_Multibanco_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&entidade=[ENTIDADE]&referencia=[REFERENCIA]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&terminal=[TERMINAL]&ifthenpayfee=[FEE]' )
 		);
 		$this->multibanco_api_mode_enabled = isset( $this->multibanco_settings['api_mode'] ) && $this->multibanco_settings['api_mode'] === 'yes';
 		if ( $this->multibanco_api_mode_enabled && $this->multibanco_settings['mbkey'] === 'YAK-504589' ) {
@@ -177,66 +187,66 @@ final class WC_IfthenPay_Webdados {
 		$this->mbway_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_MBWAY_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]&ifthenpayfee=[FEE]' )
+			$this->home_url( '/?wc-api=WC_MBWAY_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_MBWAY_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]&ifthenpayfee=[FEE]' )
+			$this->home_url( '/wc-api/WC_MBWAY_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&referencia=[REFERENCIA]&idpedido=[ID_TRANSACAO]&valor=[VALOR]&datahorapag=[DATA_HORA_PAGAMENTO]&estado=[ESTADO]&ifthenpayfee=[FEE]' )
 		);
 		// Payshop
 		$this->payshop_settings   = get_option( 'woocommerce_payshop_ifthen_for_woocommerce_settings', '' );
 		$this->payshop_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Payshop_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]&ifthenpayfee=[FEE]' )
+			$this->home_url( '/?wc-api=WC_Payshop_IfThen_Webdados&chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_Payshop_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]&ifthenpayfee=[FEE]' )
+			$this->home_url( '/wc-api/WC_Payshop_IfThen_Webdados/?chave=[CHAVE_ANTI_PHISHING]&id_cliente=[ID_CLIENTE]&id_transacao=[ID_TRANSACAO]&referencia=[REFERENCIA]&valor=[VALOR]&estado=[ESTADO]&datahorapag=[DATA_HORA_PAGAMENTO]&ifthenpayfee=[FEE]' )
 		);
 		// Credit card
 		$this->creditcard_settings   = get_option( 'woocommerce_creditcard_ifthen_for_woocommerce_settings', '' );
 		$this->creditcard_notify_url = ( // Fallback callback - Just in case
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_CreditCard_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&request_id=[REQUEST_ID]' )
+			$this->home_url( '/?wc-api=WC_CreditCard_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&request_id=[REQUEST_ID]' )
 			:
-			home_url( '/wc-api/WC_CreditCard_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&request_id=[REQUEST_ID]' )
+			$this->home_url( '/wc-api/WC_CreditCard_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&request_id=[REQUEST_ID]' )
 		);
 		$this->creditcard_return_url = ( // Classic return URL - Should take care of everything
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_CreditCardReturn_IfThen_Webdados' )
+			$this->home_url( '/?wc-api=WC_CreditCardReturn_IfThen_Webdados' )
 			:
-			home_url( '/wc-api/WC_CreditCardReturn_IfThen_Webdados/' )
+			$this->home_url( '/wc-api/WC_CreditCardReturn_IfThen_Webdados/' )
 		);
 		// Cofidis Pay
 		$this->cofidispay_settings   = get_option( 'woocommerce_cofidispay_ifthen_for_woocommerce_settings', '' );
 		$this->cofidispay_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_CofidisPay_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&orderId=[ORDER_ID]&amount=[AMOUNT]&requestId=[REQUEST_ID]' )
+			$this->home_url( '/?wc-api=WC_CofidisPay_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&orderId=[ORDER_ID]&amount=[AMOUNT]&requestId=[REQUEST_ID]' )
 			:
-			home_url( '/wc-api/WC_CofidisPay_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&orderId=[ORDER_ID]&amount=[AMOUNT]&requestId=[REQUEST_ID]' )
+			$this->home_url( '/wc-api/WC_CofidisPay_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&orderId=[ORDER_ID]&amount=[AMOUNT]&requestId=[REQUEST_ID]' )
 		);
 		$this->cofidispay_return_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_CofidisPayReturn_IfThen_Webdados' )
+			$this->home_url( '/?wc-api=WC_CofidisPayReturn_IfThen_Webdados' )
 			:
-			home_url( '/wc-api/WC_CofidisPayReturn_IfThen_Webdados/' )
+			$this->home_url( '/wc-api/WC_CofidisPayReturn_IfThen_Webdados/' )
 		);
 		// Gateway
 		$this->gateway_ifthen_settings   = get_option( 'woocommerce_gateway_ifthen_ifthen_for_woocommerce_settings', '' );
 		$this->gateway_ifthen_notify_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_Gateway_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&request_id=[REQUEST_ID]&ifthenpayfee=[FEE]' )
+			$this->home_url( '/?wc-api=WC_Gateway_IfThen_Webdados&key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&request_id=[REQUEST_ID]&ifthenpayfee=[FEE]' )
 			:
-			home_url( '/wc-api/WC_Gateway_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&request_id=[REQUEST_ID]&ifthenpayfee=[FEE]' )
+			$this->home_url( '/wc-api/WC_Gateway_IfThen_Webdados/?key=[ANTI_PHISHING_KEY]&id=[ID]&amount=[AMOUNT]&payment_datetime=[PAYMENT_DATETIME]&status=[STATUS]&payment_method=[PAYMENT_METHOD]&payment_method_key=[PAYMENT_METHOD_KEY]&request_id=[REQUEST_ID]&ifthenpayfee=[FEE]' )
 		);
 		$this->gateway_ifthen_return_url = (
 			get_option( 'permalink_structure' ) === ''
 			?
-			home_url( '/?wc-api=WC_GatewayReturn_IfThen_Webdados' )
+			$this->home_url( '/?wc-api=WC_GatewayReturn_IfThen_Webdados' )
 			:
-			home_url( '/wc-api/WC_GatewayReturn_IfThen_Webdados/' )
+			$this->home_url( '/wc-api/WC_GatewayReturn_IfThen_Webdados/' )
 		);
 		// Upgrade
 		$this->upgrade();
@@ -400,6 +410,35 @@ final class WC_IfthenPay_Webdados {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Get the site home URL, with optional Polylang language-aware handling.
+	 *
+	 * Uses `pll_home_url()` when Polylang is active and the fix filter allows it,
+	 * otherwise falls back to WordPress `home_url()`.
+	 *
+	 * @param string $path Optional path to append to the home URL.
+	 * @return string Home URL with the optional path appended.
+	 */
+	private function home_url( $path = '' ) {
+		// Polylang home URL - Maybe not compatible with Multisite, but we can only do so much
+		if (
+			$this->polylang_active
+			&&
+			( ! empty( $this->polylang_current_language ) )
+			&&
+			apply_filters( 'ifthen_fix_polylang_home_url', true )
+		) {
+			$url = pll_home_url( $this->polylang_current_language );
+			if ( $path && is_string( $path ) ) {
+				// Avoid double slashes by trimming / on both sides and adding a single one in between
+				$url = rtrim( $url, '/' ) . '/' . ltrim( $path, '/' );
+			}
+			return $url;
+		}
+		// Default
+		return home_url( $path );
 	}
 
 	/**
@@ -1070,44 +1109,44 @@ final class WC_IfthenPay_Webdados {
 							echo '<p><strong>' . esc_html__( 'Awaiting MB WAY payment.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . '</strong></p>';
 							if ( date_i18n( 'Y-m-d H:i:s', strtotime( '-' . intval( $this->mbway_minutes * $this->mbway_multiplier_new_payment * 60 ) . ' SECONDS', current_time( 'timestamp' ) ) ) > $order_mbway_details['time'] ) { // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 								?>
-									<p style="text-align: center;">
-										<input type="button" class="button" id="mbway_ifthen_request_payment_again" value="<?php echo esc_attr( __( 'Request MB WAY payment again', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); ?>"/>
-									</p>
-									<script type="text/javascript">
-									jQuery( document ).ready( function() {
-										jQuery( '#mbway_ifthen_request_payment_again' ).on( 'click', function() {
-											if ( confirm( '<?php echo esc_html__( 'Are you sure you want to request the payment again? Don’t do it unless your client asks you to.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
-												var phone = '<?php echo esc_attr( $order->get_meta( '_' . $this->mbway_id . '_phone' ) ); ?>';
-												phone = prompt( '<?php echo esc_html__( 'MB WAY phone number', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>', phone );
-												if ( phone.length === 9 ) {
-													jQuery( '#mbway_ifthen_request_payment_again' ).val( '<?php esc_html_e( 'Wait...', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-													var data = {
-														'action'  : 'mbway_ifthen_request_payment_again',
-														'order_id': <?php echo intval( $order->get_id() ); ?>,
-														'nonce'   : '<?php echo esc_attr( wp_create_nonce( 'mbway_ifthen_request_payment_again' ) ); ?>',
-														'phone'   : phone
-													};
-													jQuery.post( ajaxurl, data, function( response ) {
-														if ( response.status === 1 ) {
-															jQuery( '#mbway_ifthen_request_payment_again' ).val( '<?php esc_html_e( 'Done!', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-															alert( response.message );
-															window.location.reload();
-														} else {
-															jQuery( '#mbway_ifthen_request_payment_again' ).val( '<?php esc_html_e( 'Request MB WAY payment again', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-															alert( response.error );
-														}
-													}, 'json' ).fail( function() {
+								<p style="text-align: center;">
+									<input type="button" class="button" id="mbway_ifthen_request_payment_again" value="<?php echo esc_attr( __( 'Request MB WAY payment again', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); ?>"/>
+								</p>
+								<script type="text/javascript">
+								jQuery( document ).ready( function() {
+									jQuery( '#mbway_ifthen_request_payment_again' ).on( 'click', function() {
+										if ( confirm( '<?php echo esc_html__( 'Are you sure you want to request the payment again? Don’t do it unless your client asks you to.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
+											var phone = '<?php echo esc_attr( $order->get_meta( '_' . $this->mbway_id . '_phone' ) ); ?>';
+											phone = prompt( '<?php echo esc_html__( 'MB WAY phone number', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>', phone );
+											if ( phone.length === 9 ) {
+												jQuery( '#mbway_ifthen_request_payment_again' ).val( '<?php esc_html_e( 'Wait...', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+												var data = {
+													'action'  : 'mbway_ifthen_request_payment_again',
+													'order_id': <?php echo intval( $order->get_id() ); ?>,
+													'nonce'   : '<?php echo esc_attr( wp_create_nonce( 'mbway_ifthen_request_payment_again' ) ); ?>',
+													'phone'   : phone
+												};
+												jQuery.post( ajaxurl, data, function( response ) {
+													if ( response.status === 1 ) {
+														jQuery( '#mbway_ifthen_request_payment_again' ).val( '<?php esc_html_e( 'Done!', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+														alert( response.message );
+														window.location.reload();
+													} else {
 														jQuery( '#mbway_ifthen_request_payment_again' ).val( '<?php esc_html_e( 'Request MB WAY payment again', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-														alert( '<?php esc_html_e( 'Unknown error.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-													} );
-												} else {
-													alert( '<?php esc_html_e( 'Invalid phone number', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-												}
+														alert( response.error );
+													}
+												}, 'json' ).fail( function() {
+													jQuery( '#mbway_ifthen_request_payment_again' ).val( '<?php esc_html_e( 'Request MB WAY payment again', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+													alert( '<?php esc_html_e( 'Unknown error.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+												} );
+											} else {
+												alert( '<?php esc_html_e( 'Invalid phone number', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
 											}
-										});
+										}
 									});
-									</script>
-									<?php
+								});
+								</script>
+								<?php
 							}
 						}
 						if ( $show_debug && WP_DEBUG ) {
@@ -1120,29 +1159,29 @@ final class WC_IfthenPay_Webdados {
 							$callback_url = str_replace( '[ESTADO]', 'PAGO', $callback_url );
 							$callback_url = str_replace( '[FEE]', 0, $callback_url );
 							?>
-								<hr/>
-								<p>
+							<hr/>
+							<p>
 								<?php esc_html_e( 'Callback URL', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>:<br/>
-									<textarea readonly type="text" class="input-text" cols="20" rows="5" style="width: 100%; height: 50%; font-size: 10px;"><?php echo esc_html( $callback_url ); ?></textarea>
-								</p>
-								<script type="text/javascript">
-								jQuery( document ).ready( function() {
-									jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
-										if ( confirm( '<?php esc_html_e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
-											jQuery.get( '<?php echo $callback_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>', '', function( response ) {
-												alert( '<?php esc_html_e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-												window.location.reload();
-											}).fail( function() {
-												alert( '<?php esc_html_e( 'Error: Could not set the order as paid', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-											});
-										}
-									});
+								<textarea readonly type="text" class="input-text" cols="20" rows="5" style="width: 100%; height: 50%; font-size: 10px;"><?php echo esc_html( $callback_url ); ?></textarea>
+							</p>
+							<script type="text/javascript">
+							jQuery( document ).ready( function() {
+								jQuery( '#multibanco_ifthen_for_woocommerce_simulate_callback' ).on( 'click', function() {
+									if ( confirm( '<?php esc_html_e( 'This is a testing tool and will set the order as paid. Are you sure you want to proceed?', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' ) ) {
+										jQuery.get( '<?php echo $callback_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>', '', function( response ) {
+											alert( '<?php esc_html_e( 'This page will now reload. If the order is not set as paid and processing (or completed, if it only contains virtual and downloadable products) please check the debug logs.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+											window.location.reload();
+										}).fail( function() {
+											alert( '<?php esc_html_e( 'Error: Could not set the order as paid', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+										});
+									}
 								});
-								</script>
-								<p style="text-align: center;">
-									<input type="button" class="button" id="multibanco_ifthen_for_woocommerce_simulate_callback" value="<?php echo esc_attr( __( 'Simulate callback payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); ?>"/>
-								</p>
-								<?php
+							});
+							</script>
+							<p style="text-align: center;">
+								<input type="button" class="button" id="multibanco_ifthen_for_woocommerce_simulate_callback" value="<?php echo esc_attr( __( 'Simulate callback payment', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); ?>"/>
+							</p>
+							<?php
 						}
 					} elseif ( $date_paid ) {
 						// PAID?
@@ -1931,7 +1970,7 @@ final class WC_IfthenPay_Webdados {
 					if ( strlen( trim( $base['mbkey'] ) ) !== 10 ) {
 						$error_details = esc_html__( 'MB Key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 					} elseif ( trim( $this->multibanco_settings['secret_key'] ) === '' ) {
-							$error_details = __( 'Anti-phishing key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+						$error_details = __( 'Anti-phishing key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 					}
 					if ( $throw_exception ) {
 						throw new Exception(
@@ -1968,13 +2007,12 @@ final class WC_IfthenPay_Webdados {
 						$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - will create reference (No repeat in x days) - Order ' . $order->get_id() );
 						$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $this->get_order_total_to_pay( $order ), intval( $this->multibanco_ents_no_repeat[ $base['ent'] ] ) );
 					} elseif ( in_array( intval( $base['ent'] ), $this->multibanco_ents_no_check_digit, true ) && ( $this->multibanco_settings['use_order_id'] === 'yes' ) ) {
-							// Special entities with no check digit and (eventually) expiration date - We can use the order ID
-							$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Will create reference (Special entities with no check digit and (eventually) expiration date) - Order ' . $order->get_id() );
-							$ref = $this->multibanco_create_ref_no_check_digit( $base['ent'], $base['subent'], $order->get_id() );
+						// Special entities with no check digit and (eventually) expiration date - We can use the order ID
+						$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Will create reference (Special entities with no check digit and (eventually) expiration date) - Order ' . $order->get_id() );
+						$ref = $this->multibanco_create_ref_no_check_digit( $base['ent'], $base['subent'], $order->get_id() );
 					} else {
 						$this->debug_log_extra( $this->multibanco_id, 'multibanco_get_ref - Will create reference (Default mode) - Order ' . $order->get_id() );
 						$ref = $this->multibanco_create_ref( $base['ent'], $base['subent'], $this->get_multibanco_ref_seed(), $this->get_order_total_to_pay( $order ) ); // For random mode - Less loop possibility
-
 					}
 					// Store on the order for later use (like the email)
 					$this->set_order_multibanco_details(
@@ -2012,9 +2050,9 @@ final class WC_IfthenPay_Webdados {
 					if ( strlen( trim( $base['ent'] ) ) !== 5 || ( ! intval( $base['ent'] ) > 0 ) ) {
 						$error_details = esc_html__( 'Entity', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 					} elseif ( strlen( trim( $base['subent'] ) ) > 3 || ( ! intval( $base['subent'] ) > 0 ) ) {
-							$error_details = esc_html__( 'Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+						$error_details = esc_html__( 'Subentity', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 					} elseif ( trim( $this->multibanco_settings['secret_key'] ) === '' ) {
-							$error_details = esc_html__( 'Anti-phishing key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
+						$error_details = esc_html__( 'Anti-phishing key', 'multibanco-ifthen-software-gateway-for-woocommerce' );
 					}
 					return esc_html__( 'Configuration error. This payment method is disabled because required information was not set.', 'multibanco-ifthen-software-gateway-for-woocommerce' ) . ' ' . $error_details . '.';
 				}
@@ -2509,21 +2547,21 @@ final class WC_IfthenPay_Webdados {
 					}
 					break;
 
-					// Payshop
+				// Payshop
 				case $this->payshop_id:
 					$order_status = $order->get_status();
 					if ( $this->order_needs_payment( $order ) ) {
 						$order_total_to_pay = $this->get_order_total_to_pay( $order );
 						$order_mb_details   = $this->get_payshop_order_details( $order->get_id() );
 						if (
-								( empty( $order_mb_details ) )
-								||
-								(
-									round( floatval( $order_total_to_pay ), 2 ) !== round( floatval( $order_mb_details['val'] ), 2 )
-									&&
-									$order_status !== 'partially-paid' // If it's partially paid the value will be diferent and we need to ignore it
-								)
-							) {
+							( empty( $order_mb_details ) )
+							||
+							(
+								round( floatval( $order_total_to_pay ), 2 ) !== round( floatval( $order_mb_details['val'] ), 2 )
+								&&
+								$order_status !== 'partially-paid' // If it's partially paid the value will be diferent and we need to ignore it
+							)
+						) {
 							// WPML?
 							if ( $this->wpml_active ) {
 								$this->woocommerce_new_customer_note_fix_wpml_do_it( $order->get_id() );
@@ -2577,16 +2615,16 @@ final class WC_IfthenPay_Webdados {
 								// Alert and reload script
 								// phpcs:disable Squiz.PHP.EmbeddedPhp.ContentAfterOpen, Squiz.PHP.EmbeddedPhp.ContentBeforeOpen, Squiz.PHP.EmbeddedPhp.ContentBeforeEnd
 								?>
-									<script type="text/javascript">
-										alert( '<?php  printf(
-											/* translators: %s: payment method */
-											esc_html__( 'The %s payment details have changed', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-											'Payshop'
-												); ?>. <?php echo ( $this->payshop_settings['update_ref_client'] === 'yes' ? esc_html__( 'The customer will be notified', 'multibanco-ifthen-software-gateway-for-woocommerce' ) : esc_html__( 'You should notify the customer', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); ?>. <?php esc_html_e( 'The page will now reload.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
-										location.reload(); // We could just update our metabox...
-									</script>
-									<?php
-									// phpcs:enable Squiz.PHP.EmbeddedPhp.ContentAfterOpen, Squiz.PHP.EmbeddedPhp.ContentBeforeOpen, Squiz.PHP.EmbeddedPhp.ContentBeforeEnd
+								<script type="text/javascript">
+									alert( '<?php  printf(
+										/* translators: %s: payment method */
+										esc_html__( 'The %s payment details have changed', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+										'Payshop'
+											); ?>. <?php echo ( $this->payshop_settings['update_ref_client'] === 'yes' ? esc_html__( 'The customer will be notified', 'multibanco-ifthen-software-gateway-for-woocommerce' ) : esc_html__( 'You should notify the customer', 'multibanco-ifthen-software-gateway-for-woocommerce' ) ); ?>. <?php esc_html_e( 'The page will now reload.', 'multibanco-ifthen-software-gateway-for-woocommerce' ); ?>' );
+									location.reload(); // We could just update our metabox...
+								</script>
+								<?php
+								// phpcs:enable Squiz.PHP.EmbeddedPhp.ContentAfterOpen, Squiz.PHP.EmbeddedPhp.ContentBeforeOpen, Squiz.PHP.EmbeddedPhp.ContentBeforeEnd
 							}
 						}
 					}
@@ -3708,7 +3746,7 @@ final class WC_IfthenPay_Webdados {
 	 */
 	public function wc_get_orders( $args, $gateway_id ) {
 		// Remove Polylang filter - https://wordpress.org/support/topic/encomenda-cancelada-mas-cobrada/
-		if ( function_exists( 'PLL' ) ) {
+		if ( $this->polylang_active ) {
 			$this->debug_log_extra( $gateway_id, 'wc_get_orders - Disabling Polylang filter' );
 			remove_action( 'parse_query', array( PLL(), 'parse_query' ), 6 );
 		}
@@ -3718,7 +3756,7 @@ final class WC_IfthenPay_Webdados {
 		global $wpdb;
 		$this->debug_log_extra( $gateway_id, 'wc_get_orders - Last query: ' . $wpdb->last_query );
 		// Re-instate Polylang filter - https://wordpress.org/support/topic/encomenda-cancelada-mas-cobrada/
-		if ( function_exists( 'PLL' ) ) {
+		if ( $this->polylang_active ) {
 			$this->debug_log_extra( $gateway_id, 'wc_get_orders - Re-enabling Polylang filter' );
 			add_action( 'parse_query', array( PLL(), 'parse_query' ), 6 );
 		}

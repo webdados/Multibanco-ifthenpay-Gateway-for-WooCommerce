@@ -2,7 +2,7 @@
 Contributors: nakedcatplugins, webdados, ifthenpay
 Tags: ifthenpay, ecommerce, portugal, atm, homebanking
 Requires at least: 5.8
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.2
 Stable tag: 11.4.1
 License: GPLv3
@@ -254,6 +254,11 @@ You can report any security bugs found in the source code of this plugin through
 Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/multibanco-ifthen-software-gateway-for-woocommerce) and help us out.
 
 == Changelog ==
+
+= 11.4.2 - 2026-02-23 =
+* [TWEAK] Expose icons paths to [PRO add-on 6.0](https://nakedcatplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/) so it can render the new “ifthenpay Payment Logos” block and shortcode
+* [FIX] Polylang home url for callbacks and return URLs for Credit card, ifthenpay gateway and Cofidispay (can be disabled by passing `false` to the `ifthen_fix_polylang_home_url` filter)
+* [DEV] Tested with WordPress 7.0-beta1-61715 and WooCommerce 10.5.2
 
 = 11.4.1 - 2026-02-10 =
 * [TWEAK] Allow [PRO add-on 5.8](https://nakedcatplugins.com/product/multibanco-mbway-credit-card-payshop-ifthenpay-woocommerce-pro-add-on/) to cancel or convert to Multibanco expired MB WAY orders after 20 minutes of expiration

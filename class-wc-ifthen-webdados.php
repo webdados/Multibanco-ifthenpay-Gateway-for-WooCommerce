@@ -448,26 +448,32 @@ final class WC_IfthenPay_Webdados {
 		$this->multibanco_banner_email = plugins_url( 'images/multibanco_banner.png', __FILE__ );
 		$this->multibanco_banner       = plugins_url( 'images/multibanco_banner.svg', __FILE__ );
 		$this->multibanco_icon         = plugins_url( 'images/multibanco_icon.svg', __FILE__ );
+		$this->multibanco_icon_path    = plugin_dir_path( __FILE__ ) . 'images/multibanco_icon.svg';
 
 		$this->mbway_banner_email = plugins_url( 'images/mbway_banner.png', __FILE__ );
 		$this->mbway_banner       = plugins_url( 'images/mbway_banner.svg', __FILE__ );
 		$this->mbway_icon         = plugins_url( 'images/mbway_icon.svg', __FILE__ );
+		$this->mbway_icon_path    = plugin_dir_path( __FILE__ ) . 'images/mbway_icon.svg';
 
 		$this->payshop_banner_email = plugins_url( 'images/payshop_banner.png', __FILE__ );
 		$this->payshop_banner       = plugins_url( 'images/payshop_banner.svg', __FILE__ );
 		$this->payshop_icon         = plugins_url( 'images/payshop_icon.svg', __FILE__ );
+		$this->payshop_icon_path    = plugin_dir_path( __FILE__ ) . 'images/payshop_icon.svg';
 
 		$this->creditcard_banner_email = plugins_url( 'images/creditcard_banner_and_icon.png', __FILE__ );
 		$this->creditcard_banner       = plugins_url( 'images/creditcard_banner_and_icon.svg', __FILE__ );
 		$this->creditcard_icon         = plugins_url( 'images/creditcard_banner_and_icon.svg', __FILE__ );
+		$this->creditcard_icon_path    = plugin_dir_path( __FILE__ ) . 'images/creditcard_banner_and_icon.svg';
 
 		$this->cofidispay_banner_email = plugins_url( 'images/cofidispay_banner.png', __FILE__ );
 		$this->cofidispay_banner       = plugins_url( 'images/cofidispay_banner.svg', __FILE__ );
 		$this->cofidispay_icon         = plugins_url( 'images/cofidispay_icon.svg', __FILE__ );
+		$this->cofidispay_icon_path    = plugin_dir_path( __FILE__ ) . 'images/cofidispay_icon.svg';
 
 		$this->gateway_ifthen_banner_email = plugins_url( 'images/gateway_ifthen_banner.png', __FILE__ );
 		$this->gateway_ifthen_banner       = plugins_url( 'images/gateway_ifthen_banner.svg', __FILE__ );
 		$this->gateway_ifthen_icon         = plugins_url( 'images/gateway_ifthen_icon.svg', __FILE__ );
+		$this->gateway_ifthen_icon_path    = plugin_dir_path( __FILE__ ) . 'images/gateway_ifthen_icon.svg';
 	}
 
 	/**

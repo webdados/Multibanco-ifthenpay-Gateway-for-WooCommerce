@@ -65,6 +65,7 @@ final class WC_IfthenPay_Webdados {
 	public $multibanco_banner_email                = '';
 	public $multibanco_banner                      = '';
 	public $multibanco_icon                        = '';
+	public $multibanco_icon_path                   = '';
 	public $multibanco_api_mode_available          = true;
 	public $multibanco_api_mode_enabled            = false;
 	public $multibanco_api_url                     = 'https://api.ifthenpay.com/multibanco/reference/init';
@@ -80,6 +81,7 @@ final class WC_IfthenPay_Webdados {
 	public $mbway_banner_email           = '';
 	public $mbway_banner                 = '';
 	public $mbway_icon                   = '';
+	public $mbway_icon_path              = '';
 	public $mbway_api_url                = 'https://api.ifthenpay.com/spg/payment/mbway';
 
 
@@ -93,6 +95,7 @@ final class WC_IfthenPay_Webdados {
 	public $payshop_banner_email            = '';
 	public $payshop_banner                  = '';
 	public $payshop_icon                    = '';
+	public $payshop_icon_path               = '';
 
 
 	/* Internal variables - For Credit card */
@@ -104,6 +107,7 @@ final class WC_IfthenPay_Webdados {
 	public $creditcard_banner_email = ''; /* Needed ? */
 	public $creditcard_banner       = ''; /* Needed ? */
 	public $creditcard_icon         = '';
+	public $creditcard_icon_path    = '';
 
 
 	/* Internal variables - For Cofidis Pay */
@@ -115,6 +119,7 @@ final class WC_IfthenPay_Webdados {
 	public $cofidispay_banner_email = ''; /* Needed ? */
 	public $cofidispay_banner       = ''; /* Needed ? */
 	public $cofidispay_icon         = '';
+	public $cofidispay_icon_path    = '';
 
 
 	/* Internal variables - For Apple and Google Pay */
@@ -126,6 +131,7 @@ final class WC_IfthenPay_Webdados {
 	public $gateway_ifthen_banner_email = ''; /* Needed ? */
 	public $gateway_ifthen_banner       = ''; /* Needed ? */
 	public $gateway_ifthen_icon         = '';
+	public $gateway_ifthen_icon_path    = '';
 
 	/* Single instance */
 	protected static $_instance = null;

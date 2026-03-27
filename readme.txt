@@ -255,6 +255,9 @@ Sure. Go to [GlotPress](https://translate.wordpress.org/projects/wp-plugins/mult
 
 == Changelog ==
 
+= TBA *
+* [TWEAK] Increase the interval for showing new methods notifications to each user from 180 to 365 days
+
 = 11.5.3 - 2026-03-15 =
 * [TWEAK] Remove anti-phishing key from debug logs
 * [DEV] Tested with WordPress 7.0-beta5 and WooCommerce 10.6.1

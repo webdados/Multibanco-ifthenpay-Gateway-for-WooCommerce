@@ -1683,7 +1683,7 @@ if ( ! class_exists( 'WC_Gateway_IfThen_Webdados' ) ) {
 				// Not prevented by filter
 				( ! apply_filters( 'multibanco_ifthen_hide_newmethod_notifications', false ) )
 				&&
-				// Check if dismissed in the last 180 days
+				// Check if dismissed in the last 365 days
 				( intval( get_user_meta( get_current_user_id(), $this->id . '_newmethod_notice_dismiss_until', true ) ) < time() )
 				&&
 				// Check if 90-day dismissal is active - Legacy support

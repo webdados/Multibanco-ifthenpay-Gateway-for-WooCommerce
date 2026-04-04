@@ -3190,7 +3190,7 @@ final class WC_IfthenPay_Webdados {
 				$title = sprintf(
 					/* translators: %s: company name */
 					esc_html__( 'Please contact %s', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
-					'PT Woo Plugins'
+					'Naked Cat Plugins'
 				);
 				?>
 				<a href="https://nakedcatplugins.com<?php echo esc_attr( $this->out_link_utm ); ?>" title="<?php echo esc_attr( $title ); ?>" target="_blank">
@@ -3862,7 +3862,8 @@ final class WC_IfthenPay_Webdados {
 		}
 		$tab     = isset( $_GET['tab'] ) ? trim( sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$section = isset( $_GET['section'] ) ? trim( sanitize_text_field( wp_unslash( $_GET['section'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( $tab !== 'checkout' || ! strpos( $section, 'ifthen_for_woocommerce' ) ) {
+		$path    = isset( $_GET['path'] ) ? trim( sanitize_text_field( wp_unslash( $_GET['path'] ) ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( $tab !== 'checkout' ) {
 			return;
 		}
 
@@ -3871,9 +3872,13 @@ final class WC_IfthenPay_Webdados {
 		wp_enqueue_script( 'woocommerce_multibanco_ifthen_admin_js', plugins_url( 'assets/admin.js', __FILE__ ), array( 'jquery' ), $this->get_version() . ( WP_DEBUG ? '.' . wp_rand( 0, 99999 ) : '' ), true );
 
 		// Javascript variables
-		$gateway             = str_replace( '_ifthen_for_woocommerce', '', $section );
-		$callback_email_sent = get_option( $gateway . '_ifthen_for_woocommerce_callback_email_sent' );
-		if ( $callback_email_sent === false ) {
+		$gateway = strpos( $section, 'ifthen_for_woocommerce' ) !== false ? str_replace( '_ifthen_for_woocommerce', '', $section ) : ( ! empty( $path ) || ! empty( $section ) ? 'other' : '' );
+		if ( ! in_array( $gateway, array( '', 'other' ), true ) ) {
+			$callback_email_sent = get_option( $gateway . '_ifthen_for_woocommerce_callback_email_sent' );
+			if ( $callback_email_sent === false ) {
+				$callback_email_sent = 'no';
+			}
+		} else {
 			$callback_email_sent = 'no';
 		}
 		$callback_auto_open = 0;
@@ -3891,6 +3896,7 @@ final class WC_IfthenPay_Webdados {
 				'callback_email_sent' => $callback_email_sent,
 				'callback_auto_open'  => $callback_auto_open,
 				'backoffice_key'      => apply_filters( 'ifthen_backoffice_key', '' ),
+				'badge_text'          => '<span class="payment-list-ifthen-badge-icon">🇵🇹</span>' . esc_html__( 'Recommended', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 			)
 		);
 	}

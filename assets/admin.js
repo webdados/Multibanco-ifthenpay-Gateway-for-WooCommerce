@@ -4,7 +4,7 @@
 
 (function ( $ ) {
 
-	if ( ifthenpay.gateway !== '' ) {
+	if ( ifthenpay.gateway !== '' && ifthenpay.gateway !== 'other' ) {
 
 		var hide_extra_fields = true;
 
@@ -218,6 +218,23 @@
 			},
 			500
 		);
+
+	} else {
+
+		if ( ifthenpay.gateway === '' ) {
+			// Payment methods list? Allow page to be built before checking
+			tryBadge = setInterval(
+				function () {
+					console.log( 'Trying to add badge...' );
+					if ( $( '.settings-payment-gateways__list' ).length ) {
+						// Add our badge
+						$( '.settings-payment-gateways__list #multibanco_ifthen_for_woocommerce .woocommerce-list__item-title, .settings-payment-gateways__list #mbway_ifthen_for_woocommerce .woocommerce-list__item-title' ).append( '<span class="payment-list-ifthen-badge">' + ifthenpay.badge_text + '</span>' );
+						clearInterval( tryBadge );
+					}
+				},
+				500
+			);
+		}
 
 	}
 

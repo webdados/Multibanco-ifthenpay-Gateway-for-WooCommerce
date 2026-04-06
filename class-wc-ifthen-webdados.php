@@ -3896,7 +3896,7 @@ final class WC_IfthenPay_Webdados {
 				'callback_email_sent' => $callback_email_sent,
 				'callback_auto_open'  => $callback_auto_open,
 				'backoffice_key'      => apply_filters( 'ifthen_backoffice_key', '' ),
-				'badge_text'          => '<span class="payment-list-ifthen-badge-icon">🇵🇹</span>' . esc_html__( 'Recommended', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
+				'badge_text'          => '<span class="payment-list-ifthen-badge-icon">🇵🇹</span>' . esc_html__( 'Recommended for Portugal', 'multibanco-ifthen-software-gateway-for-woocommerce' ),
 			)
 		);
 	}
